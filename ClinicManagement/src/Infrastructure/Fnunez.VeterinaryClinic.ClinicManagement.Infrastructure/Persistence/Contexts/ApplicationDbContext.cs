@@ -1,3 +1,4 @@
+using System.Reflection;
 using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,12 @@ public class ApplicationDbContext : DbContext
         : base(options)
     {
         _mediator = mediator;
+    }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        base.OnModelCreating(builder);
     }
 
     public override async Task<int> SaveChangesAsync(
