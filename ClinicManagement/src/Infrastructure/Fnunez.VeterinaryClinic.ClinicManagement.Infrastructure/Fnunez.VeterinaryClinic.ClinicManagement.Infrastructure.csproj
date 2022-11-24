@@ -4,6 +4,10 @@
     <ProjectReference Include="..\..\Core\Fnunez.VeterinaryClinic.ClinicManagement.Application\Fnunez.VeterinaryClinic.ClinicManagement.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.0" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
