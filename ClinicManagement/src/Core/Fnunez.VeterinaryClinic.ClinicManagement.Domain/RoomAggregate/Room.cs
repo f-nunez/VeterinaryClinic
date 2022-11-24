@@ -1,6 +1,6 @@
 using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
-namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.Aggregates;
+namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.RoomAggregate;
 
 public class Room : BaseEntity<int>, IAggregateRoot
 {

@@ -1,7 +1,7 @@
-using Fnunez.VeterinaryClinic.ClinicManagement.Domain.Entities;
+using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Entities;
 using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
-namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.Aggregates;
+namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
 
 public class Client : BaseEntity<int>, IAggregateRoot
 {

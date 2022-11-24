@@ -1,4 +1,9 @@
 using System.Reflection;
+using Fnunez.VeterinaryClinic.ClinicManagement.Domain.AppointmentTypeAggregate;
+using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
+using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Entities;
+using Fnunez.VeterinaryClinic.ClinicManagement.Domain.DoctorAggregate;
+using Fnunez.VeterinaryClinic.ClinicManagement.Domain.RoomAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +21,12 @@ public class ApplicationDbContext : DbContext
     {
         _mediator = mediator;
     }
+
+    public DbSet<AppointmentType> AppointmentTypes => Set<AppointmentType>();
+    public DbSet<Client> Clients => Set<Client>();
+    public DbSet<Doctor> Doctors => Set<Doctor>();
+    public DbSet<Patient> Patients => Set<Patient>();
+    public DbSet<Room> Rooms => Set<Room>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

@@ -1,6 +1,6 @@
 using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
-namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.Aggregates;
+namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.AppointmentTypeAggregate;
 
 public class AppointmentType : BaseEntity<int>, IAggregateRoot
 {

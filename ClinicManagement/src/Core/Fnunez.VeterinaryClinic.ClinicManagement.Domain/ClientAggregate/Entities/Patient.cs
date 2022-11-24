@@ -1,8 +1,8 @@
-using Fnunez.VeterinaryClinic.ClinicManagement.Domain.Enums;
-using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ValueObjects;
+using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Enums;
+using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.ValueObjects;
 using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
-namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.Entities;
+namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Entities;
 
 public class Patient : BaseEntity<int>
 {
