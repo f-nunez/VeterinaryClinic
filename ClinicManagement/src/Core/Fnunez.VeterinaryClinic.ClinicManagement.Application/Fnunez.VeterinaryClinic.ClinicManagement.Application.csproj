@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Fnunez.VeterinaryClinic.ClinicManagement.Domain\Fnunez.VeterinaryClinic.ClinicManagement.Domain.csproj" />
+    <ProjectReference Include="..\Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel\Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>
