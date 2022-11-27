@@ -68,6 +68,14 @@ public class Client : BaseEntity<int>, IAggregateRoot
         _patients.Add(patient);
     }
 
+    public void RemovePatient(Patient patient)
+    {
+        if (patient is null)
+            throw new ArgumentNullException(nameof(patient));
+
+        _patients.Remove(patient);
+    }
+
     public override string ToString()
     {
         return FullName.ToString();
