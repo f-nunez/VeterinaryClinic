@@ -60,6 +60,14 @@ public class Client : BaseEntity<int>, IAggregateRoot
         PreferredDoctorId = preferredDoctorId;
     }
 
+    public void AddPatient(Patient patient)
+    {
+        if (patient is null)
+            throw new ArgumentNullException(nameof(patient));
+
+        _patients.Add(patient);
+    }
+
     public override string ToString()
     {
         return FullName.ToString();
