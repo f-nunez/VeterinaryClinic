@@ -51,6 +51,15 @@ public class Patient : BaseEntity<int>
         PreferredDoctorId = preferredDoctorId;
     }
 
+    public void UpdateName(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+            throw new ArgumentException(
+                $"Required input {nameof(name)} was empty.", nameof(name));
+
+        Name = name;
+    }
+
     public override string ToString()
     {
         return Name.ToString();
