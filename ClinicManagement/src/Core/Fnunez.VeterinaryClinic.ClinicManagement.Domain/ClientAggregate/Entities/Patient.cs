@@ -24,6 +24,26 @@ public class Patient : BaseEntity<int>
         AnimalType animalType,
         int? preferredDoctorId)
     {
+        if (clientId <= 0)
+            throw new ArgumentException(
+                $"Required input {nameof(clientId)} cannot be zero or negative.",
+                nameof(clientId));
+
+        if (string.IsNullOrEmpty(name))
+            throw new ArgumentException(
+                $"Required input {nameof(name)} was empty.",
+                nameof(name));
+
+        if (animalType is null)
+            throw new ArgumentNullException(
+                nameof(name),
+                $"Required input {nameof(name)} was empty.");
+
+        if (preferredDoctorId != null && preferredDoctorId <= 0)
+            throw new ArgumentException(
+                $"Required input {nameof(preferredDoctorId)} cannot be zero or negative.",
+                nameof(preferredDoctorId));
+
         ClientId = clientId;
         Name = name;
         AnimalSex = animalSex;
