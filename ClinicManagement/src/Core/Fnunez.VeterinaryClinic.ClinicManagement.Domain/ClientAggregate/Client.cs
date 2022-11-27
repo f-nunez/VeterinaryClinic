@@ -5,12 +5,13 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
 
 public class Client : BaseEntity<int>, IAggregateRoot
 {
+    private IList<Patient> _patients = new List<Patient>();
     public string FullName { get; private set; }
     public string PreferredName { get; private set; }
     public string Salutation { get; private set; }
     public string EmailAddress { get; private set; }
     public int PreferredDoctorId { get; private set; }
-    public IList<Patient> Patients { get; private set; } = new List<Patient>();
+    public IReadOnlyList<Patient> Patients => _patients.AsReadOnly();
 
     public Client()
     {
