@@ -4,5 +4,5 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clien
 
 public class GetClientByIdRequest : BaseRequest
 {
-    public int ClientId { get; set; }
+    public int Id { get; set; }
 }

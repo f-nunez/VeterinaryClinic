@@ -4,6 +4,6 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Docto
 
 public class UpdateDoctorRequest : BaseRequest
 {
-    public int DoctorId { get; set; }
+    public int Id { get; set; }
     public string? FullName { get; set; }
 }

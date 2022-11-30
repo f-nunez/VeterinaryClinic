@@ -2,8 +2,8 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Appoi
 
 public class AppointmentTypeDto
 {
-    public int AppointmentTypeId { get; set; }
-    public string? Name { get; set; }
-    public string? Code { get; set; }
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Code { get; set; } = string.Empty;
     public int Duration { get; set; }
 }

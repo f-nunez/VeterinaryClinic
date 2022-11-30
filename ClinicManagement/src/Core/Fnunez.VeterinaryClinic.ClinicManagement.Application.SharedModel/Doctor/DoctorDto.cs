@@ -2,6 +2,6 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Docto
 
 public class DoctorDto
 {
-    public int DoctorId { get; set; }
+    public int Id { get; set; }
     public string FullName { get; set; } = string.Empty;
 }

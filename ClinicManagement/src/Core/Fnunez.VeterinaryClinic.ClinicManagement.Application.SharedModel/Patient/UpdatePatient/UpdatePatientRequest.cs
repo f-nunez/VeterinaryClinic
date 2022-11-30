@@ -6,5 +6,6 @@ public class UpdatePatientRequest : BaseRequest
 {
     public int ClientId { get; set; }
     public int PatientId { get; set; }
-    public string Name { get; set; } = string.Empty;
+    public string PatientName { get; set; } = string.Empty;
+    public int? PreferredDoctorId { get; set; }
 }

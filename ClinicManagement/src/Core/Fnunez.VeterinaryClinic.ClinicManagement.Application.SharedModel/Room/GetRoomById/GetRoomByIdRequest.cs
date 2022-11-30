@@ -4,5 +4,5 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.
 
 public class GetRoomByIdRequest : BaseRequest
 {
-    public int RoomId { get; set; }
+    public int Id { get; set; }
 }

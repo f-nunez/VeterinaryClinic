@@ -7,6 +7,5 @@ public class ClientDto
     public string EmailAddress { get; set; } = string.Empty;
     public string Salutation { get; set; } = string.Empty;
     public string PreferredName { get; set; } = string.Empty;
-    public int? PreferredDoctorId { get; set; }
-    public IList<int> Patients { get; set; } = new List<int>();
+    public int PreferredDoctorId { get; set; }
 }
