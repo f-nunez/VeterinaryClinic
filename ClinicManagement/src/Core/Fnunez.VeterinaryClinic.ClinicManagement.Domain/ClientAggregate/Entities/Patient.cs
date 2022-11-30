@@ -60,6 +60,16 @@ public class Patient : BaseEntity<int>
         Name = name;
     }
 
+    public void UpdatePreferredDoctorId(int? preferredDoctorId)
+    {
+        if (preferredDoctorId != null && preferredDoctorId <= 0)
+            throw new ArgumentException(
+                $"Required input {nameof(preferredDoctorId)} cannot be zero or negative.",
+                nameof(preferredDoctorId));
+
+        PreferredDoctorId = preferredDoctorId;
+    }
+
     public override string ToString()
     {
         return Name.ToString();
