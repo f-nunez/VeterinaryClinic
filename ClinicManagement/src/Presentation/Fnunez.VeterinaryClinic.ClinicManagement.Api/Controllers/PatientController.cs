@@ -27,9 +27,9 @@ public class PatientController : BaseApiController
         return Ok(response);
     }
 
-    [HttpDelete("Delete")]
+    [HttpDelete("Delete/{PatientId}/Client/{ClientId}")]
     public async Task<ActionResult> Delete(
-        DeletePatientRequest request,
+        [FromRoute] DeletePatientRequest request,
         CancellationToken cancellationToken)
     {
         var command = new DeletePatientCommand(request);

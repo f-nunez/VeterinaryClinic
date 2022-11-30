@@ -27,9 +27,9 @@ public class DoctorController : BaseApiController
         return Ok(response);
     }
 
-    [HttpDelete("Delete")]
+    [HttpDelete("Delete/{id}")]
     public async Task<ActionResult> Delete(
-        DeleteDoctorRequest request,
+        [FromRoute] DeleteDoctorRequest request,
         CancellationToken cancellationToken)
     {
         var command = new DeleteDoctorCommand(request);

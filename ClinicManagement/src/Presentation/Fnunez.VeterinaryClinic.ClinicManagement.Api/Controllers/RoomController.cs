@@ -27,9 +27,9 @@ public class RoomController : BaseApiController
         return Ok(response);
     }
 
-    [HttpDelete("Delete")]
+    [HttpDelete("Delete/{id}")]
     public async Task<ActionResult> Delete(
-        DeleteRoomRequest request,
+        [FromRoute] DeleteRoomRequest request,
         CancellationToken cancellationToken)
     {
         var command = new DeleteRoomCommand(request);
