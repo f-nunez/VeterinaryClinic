@@ -24,7 +24,11 @@ public class ClientProfile : Profile
                 options => options.MapFrom(src => src.ClientId)
             );
 
-        CreateMap<CreateClientRequest, Client>();
+        CreateMap<CreateClientRequest, Client>()
+            .ForMember(
+                dto => dto.Patients,
+                options => options.Ignore()
+            );
 
         CreateMap<UpdateClientRequest, Client>()
             .ForMember(

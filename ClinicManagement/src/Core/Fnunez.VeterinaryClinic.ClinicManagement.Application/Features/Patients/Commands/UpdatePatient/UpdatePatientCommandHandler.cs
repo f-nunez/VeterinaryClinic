@@ -38,7 +38,8 @@ public class UpdatePatientCommandHandler : IRequestHandler<UpdatePatientCommand,
         if (patientToUpdate is null)
             return response;
 
-        patientToUpdate.UpdateName(request.Name);
+        patientToUpdate.UpdateName(request.PatientName);
+        patientToUpdate.UpdatePreferredDoctorId(request.PreferredDoctorId);
 
         await _unitOfWork.Repository<Client>()
             .UpdateAsync(client, cancellationToken);

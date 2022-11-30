@@ -40,7 +40,7 @@ public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand,
             name: request.PatientName,
             animalSex: AnimalSex.Female,
             animalType: new AnimalType("Dog", "Chihuahua"),
-            preferredDoctorId: null
+            preferredDoctorId: request.PreferredDoctorId
         );
 
         client.AddPatient(newPatient);

@@ -11,25 +11,17 @@ public class DoctorProfile : Profile
 {
     public DoctorProfile()
     {
-        CreateMap<Doctor, DoctorDto>()
-            .ForMember(
-                dto => dto.DoctorId,
-                options => options.MapFrom(src => src.Id)
-            );
+        CreateMap<Doctor, DoctorDto>();
 
         CreateMap<DoctorDto, Doctor>()
             .ConstructUsing(
-                dto => new Doctor(dto.DoctorId, dto.FullName)
+                dto => new Doctor(dto.Id, dto.FullName)
             );
 
         CreateMap<CreateDoctorRequest, Doctor>()
             .ConstructUsing(dto => new Doctor(0, dto.FullName));
 
-        CreateMap<UpdateDoctorRequest, Doctor>()
-            .ForMember(
-                dto => dto.Id,
-                options => options.MapFrom(src => src.DoctorId)
-            );
+        CreateMap<UpdateDoctorRequest, Doctor>();
 
         CreateMap<DeleteDoctorRequest, Doctor>();
     }

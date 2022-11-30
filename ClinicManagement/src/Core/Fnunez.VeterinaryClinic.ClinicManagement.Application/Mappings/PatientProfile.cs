@@ -1,8 +1,5 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.CreatePatient;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.DeletePatient;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.UpdatePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Entities;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Mappings;
@@ -16,6 +13,9 @@ public class PatientProfile : Profile
                 dto => dto.PatientId,
                 options => options.MapFrom(src => src.Id)
             ).ForMember(
+                dto => dto.PatientName,
+                options => options.MapFrom(src => src.Name)
+            ).ForMember(
                 dto => dto.ClientName,
                 options => options.MapFrom(src => string.Empty)
             );
@@ -24,16 +24,9 @@ public class PatientProfile : Profile
             .ForMember(
                 dto => dto.Id,
                 options => options.MapFrom(src => src.PatientId)
+            ).ForMember(
+                dto => dto.Name,
+                options => options.MapFrom(src => src.PatientName)
             );
-
-        CreateMap<CreatePatientRequest, Patient>();
-
-        CreateMap<UpdatePatientRequest, Patient>()
-            .ForMember(
-                dto => dto.Id,
-                options => options.MapFrom(src => src.PatientId)
-            );
-
-        CreateMap<DeletePatientRequest, Patient>();
     }
 }

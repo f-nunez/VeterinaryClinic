@@ -26,7 +26,7 @@ public class GetDoctorByIdQueryHandler : IRequestHandler<GetDoctorByIdQuery, Get
         var response = new GetDoctorByIdResponse(request.CorrelationId);
 
         var doctor = await _unitOfWork.ReadRepository<Doctor>()
-            .GetByIdAsync(request.DoctorId);
+            .GetByIdAsync(request.Id);
 
         if (doctor is null)
             return response;

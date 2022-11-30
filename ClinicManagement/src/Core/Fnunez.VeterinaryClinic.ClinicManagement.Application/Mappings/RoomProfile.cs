@@ -11,26 +11,14 @@ public class RoomProfile : Profile
 {
     public RoomProfile()
     {
-        CreateMap<Room, RoomDto>()
-            .ForMember(
-                dto => dto.RoomId,
-                options => options.MapFrom(src => src.Id)
-            );
+        CreateMap<Room, RoomDto>();
 
-        CreateMap<RoomDto, Room>()
-            .ForMember(
-                dto => dto.Id,
-                options => options.MapFrom(src => src.RoomId)
-            );
+        CreateMap<RoomDto, Room>();
 
         CreateMap<CreateRoomRequest, Room>();
 
         CreateMap<DeleteRoomRequest, Room>();
 
-        CreateMap<UpdateRoomRequest, Room>()
-            .ForMember(
-                dto => dto.Id,
-                options => options.MapFrom(src => src.RoomId)
-            );
+        CreateMap<UpdateRoomRequest, Room>();
     }
 }

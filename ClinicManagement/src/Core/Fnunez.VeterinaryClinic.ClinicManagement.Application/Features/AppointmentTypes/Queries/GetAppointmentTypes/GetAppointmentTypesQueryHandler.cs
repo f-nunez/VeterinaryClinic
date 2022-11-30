@@ -12,7 +12,9 @@ public class GetAppointmentTypesQueryHandler : IRequestHandler<GetAppointmentTyp
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
-    public GetAppointmentTypesQueryHandler(IMapper mapper, IUnitOfWork unitOfWork)
+    public GetAppointmentTypesQueryHandler(
+        IMapper mapper,
+        IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;

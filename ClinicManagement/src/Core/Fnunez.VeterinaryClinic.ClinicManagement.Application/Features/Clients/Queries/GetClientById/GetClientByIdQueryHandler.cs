@@ -26,7 +26,7 @@ public class GetClientByIdQueryHandler : IRequestHandler<GetClientByIdQuery, Get
         var response = new GetClientByIdResponse(request.CorrelationId);
 
         var client = await _unitOfWork.ReadRepository<Client>()
-            .GetByIdAsync(request.ClientId, cancellationToken);
+            .GetByIdAsync(request.Id, cancellationToken);
 
         if (client is null)
             return response;

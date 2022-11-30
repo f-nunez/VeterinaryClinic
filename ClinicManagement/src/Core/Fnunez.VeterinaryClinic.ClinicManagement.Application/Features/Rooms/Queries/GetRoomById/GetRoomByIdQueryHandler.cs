@@ -26,7 +26,7 @@ public class GetRoomByIdQueryHandler : IRequestHandler<GetRoomByIdQuery, GetRoom
         var response = new GetRoomByIdResponse(request.CorrelationId);
 
         var room = await _unitOfWork.ReadRepository<Room>()
-            .GetByIdAsync(request.RoomId, cancellationToken);
+            .GetByIdAsync(request.Id, cancellationToken);
 
         if (room is null)
             return response;
