@@ -1,0 +1,107 @@
+@page "/patients"
+@using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.IconComponent
+
+<h1>Patients</h1>
+
+@if (Clients is null)
+{
+    <Spinner></Spinner>
+    return;
+}
+
+<div class="mb-4">
+    <label class="mb-2">
+        Client:
+    </label>
+
+    <select class="form-control" @bind="SelectedClientId" @bind:event="onchange">
+        <option value=""></option>
+        @foreach (var client in Clients)
+        {
+            <option value="@client.ClientId">@client.FullName</option>
+        }
+    </select>
+</div>
+
+@if (string.IsNullOrEmpty(SelectedClientId))
+{
+    return;
+}
+
+@if (Patients is null)
+{
+    <Spinner></Spinner>
+    return;
+}
+
+<div class="main-action">
+    <button class="btn btn-primary" @onclick="@(() => CreateClick())" @onclick:stopPropagation="true">
+        <span class="oi oi-plus" aria-hidden="true"></span> Add
+    </button>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Preferred Doctor Id</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var patient in Patients)
+        {
+            <tr>
+                <td>
+                    @patient.PatientId
+                </td>
+                <td>
+                    @if (IsAddOrEdit(@patient.PatientId))
+                    {
+                        <input @bind="ToSave.PatientName" />
+                    }
+                    else
+                    {
+                        @patient.PatientName
+                    }
+                </td>
+                <td>
+                    @if (IsAddOrEdit(@patient.PatientId))
+                    {
+                        <input type="number" @bind="ToSave.PreferredDoctorId" />
+                    }
+                    else
+                    {
+                        @patient.PreferredDoctorId
+                    }
+                </td>
+                <td class="action-buttons">
+                    @if (IsAddOrEdit(@patient.PatientId))
+                    {
+                        <button class="btn btn-success me-2" @onclick="@(() => SaveClick())" @onclick:stopPropagation="true">
+                            <SaveIcon></SaveIcon>
+                            Save
+                        </button>
+                        <button class="btn btn-light me-2" @onclick="@(() => CancelClick())" @onclick:stopPropagation="true">
+                            <CancelIcon></CancelIcon>
+                            Cancel
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary me-2" @onclick="@(() => EditClick(patient.PatientId))" @onclick:stopPropagation="true">
+                            <EditIcon></EditIcon>
+                            Edit
+                        </button>
+
+                        <button class="btn btn-danger me-2" @onclick="@(() => DeleteClick(patient.ClientId, patient.PatientId))" @onclick:stopPropagation="true">
+                            <DeleteIcon></DeleteIcon>
+                            Delete
+                        </button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
