@@ -1,4 +1,5 @@
 using AutoMapper;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.GetDoctorById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.DoctorAggregate;
@@ -29,7 +30,7 @@ public class GetDoctorByIdQueryHandler : IRequestHandler<GetDoctorByIdQuery, Get
             .GetByIdAsync(request.Id);
 
         if (doctor is null)
-            return response;
+            throw new NotFoundException(nameof(doctor), request.Id);
 
         response.Doctor = _mapper.Map<DoctorDto>(doctor);
 
