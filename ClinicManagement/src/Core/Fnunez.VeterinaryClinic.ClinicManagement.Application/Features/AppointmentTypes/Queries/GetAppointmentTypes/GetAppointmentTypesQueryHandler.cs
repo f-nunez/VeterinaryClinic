@@ -30,6 +30,9 @@ public class GetAppointmentTypesQueryHandler : IRequestHandler<GetAppointmentTyp
         var appointmentTypes = await _unitOfWork
             .ReadRepository<AppointmentType>()
             .ListAsync(cancellationToken);
+        
+        if (appointmentTypes is null)
+            return response;
 
         response.AppointmentTypes = _mapper
             .Map<List<AppointmentTypeDto>>(appointmentTypes);

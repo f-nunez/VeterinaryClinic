@@ -1,4 +1,5 @@
 using AutoMapper;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.GetAppointmentTypeById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.AppointmentTypeAggregate;
@@ -32,7 +33,7 @@ public class GetAppointmentTypeByIdQueryHandler : IRequestHandler<GetAppointment
             .GetByIdAsync(request.Id, cancellationToken);
 
         if (appointmentType is null)
-            return response;
+            throw new NotFoundException(nameof(appointmentType), request.Id);
 
         response.AppointmentType = _mapper
             .Map<AppointmentTypeDto>(appointmentType);
