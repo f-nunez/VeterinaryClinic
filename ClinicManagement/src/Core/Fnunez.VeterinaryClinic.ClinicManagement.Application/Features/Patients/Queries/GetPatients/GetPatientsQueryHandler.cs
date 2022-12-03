@@ -1,4 +1,5 @@
 using AutoMapper;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Commands.CreatePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.GetPatients;
@@ -30,7 +31,10 @@ public class GetPatientsQueryHandler : IRequestHandler<GetPatientsQuery, GetPati
         var client = await _unitOfWork.ReadRepository<Client>()
             .FirstOrDefaultAsync(specification, cancellationToken);
 
-        if (client is null || client.Patients is null)
+        if (client is null)
+            throw new NotFoundException(nameof(client), request.ClientId);
+
+        if (client.Patients is null)
             return response;
 
         response.Patients = _mapper.Map<List<PatientDto>>(client.Patients);
