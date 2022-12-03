@@ -1,4 +1,5 @@
 using AutoMapper;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.GetRoomById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.RoomAggregate;
@@ -29,7 +30,7 @@ public class GetRoomByIdQueryHandler : IRequestHandler<GetRoomByIdQuery, GetRoom
             .GetByIdAsync(request.Id, cancellationToken);
 
         if (room is null)
-            return response;
+            throw new NotFoundException(nameof(room), request.Id);
 
         response.Room = _mapper.Map<RoomDto>(room);
 
