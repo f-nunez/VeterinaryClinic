@@ -50,9 +50,6 @@ public class ClientController : BaseApiController
         GetClientByIdResponse response = await Mediator
             .Send(query, cancellationToken);
 
-        if (response.Client is null)
-            return NotFound();
-
         return Ok(response);
     }
 
@@ -65,9 +62,6 @@ public class ClientController : BaseApiController
 
         GetClientsResponse response = await Mediator
             .Send(query, cancellationToken);
-
-        if (response.Clients is null)
-            return NotFound();
 
         return Ok(response);
     }

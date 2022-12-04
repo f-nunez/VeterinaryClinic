@@ -49,9 +49,6 @@ public class AppointmentTypeController : BaseApiController
         GetAppointmentTypeByIdResponse response = await Mediator
             .Send(query, cancellationToken);
 
-        if (response.AppointmentType is null)
-            return NotFound();
-
         return Ok(response);
     }
 

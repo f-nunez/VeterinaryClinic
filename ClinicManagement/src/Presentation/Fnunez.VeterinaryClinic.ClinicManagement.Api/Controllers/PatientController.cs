@@ -50,9 +50,6 @@ public class PatientController : BaseApiController
         GetPatientByIdResponse response = await Mediator
             .Send(query, cancellationToken);
 
-        if (response.Patient is null)
-            return NotFound();
-
         return Ok(response);
     }
 
@@ -65,9 +62,6 @@ public class PatientController : BaseApiController
 
         GetPatientsResponse response = await Mediator
             .Send(query, cancellationToken);
-
-        if (response.Patients is null)
-            return NotFound();
 
         return Ok(response);
     }

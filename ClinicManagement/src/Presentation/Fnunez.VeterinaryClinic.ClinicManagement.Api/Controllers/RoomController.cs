@@ -50,9 +50,6 @@ public class RoomController : BaseApiController
         GetRoomByIdResponse response = await Mediator
             .Send(query, cancellationToken);
 
-        if (response.Room is null)
-            return NotFound();
-
         return Ok(response);
     }
 
@@ -65,9 +62,6 @@ public class RoomController : BaseApiController
 
         GetRoomsResponse response = await Mediator
             .Send(query, cancellationToken);
-
-        if (response.Rooms is null)
-            return NotFound();
 
         return Ok(response);
     }
