@@ -4,7 +4,7 @@ namespace Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 
 public interface IUnitOfWork : IDisposable
 {
-    Task<int> CommitAsync(CancellationToken cancellationToken);
+    Task<int> CommitAsync(CancellationToken cancellationToken = default);
     IReadRepository<T> ReadRepository<T>() where T : class, IAggregateRoot;
     IRepository<T> Repository<T>() where T : class, IAggregateRoot;
     Task RollbackAsync();

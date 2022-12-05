@@ -1,0 +1,6 @@
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.GetAppointmentTypeById;
+using MediatR;
+
+namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Queries.GetAppointmentTypes;
+
+public record GetAppointmentTypeByIdQuery(GetAppointmentTypeByIdRequest GetAppointmentTypeByIdRequest) : IRequest<GetAppointmentTypeByIdResponse>;

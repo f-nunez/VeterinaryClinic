@@ -1,0 +1,6 @@
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.UpdateAppointmentType;
+using MediatR;
+
+namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Commands.UpdateAppointmentType;
+
+public record UpdateAppointmentTypeCommand(UpdateAppointmentTypeRequest UpdateAppointmentTypeRequest) : IRequest<UpdateAppointmentTypeResponse>;
