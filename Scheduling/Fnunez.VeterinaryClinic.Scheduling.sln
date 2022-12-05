@@ -3,6 +3,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{09140932-924E-4A1B-9EDF-ECBAF93310AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{0FC789BA-D387-4A30-B900-9DFA2534DD78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Scheduling.Domain", "src\Core\Fnunez.VeterinaryClinic.Scheduling.Domain\Fnunez.VeterinaryClinic.Scheduling.Domain.csproj", "{9E18C9EF-1700-41FA-85D1-892F9A3E0B13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Scheduling.Application", "src\Core\Fnunez.VeterinaryClinic.Scheduling.Application\Fnunez.VeterinaryClinic.Scheduling.Application.csproj", "{90E8F058-4FF2-43EA-8D61-DBD775BDB5B4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{74BA6AA4-714D-4F55-B848-F1BA5C28F66C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Scheduling.Infrastructure", "src\Infrastructure\Fnunez.VeterinaryClinic.Scheduling.Infrastructure\Fnunez.VeterinaryClinic.Scheduling.Infrastructure.csproj", "{60CA107E-332B-4C95-8136-0A22BFBD351B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{6DF9D1C4-EE5C-4278-AAB7-A9F6866FF089}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Scheduling.Api", "src\Presentation\Fnunez.VeterinaryClinic.Scheduling.Api\Fnunez.VeterinaryClinic.Scheduling.Api.csproj", "{6CB58343-B5B7-4503-8612-ECE5FED6CEF4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -10,5 +26,32 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9E18C9EF-1700-41FA-85D1-892F9A3E0B13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E18C9EF-1700-41FA-85D1-892F9A3E0B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E18C9EF-1700-41FA-85D1-892F9A3E0B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E18C9EF-1700-41FA-85D1-892F9A3E0B13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90E8F058-4FF2-43EA-8D61-DBD775BDB5B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90E8F058-4FF2-43EA-8D61-DBD775BDB5B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90E8F058-4FF2-43EA-8D61-DBD775BDB5B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90E8F058-4FF2-43EA-8D61-DBD775BDB5B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60CA107E-332B-4C95-8136-0A22BFBD351B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60CA107E-332B-4C95-8136-0A22BFBD351B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60CA107E-332B-4C95-8136-0A22BFBD351B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60CA107E-332B-4C95-8136-0A22BFBD351B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CB58343-B5B7-4503-8612-ECE5FED6CEF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CB58343-B5B7-4503-8612-ECE5FED6CEF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CB58343-B5B7-4503-8612-ECE5FED6CEF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CB58343-B5B7-4503-8612-ECE5FED6CEF4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0FC789BA-D387-4A30-B900-9DFA2534DD78} = {09140932-924E-4A1B-9EDF-ECBAF93310AB}
+		{9E18C9EF-1700-41FA-85D1-892F9A3E0B13} = {0FC789BA-D387-4A30-B900-9DFA2534DD78}
+		{90E8F058-4FF2-43EA-8D61-DBD775BDB5B4} = {0FC789BA-D387-4A30-B900-9DFA2534DD78}
+		{74BA6AA4-714D-4F55-B848-F1BA5C28F66C} = {09140932-924E-4A1B-9EDF-ECBAF93310AB}
+		{60CA107E-332B-4C95-8136-0A22BFBD351B} = {74BA6AA4-714D-4F55-B848-F1BA5C28F66C}
+		{6DF9D1C4-EE5C-4278-AAB7-A9F6866FF089} = {09140932-924E-4A1B-9EDF-ECBAF93310AB}
+		{6CB58343-B5B7-4503-8612-ECE5FED6CEF4} = {6DF9D1C4-EE5C-4278-AAB7-A9F6866FF089}
 	EndGlobalSection
 EndGlobal
