@@ -2,7 +2,6 @@ using AutoMapper;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Patient;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Patient.GetPatients;
-using Fnunez.VeterinaryClinic.Scheduling.Application.Specifications;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClientAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
