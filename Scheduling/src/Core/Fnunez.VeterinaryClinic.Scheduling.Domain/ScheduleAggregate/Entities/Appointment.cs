@@ -17,6 +17,17 @@ public class Appointment : BaseEntity<Guid>
     public DateTimeOffset? ConfirmOn { get; private set; }
     public bool IsPotentiallyConflicting { get; private set; }
 
+    public Appointment()
+    {
+        if (DateRange is null)
+            throw new ArgumentNullException(nameof(DateRange));
+
+        if (string.IsNullOrEmpty(Title))
+            throw new ArgumentException(
+                $"Required input {nameof(Title)} was empty.",
+                nameof(Title));
+    }
+
     public Appointment(
         Guid id,
         int appointmentTypeId,
@@ -27,7 +38,7 @@ public class Appointment : BaseEntity<Guid>
         Guid scheduleId,
         DateTimeOffsetRange dateRange,
         string title,
-        DateTime? confirmedOn = null)
+        DateTime? confirmOn = null)
     {
         if (id == Guid.Empty)
             throw new ArgumentException(
@@ -81,7 +92,7 @@ public class Appointment : BaseEntity<Guid>
         ScheduleId = scheduleId;
         DateRange = dateRange;
         Title = title;
-        ConfirmOn = confirmedOn;
+        ConfirmOn = confirmOn;
     }
 
     public void UpdateAppointmentType(AppointmentType appointmentType)
