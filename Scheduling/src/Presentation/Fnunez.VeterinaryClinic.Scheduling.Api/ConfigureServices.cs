@@ -1,4 +1,6 @@
+using Fnunez.VeterinaryClinic.Scheduling.Api.Filters;
 using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Contexts;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +12,10 @@ public static class ConfigureServices
 
         services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
 
-        services.AddControllers();
+        services.AddControllers(options => options.Filters.Add<ApiExceptionFilterAttribute>());
+
+        // Customise default API behaviour
+        services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
