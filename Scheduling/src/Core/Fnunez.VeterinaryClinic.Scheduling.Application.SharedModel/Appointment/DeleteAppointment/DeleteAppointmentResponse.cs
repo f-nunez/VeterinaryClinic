@@ -5,11 +5,9 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment
 
 public class DeleteAppointmentResponse : BaseResponse
 {
-    public ScheduleDto Schedule { get; set; }
+    public ScheduleDto Schedule { get; set; } = new();
 
     public DeleteAppointmentResponse(Guid correlationId) : base(correlationId)
     {
-        if (Schedule is null)
-            throw new ArgumentNullException(nameof(Schedule));
     }
 }
