@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Fnunez.VeterinaryClinic.SharedKernel.Infrastructure.EntityFrameworkCore;
 
-public abstract class BaseReadRepository<T> : EntityFrameworkCoreReadRepository<T>, IReadRepository<T> where T : class, IAggregateRoot
+public abstract class BaseReadRepository<T>
+    : EntityFrameworkCoreReadRepository<T>, IReadRepository<T> where T
+    : class, IAggregateRoot
 {
     public BaseReadRepository(DbContext dbContext) : base(dbContext)
     {

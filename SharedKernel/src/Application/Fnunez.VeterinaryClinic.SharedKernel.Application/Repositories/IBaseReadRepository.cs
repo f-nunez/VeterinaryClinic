@@ -13,7 +13,9 @@ public interface IBaseReadRepository<T> where T : class
     /// A task that represents the asynchronous operation.
     /// The task result contains the <typeparamref name="T" />, or <see langword="null"/>.
     /// </returns>
-    Task<T?> GetByIdAsync<TId>(TId id, CancellationToken cancellationToken = default) where TId : notnull;
+    Task<T?> GetByIdAsync<TId>(
+        TId id,
+        CancellationToken cancellationToken = default) where TId : notnull;
 
     /// <summary>
     /// Returns the first element of a sequence, or a default value if the sequence contains no elements.
@@ -24,7 +26,9 @@ public interface IBaseReadRepository<T> where T : class
     /// A task that represents the asynchronous operation.
     /// The task result contains the <typeparamref name="T" />, or <see langword="null"/>.
     /// </returns>
-    Task<T?> FirstOrDefaultAsync(ISpecification<T> specification, CancellationToken cancellationToken = default);
+    Task<T?> FirstOrDefaultAsync(
+        ISpecification<T> specification,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Returns the first element of a sequence, or a default value if the sequence contains no elements.
@@ -35,7 +39,9 @@ public interface IBaseReadRepository<T> where T : class
     /// A task that represents the asynchronous operation.
     /// The task result contains the <typeparamref name="TResult" />, or <see langword="null"/>.
     /// </returns>
-    Task<TResult?> FirstOrDefaultAsync<TResult>(ISpecification<T, TResult> specification, CancellationToken cancellationToken = default);
+    Task<TResult?> FirstOrDefaultAsync<TResult>(
+        ISpecification<T, TResult> specification,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Finds all entities of <typeparamref name="T" /> from the database.
@@ -55,7 +61,9 @@ public interface IBaseReadRepository<T> where T : class
     /// A task that represents the asynchronous operation.
     /// The task result contains a <see cref="List{T}" /> that contains elements from the input sequence.
     /// </returns>
-    Task<List<T>> ListAsync(ISpecification<T> specification, CancellationToken cancellationToken = default);
+    Task<List<T>> ListAsync(
+        ISpecification<T> specification,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Finds all entities of <typeparamref name="T" />, that matches the encapsulated query logic of the
@@ -70,7 +78,9 @@ public interface IBaseReadRepository<T> where T : class
     /// A task that represents the asynchronous operation.
     /// The task result contains a <see cref="List{TResult}" /> that contains elements from the input sequence.
     /// </returns>
-    Task<List<TResult>> ListAsync<TResult>(ISpecification<T, TResult> specification, CancellationToken cancellationToken = default);
+    Task<List<TResult>> ListAsync<TResult>(
+        ISpecification<T, TResult> specification,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Returns a number that represents how many entities satisfy the encapsulated query logic
@@ -81,7 +91,9 @@ public interface IBaseReadRepository<T> where T : class
     /// A task that represents the asynchronous operation. The task result contains the
     /// number of elements in the input sequence.
     /// </returns>
-    Task<int> CountAsync(ISpecification<T> specification, CancellationToken cancellationToken = default);
+    Task<int> CountAsync(
+        ISpecification<T> specification,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Returns the total number of records.
@@ -101,7 +113,9 @@ public interface IBaseReadRepository<T> where T : class
     /// A task that represents the asynchronous operation. The task result contains true if the 
     /// source sequence contains any elements; otherwise, false.
     /// </returns>
-    Task<bool> AnyAsync(ISpecification<T> specification, CancellationToken cancellationToken = default);
+    Task<bool> AnyAsync(
+        ISpecification<T> specification,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Returns a boolean whether any entity exists or not.
