@@ -7,6 +7,6 @@ public class GetDoctorsOrderedByFullNameSpecification : BaseSpecification<Doctor
 {
     public GetDoctorsOrderedByFullNameSpecification()
     {
-        AddOrderBy(doctor => doctor.FullName);
+        Query.OrderBy(doctor => doctor.FullName);
     }
 }
