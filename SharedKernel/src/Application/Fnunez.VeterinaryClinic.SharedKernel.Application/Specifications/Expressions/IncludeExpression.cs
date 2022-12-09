@@ -38,12 +38,18 @@ public class IncludeExpression
         Type? previousPropertyType,
         IncludeExpressionType includeExpressionType)
     {
-        _ = expression ?? throw new ArgumentNullException(nameof(expression));
-        _ = entityType ?? throw new ArgumentNullException(nameof(entityType));
-        _ = propertyType ?? throw new ArgumentNullException(nameof(propertyType));
+        if (expression is null)
+            throw new ArgumentNullException(nameof(expression));
+
+        if (entityType is null)
+            throw new ArgumentNullException(nameof(entityType));
+
+        if (propertyType is null)
+            throw new ArgumentNullException(nameof(propertyType));
 
         if (includeExpressionType == IncludeExpressionType.ThenInclude)
-            _ = previousPropertyType ?? throw new ArgumentNullException(nameof(previousPropertyType));
+            if (previousPropertyType is null)
+                throw new ArgumentNullException(nameof(previousPropertyType));
 
         Expression = expression;
         EntityType = entityType;
