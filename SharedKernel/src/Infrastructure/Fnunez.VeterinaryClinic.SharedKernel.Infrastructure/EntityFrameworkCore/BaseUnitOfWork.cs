@@ -15,7 +15,8 @@ public abstract class BaseUnitOfWork : IUnitOfWork
         _repositories = new Dictionary<Type, object>();
     }
 
-    public async Task<int> CommitAsync(CancellationToken cancellationToken = default)
+    public async Task<int> CommitAsync(
+        CancellationToken cancellationToken = default)
     {
         return await _dbContext.SaveChangesAsync(cancellationToken);
     }
