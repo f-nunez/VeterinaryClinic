@@ -1,58 +1,40 @@
 using System.Linq.Expressions;
+using Fnunez.VeterinaryClinic.SharedKernel.Application.Specifications.Builders;
+using Fnunez.VeterinaryClinic.SharedKernel.Application.Specifications.Expressions;
 
 namespace Fnunez.VeterinaryClinic.SharedKernel.Application.Specifications;
 
-public class BaseSpecification<T, TResult> : BaseSpecification<T>, ISpecification<T, TResult>
+public class BaseSpecification<T, TResult>
+    : BaseSpecification<T>, ISpecification<T, TResult>
 {
+    public new virtual ISpecificationBuilder<T, TResult> Query { get; }
     /// <inheritdoc/>
-    public Expression<Func<T, TResult>>? Selector { get; set; }
+    public Expression<Func<T, TResult>>? Selector { get; internal set; }
+
+    protected BaseSpecification()
+    {
+        Query = new SpecificationBuilder<T, TResult>(this);
+    }
 }
 
 public class BaseSpecification<T> : ISpecification<T>
 {
-    public bool AsNoTracking { get; private set; }
-    public Expression<Func<T, bool>>? Criteria { get; private set; }
-    public List<Expression<Func<T, object>>> Includes { get; private set; }
-    public bool IsPagingEnabled { get; private set; }
-    public Expression<Func<T, object>>? OrderBy { get; private set; }
-    public Expression<Func<T, object>>? OrderByDescending { get; private set; }
-    public int Skip { get; private set; }
-    public int Take { get; private set; }
+    public bool AsNoTracking { get; internal set; }
+    public IList<IncludeExpression> IncludeExpressions { get; internal set; }
+    public IList<OrderExpression<T>> OrderExpressions { get; internal set; }
+    public virtual ISpecificationBuilder<T> Query { get; }
+    public IList<SearchExpression<T>> SearchExpressions { get; internal set; }
+    public int? Skip { get; internal set; }
+    public int? Take { get; internal set; }
+    public IList<WhereExpression<T>> WhereExpressions { get; internal set; }
 
-    public BaseSpecification()
-    {
-        Includes = new List<Expression<Func<T, object>>>();
-    }
 
-    protected void AddAsNoTracking()
+    protected BaseSpecification()
     {
-        AsNoTracking = true;
-    }
-
-    protected void AddCriteria(Expression<Func<T, bool>> expression)
-    {
-        Criteria = expression;
-    }
-
-    protected void AddInclude(Expression<Func<T, object>> expression)
-    {
-        Includes.Add(expression);
-    }
-
-    protected void AddOrderBy(Expression<Func<T, object>> expression)
-    {
-        OrderBy = expression;
-    }
-
-    protected void AddOrderByDescending(Expression<Func<T, object>> expression)
-    {
-        OrderByDescending = expression;
-    }
-
-    protected void ApplyPaging(int skip, int take)
-    {
-        Skip = skip;
-        Take = take;
-        IsPagingEnabled = true;
+        IncludeExpressions = new List<IncludeExpression>();
+        OrderExpressions = new List<OrderExpression<T>>();
+        Query = new SpecificationBuilder<T>(this);
+        SearchExpressions = new List<SearchExpression<T>>();
+        WhereExpressions = new List<WhereExpression<T>>();
     }
 }
