@@ -32,4 +32,31 @@ public static class IncludableBuilderExtensions
         return new IncludableSpecificationBuilder<TEntity, TProperty>(
             previousBuilder.Specification);
     }
+
+    /// <summary>
+    /// Specify an include expression.
+    /// This information is utilized to build ThenInclude function in the query, which ORM tools like Entity Framework use
+    /// to include related chained entities (via navigation properties) in the query result.
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    /// <typeparam name="TProperty"></typeparam>
+    /// <param name="previousBuilder"></param>
+    /// <param name="thenIncludeExpression"></param>
+    public static IIncludableSpecificationBuilder<TEntity, TProperty> ThenInclude<TEntity, TPreviousProperty, TProperty>(
+        this IIncludableSpecificationBuilder<TEntity, IEnumerable<TPreviousProperty>> previousBuilder,
+        Expression<Func<TPreviousProperty, TProperty>> thenIncludeExpression)
+        where TEntity : class
+    {
+        var expression = new IncludeExpression(
+            thenIncludeExpression,
+            typeof(TEntity),
+            typeof(TProperty),
+            typeof(IEnumerable<TPreviousProperty>)
+        );
+
+        previousBuilder.Specification.IncludeExpressions.Add(expression);
+
+        return new IncludableSpecificationBuilder<TEntity, TProperty>(
+            previousBuilder.Specification);
+    }
 }
