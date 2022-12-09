@@ -7,6 +7,6 @@ public class RoomsOrderedByNameSpecification : BaseSpecification<Room>
 {
     public RoomsOrderedByNameSpecification()
     {
-        AddOrderBy(room => room.Name);
+        Query.OrderBy(room => room.Name);
     }
 }

@@ -7,6 +7,6 @@ public class ClientsOrderedByFullNameSpecification : BaseSpecification<Client>
 {
     public ClientsOrderedByFullNameSpecification()
     {
-        AddOrderBy(client => client.FullName);
+        Query.OrderBy(client => client.FullName);
     }
 }

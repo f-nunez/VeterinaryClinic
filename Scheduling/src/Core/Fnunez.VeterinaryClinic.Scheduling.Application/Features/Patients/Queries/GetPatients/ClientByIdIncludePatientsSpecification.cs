@@ -7,7 +7,7 @@ public class ClientByIdIncludePatientsSpecification : BaseSpecification<Client>
 {
     public ClientByIdIncludePatientsSpecification(int clientId)
     {
-        AddCriteria(client => client.Id == clientId);
-        AddInclude(client => client.Patients);
+        Query.Where(client => client.Id == clientId);
+        Query.Include(client => client.Patients);
     }
 }
