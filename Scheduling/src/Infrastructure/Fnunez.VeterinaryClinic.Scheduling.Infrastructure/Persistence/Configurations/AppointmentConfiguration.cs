@@ -8,6 +8,11 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
 {
     public void Configure(EntityTypeBuilder<Appointment> builder)
     {
+        builder.HasKey(a => a.Id);
+
+        builder.Property(a => a.Id)
+            .ValueGeneratedNever();
+
         builder.OwnsOne(a => a.DateRange, a =>
         {
             a.Property(d => d.StartOn)
