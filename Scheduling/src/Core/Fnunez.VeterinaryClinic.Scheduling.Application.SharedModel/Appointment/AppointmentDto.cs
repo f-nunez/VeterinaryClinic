@@ -20,7 +20,6 @@ public class AppointmentDto
     public string Title { get; set; } = string.Empty;
     public DateTimeOffset StartOn { get; set; }
     public DateTimeOffset EndOn { get; set; }
-    public AppointmentTypeDto AppointmentType { get; set; } = new();
 
     public AppointmentDto ShallowCopy()
     {
