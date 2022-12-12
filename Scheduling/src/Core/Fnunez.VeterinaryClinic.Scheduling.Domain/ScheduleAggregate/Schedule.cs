@@ -10,12 +10,10 @@ public class Schedule : BaseEntity<Guid>, IAggregateRoot
     private IList<Appointment> _appointments = new List<Appointment>();
     public IReadOnlyList<Appointment> Appointments => _appointments.AsReadOnly();
     public int ClinicId { get; private set; }
-    public DateTimeOffsetRange DateRange { get; private set; }
+    public DateTimeOffsetRange DateRange { get; private set; } = null!;
 
     public Schedule()
     {
-        if (DateRange is null)
-            throw new ArgumentNullException(nameof(DateRange));
     }
 
     public Schedule(
