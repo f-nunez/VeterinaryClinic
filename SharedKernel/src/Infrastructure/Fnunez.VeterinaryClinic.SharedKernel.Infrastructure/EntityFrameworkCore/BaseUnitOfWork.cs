@@ -7,11 +7,13 @@ public abstract class BaseUnitOfWork : IUnitOfWork
 {
     private bool _disposed;
     private readonly DbContext _dbContext;
+    private Dictionary<Type, object> _readRepositories;
     private Dictionary<Type, object> _repositories;
 
     public BaseUnitOfWork(DbContext dbContext)
     {
         _dbContext = dbContext;
+        _readRepositories = new Dictionary<Type, object>();
         _repositories = new Dictionary<Type, object>();
     }
 
@@ -30,10 +32,10 @@ public abstract class BaseUnitOfWork : IUnitOfWork
     IReadRepository<T> IUnitOfWork.ReadRepository<T>()
     {
         Type entityType = typeof(T);
-        if (!_repositories.ContainsKey(entityType))
-            _repositories[entityType] = new ReadRepository<T>(_dbContext);
+        if (!_readRepositories.ContainsKey(entityType))
+            _readRepositories[entityType] = new ReadRepository<T>(_dbContext);
 
-        return (IReadRepository<T>)_repositories[entityType];
+        return (IReadRepository<T>)_readRepositories[entityType];
     }
 
     IRepository<T> IUnitOfWork.Repository<T>()
@@ -59,6 +61,9 @@ public abstract class BaseUnitOfWork : IUnitOfWork
     {
         if (!_disposed && disposing)
         {
+            if (_readRepositories != null)
+                _readRepositories.Clear();
+
             if (_repositories != null)
                 _repositories.Clear();
 
