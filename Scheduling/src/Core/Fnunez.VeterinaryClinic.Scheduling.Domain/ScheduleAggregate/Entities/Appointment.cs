@@ -1,5 +1,9 @@
 using Fnunez.VeterinaryClinic.Scheduling.Domain.ScheduleAggregate.ValueObjects;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.AppointmentTypeAggregate;
+using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClientAggregate;
+using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClientAggregate.Entities;
+using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.DoctorAggregate;
+using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.RoomAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Domain.ScheduleAggregate.Entities;
@@ -12,20 +16,20 @@ public class Appointment : BaseEntity<Guid>
     public int PatientId { get; private set; }
     public int RoomId { get; private set; }
     public Guid ScheduleId { get; private set; }
-    public DateTimeOffsetRange DateRange { get; private set; }
+    public DateTimeOffsetRange DateRange { get; private set; } = null!;
     public string Title { get; private set; }
     public DateTimeOffset? ConfirmOn { get; private set; }
     public bool IsPotentiallyConflicting { get; private set; }
 
+    public AppointmentType AppointmentType { get; set; } = null!;
+    public Client Client { get; private set; } = null!;
+    public Doctor Doctor { get; set; } = null!;
+    public Patient Patient { get; private set; } = null!;
+    public Room Room  { get; set; } = null!;
+
     public Appointment()
     {
-        if (DateRange is null)
-            throw new ArgumentNullException(nameof(DateRange));
-
-        if (string.IsNullOrEmpty(Title))
-            throw new ArgumentException(
-                $"Required input {nameof(Title)} was empty.",
-                nameof(Title));
+        Title = string.Empty;
     }
 
     public Appointment(
