@@ -27,5 +27,25 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         builder.Property(a => a.Title)
             .HasMaxLength(200)
             .IsRequired();
+
+        builder.HasOne(a => a.AppointmentType)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasOne(a => a.Client)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasOne(a => a.Doctor)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasOne(a => a.Patient)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasOne(a => a.Room)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }
