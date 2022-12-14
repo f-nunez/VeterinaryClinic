@@ -7,12 +7,12 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Doctors.Queries.GetDoctors;
 
-public class GetDoctorsQueryHanlder : IRequestHandler<GetDoctorsQuery, GetDoctorsResponse>
+public class GetDoctorsQueryHandler : IRequestHandler<GetDoctorsQuery, GetDoctorsResponse>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
-    public GetDoctorsQueryHanlder(IMapper mapper, IUnitOfWork unitOfWork)
+    public GetDoctorsQueryHandler(IMapper mapper, IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
