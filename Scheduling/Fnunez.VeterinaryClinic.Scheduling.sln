@@ -21,6 +21,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Sch
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel", "src\Core\Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel\Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.csproj", "{2B6DFFE5-6F7E-4A45-84CD-EDBF3286B7A7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BlazorClient", "BlazorClient", "{3F8048C4-7CDE-4C0F-81D7-9AF341FE9AFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client", "src\Presentation\BlazorClient\Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client\Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.csproj", "{FE344430-1B49-441E-B154-CB8E44E37705}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Server", "src\Presentation\BlazorClient\Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Server\Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Server.csproj", "{A8FF6C07-2C19-4842-8839-D0E48E4106E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Shared", "src\Presentation\BlazorClient\Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Shared\Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Shared.csproj", "{0D8702A0-C177-4D27-9D6F-E93ED20AB604}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +58,18 @@ Global
 		{2B6DFFE5-6F7E-4A45-84CD-EDBF3286B7A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B6DFFE5-6F7E-4A45-84CD-EDBF3286B7A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B6DFFE5-6F7E-4A45-84CD-EDBF3286B7A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE344430-1B49-441E-B154-CB8E44E37705}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE344430-1B49-441E-B154-CB8E44E37705}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE344430-1B49-441E-B154-CB8E44E37705}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE344430-1B49-441E-B154-CB8E44E37705}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8FF6C07-2C19-4842-8839-D0E48E4106E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8FF6C07-2C19-4842-8839-D0E48E4106E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8FF6C07-2C19-4842-8839-D0E48E4106E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8FF6C07-2C19-4842-8839-D0E48E4106E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D8702A0-C177-4D27-9D6F-E93ED20AB604}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D8702A0-C177-4D27-9D6F-E93ED20AB604}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D8702A0-C177-4D27-9D6F-E93ED20AB604}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D8702A0-C177-4D27-9D6F-E93ED20AB604}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0FC789BA-D387-4A30-B900-9DFA2534DD78} = {09140932-924E-4A1B-9EDF-ECBAF93310AB}
@@ -60,5 +80,9 @@ Global
 		{6DF9D1C4-EE5C-4278-AAB7-A9F6866FF089} = {09140932-924E-4A1B-9EDF-ECBAF93310AB}
 		{6CB58343-B5B7-4503-8612-ECE5FED6CEF4} = {6DF9D1C4-EE5C-4278-AAB7-A9F6866FF089}
 		{2B6DFFE5-6F7E-4A45-84CD-EDBF3286B7A7} = {0FC789BA-D387-4A30-B900-9DFA2534DD78}
+		{3F8048C4-7CDE-4C0F-81D7-9AF341FE9AFB} = {6DF9D1C4-EE5C-4278-AAB7-A9F6866FF089}
+		{FE344430-1B49-441E-B154-CB8E44E37705} = {3F8048C4-7CDE-4C0F-81D7-9AF341FE9AFB}
+		{A8FF6C07-2C19-4842-8839-D0E48E4106E7} = {3F8048C4-7CDE-4C0F-81D7-9AF341FE9AFB}
+		{0D8702A0-C177-4D27-9D6F-E93ED20AB604} = {3F8048C4-7CDE-4C0F-81D7-9AF341FE9AFB}
 	EndGlobalSection
 EndGlobal
