@@ -1,17 +1,48 @@
-﻿@inherits LayoutComponentBase
+@inherits Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.MainLayoutComponent
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<RadzenDialog></RadzenDialog>
+<RadzenNotification></RadzenNotification>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+<RadzenHeader>
+    <ChildContent>
+        <div class="row justify-content-start align-items-center">
+            <div class="col-md-6 d-flex align-items-center">
+                <RadzenSidebarToggle Click="@SidebarToggleClick"></RadzenSidebarToggle>
+                <RadzenLabel Text="Scheduling"></RadzenLabel>
+            </div>
+
+            <div class="col-md-6 text-lg-right"></div>
         </div>
+    </ChildContent>
+</RadzenHeader>
 
-        <article class="content px-4">
+<RadzenBody @ref="RadzenBody">
+    <childContent>
+        <RadzenContentContainer Name="main">
             @Body
-        </article>
-    </main>
-</div>
+        </RadzenContentContainer>
+    </childContent>
+</RadzenBody>
+
+<RadzenSidebar @ref="RadzenSidebar">
+    <ChildContent>
+        <RadzenPanelMenu>
+            <ChildContent>
+                <RadzenPanelMenuItem Icon="home" Path="home" Text="Home"></RadzenPanelMenuItem>
+                <RadzenPanelMenuItem Icon="event" Path="appointments" Text="Appointments"></RadzenPanelMenuItem>
+                <RadzenPanelMenuItem Icon="widgets" Path="appointmenttypes" Text="Appointment Types"></RadzenPanelMenuItem>
+                <RadzenPanelMenuItem Icon="people_alt" Path="clients" Text="Clients"></RadzenPanelMenuItem>
+                <RadzenPanelMenuItem Icon="face" Path="doctors" Text="Doctors"></RadzenPanelMenuItem>
+                <RadzenPanelMenuItem Icon="pets" Path="patients" Text="Patients"></RadzenPanelMenuItem>
+                <RadzenPanelMenuItem Icon="meeting_room" Path="rooms" Text="Rooms"></RadzenPanelMenuItem>
+                <RadzenPanelMenuItem Icon="calendar_month" Path="schedules" Text="Schedules"></RadzenPanelMenuItem>
+            </ChildContent>
+        </RadzenPanelMenu>
+    </ChildContent>
+</RadzenSidebar>
+
+<RadzenFooter>
+    <ChildContent>
+        <RadzenLabel Text="Veterinary Clinic"></RadzenLabel>
+    </ChildContent>
+</RadzenFooter>
