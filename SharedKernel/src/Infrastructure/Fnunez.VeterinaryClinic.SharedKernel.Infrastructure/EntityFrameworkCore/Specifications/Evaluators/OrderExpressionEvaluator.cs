@@ -1,6 +1,5 @@
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Specifications;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Specifications.Enums;
-using Fnunez.VeterinaryClinic.SharedKernel.Application.Specifications.Expressions;
 using Fnunez.VeterinaryClinic.SharedKernel.Infrastructure.EntityFrameworkCore.Specifications.Exceptions;
 
 namespace Fnunez.VeterinaryClinic.SharedKernel.Infrastructure.EntityFrameworkCore.Specifications.Evaluators;
@@ -25,13 +24,13 @@ public static class OrderExpressionEvaluator
         IQueryable<R> query,
         ISpecification<R> specification) where R : class
     {
-        int ascAndDescOrderExpressionCount = specification.OrderExpressions
+        int orderExpressionCount = specification.OrderExpressions
             .Count(x =>
-                x.OrderExpressionType == OrderExpressionType.OrderBy
-                ||
-                x.OrderExpressionType == OrderExpressionType.OrderByDescending);
+                x.OrderExpressionType == OrderExpressionType.OrderBy ||
+                x.OrderExpressionType == OrderExpressionType.OrderByDescending
+            );
 
-        bool hasMoreThanOneOrderExpression = ascAndDescOrderExpressionCount > 1;
+        bool hasMoreThanOneOrderExpression = orderExpressionCount > 1;
 
         if (hasMoreThanOneOrderExpression)
             throw new DuplicatedOrderExpressionException();
@@ -44,43 +43,35 @@ public static class OrderExpressionEvaluator
         IOrderedQueryable<R>? orderedQuery = null;
 
         foreach (var orderExpression in specification.OrderExpressions)
-            orderedQuery = GetOrderedQueryByOrderType(query, orderExpression);
-
-        return orderedQuery;
-    }
-
-    private static IOrderedQueryable<R>? GetOrderedQueryByOrderType<R>(
-        IQueryable<R> query,
-        OrderExpression<R> orderExpression) where R : class
-    {
-        IOrderedQueryable<R>? orderedQuery = null;
-        switch (orderExpression.OrderExpressionType)
         {
-            case OrderExpressionType.OrderBy:
-                orderedQuery = query.OrderBy(orderExpression.KeySelector);
-                break;
+            switch (orderExpression.OrderExpressionType)
+            {
+                case OrderExpressionType.OrderBy:
+                    orderedQuery = query.OrderBy(orderExpression.KeySelector);
+                    break;
 
-            case OrderExpressionType.OrderByDescending:
-                orderedQuery = query.OrderByDescending(orderExpression.KeySelector);
-                break;
+                case OrderExpressionType.OrderByDescending:
+                    orderedQuery = query.OrderByDescending(orderExpression.KeySelector);
+                    break;
 
-            case OrderExpressionType.ThenBy:
-                if (orderedQuery is null)
-                    throw new ArgumentNullException(nameof(orderedQuery));
+                case OrderExpressionType.ThenBy:
+                    if (orderedQuery is null)
+                        throw new ArgumentNullException(nameof(orderedQuery));
 
-                orderedQuery = orderedQuery.ThenBy(orderExpression.KeySelector);
-                break;
+                    orderedQuery = orderedQuery.ThenBy(orderExpression.KeySelector);
+                    break;
 
-            case OrderExpressionType.ThenByDescending:
-                if (orderedQuery is null)
-                    throw new ArgumentNullException(nameof(orderedQuery));
+                case OrderExpressionType.ThenByDescending:
+                    if (orderedQuery is null)
+                        throw new ArgumentNullException(nameof(orderedQuery));
 
-                orderedQuery = orderedQuery.ThenByDescending(orderExpression.KeySelector);
-                break;
+                    orderedQuery = orderedQuery.ThenByDescending(orderExpression.KeySelector);
+                    break;
 
-            default:
-                throw new NotFoundOrderExpressionTypeException(
-                    orderExpression.OrderExpressionType);
+                default:
+                    throw new NotFoundOrderExpressionTypeException(
+                        orderExpression.OrderExpressionType);
+            }
         }
 
         return orderedQuery;
