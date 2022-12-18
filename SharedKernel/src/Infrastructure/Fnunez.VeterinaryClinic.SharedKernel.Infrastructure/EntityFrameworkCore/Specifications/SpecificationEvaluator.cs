@@ -28,12 +28,6 @@ public class SpecificationEvaluator<T> where T : class
         if (specification.AsNoTracking)
             query = query.AsNoTracking();
 
-        if (specification.Skip != null && specification.Skip > 0)
-            query = query.Skip(specification.Skip.Value);
-
-        if (specification.Take != null && specification.Take > 0)
-            query = query.Take(specification.Take.Value);
-
         if (specification.IncludeExpressions.Any())
             query = IncludeExpressionEvaluator
                 .ComputeIncludeExpressions(query, specification);
@@ -49,6 +43,12 @@ public class SpecificationEvaluator<T> where T : class
         if (specification.SearchExpressions.Any())
             query = SearchExpressionEvaluator
                 .ComputeSearchExpressions(query, specification);
+
+        if (specification.Skip != null && specification.Skip > 0)
+            query = query.Skip(specification.Skip.Value);
+
+        if (specification.Take != null && specification.Take > 0)
+            query = query.Take(specification.Take.Value);
 
         return query;
     }
