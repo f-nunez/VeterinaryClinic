@@ -133,7 +133,7 @@ public static class SpecificationBuilderExtensions
     /// <param name="skip">number of elements to skip</param>
     public static ISpecificationBuilder<T> Skip<T>(
         this ISpecificationBuilder<T> specificationBuilder,
-        int skip)
+        int? skip)
     {
         specificationBuilder.Specification.Skip = skip;
 
@@ -147,7 +147,7 @@ public static class SpecificationBuilderExtensions
     /// <param name="take">number of elements to take</param>
     public static ISpecificationBuilder<T> Take<T>(
         this ISpecificationBuilder<T> specificationBuilder,
-        int take)
+        int? take)
     {
         specificationBuilder.Specification.Take = take;
 
