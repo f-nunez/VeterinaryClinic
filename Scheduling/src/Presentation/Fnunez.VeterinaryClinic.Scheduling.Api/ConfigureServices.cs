@@ -6,8 +6,16 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddWebServices(this IServiceCollection services)
+    public static IServiceCollection AddWebServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("CorsPolicy", policy =>
+            {
+                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins(configuration["BlazorClientUrl"]!);
+            });
+        });
+
         services.AddHttpContextAccessor();
 
         services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
@@ -35,6 +43,8 @@ public static class ConfigureServices
         }
 
         app.UseHttpsRedirection();
+
+        app.UseCors("CorsPolicy");
 
         app.UseAuthorization();
 
