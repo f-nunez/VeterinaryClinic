@@ -1,0 +1,27 @@
+@inherits Radzen.FormComponent<string>
+@if (Visible)
+{
+    <div class="@GetCssClass()">
+        <input
+            @attributes="Attributes"
+            @onchange="@OnChange"
+            autocomplete="@(AutoComplete ? "on" : "off")"
+            class="rz-textbox"
+            disabled="@Disabled"
+            id="@GetId()"
+            placeholder="@Placeholder"
+            maxlength="@MaxLength"
+            name="@Name"
+            readonly="@ReadOnly"
+            style="@Style"
+            tabindex="@(Disabled ? "-1" : $"{TabIndex}")"
+            value="@Value" />
+        
+        @if (!string.IsNullOrEmpty(Icon))
+        {
+            <button @onclick="@OnClick">
+                <RadzenIcon Icon="@Icon"></RadzenIcon>
+            </button>    
+        }
+    </div>
+}
