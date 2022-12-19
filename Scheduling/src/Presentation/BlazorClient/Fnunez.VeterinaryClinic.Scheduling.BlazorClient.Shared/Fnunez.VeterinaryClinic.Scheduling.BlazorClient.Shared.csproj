@@ -9,4 +9,8 @@
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel\Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.csproj" />
+  </ItemGroup>
 </Project>
