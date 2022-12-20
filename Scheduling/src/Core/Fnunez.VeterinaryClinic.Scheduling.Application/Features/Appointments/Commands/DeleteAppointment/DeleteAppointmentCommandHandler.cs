@@ -9,7 +9,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Commands.DeleteAppointment;
 
-public class DeleteAppointmentCommandHandler : IRequestHandler<DeleteAppointmentCommand, DeleteAppointmentResponse>
+public class DeleteAppointmentCommandHandler
+    : IRequestHandler<DeleteAppointmentCommand, DeleteAppointmentResponse>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
@@ -32,7 +33,8 @@ public class DeleteAppointmentCommandHandler : IRequestHandler<DeleteAppointment
         var specification = new ScheduleByIdIncludeAppointmentsSpecification(
             request.ScheduleId);
 
-        var schedule = await _unitOfWork.Repository<Schedule>()
+        var schedule = await _unitOfWork
+            .Repository<Schedule>()
             .FirstOrDefaultAsync(specification, cancellationToken);
 
         if (schedule is null)
@@ -49,7 +51,9 @@ public class DeleteAppointmentCommandHandler : IRequestHandler<DeleteAppointment
 
         schedule.RemoveAppointment(appointmentToDelete);
 
-        await _unitOfWork.Repository<Schedule>().UpdateAsync(schedule);
+        await _unitOfWork
+            .Repository<Schedule>()
+            .UpdateAsync(schedule);
 
         await _unitOfWork.CommitAsync();
 
