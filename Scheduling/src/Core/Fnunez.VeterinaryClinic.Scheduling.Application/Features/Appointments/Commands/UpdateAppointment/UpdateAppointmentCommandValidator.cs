@@ -2,7 +2,8 @@ using FluentValidation;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Commands.UpdateAppointment;
 
-public class UpdateAppointmentCommandValidator : AbstractValidator<UpdateAppointmentCommand>
+public class UpdateAppointmentCommandValidator
+    : AbstractValidator<UpdateAppointmentCommand>
 {
     public UpdateAppointmentCommandValidator()
     {
