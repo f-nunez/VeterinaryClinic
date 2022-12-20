@@ -12,7 +12,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Commands.UpdateAppointment;
 
-public class UpdateAppointmentCommandHandler : IRequestHandler<UpdateAppointmentCommand, UpdateAppointmentResponse>
+public class UpdateAppointmentCommandHandler
+    : IRequestHandler<UpdateAppointmentCommand, UpdateAppointmentResponse>
 {
     private readonly ILogger<UpdateAppointmentCommandHandler> _logger;
     private readonly IMapper _mapper;
@@ -48,7 +49,8 @@ public class UpdateAppointmentCommandHandler : IRequestHandler<UpdateAppointment
         appointmentToUpdate.UpdateStartOn(request.StartOn);
         appointmentToUpdate.UpdateTitle(request.Title);
 
-        await _unitOfWork.Repository<Schedule>()
+        await _unitOfWork
+            .Repository<Schedule>()
             .UpdateAsync(schedule, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
@@ -100,7 +102,8 @@ public class UpdateAppointmentCommandHandler : IRequestHandler<UpdateAppointment
         var specification = new ScheduleByIdIncludeAppointmentsSpecification(
             request.ScheduleId);
 
-        var schedule = await _unitOfWork.Repository<Schedule>()
+        var schedule = await _unitOfWork
+            .Repository<Schedule>()
             .FirstOrDefaultAsync(specification, cancellationToken);
 
         if (schedule is null)
