@@ -69,3 +69,10 @@
 .loading-progress-text:after {
   content: var(--blazor-load-percentage-text, "Loading");
 }
+
+/* Fix for buged thead element on datagrid when menu is shown and the grid is overlapping by small resolutions */
+.rz-grid-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+}
