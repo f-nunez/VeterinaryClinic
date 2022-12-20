@@ -10,7 +10,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointments;
 
-public class GetAppointmentsQueryHandler : IRequestHandler<GetAppointmentsQuery, GetAppointmentsResponse>
+public class GetAppointmentsQueryHandler
+    : IRequestHandler<GetAppointmentsQuery, GetAppointmentsResponse>
 {
     private readonly ILogger<GetAppointmentsQueryHandler> _logger;
     private readonly IMapper _mapper;
@@ -36,7 +37,8 @@ public class GetAppointmentsQueryHandler : IRequestHandler<GetAppointmentsQuery,
         var specification = new ScheduleByIdIncludeAppointmentsThenIncludeClientAndPatientSpecification(
             request.ScheduleId);
 
-        var schedule = await _unitOfWork.ReadRepository<Schedule>()
+        var schedule = await _unitOfWork
+            .ReadRepository<Schedule>()
             .FirstOrDefaultAsync(specification, cancellationToken);
 
         if (schedule is null)
