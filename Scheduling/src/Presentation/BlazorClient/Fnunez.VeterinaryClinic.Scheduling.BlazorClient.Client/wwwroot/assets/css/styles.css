@@ -76,3 +76,13 @@
   top: 0;
   z-index: 0;
 }
+
+/* DataGrid's filter menu */
+.datagrid-filter-menu {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.datagrid-filter-menu button {
+  margin-left: .5rem;
+}
