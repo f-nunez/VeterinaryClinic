@@ -9,7 +9,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointmentById;
 
-public class GetAppointmentByIdQueryHandler : IRequestHandler<GetAppointmentByIdQuery, GetAppointmentByIdResponse>
+public class GetAppointmentByIdQueryHandler
+    : IRequestHandler<GetAppointmentByIdQuery, GetAppointmentByIdResponse>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
@@ -32,7 +33,8 @@ public class GetAppointmentByIdQueryHandler : IRequestHandler<GetAppointmentById
         var specification = new ScheduleByIdIncludeAppointmentsThenIncludeClientAndPatientSpecification(
             request.ScheduleId);
 
-        var schedule = await _unitOfWork.ReadRepository<Schedule>()
+        var schedule = await _unitOfWork
+            .ReadRepository<Schedule>()
             .FirstOrDefaultAsync(specification, cancellationToken);
 
         if (schedule is null)
