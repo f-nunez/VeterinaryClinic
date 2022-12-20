@@ -12,7 +12,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Commands.CreateAppointment;
 
-public class CreateAppointmentCommandHandler : IRequestHandler<CreateAppointmentCommand, CreateAppointmentResponse>
+public class CreateAppointmentCommandHandler
+    : IRequestHandler<CreateAppointmentCommand, CreateAppointmentResponse>
 {
     private readonly ILogger<CreateAppointmentCommandHandler> _logger;
     private readonly IMapper _mapper;
@@ -46,7 +47,8 @@ public class CreateAppointmentCommandHandler : IRequestHandler<CreateAppointment
 
         schedule.AddAppointment(newAppointment);
 
-        await _unitOfWork.Repository<Schedule>()
+        await _unitOfWork
+            .Repository<Schedule>()
             .UpdateAsync(schedule, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
@@ -82,7 +84,8 @@ public class CreateAppointmentCommandHandler : IRequestHandler<CreateAppointment
         var specification = new ScheduleByIdIncludeAppointmentsSpecification(
             scheduleId);
 
-        var schedule = await _unitOfWork.Repository<Schedule>()
+        var schedule = await _unitOfWork
+            .Repository<Schedule>()
             .FirstOrDefaultAsync(specification, cancellationToken);
 
         if (schedule is null)
