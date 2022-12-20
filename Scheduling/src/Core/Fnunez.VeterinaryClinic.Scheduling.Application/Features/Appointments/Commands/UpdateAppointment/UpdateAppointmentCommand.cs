@@ -3,4 +3,5 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Commands.UpdateAppointment;
 
-public record UpdateAppointmentCommand(UpdateAppointmentRequest UpdateAppointmentRequest) : IRequest<UpdateAppointmentResponse>;
+public record UpdateAppointmentCommand(UpdateAppointmentRequest UpdateAppointmentRequest)
+    : IRequest<UpdateAppointmentResponse>;
