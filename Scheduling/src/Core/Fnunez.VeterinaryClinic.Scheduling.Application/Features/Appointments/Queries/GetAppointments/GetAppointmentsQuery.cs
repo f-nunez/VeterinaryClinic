@@ -3,4 +3,5 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointments;
 
-public record GetAppointmentsQuery(GetAppointmentsRequest GetAppointmentsRequest) : IRequest<GetAppointmentsResponse>;
+public record GetAppointmentsQuery(GetAppointmentsRequest GetAppointmentsRequest)
+    : IRequest<GetAppointmentsResponse>;
