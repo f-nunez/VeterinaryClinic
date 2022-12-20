@@ -2,7 +2,8 @@ using FluentValidation;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Commands.DeleteAppointment;
 
-public class DeleteAppointmentCommandValidator : AbstractValidator<DeleteAppointmentCommand>
+public class DeleteAppointmentCommandValidator
+    : AbstractValidator<DeleteAppointmentCommand>
 {
     public DeleteAppointmentCommandValidator()
     {
