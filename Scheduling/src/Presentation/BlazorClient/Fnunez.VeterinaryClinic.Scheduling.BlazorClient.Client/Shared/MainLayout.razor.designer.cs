@@ -20,9 +20,15 @@ public partial class MainLayoutComponent : LayoutComponentBase
 
     protected RadzenSidebar RadzenSidebar;
 
+    protected bool IsBodyExpanded = false;
+
+    protected bool IsSidebarExpanded = true;
+
     protected async Task SidebarToggleClick(dynamic args)
     {
         await InvokeAsync(() => { RadzenSidebar.Toggle(); });
         await InvokeAsync(() => { RadzenBody.Toggle(); });
+        IsSidebarExpanded = !IsSidebarExpanded;
+        IsBodyExpanded = !IsBodyExpanded;
     }
 }

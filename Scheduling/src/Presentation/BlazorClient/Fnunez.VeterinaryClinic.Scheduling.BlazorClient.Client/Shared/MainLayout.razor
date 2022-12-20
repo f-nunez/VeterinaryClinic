@@ -3,46 +3,48 @@
 <RadzenDialog></RadzenDialog>
 <RadzenNotification></RadzenNotification>
 
-<RadzenHeader>
-    <ChildContent>
-        <div class="row justify-content-start align-items-center">
-            <div class="col-md-6 d-flex align-items-center">
-                <RadzenSidebarToggle Click="@SidebarToggleClick"></RadzenSidebarToggle>
-                <RadzenLabel Text="Scheduling"></RadzenLabel>
+<RadzenLayout>
+    <RadzenHeader>
+        <ChildContent>
+            <div class="row justify-content-start align-items-center">
+                <div class="col-5 d-flex align-items-center">
+                    <RadzenSidebarToggle Click="@SidebarToggleClick"></RadzenSidebarToggle>
+                    <RadzenLabel Text="Scheduling" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"></RadzenLabel>
+                </div>
+
+                <div class="col-7 d-flex align-items-center justify-content-end"></div>
             </div>
+        </ChildContent>
+    </RadzenHeader>
 
-            <div class="col-md-6 text-lg-right"></div>
-        </div>
-    </ChildContent>
-</RadzenHeader>
+    <RadzenBody @ref="RadzenBody" @bind-Expanded="@IsBodyExpanded">
+        <childContent>
+            <RadzenContentContainer Name="main">
+                @Body
+            </RadzenContentContainer>
+        </childContent>
+    </RadzenBody>
 
-<RadzenBody @ref="RadzenBody">
-    <childContent>
-        <RadzenContentContainer Name="main">
-            @Body
-        </RadzenContentContainer>
-    </childContent>
-</RadzenBody>
+    <RadzenSidebar @ref="RadzenSidebar" style="display: flex; flex-direction: column">
+        <ChildContent>
+            <RadzenPanelMenu>
+                <ChildContent>
+                    <RadzenPanelMenuItem Icon="home" Path="home" Text="Home"></RadzenPanelMenuItem>
+                    <RadzenPanelMenuItem Icon="event" Path="appointments" Text="Appointments"></RadzenPanelMenuItem>
+                    <RadzenPanelMenuItem Icon="widgets" Path="appointmenttypes" Text="Appointment Types"></RadzenPanelMenuItem>
+                    <RadzenPanelMenuItem Icon="people_alt" Path="clients" Text="Clients"></RadzenPanelMenuItem>
+                    <RadzenPanelMenuItem Icon="face" Path="doctors" Text="Doctors"></RadzenPanelMenuItem>
+                    <RadzenPanelMenuItem Icon="pets" Path="patients" Text="Patients"></RadzenPanelMenuItem>
+                    <RadzenPanelMenuItem Icon="meeting_room" Path="rooms" Text="Rooms"></RadzenPanelMenuItem>
+                    <RadzenPanelMenuItem Icon="calendar_month" Path="schedules" Text="Schedules"></RadzenPanelMenuItem>
+                </ChildContent>
+            </RadzenPanelMenu>
+        </ChildContent>
+    </RadzenSidebar>
 
-<RadzenSidebar @ref="RadzenSidebar">
-    <ChildContent>
-        <RadzenPanelMenu>
-            <ChildContent>
-                <RadzenPanelMenuItem Icon="home" Path="home" Text="Home"></RadzenPanelMenuItem>
-                <RadzenPanelMenuItem Icon="event" Path="appointments" Text="Appointments"></RadzenPanelMenuItem>
-                <RadzenPanelMenuItem Icon="widgets" Path="appointmenttypes" Text="Appointment Types"></RadzenPanelMenuItem>
-                <RadzenPanelMenuItem Icon="people_alt" Path="clients" Text="Clients"></RadzenPanelMenuItem>
-                <RadzenPanelMenuItem Icon="face" Path="doctors" Text="Doctors"></RadzenPanelMenuItem>
-                <RadzenPanelMenuItem Icon="pets" Path="patients" Text="Patients"></RadzenPanelMenuItem>
-                <RadzenPanelMenuItem Icon="meeting_room" Path="rooms" Text="Rooms"></RadzenPanelMenuItem>
-                <RadzenPanelMenuItem Icon="calendar_month" Path="schedules" Text="Schedules"></RadzenPanelMenuItem>
-            </ChildContent>
-        </RadzenPanelMenu>
-    </ChildContent>
-</RadzenSidebar>
-
-<RadzenFooter>
-    <ChildContent>
-        <RadzenLabel Text="Veterinary Clinic"></RadzenLabel>
-    </ChildContent>
-</RadzenFooter>
+    <RadzenFooter>
+        <ChildContent>
+            <RadzenLabel Text="Veterinary Clinic"></RadzenLabel>
+        </ChildContent>
+    </RadzenFooter>
+</RadzenLayout>
