@@ -8,7 +8,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Patients.Queries.GetPatients;
 
-public class GetPatientsQueryHandler : IRequestHandler<GetPatientsQuery, GetPatientsResponse>
+public class GetPatientsQueryHandler
+    : IRequestHandler<GetPatientsQuery, GetPatientsResponse>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
@@ -25,9 +26,11 @@ public class GetPatientsQueryHandler : IRequestHandler<GetPatientsQuery, GetPati
     {
         GetPatientsRequest request = query.GetPatientsRequest;
         var response = new GetPatientsResponse(request.CorrelationId);
-        var specification = new ClientByIdIncludePatientsSpecification(request.ClientId);
+        var specification = new ClientByIdIncludePatientsSpecification(
+            request.ClientId);
 
-        var client = await _unitOfWork.ReadRepository<Client>()
+        var client = await _unitOfWork
+            .ReadRepository<Client>()
             .FirstOrDefaultAsync(specification, cancellationToken);
 
         if (client is null)
