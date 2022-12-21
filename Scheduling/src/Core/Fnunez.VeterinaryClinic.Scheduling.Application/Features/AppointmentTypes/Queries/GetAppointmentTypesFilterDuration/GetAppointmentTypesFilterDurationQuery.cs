@@ -1,0 +1,7 @@
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypesFilterDuration;
+using MediatR;
+
+namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.AppointmentTypes.Queries.GetAppointmentTypesFilterDuration;
+
+public record GetAppointmentTypesFilterDurationQuery(GetAppointmentTypesFilterDurationRequest GetAppointmentTypesFilterDurationRequest)
+    : IRequest<GetAppointmentTypesFilterDurationResponse>;
