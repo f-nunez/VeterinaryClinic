@@ -4,4 +4,8 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Doctor.GetD
 
 public class GetDoctorsRequest : BaseRequest
 {
+    public DataGridRequest DataGridRequest { get; set; } = new();
+    public string FullNameFilterValue { get; set; } = null!;
+    public string IdFilterValue { get; set; } = null!;
+    public string SearchFilterValue { get; set; } = null!;
 }
