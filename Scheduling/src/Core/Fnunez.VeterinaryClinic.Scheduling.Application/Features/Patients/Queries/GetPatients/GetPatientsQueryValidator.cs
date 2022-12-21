@@ -3,7 +3,8 @@ using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Patients.Queries.G
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clients.Queries.GetClients;
 
-public class GetPatientsQueryValidator : AbstractValidator<GetPatientsQuery>
+public class GetPatientsQueryValidator
+    : AbstractValidator<GetPatientsQuery>
 {
     public GetPatientsQueryValidator()
     {
