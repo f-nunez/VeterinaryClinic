@@ -1,4 +1,5 @@
 using AutoMapper;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Common;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Room;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Room.GetRooms;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.RoomAggregate;
@@ -7,7 +8,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Rooms.Queries.GetRooms;
 
-public class GetRoomsQueryHandler : IRequestHandler<GetRoomsQuery, GetRoomsResponse>
+public class GetRoomsQueryHandler
+    : IRequestHandler<GetRoomsQuery, GetRoomsResponse>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
@@ -24,16 +26,31 @@ public class GetRoomsQueryHandler : IRequestHandler<GetRoomsQuery, GetRoomsRespo
     {
         GetRoomsRequest request = query.GetRoomsRequest;
         var response = new GetRoomsResponse(request.CorrelationId);
-        var specification = new RoomsOrderedByNameSpecification();
 
-        var rooms = await _unitOfWork.ReadRepository<Room>()
+        var specification = new RoomsSpecification(
+            request);
+
+        var countSpecification = new RoomsCountSpecification(
+            request);
+
+        var rooms = await _unitOfWork
+            .ReadRepository<Room>()
             .ListAsync(specification, cancellationToken);
+
+        int count = await _unitOfWork
+            .ReadRepository<Room>()
+            .CountAsync(countSpecification, cancellationToken);
 
         if (rooms is null)
             return response;
 
-        response.Rooms = _mapper.Map<List<RoomDto>>(rooms);
-        response.Count = response.Rooms.Count;
+        var roomDtos = _mapper
+            .Map<List<RoomDto>>(rooms);
+
+        response.DataGridResponse = new DataGridResponse<RoomDto>(
+            roomDtos,
+            count
+        );
 
         return response;
     }
