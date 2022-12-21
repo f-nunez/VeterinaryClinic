@@ -1,0 +1,7 @@
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Client.GetClientsFilterSalutation;
+using MediatR;
+
+namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clients.Queries.GetClientsFilterSalutation;
+
+public record GetClientsFilterSalutationQuery(GetClientsFilterSalutationRequest GetClientsFilterSalutationRequest)
+    : IRequest<GetClientsFilterSalutationResponse>;
