@@ -2,7 +2,8 @@ using FluentValidation;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Schedules.Queries.GetScheduleById;
 
-public class GetScheduleByIdQueryValidator : AbstractValidator<GetScheduleByIdQuery>
+public class GetScheduleByIdQueryValidator
+    : AbstractValidator<GetScheduleByIdQuery>
 {
     public GetScheduleByIdQueryValidator()
     {
