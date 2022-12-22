@@ -14,5 +14,9 @@ public class ScheduleConfiguration : IEntityTypeConfiguration<Schedule>
             .ValueGeneratedNever();
 
         builder.Ignore(s => s.DateRange);
+
+        builder.HasOne(s => s.Clinic)
+            .WithMany()
+            .HasForeignKey(s => s.ClinicId);
     }
 }

@@ -1,6 +1,7 @@
 using Fnunez.VeterinaryClinic.Scheduling.Domain.ScheduleAggregate.Entities;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.ScheduleAggregate.Exceptions;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.ScheduleAggregate.ValueObjects;
+using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClinicAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Domain.ScheduleAggregate;
@@ -11,6 +12,8 @@ public class Schedule : BaseEntity<Guid>, IAggregateRoot
     public IReadOnlyList<Appointment> Appointments => _appointments.AsReadOnly();
     public int ClinicId { get; private set; }
     public DateTimeOffsetRange DateRange { get; private set; } = null!;
+
+    public Clinic Clinic { get; set; } = null!;
 
     public Schedule()
     {
