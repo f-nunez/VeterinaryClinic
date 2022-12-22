@@ -6,7 +6,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Schedules.Commands.DeleteSchedule;
 
-public class DeleteScheduleCommandHandler : IRequestHandler<DeleteScheduleCommand, DeleteScheduleResponse>
+public class DeleteScheduleCommandHandler
+    : IRequestHandler<DeleteScheduleCommand, DeleteScheduleResponse>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
@@ -27,7 +28,8 @@ public class DeleteScheduleCommandHandler : IRequestHandler<DeleteScheduleComman
         var response = new DeleteScheduleResponse(request.CorrelationId);
         var scheduleToDelete = _mapper.Map<Schedule>(request);
 
-        await _unitOfWork.Repository<Schedule>()
+        await _unitOfWork
+            .Repository<Schedule>()
             .DeleteAsync(scheduleToDelete, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
