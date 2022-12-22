@@ -3,4 +3,5 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Schedules.Queries.GetSchedules;
 
-public record GetSchedulesQuery(GetSchedulesRequest GetSchedulesRequest) : IRequest<GetSchedulesResponse>;
+public record GetSchedulesQuery(GetSchedulesRequest GetSchedulesRequest)
+    : IRequest<GetSchedulesResponse>;
