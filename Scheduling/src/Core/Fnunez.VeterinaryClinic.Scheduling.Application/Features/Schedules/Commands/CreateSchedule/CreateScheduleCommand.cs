@@ -3,4 +3,5 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Schedules.Commands.CreateSchedule;
 
-public record CreateScheduleCommand(CreateScheduleRequest CreateScheduleRequest) : IRequest<CreateScheduleResponse>;
+public record CreateScheduleCommand(CreateScheduleRequest CreateScheduleRequest)
+    : IRequest<CreateScheduleResponse>;
