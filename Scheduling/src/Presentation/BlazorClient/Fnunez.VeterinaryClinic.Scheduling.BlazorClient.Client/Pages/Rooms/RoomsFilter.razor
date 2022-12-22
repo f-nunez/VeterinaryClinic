@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="row mb-3">
+        <RadzenText
+            TagName="TagName.H3"
+            Text="Id"
+            TextStyle="TextStyle.Subtitle2">
+        </RadzenText>
+
+        <RadzenAutoComplete
+            @bind-Value=@IdFilterValue
+            @oninput=@OnChangeId
+            Data=@RoomIds
+            FilterDelay="500"
+            LoadData=@LoadDataRoomsFilterId
+            Placeholder="Select an id..."
+            Style="width: 100%;">
+        </RadzenAutoComplete>
+    </div>
+
+    <div class="row mb-4">
+        <RadzenText
+            TagName="TagName.H3"
+            Text="Name"
+            TextStyle="TextStyle.Subtitle2">
+        </RadzenText>
+
+        <RadzenAutoComplete
+            @bind-Value=@NameFilterValue
+            @oninput=@OnChangeName
+            Data=@RoomNames
+            FilterDelay="500"
+            LoadData=@LoadDataRoomsFilterName
+            Placeholder="Select a name..."
+            Style="width: 100%;">
+        </RadzenAutoComplete>
+    </div>
+
+    <div class="row">
+        <div class="col-6 pl-0 pr-2">
+            <RadzenButton
+                ButtonStyle="ButtonStyle.Secondary"
+                class="w-100"
+                Click=@OnClickButtonFilter
+                Shade="Shade.Lighter"
+                Text="FILTER">
+            </RadzenButton>
+        </div>
+
+        <div class="col-6 pl-2 pr-0">
+            <RadzenButton
+                ButtonStyle="ButtonStyle.Light"
+                class="w-100"
+                Click=@OnClickButtonClean
+                Shade="Shade.Lighter"
+                Text="CLEAN">
+            </RadzenButton>
+        </div>
+    </div>
+</div>
