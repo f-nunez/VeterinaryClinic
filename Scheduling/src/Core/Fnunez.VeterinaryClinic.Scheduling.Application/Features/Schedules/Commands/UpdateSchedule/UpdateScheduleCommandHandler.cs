@@ -7,7 +7,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Schedules.Commands.UpdateSchedule;
 
-public class UpdateScheduleCommandHandler : IRequestHandler<UpdateScheduleCommand, UpdateScheduleResponse>
+public class UpdateScheduleCommandHandler
+    : IRequestHandler<UpdateScheduleCommand, UpdateScheduleResponse>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
@@ -28,7 +29,8 @@ public class UpdateScheduleCommandHandler : IRequestHandler<UpdateScheduleComman
         var response = new UpdateScheduleResponse(request.CorrelationId);
         var scheduleToUpdate = _mapper.Map<Schedule>(request);
 
-        await _unitOfWork.Repository<Schedule>()
+        await _unitOfWork
+            .Repository<Schedule>()
             .UpdateAsync(scheduleToUpdate, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
