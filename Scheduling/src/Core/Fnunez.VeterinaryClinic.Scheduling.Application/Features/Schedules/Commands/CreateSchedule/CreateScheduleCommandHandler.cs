@@ -8,7 +8,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Schedules.Commands.CreateSchedule;
 
-public class CreateScheduleCommandHandler : IRequestHandler<CreateScheduleCommand, CreateScheduleResponse>
+public class CreateScheduleCommandHandler
+    : IRequestHandler<CreateScheduleCommand, CreateScheduleResponse>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
@@ -29,7 +30,8 @@ public class CreateScheduleCommandHandler : IRequestHandler<CreateScheduleComman
         var response = new CreateScheduleResponse(request.CorrelationId);
         var newSchedule = MapNewSchedule(request);
 
-        await _unitOfWork.Repository<Schedule>()
+        await _unitOfWork
+            .Repository<Schedule>()
             .AddAsync(newSchedule, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
