@@ -32,16 +32,13 @@ public class GetAppointmentTypesQueryHandler
         var specification = new AppointmentTypesSpecification(
             request);
 
-        var countSpecification = new AppointmentTypesCountSpecification(
-            request);
-
         var appointmentTypes = await _unitOfWork
             .ReadRepository<AppointmentType>()
             .ListAsync(specification, cancellationToken);
 
         int count = await _unitOfWork
             .ReadRepository<AppointmentType>()
-            .CountAsync(countSpecification, cancellationToken);
+            .CountAsync(specification, cancellationToken);
 
         if (appointmentTypes is null)
             return response;
