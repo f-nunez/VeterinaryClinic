@@ -27,7 +27,6 @@ public class GetClinicsQueryHandler
         GetClinicsRequest request = query.GetClinicsRequest;
         var response = new GetClinicsResponse(request.CorrelationId);
         var specification = new ClinicsSpecification(request);
-        var countSpecification = new ClinicsCountSpecification(request);
 
         var clinics = await _unitOfWork
             .ReadRepository<Clinic>()
@@ -35,7 +34,7 @@ public class GetClinicsQueryHandler
 
         int count = await _unitOfWork
             .ReadRepository<Clinic>()
-            .CountAsync(countSpecification, cancellationToken);
+            .CountAsync(specification, cancellationToken);
 
         if (clinics is null)
             return response;
