@@ -7,6 +7,19 @@ namespace Fnunez.VeterinaryClinic.SharedKernel.Infrastructure.EntityFrameworkCor
 public class SpecificationEvaluator<T, TResult>
     : SpecificationEvaluator<T> where T : class
 {
+    public static IQueryable<TResult> GetCountQuery(
+        IQueryable<T> query,
+        ISpecification<T, TResult> specification)
+    {
+        if (specification.Selector is null)
+            throw new MissedSelectorException();
+
+        query = SpecificationEvaluator<T>
+            .GetCountQuery(query, specification as ISpecification<T>);
+
+        return query.Select(specification.Selector);
+    }
+
     public static IQueryable<TResult> GetQuery(
         IQueryable<T> query,
         ISpecification<T, TResult> specification)
@@ -23,24 +36,48 @@ public class SpecificationEvaluator<T, TResult>
 
 public class SpecificationEvaluator<T> where T : class
 {
-    public static IQueryable<T> GetQuery(IQueryable<T> query, ISpecification<T> specification)
+    public static IQueryable<T> GetCountQuery(
+        IQueryable<T> query,
+        ISpecification<T> specification)
     {
         if (specification.AsNoTracking)
             query = query.AsNoTracking();
 
-        if (specification.IncludeExpressions.Any())
+        if (specification.IncludeExpressions.Count > 0)
             query = IncludeExpressionEvaluator
                 .ComputeIncludeExpressions(query, specification);
 
-        if (specification.WhereExpressions.Any())
+        if (specification.WhereExpressions.Count > 0)
             query = WhereExpressionEvaluator
                 .ComputeWhereExpressions(query, specification);
 
-        if (specification.OrderExpressions.Any())
+        if (specification.SearchExpressions.Count > 0)
+            query = SearchExpressionEvaluator
+                .ComputeSearchExpressions(query, specification);
+
+        return query;
+    }
+
+    public static IQueryable<T> GetQuery(
+        IQueryable<T> query,
+        ISpecification<T> specification)
+    {
+        if (specification.AsNoTracking)
+            query = query.AsNoTracking();
+
+        if (specification.IncludeExpressions.Count > 0)
+            query = IncludeExpressionEvaluator
+                .ComputeIncludeExpressions(query, specification);
+
+        if (specification.WhereExpressions.Count > 0)
+            query = WhereExpressionEvaluator
+                .ComputeWhereExpressions(query, specification);
+
+        if (specification.OrderExpressions.Count > 0)
             query = OrderExpressionEvaluator
                 .ComputeOrderExpressions(query, specification);
 
-        if (specification.SearchExpressions.Any())
+        if (specification.SearchExpressions.Count > 0)
             query = SearchExpressionEvaluator
                 .ComputeSearchExpressions(query, specification);
 

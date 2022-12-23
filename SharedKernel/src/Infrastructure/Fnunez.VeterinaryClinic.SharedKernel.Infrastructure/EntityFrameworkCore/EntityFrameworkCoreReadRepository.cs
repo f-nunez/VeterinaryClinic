@@ -36,7 +36,7 @@ public abstract class EntityFrameworkCoreReadRepository<T>
         ISpecification<T> specification,
         CancellationToken cancellationToken = default)
     {
-        return await ApplySpecification(specification)
+        return await ApplyCountSpecification(specification)
             .CountAsync(cancellationToken);
     }
 
@@ -99,6 +99,20 @@ public abstract class EntityFrameworkCoreReadRepository<T>
     {
         return await ApplySpecification(specification)
             .ToListAsync(cancellationToken);
+    }
+
+    protected IQueryable<T> ApplyCountSpecification(
+        ISpecification<T> specification)
+    {
+        return SpecificationEvaluator<T>
+            .GetCountQuery(_dbContext.Set<T>().AsQueryable(), specification);
+    }
+
+    protected IQueryable<TResult> ApplyCountSpecification<TResult>(
+        ISpecification<T, TResult> specification)
+    {
+        return SpecificationEvaluator<T, TResult>
+            .GetCountQuery(_dbContext.Set<T>().AsQueryable(), specification);
     }
 
     protected IQueryable<T> ApplySpecification(ISpecification<T> specification)
