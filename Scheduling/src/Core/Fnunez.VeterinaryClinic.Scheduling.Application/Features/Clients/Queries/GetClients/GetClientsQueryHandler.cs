@@ -27,7 +27,6 @@ public class GetClientsQueryHandler
         GetClientsRequest request = query.GetClientsRequest;
         var response = new GetClientsResponse(request.CorrelationId);
         var specification = new ClientsSpecification(request);
-        var countSpecification = new ClientsCountSpecification(request);
 
         var clients = await _unitOfWork
             .ReadRepository<Client>()
@@ -35,7 +34,7 @@ public class GetClientsQueryHandler
 
         int count = await _unitOfWork
             .ReadRepository<Client>()
-            .CountAsync(countSpecification, cancellationToken);
+            .CountAsync(specification, cancellationToken);
 
         if (clients is null)
             return response;
