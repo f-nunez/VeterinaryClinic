@@ -15,6 +15,7 @@ builder.Services.AddScoped<HttpService>();
 // register http services
 builder.Services.AddScoped<AppointmentTypeService>();
 builder.Services.AddScoped<ClientService>();
+builder.Services.AddScoped<ClinicService>();
 builder.Services.AddScoped<DoctorService>();
 builder.Services.AddScoped<RoomService>();
 
