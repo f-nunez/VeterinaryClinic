@@ -20,7 +20,6 @@ public partial class ClientsFilter : ComponentBase
     protected string IdFilterValue { get; set; }
     protected string PreferredNameFilterValue { get; set; }
     protected string SalutationFilterValue { get; set; }
-    protected string SearchFilterValue { get; set; }
     [Parameter]
     public ClientsFilterValues ClientsFilterValues { get; set; }
 

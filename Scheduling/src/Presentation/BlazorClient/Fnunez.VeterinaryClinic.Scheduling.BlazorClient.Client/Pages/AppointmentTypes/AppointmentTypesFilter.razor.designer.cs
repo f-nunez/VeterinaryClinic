@@ -19,7 +19,6 @@ public partial class AppointmentTypesFilter : ComponentBase
     protected string DurationFilterValue { get; set; }
     protected string IdFilterValue { get; set; }
     protected string NameFilterValue { get; set; }
-    protected string SearchFilterValue { get; set; }
 
     [Parameter]
     public AppointmentTypesFilterValues AppointmentTypesFilterValues { get; set; }

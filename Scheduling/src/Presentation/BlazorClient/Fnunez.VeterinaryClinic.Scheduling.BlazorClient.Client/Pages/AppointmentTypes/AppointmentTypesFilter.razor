@@ -9,11 +9,11 @@
         <RadzenAutoComplete
             @bind-Value=@IdFilterValue
             @oninput=@OnChangeId
+            Class="w-100"
             Data=@AppointmentTypeIds
             FilterDelay="500"
             LoadData=@LoadDataAppointmentTypesFilterId
-            Placeholder="Select an id..."
-            Style="width: 100%;">
+            Placeholder="Select an id...">
         </RadzenAutoComplete>
     </div>
 
@@ -27,11 +27,11 @@
         <RadzenAutoComplete
             @bind-Value=@NameFilterValue
             @oninput=@OnChangeName
+            Class="w-100"
             Data=@AppointmentTypeNames
             FilterDelay="500"
             LoadData=@LoadDataAppointmentTypesFilterName
-            Placeholder="Select a name..."
-            Style="width: 100%;">
+            Placeholder="Select a name...">
         </RadzenAutoComplete>
     </div>
 
@@ -45,11 +45,11 @@
         <RadzenAutoComplete
             @bind-Value=@CodeFilterValue
             @oninput=@OnChangeCode
+            Class="w-100"
             Data=@AppointmentTypeCodes
             FilterDelay="500"
             LoadData=@LoadDataAppointmentTypesFilterCode
-            Placeholder="Select a code..."
-            Style="width: 100%;">
+            Placeholder="Select a code...">
         </RadzenAutoComplete>
     </div>
 
@@ -63,11 +63,11 @@
         <RadzenAutoComplete
             @bind-Value=@DurationFilterValue
             @oninput=@OnChangeDuration
+            Class="w-100"
             Data=@AppointmentTypeDurations
             FilterDelay="500"
             LoadData=@LoadDataAppointmentTypesFilterDuration
-            Placeholder="Select a duration..."
-            Style="width: 100%;">
+            Placeholder="Select a duration...">
         </RadzenAutoComplete>
     </div>
 
@@ -75,7 +75,7 @@
         <div class="col-6 pl-0 pr-2">
             <RadzenButton
                 ButtonStyle="ButtonStyle.Secondary"
-                class="w-100"
+                Class="w-100"
                 Click=@OnClickButtonFilter
                 Shade="Shade.Lighter"
                 Text="FILTER">
@@ -85,7 +85,7 @@
         <div class="col-6 pl-2 pr-0">
             <RadzenButton
                 ButtonStyle="ButtonStyle.Light"
-                class="w-100"
+                Class="w-100"
                 Click=@OnClickButtonClean
                 Shade="Shade.Lighter"
                 Text="CLEAN">

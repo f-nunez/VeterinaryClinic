@@ -9,11 +9,11 @@
         <RadzenAutoComplete
             @bind-Value=@IdFilterValue
             @oninput=@OnChangeId
+            Class="w-100"
             Data=@RoomIds
             FilterDelay="500"
             LoadData=@LoadDataRoomsFilterId
-            Placeholder="Select an id..."
-            Style="width: 100%;">
+            Placeholder="Select an id...">
         </RadzenAutoComplete>
     </div>
 
@@ -27,11 +27,11 @@
         <RadzenAutoComplete
             @bind-Value=@NameFilterValue
             @oninput=@OnChangeName
+            Class="w-100"
             Data=@RoomNames
             FilterDelay="500"
             LoadData=@LoadDataRoomsFilterName
-            Placeholder="Select a name..."
-            Style="width: 100%;">
+            Placeholder="Select a name...">
         </RadzenAutoComplete>
     </div>
 
@@ -39,7 +39,7 @@
         <div class="col-6 pl-0 pr-2">
             <RadzenButton
                 ButtonStyle="ButtonStyle.Secondary"
-                class="w-100"
+                Class="w-100"
                 Click=@OnClickButtonFilter
                 Shade="Shade.Lighter"
                 Text="FILTER">
@@ -49,7 +49,7 @@
         <div class="col-6 pl-2 pr-0">
             <RadzenButton
                 ButtonStyle="ButtonStyle.Light"
-                class="w-100"
+                Class="w-100"
                 Click=@OnClickButtonClean
                 Shade="Shade.Lighter"
                 Text="CLEAN">

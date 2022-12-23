@@ -15,7 +15,6 @@ public partial class DoctorsFilter : ComponentBase
     protected DialogService DialogService { get; set; }
     protected string FullNameFilterValue { get; set; }
     protected string IdFilterValue { get; set; }
-    protected string SearchFilterValue { get; set; }
     [Parameter]
     public DoctorsFilterValues DoctorsFilterValues { get; set; }
 

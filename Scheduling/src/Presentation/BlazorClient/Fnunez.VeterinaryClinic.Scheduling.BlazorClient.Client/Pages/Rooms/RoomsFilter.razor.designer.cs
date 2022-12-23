@@ -14,7 +14,6 @@ public partial class RoomsFilter : ComponentBase
     protected DialogService DialogService { get; set; }
     protected string IdFilterValue { get; set; }
     protected string NameFilterValue { get; set; }
-    protected string SearchFilterValue { get; set; }
     [Parameter]
     public RoomsFilterValues RoomsFilterValues { get; set; }
 

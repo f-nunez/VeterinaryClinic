@@ -9,11 +9,11 @@
         <RadzenAutoComplete
             @bind-Value=@IdFilterValue
             @oninput=@OnChangeId
+            Class="w-100"
             Data=@ClientIds
             FilterDelay="500"
             LoadData=@LoadDataClientsFilterId
-            Placeholder="Select an id..."
-            Style="width: 100%;">
+            Placeholder="Select an id...">
         </RadzenAutoComplete>
     </div>
 
@@ -27,11 +27,11 @@
         <RadzenAutoComplete
             @bind-Value=@FullNameFilterValue
             @oninput=@OnChangeFullName
+            Class="w-100"
             Data=@ClientFullNames
             FilterDelay="500"
             LoadData=@LoadDataClientsFilterFullName
-            Placeholder="Select a full name..."
-            Style="width: 100%;">
+            Placeholder="Select a full name...">
         </RadzenAutoComplete>
     </div>
 
@@ -45,11 +45,11 @@
         <RadzenAutoComplete
             @bind-Value=@PreferredNameFilterValue
             @oninput=@OnChangePreferredName
+            Class="w-100"
             Data=@ClientPreferredNames
             FilterDelay="500"
             LoadData=@LoadDataClientsFilterPreferredName
-            Placeholder="Select a preferred name..."
-            Style="width: 100%;">
+            Placeholder="Select a preferred name...">
         </RadzenAutoComplete>
     </div>
 
@@ -63,11 +63,11 @@
         <RadzenAutoComplete
             @bind-Value=@SalutationFilterValue
             @oninput=@OnChangeSalutation
+            Class="w-100"
             Data=@ClientSalutations
             FilterDelay="500"
             LoadData=@LoadDataClientsFilterSalutation
-            Placeholder="Select a salutation..."
-            Style="width: 100%;">
+            Placeholder="Select a salutation...">
         </RadzenAutoComplete>
     </div>
 
@@ -81,11 +81,11 @@
         <RadzenAutoComplete
             @bind-Value=@EmailAddressFilterValue
             @oninput=@OnChangeEmailAddress
+            Class="w-100"
             Data=@ClientEmailAddresses
             FilterDelay="500"
             LoadData=@LoadDataClientsFilterEmailAddress
-            Placeholder="Select a email address..."
-            Style="width: 100%;">
+            Placeholder="Select a email address...">
         </RadzenAutoComplete>
     </div>
 
@@ -93,7 +93,7 @@
         <div class="col-6 pl-0 pr-2">
             <RadzenButton
                 ButtonStyle="ButtonStyle.Secondary"
-                class="w-100"
+                Class="w-100"
                 Click=@OnClickButtonFilter
                 Shade="Shade.Lighter"
                 Text="FILTER">
@@ -103,7 +103,7 @@
         <div class="col-6 pl-2 pr-0">
             <RadzenButton
                 ButtonStyle="ButtonStyle.Light"
-                class="w-100"
+                Class="w-100"
                 Click=@OnClickButtonClean
                 Shade="Shade.Lighter"
                 Text="CLEAN">
