@@ -51,7 +51,7 @@ public partial class ClientsFilter : ComponentBase
     {
         var filterValues = new ClientsFilterValues
         {
-            EmailAddressFilterValue = EmailAddressFilterValue,
+            EmailAddressFilterValue = string.Empty,
             FullNameFilterValue = string.Empty,
             IdFilterValue = string.Empty,
             PreferredNameFilterValue = string.Empty,
