@@ -30,16 +30,13 @@ public class GetRoomsQueryHandler
         var specification = new RoomsSpecification(
             request);
 
-        var countSpecification = new RoomsCountSpecification(
-            request);
-
         var rooms = await _unitOfWork
             .ReadRepository<Room>()
             .ListAsync(specification, cancellationToken);
 
         int count = await _unitOfWork
             .ReadRepository<Room>()
-            .CountAsync(countSpecification, cancellationToken);
+            .CountAsync(specification, cancellationToken);
 
         if (rooms is null)
             return response;
