@@ -13,6 +13,19 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Domain.Services;
 // Because Schedule represent a month per clinic
 public class ScheduleService//TODO: Rename to SiblingAppointmentService
 {
+    private IEnumerable<DateTime> EachMonth(
+        DateTime appointmentStartOn,
+        DateTime appointmentEndOn)
+    {
+        var monthOfStartOn = FirstDayOfMonth(appointmentStartOn);
+        var monthOfEndOn = FirstDayOfMonth(appointmentEndOn);
+
+        for (var month = monthOfStartOn;
+            month.Date <= monthOfEndOn;
+            month = month.AddMonths(1))
+            yield return month;
+    }
+
     private DateTime StartOfDay(DateTime dateTime)
     {
         return dateTime.Date;
