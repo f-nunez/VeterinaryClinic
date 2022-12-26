@@ -13,6 +13,22 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Domain.Services;
 // Because Schedule represent a month per clinic
 public class ScheduleService//TODO: Rename to SiblingAppointmentService
 {
+    private DateTimeOffset GetRelativeAppointmentEndOn(
+        DateTimeOffset scheduleEndOn,
+        DateTimeOffset appointmentEndOn)
+    {
+        if (scheduleEndOn > appointmentEndOn)
+            return appointmentEndOn;
+
+        if (scheduleEndOn == appointmentEndOn)
+            return appointmentEndOn;
+
+        if (scheduleEndOn < appointmentEndOn)
+            return scheduleEndOn;
+
+        throw new ArgumentException($"Not matched time {nameof(scheduleEndOn)} :({scheduleEndOn}) and {nameof(appointmentEndOn)} ({appointmentEndOn}).");
+    }
+
     private IEnumerable<DateTime> EachMonth(
         DateTime appointmentStartOn,
         DateTime appointmentEndOn)
