@@ -13,6 +13,22 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Domain.Services;
 // Because Schedule represent a month per clinic
 public class ScheduleService//TODO: Rename to SiblingAppointmentService
 {
+    private Schedule MapNewSchedule(
+        int clinicId,
+        DateTime appointmentStartOn)
+    {
+        var startOn = FirstDayOfMonth(appointmentStartOn);
+        var lastDayOfMonth = LastDayOfMonth(startOn);
+        var endOn = EndOfDay(lastDayOfMonth);
+        var dateRange = new DateTimeOffsetRange(startOn, endOn);
+
+        return new Schedule(
+            Guid.NewGuid(),
+            clinicId,
+            dateRange
+        );
+    }
+
     private Appointment MapNewAppointment(
         Guid appointerId,
         Appointment appointment,
