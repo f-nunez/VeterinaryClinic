@@ -20,12 +20,13 @@ public class Appointment : BaseEntity<Guid>
     public string Title { get; private set; }
     public DateTimeOffset? ConfirmOn { get; private set; }
     public bool IsPotentiallyConflicting { get; private set; }
+    public Guid? RelativeAppointmentId { get; private set; }
 
     public AppointmentType AppointmentType { get; set; } = null!;
     public Client Client { get; private set; } = null!;
     public Doctor Doctor { get; set; } = null!;
     public Patient Patient { get; private set; } = null!;
-    public Room Room  { get; set; } = null!;
+    public Room Room { get; set; } = null!;
 
     public Appointment()
     {
@@ -42,7 +43,7 @@ public class Appointment : BaseEntity<Guid>
         Guid scheduleId,
         DateTimeOffsetRange dateRange,
         string title,
-        DateTime? confirmOn = null)
+        DateTimeOffset? confirmOn = null)
     {
         if (id == Guid.Empty)
             throw new ArgumentException(
@@ -99,6 +100,11 @@ public class Appointment : BaseEntity<Guid>
         ConfirmOn = confirmOn;
     }
 
+    public void AssignRelativeAppointment(Guid relativeAppointmentId)
+    {
+        RelativeAppointmentId = relativeAppointmentId;
+    }
+
     public void UpdateAppointmentType(AppointmentType appointmentType)
     {
         if (appointmentType is null)
@@ -116,6 +122,11 @@ public class Appointment : BaseEntity<Guid>
             return;
 
         ConfirmOn = confirmOn;
+    }
+
+    public void UpdateDateRange(DateTimeOffsetRange dateRange)
+    {
+        DateRange = dateRange;
     }
 
     public void UpdateDoctor(int doctorId)
