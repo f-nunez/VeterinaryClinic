@@ -13,6 +13,47 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Domain.Services;
 // Because Schedule represent a month per clinic
 public class ScheduleService//TODO: Rename to SiblingAppointmentService
 {
+    // Create Schedules that do not exists in previous/current/next months
+    // for Appointment's date range
+    public (RelativeAppointment RelativeAppointmentToAdd, List<Schedule> SchedulesToAdd)
+    GetScheduleBasedOnNewRelativeAppointment(
+        int clinicId,
+        Appointment appointmentToSchedule)
+    {
+        DateTimeOffset startOn = appointmentToSchedule.DateRange.StartOn;
+        DateTimeOffset endOn = appointmentToSchedule.DateRange.EndOn;
+
+        if (startOn >= endOn)
+            throw new AppointmentDateRangeException(startOn, endOn);
+
+        IEnumerable<DateTime> expectedMonths = EachMonth(
+            startOn.UtcDateTime,
+            endOn.UtcDateTime
+        );
+
+        var relativeAppointment = new RelativeAppointment(Guid.NewGuid());
+        List<Schedule> newSchedules = new();
+
+        foreach (var expectedMonth in expectedMonths)
+        {
+            var newSchedule = MapNewSchedule(clinicId, expectedMonth);
+            var newAppointment = MapNewAppointment(relativeAppointment.Id, appointmentToSchedule, newSchedule);
+            newSchedule.AddAppointment(newAppointment);
+            newSchedules.Add(newSchedule);
+
+            var relativeAppointmentItem = new RelativeAppointmentItem(
+                Guid.NewGuid(),
+                relativeAppointment.Id,
+                newAppointment.Id,
+                newSchedule.Id
+            );
+
+            relativeAppointment.AddSiblingAppointment(relativeAppointmentItem);
+        }
+
+        return (relativeAppointment, newSchedules);
+    }
+
     private Schedule MapNewSchedule(
         int clinicId,
         DateTime appointmentStartOn)
