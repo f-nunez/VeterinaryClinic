@@ -54,6 +54,75 @@ public class ScheduleService//TODO: Rename to SiblingAppointmentService
         return (relativeAppointment, newSchedules);
     }
 
+    // Create/Update Schedules to cover appointment's date range in previous/current/next months
+    public (RelativeAppointment RelativeAppointmentToAdd, List<Schedule> SchedulesToCreate, List<Schedule> SchedulesToUpdate)
+    GetScheduleBasedOnNewRelativeAppointment(
+        int clinicId,
+        List<Schedule> currentSchedules,
+        Appointment appointmentToSchedule)
+    {
+        DateTimeOffset startOn = appointmentToSchedule.DateRange.StartOn;
+        DateTimeOffset endOn = appointmentToSchedule.DateRange.EndOn;
+
+        if (startOn >= endOn)
+            throw new AppointmentDateRangeException(startOn, endOn);
+
+        currentSchedules = currentSchedules
+            .OrderBy(s => s.DateRange.StartOn).ToList();
+
+        var expectedgMonths = EachMonth(startOn.UtcDateTime, endOn.UtcDateTime)
+            .ToList();
+
+        int expectedgMonthsCounter = expectedgMonths.Count();
+
+        DateTime expectedMonthStartOn;
+        DateTime expectedMonthEndOn;
+        var relativeAppointment = new RelativeAppointment(Guid.NewGuid());
+        List<Schedule> newSchedules = new();
+
+        for (int i = 0; i < expectedgMonthsCounter; i++)
+        {
+            expectedMonthStartOn = expectedgMonths[i];
+            expectedMonthEndOn = EndOfDay(LastDayOfMonth(expectedMonthStartOn));
+
+            Schedule? currentScheduleInExpectedMonth = currentSchedules
+                .FirstOrDefault(s => s.DateRange.StartOn == expectedgMonths[i]);
+
+            if (currentScheduleInExpectedMonth != null)
+            {
+                var newAppointment = MapNewAppointment(relativeAppointment.Id, appointmentToSchedule, currentScheduleInExpectedMonth);
+                currentScheduleInExpectedMonth.AddAppointment(newAppointment);
+
+                var relativeAppointmentItem = new RelativeAppointmentItem(
+                    Guid.NewGuid(),
+                    relativeAppointment.Id,
+                    newAppointment.Id,
+                    currentScheduleInExpectedMonth.Id
+                );
+
+                relativeAppointment.AddSiblingAppointment(relativeAppointmentItem);
+            }
+            else
+            {
+                var newSchedule = MapNewSchedule(clinicId, expectedMonthStartOn);
+                var newAppointment = MapNewAppointment(relativeAppointment.Id, appointmentToSchedule, newSchedule);
+                newSchedule.AddAppointment(newAppointment);
+                newSchedules.Add(newSchedule);
+
+                var relativeAppointmentItem = new RelativeAppointmentItem(
+                    Guid.NewGuid(),
+                    relativeAppointment.Id,
+                    newAppointment.Id,
+                    newSchedule.Id
+                );
+
+                relativeAppointment.AddSiblingAppointment(relativeAppointmentItem);
+            }
+        }
+
+        return (relativeAppointment, newSchedules, currentSchedules);
+    }
+
     private Schedule MapNewSchedule(
         int clinicId,
         DateTime appointmentStartOn)
