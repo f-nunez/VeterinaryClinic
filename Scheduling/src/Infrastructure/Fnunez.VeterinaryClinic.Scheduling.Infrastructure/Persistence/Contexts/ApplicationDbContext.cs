@@ -1,6 +1,4 @@
 using System.Reflection;
-using Fnunez.VeterinaryClinic.Scheduling.Domain.ScheduleAggregate;
-using Fnunez.VeterinaryClinic.Scheduling.Domain.ScheduleAggregate.Entities;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.AppointmentTypeAggregate;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClientAggregate;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClientAggregate.Entities;
@@ -32,7 +30,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<Doctor> Doctors => Set<Doctor>();
     public DbSet<Patient> Patients => Set<Patient>();
     public DbSet<Room> Rooms => Set<Room>();
-    public DbSet<Schedule> Schedules => Set<Schedule>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
