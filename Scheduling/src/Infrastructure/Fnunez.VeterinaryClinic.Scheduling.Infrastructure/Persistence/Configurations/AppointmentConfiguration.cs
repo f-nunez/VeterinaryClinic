@@ -1,4 +1,4 @@
-using Fnunez.VeterinaryClinic.Scheduling.Domain.ScheduleAggregate.Entities;
+using Fnunez.VeterinaryClinic.Scheduling.Domain.AppointmentAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,7 +12,15 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
 
         builder.Property(a => a.Id)
             .ValueGeneratedNever();
+        
+        builder.Property(a => a.Description)
+            .HasMaxLength(2000)
+            .IsRequired();
 
+        builder.Property(a => a.Title)
+            .HasMaxLength(200)
+            .IsRequired();
+        
         builder.OwnsOne(a => a.DateRange, a =>
         {
             a.Property(d => d.StartOn)
@@ -24,15 +32,15 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
                 .IsRequired();
         });
 
-        builder.Property(a => a.Title)
-            .HasMaxLength(200)
-            .IsRequired();
-
         builder.HasOne(a => a.AppointmentType)
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne(a => a.Client)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+        
+        builder.HasOne(a => a.Clinic)
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);
 
