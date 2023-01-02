@@ -1,5 +1,3 @@
-using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType;
-
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.CreateAppointment;
 
 public class AppointmentDto
@@ -7,16 +5,17 @@ public class AppointmentDto
     public Guid AppointmentId { get; set; }
     public int AppointmentTypeId { get; set; }
     public int ClientId { get; set; }
-    public string ClientName { get; set; } = string.Empty;
+    public string ClientFullName { get; set; } = string.Empty;
+    public int ClinicId { get; set; }
+    public string ClinicName { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public int DoctorId { get; set; }
-    public int PatientId { get; set; }
-    public bool IsAllDay { get; set; }
+    public string DoctorFullName { get; set; } = string.Empty;
     public bool IsConfirmed { get; set; }
-    public bool IsPotentiallyConflicting { get; set; }
+    public int PatientId { get; set; }
     public string PatientName { get; set; } = string.Empty;
     public int RoomId { get; set; }
-    public Guid ScheduleId { get; set; }
+    public string RoomName { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public DateTimeOffset StartOn { get; set; }
     public DateTimeOffset EndOn { get; set; }
@@ -28,6 +27,6 @@ public class AppointmentDto
 
     public override string ToString()
     {
-        return $"Id: {AppointmentId} \nRoomId: {RoomId}\nDoctorId: {DoctorId}\nClient: {ClientId} {ClientName}\nPatient: {PatientId} {PatientName}\nStart: {StartOn}\nEnd:{EndOn}";
+        return $"Id: {AppointmentId} \nRoomId: {RoomId}\nDoctorId: {DoctorId}\nClient: {ClientId}\nPatient: {PatientId}\nStart: {StartOn}\nEnd:{EndOn}";
     }
 }
