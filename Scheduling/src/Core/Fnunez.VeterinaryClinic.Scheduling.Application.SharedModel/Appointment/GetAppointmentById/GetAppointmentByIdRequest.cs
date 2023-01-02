@@ -5,5 +5,4 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment
 public class GetAppointmentByIdRequest : BaseRequest
 {
     public Guid AppointmentId { get; set; }
-    public Guid ScheduleId { get; set; }
 }
