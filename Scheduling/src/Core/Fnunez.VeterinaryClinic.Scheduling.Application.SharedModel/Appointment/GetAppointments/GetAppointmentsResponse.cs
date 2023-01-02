@@ -5,8 +5,7 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment
 
 public class GetAppointmentsResponse : BaseResponse
 {
-    public List<AppointmentDto> Appointments { get; set; } = new();
-    public int Count { get; set; }
+    public DataGridResponse<AppointmentDto>? DataGridResponse { get; set; }
 
     public GetAppointmentsResponse(Guid correlationId) : base(correlationId)
     {
