@@ -38,6 +38,6 @@ public class AppointmentType : BaseEntity<int>, IAggregateRoot
 
     public override string ToString()
     {
-        return Name;
+        return $"{nameof(Id)}: {Id}, {nameof(Name)}: {Name}, {nameof(Code)}: {Code}, {nameof(Duration)}: {Duration}";
     }
 }
