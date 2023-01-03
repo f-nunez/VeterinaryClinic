@@ -19,14 +19,18 @@ public class UpdateAppointmentCommandValidator
         RuleFor(v => v.UpdateAppointmentRequest.RoomId)
             .GreaterThan(0).WithMessage("RoomId is required.");
 
-        RuleFor(v => v.UpdateAppointmentRequest.ScheduleId)
-            .NotEmpty().WithMessage("ScheduleId is required.");
+        RuleFor(v => v.UpdateAppointmentRequest.Description)
+            .NotNull().WithMessage("Description is required.")
+            .NotEmpty().WithMessage("Description is required.");
+        
+        RuleFor(v => v.UpdateAppointmentRequest.Title)
+            .NotNull().WithMessage("Title is required.")
+            .NotEmpty().WithMessage("Title is required.");
 
         RuleFor(v => v.UpdateAppointmentRequest.StartOn)
             .NotNull().WithMessage("StartOn is required.");
 
-        RuleFor(v => v.UpdateAppointmentRequest.Title)
-            .NotNull().WithMessage("Title is required.")
-            .NotEmpty().WithMessage("Title is required.");
+        RuleFor(v => v.UpdateAppointmentRequest.EndOn)
+            .NotNull().WithMessage("StartOn is required.");
     }
 }
