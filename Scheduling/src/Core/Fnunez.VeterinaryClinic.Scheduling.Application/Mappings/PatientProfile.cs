@@ -1,4 +1,5 @@
 using AutoMapper;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterPatient;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Patient;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClientAggregate.Entities;
 
@@ -19,5 +20,7 @@ public class PatientProfile : Profile
                 dto => dto.ClientName,
                 options => options.MapFrom(src => string.Empty)
             );
+        
+        CreateMap<Patient, PatientFilterValueDto>();
     }
 }
