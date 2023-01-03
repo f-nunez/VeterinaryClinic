@@ -1,10 +1,9 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.CreateAppointment;
-using Fnunez.VeterinaryClinic.Scheduling.Application.Specifications;
-using Fnunez.VeterinaryClinic.Scheduling.Domain.ScheduleAggregate;
-using Fnunez.VeterinaryClinic.Scheduling.Domain.ScheduleAggregate.Entities;
-using Fnunez.VeterinaryClinic.Scheduling.Domain.ScheduleAggregate.ValueObjects;
+using Fnunez.VeterinaryClinic.Scheduling.Domain.AppointmentAggregate;
+using Fnunez.VeterinaryClinic.Scheduling.Domain.AppointmentAggregate.ValueObjects;
+using Fnunez.VeterinaryClinic.Scheduling.Domain.Services;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.AppointmentTypeAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
@@ -36,20 +35,28 @@ public class CreateAppointmentCommandHandler
         CreateAppointmentRequest request = command.CreateAppointmentRequest;
         var response = new CreateAppointmentResponse(request.CorrelationId);
 
-        var schedule = await GetScheduleAsync(
-            request.ScheduleId, cancellationToken);
+        var specification = new ScheduledAppointmentSpecification(request);
 
-        var appointmentType = await GetAppointmentTypeAsync(
+        var scheduledAppointment = await _unitOfWork
+            .Repository<Appointment>()
+            .FirstOrDefaultAsync(specification, cancellationToken);
+        
+        if (scheduledAppointment != null)
+            throw new ArgumentException($"An appointment with id: {scheduledAppointment.Id} is already scheduled for patient: {request.PatientId}");
+
+        AppointmentType appointmentType = await GetAppointmentTypeAsync(
             request.AppointmentTypeId, cancellationToken);
 
-        var newAppointment = MapNewAppointment(
-            request, appointmentType.Duration);
+        Appointment newAppointment = MapNewAppointment(request);
 
-        schedule.AddAppointment(newAppointment);
+        AppointmentValidatorService.ValidateDuration(
+            newAppointment,
+            appointmentType
+        );
 
         await _unitOfWork
-            .Repository<Schedule>()
-            .UpdateAsync(schedule, cancellationToken);
+            .Repository<Appointment>()
+            .AddAsync(newAppointment, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
@@ -77,44 +84,20 @@ public class CreateAppointmentCommandHandler
         return appointmentType;
     }
 
-    private async Task<Schedule> GetScheduleAsync(
-        Guid scheduleId,
-        CancellationToken cancellationToken)
+    private Appointment MapNewAppointment(CreateAppointmentRequest request)
     {
-        var specification = new ScheduleByIdIncludeAppointmentsSpecification(
-            scheduleId);
-
-        var schedule = await _unitOfWork
-            .Repository<Schedule>()
-            .FirstOrDefaultAsync(specification, cancellationToken);
-
-        if (schedule is null)
-            throw new NotFoundException(
-                nameof(schedule),
-                scheduleId
-            );
-
-        return schedule;
-    }
-
-    private Appointment MapNewAppointment(
-        CreateAppointmentRequest request,
-        int AppointmentDuration)
-    {
-        var dateRange = new DateTimeOffsetRange(
-           request.DateOfAppointment,
-           TimeSpan.FromMinutes(AppointmentDuration)
-       );
+        var dateRange = new DateTimeOffsetRange(request.StartOn, request.EndOn);
 
         var newAppointment = new Appointment(
             Guid.NewGuid(),
             request.AppointmentTypeId,
             request.ClientId,
+            request.ClinicId,
             request.DoctorId,
             request.PatientId,
             request.RoomId,
-            request.ScheduleId,
             dateRange,
+            request.Description,
             request.Title
         );
 
