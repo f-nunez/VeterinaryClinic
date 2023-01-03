@@ -9,8 +9,5 @@ public class DeleteAppointmentCommandValidator
     {
         RuleFor(v => v.DeleteAppointmentRequest.AppointmentId)
             .NotEmpty().WithMessage("AppointmentId is required.");
-
-        RuleFor(v => v.DeleteAppointmentRequest.ScheduleId)
-            .NotEmpty().WithMessage("ScheduleId is required.");
     }
 }
