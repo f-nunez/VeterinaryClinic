@@ -1,6 +1,6 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.CreateAppointment;
-using Fnunez.VeterinaryClinic.Scheduling.Domain.ScheduleAggregate.Entities;
+using Fnunez.VeterinaryClinic.Scheduling.Domain.AppointmentAggregate;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Mappings;
 
@@ -13,14 +13,29 @@ public class AppointmentProfile : Profile
                 dto => dto.AppointmentId,
                 options => options.MapFrom(src => src.Id)
             ).ForMember(
-                dto => dto.ClientName,
+                dto => dto.ClientFullName,
                 options => options.MapFrom(src => src.Client.FullName)
             ).ForMember(
-                dto => dto.IsAllDay,
-                options => options.MapFrom(src => false)
+                dto => dto.ClientId,
+                options => options.MapFrom(src => src.Client.Id)
+            ).ForMember(
+                dto => dto.ClinicId,
+                options => options.MapFrom(src => src.Clinic.Id)
+            ).ForMember(
+                dto => dto.ClinicName,
+                options => options.MapFrom(src => src.Clinic.Name)
+            ).ForMember(
+                dto => dto.DoctorFullName,
+                options => options.MapFrom(src => src.Doctor.FullName)
+            ).ForMember(
+                dto => dto.DoctorId,
+                options => options.MapFrom(src => src.Doctor.Id)
             ).ForMember(
                 dto => dto.IsConfirmed,
                 options => options.MapFrom(src => src.ConfirmOn.HasValue)
+            ).ForMember(
+                dto => dto.PatientId,
+                options => options.MapFrom(src => src.Patient.Id)
             ).ForMember(
                 dto => dto.PatientName,
                 options => options.MapFrom(src => src.Patient.Name)
