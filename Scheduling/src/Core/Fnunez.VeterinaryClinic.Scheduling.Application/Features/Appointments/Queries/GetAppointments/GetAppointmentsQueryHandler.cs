@@ -1,9 +1,9 @@
 using AutoMapper;
-using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Exceptions;
-using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointments.Specifications;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointmentDetail;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.CreateAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointments;
-using Fnunez.VeterinaryClinic.Scheduling.Domain.ScheduleAggregate;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Common;
+using Fnunez.VeterinaryClinic.Scheduling.Domain.AppointmentAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -34,27 +34,23 @@ public class GetAppointmentsQueryHandler
         GetAppointmentsRequest request = query.GetAppointmentsRequest;
         var response = new GetAppointmentsResponse(request.CorrelationId);
 
-        var specification = new ScheduleByIdIncludeAppointmentsThenIncludeClientAndPatientSpecification(
-            request.ScheduleId);
+        var specification = new AppointmentsSpecification(request);
 
-        var schedule = await _unitOfWork
-            .ReadRepository<Schedule>()
-            .FirstOrDefaultAsync(specification, cancellationToken);
+        var appointments = await _unitOfWork
+            .ReadRepository<Appointment>()
+            .ListAsync(specification, cancellationToken);
 
-        if (schedule is null)
-            throw new NotFoundException(nameof(schedule), request.ScheduleId);
+        var count = await _unitOfWork
+            .ReadRepository<Appointment>()
+            .CountAsync(specification, cancellationToken);
 
-        int conflictedAppointmentsCount = schedule.Appointments
-            .Count(a => a.IsPotentiallyConflicting);
+        if (appointments is null)
+            return response;
 
-        if (conflictedAppointmentsCount > 0)
-            _logger.LogInformation(
-                $"There are {conflictedAppointmentsCount} conflicted appointments.");
-
-        response.Appointments = _mapper
-            .Map<List<AppointmentDto>>(schedule.Appointments);
-
-        response.Count = response.Appointments.Count;
+        response.DataGridResponse = new DataGridResponse<AppointmentDto>(
+            _mapper.Map<List<AppointmentDto>>(appointments),
+            count
+        );
 
         return response;
     }
