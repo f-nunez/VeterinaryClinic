@@ -37,7 +37,7 @@ public class AppointmentsSpecification : BaseSpecification<Appointment>
         Query
             .Where(a => a.DateRange.StartOn >= request.StartOn)
             .Where(a => a.DateRange.EndOn <= request.EndOn);
-        
+
         Query.OrderBy(a => a.DateRange.StartOn);
     }
 }
