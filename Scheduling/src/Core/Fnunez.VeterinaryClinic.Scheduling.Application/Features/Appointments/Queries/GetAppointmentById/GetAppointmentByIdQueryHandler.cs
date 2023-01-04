@@ -1,9 +1,8 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Exceptions;
-using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointments.Specifications;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.CreateAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentById;
-using Fnunez.VeterinaryClinic.Scheduling.Domain.ScheduleAggregate;
+using Fnunez.VeterinaryClinic.Scheduling.Domain.AppointmentAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
@@ -30,18 +29,12 @@ public class GetAppointmentByIdQueryHandler
         GetAppointmentByIdRequest request = query.GetAppointmentByIdRequest;
         var response = new GetAppointmentByIdResponse(request.CorrelationId);
 
-        var specification = new ScheduleByIdIncludeAppointmentsThenIncludeClientAndPatientSpecification(
-            request.ScheduleId);
+        var specification = new AppointmentByIdSpecification(
+            request.AppointmentId);
 
-        var schedule = await _unitOfWork
-            .ReadRepository<Schedule>()
+        var appointment = await _unitOfWork
+            .ReadRepository<Appointment>()
             .FirstOrDefaultAsync(specification, cancellationToken);
-
-        if (schedule is null)
-            throw new NotFoundException(nameof(schedule), request.ScheduleId);
-
-        var appointment = schedule.Appointments
-            .FirstOrDefault(x => x.Id == request.AppointmentId);
 
         if (appointment is null)
             throw new NotFoundException(
