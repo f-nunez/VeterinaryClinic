@@ -9,8 +9,5 @@ public class GetAppointmentByIdQueryValidator
     {
         RuleFor(q => q.GetAppointmentByIdRequest.AppointmentId)
             .NotEmpty().WithMessage("AppointmentId is required.");
-
-        RuleFor(q => q.GetAppointmentByIdRequest.ScheduleId)
-            .NotEmpty().WithMessage("ScheduleId is required.");
     }
 }
