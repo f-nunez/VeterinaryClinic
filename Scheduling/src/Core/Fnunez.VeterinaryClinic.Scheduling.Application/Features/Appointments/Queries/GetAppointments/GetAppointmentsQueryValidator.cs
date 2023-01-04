@@ -7,7 +7,7 @@ public class GetAppointmentsQueryValidator
 {
     public GetAppointmentsQueryValidator()
     {
-        RuleFor(q => q.GetAppointmentsRequest.ScheduleId)
-            .NotEmpty().WithMessage("ScheduleId is required.");
+        RuleFor(v => v.GetAppointmentsRequest.ClientIdFilterValue)
+            .NotNull().WithMessage("ClinicId is required.");
     }
 }
