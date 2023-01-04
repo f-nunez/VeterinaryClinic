@@ -1,0 +1,7 @@
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterRoom;
+using MediatR;
+
+namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointmentsFilterRoom;
+
+public record GetAppointmentsFilterRoomQuery(GetAppointmentsFilterRoomRequest GetAppointmentsFilterRoomRequest)
+    : IRequest<GetAppointmentsFilterRoomResponse>;
