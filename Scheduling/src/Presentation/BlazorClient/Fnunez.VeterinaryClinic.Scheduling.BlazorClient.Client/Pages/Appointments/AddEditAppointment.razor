@@ -1,0 +1,269 @@
+@inherits Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Appointments.AddEditAppointmentComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using ViewModels.Appointments
+
+<RadzenTemplateForm
+    Data="@Appointment"
+    Submit=@OnSubmit
+    TItem="AppointmentItemVm">
+    <div class="row mb-3">
+        <div class="col-sm-4">
+            <div class="row mb-3">
+                <div class="col-12 mb-3">
+                    <RadzenLabel Text="Clinic"></RadzenLabel>
+
+                    <RadzenTextBox
+                        Class="w-100 d-block"
+                        Disabled="true"
+                        Value="Clinic 1">
+                    </RadzenTextBox>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenLabel Text="Patient"></RadzenLabel>
+
+                    <RadzenTextBox
+                        Class="w-100 d-block"
+                        Disabled="true"
+                        Value="@Appointment.PatientName">
+                    </RadzenTextBox>
+
+                    
+                    <div class="input-dialog-imgage-container mt-3">
+                        <RadzenImage Path=@($"{PatientBase64EncodedImageData}") />
+                    </div>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenLabel Text="Doctor"></RadzenLabel>
+
+                    <RadzenDropDownDataGrid
+                        @ref=@DoctorDropDownDataGrid
+                        @bind-Value="Appointment.DoctorId"
+                        AllowClear="true"
+                        AllowFiltering="true"
+                        AllowSorting="true"
+                        AllowVirtualization="true"
+                        Change="@(args => OnChangeDoctorFilter(args))"
+                        Class="w-100 d-block"
+                        Count=@DoctorFilterCount
+                        Data=@DoctorFilterValues
+                        FilterDelay="500"
+                        LoadData="@DoctorFilterLoadData"
+                        Name="Doctor"
+                        SearchText="Search..."
+                        TextProperty="FullName"
+                        TValue="int"
+                        ValueProperty="Id">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn
+                                Property="FullName"
+                                Sortable="true"
+                                SortOrder="SortOrder.Ascending"
+                                TextAlign="TextAlign.Left"
+                                Title="Full Name">
+                            </RadzenDropDownDataGridColumn>
+                        </Columns>
+                    </RadzenDropDownDataGrid>
+
+                    <RadzenCompareValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Doctor"
+                        Operator="CompareOperator.GreaterThan"
+                        Text="Doctor is required"
+                        Value="0">
+                    </RadzenCompareValidator>
+
+                    <div class="input-dialog-imgage-container mt-3">
+                        <RadzenImage Class="input-dialog-img" Path=@($"{DoctorBase64EncodedImageData}") />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-8">
+            <div class="row mb-3">
+                <div class="col-6 mb-3">
+                    <RadzenLabel Text="Start"></RadzenLabel>
+
+                    <RadzenDatePicker
+                        @bind-Value="@Appointment.StartOn"
+                        Class="w-100 d-block"
+                        Name="StartOn"
+                        ShowSeconds="false"
+                        ShowTime="true">
+                    </RadzenDatePicker>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="StartOn"
+                        Text="Start is required">
+                    </RadzenRequiredValidator>
+
+                    <RadzenCompareValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="StartOn"
+                        Operator="CompareOperator.LessThanEqual"
+                        Text="Start should be less or equals than End"
+                        Value=@Appointment.EndOn>
+                    </RadzenCompareValidator>
+                </div>
+
+                <div class="col-6 mb-3">
+                    <RadzenLabel Text="End"></RadzenLabel>
+
+                    <RadzenDatePicker
+                        @bind-Value="@Appointment.EndOn"
+                        Class="w-100 d-block"
+                        Name="EndOn"
+                        ShowSeconds="false"
+                        ShowTime="true">
+                    </RadzenDatePicker>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="EndOn"
+                        Text="End is required">
+                    </RadzenRequiredValidator>
+
+                    <RadzenCompareValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="EndOn"
+                        Operator="CompareOperator.GreaterThanEqual"
+                        Text="End should be greater or equals than Start"
+                        Value=@Appointment.StartOn>
+                    </RadzenCompareValidator>
+                </div>
+
+                <div class="col-6 mb-3">
+                    <RadzenLabel Text="Appointment Type"></RadzenLabel>
+
+                    <RadzenDropDownDataGrid
+                        @ref=@AppointmentTypeDropDownDataGrid
+                        @bind-Value="Appointment.AppointmentTypeId"
+                        AllowClear="true"
+                        AllowFiltering="true"
+                        AllowSorting="true"
+                        AllowVirtualization="true"
+                        Change="@(args => OnChangeAppointmentTypeFilter(args))"
+                        Class="w-100 d-block"
+                        Count=@AppointmentTypeFilterCount
+                        Data=@AppointmentTypeFilterValues
+                        FilterDelay="500"
+                        LoadData="@AppointmentTypeFilterLoadData"
+                        Name="AppointmentType"
+                        SearchText="Search..."
+                        TextProperty="Name"
+                        TValue="int"
+                        ValueProperty="Id">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn
+                                Property="Name"
+                                Sortable="true"
+                                SortOrder="SortOrder.Ascending"
+                                TextAlign="TextAlign.Left"
+                                Title="Name">
+                            </RadzenDropDownDataGridColumn>
+                        </Columns>
+                    </RadzenDropDownDataGrid>
+
+                    <RadzenCompareValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="AppointmentType"
+                        Operator="CompareOperator.GreaterThan"
+                        Text="Appointment's type is required"
+                        Value="0">
+                    </RadzenCompareValidator>
+                </div>
+
+                <div class="col-6 mb-3">
+                    <RadzenLabel Text="Room"></RadzenLabel>
+
+                    <RadzenDropDownDataGrid
+                        @ref=@RoomDropDownDataGrid
+                        @bind-Value="Appointment.RoomId"
+                        AllowClear="true"
+                        AllowFiltering="true"
+                        AllowSorting="true"
+                        AllowVirtualization="true"
+                        Change="@(args => OnChangeRoomFilter(args))"
+                        Class="w-100 d-block"
+                        Count=@RoomFilterCount
+                        Data=@RoomFilterValues
+                        FilterDelay="500"
+                        LoadData="@RoomFilterLoadData"
+                        Name="Room"
+                        SearchText="Search..."
+                        TextProperty="Name"
+                        TValue="int"
+                        ValueProperty="Id">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn
+                                Property="Name"
+                                Sortable="true"
+                                SortOrder="SortOrder.Ascending"
+                                TextAlign="TextAlign.Left"
+                                Title="Name">
+                            </RadzenDropDownDataGridColumn>
+                        </Columns>
+                    </RadzenDropDownDataGrid>
+
+                    <RadzenCompareValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Room"
+                        Operator="CompareOperator.GreaterThan"
+                        Text="Room is required"
+                        Value="0">
+                    </RadzenCompareValidator>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenLabel Text="Title"></RadzenLabel>
+
+                    <RadzenTextBox
+                        @bind-Value="@Appointment.Title"
+                        Class="w-100 d-block"
+                        Name="Title"
+                        Placeholder="Enter title here...">
+                    </RadzenTextBox>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Title"
+                        Text="Title is required">
+                    </RadzenRequiredValidator>
+                </div>
+
+                <div class="col-12">
+                    <RadzenLabel Text="Description"></RadzenLabel>
+
+                    <RadzenTextArea
+                        @bind-Value="@Appointment.Description"
+                        Class="w-100 d-block"
+                        Name="Description"
+                        Placeholder="Enter description here..."
+                        Rows="5">
+                    </RadzenTextArea>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Description"
+                        Text="Description is required">
+                    </RadzenRequiredValidator>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <RadzenButton
+                ButtonType="ButtonType.Submit"
+                Class="w-100"
+                Text="Save">
+            </RadzenButton>
+        </div>
+    </div>
+</RadzenTemplateForm>
