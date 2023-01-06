@@ -1,7 +1,6 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterAppointmentType;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterDoctor;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterRoom;
-using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Extensions;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Helpers;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components;

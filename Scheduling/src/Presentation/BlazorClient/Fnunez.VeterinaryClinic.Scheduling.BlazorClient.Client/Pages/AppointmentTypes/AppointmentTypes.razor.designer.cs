@@ -1,6 +1,5 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypes;
-using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Extensions;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;

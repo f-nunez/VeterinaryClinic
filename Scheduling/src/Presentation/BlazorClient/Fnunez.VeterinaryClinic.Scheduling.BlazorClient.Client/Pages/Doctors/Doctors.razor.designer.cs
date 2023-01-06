@@ -1,6 +1,5 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Doctor;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Doctor.GetDoctors;
-using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Extensions;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Rooms;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 using Microsoft.AspNetCore.Components;

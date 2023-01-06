@@ -1,7 +1,6 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Common;
-using Radzen;
 
-namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Extensions;
+namespace Radzen;
 
 public static class LoadDataArgsExtension
 {
