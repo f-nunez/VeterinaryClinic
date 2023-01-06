@@ -4,9 +4,143 @@
 
 @using Radzen
 @using Radzen.Blazor
+@using ViewModels.Appointments
 
-<RadzenContent Container="main">
-    <ChildContent>
-        <RadzenHeading Size="H1" style="display: inline-block" Text="Appointments"></RadzenHeading>
-    </ChildContent>
-</RadzenContent>
+<RadzenHeading
+    Size="H1"
+    Text="Appointments">
+</RadzenHeading>
+
+<RadzenCard>
+    <div class="row mb-3">
+        <div class="col-sm-6 col-md-4">
+            <RadzenText
+                TagName="TagName.H3"
+                Text="Client"
+                TextStyle="TextStyle.Subtitle2">
+            </RadzenText>
+
+            <RadzenDropDownDataGrid
+                @bind-Value=@ClientId
+                AllowClear="true"
+                AllowSorting="true"
+                AllowVirtualization="true"
+                Change="@(args => OnChangeClientFilter(args))"
+                Class="w-100"
+                Count=@ClientFilterCount
+                Data=@ClientFilterValues
+                FilterDelay="500"
+                LoadData="@ClientFilterLoadData"
+                SearchText="Search..."
+                TextProperty="FullName"
+                TValue="int?"
+                ValueProperty="Id">
+                <Columns>
+                    <RadzenDropDownDataGridColumn
+                        Property="FullName"
+                        Sortable="true"
+                        SortOrder="SortOrder.Ascending"
+                        TextAlign="TextAlign.Left"
+                        Title="Full Name">
+                    </RadzenDropDownDataGridColumn>
+
+                    <RadzenDropDownDataGridColumn
+                        Property="EmailAddress"
+                        Sortable="true"
+                        TextAlign="TextAlign.Left"
+                        Title="Email Address">
+                    </RadzenDropDownDataGridColumn>
+                </Columns>
+            </RadzenDropDownDataGrid>
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+            <RadzenText
+                TagName="TagName.H3"
+                Text="Patient"
+                TextStyle="TextStyle.Subtitle2">
+            </RadzenText>
+
+            <RadzenDropDownDataGrid
+                @bind-Value=@PatientId
+                AllowClear="true"
+                AllowFiltering="true"
+                AllowSorting="true"
+                Change="@(args => OnChangePatientFilter(args))"
+                Class="w-100"
+                Data=@PatientFilterValues
+                Disabled=@(!IsPatientDropDownEnabled)
+                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                SearchText="Search..."
+                TextProperty="Name"
+                TValue="int?"
+                ValueProperty="Id">
+                <Columns>
+                    <RadzenDropDownDataGridColumn
+                        Property="Name"
+                        SortOrder="SortOrder.Ascending"
+                        TextAlign="TextAlign.Left"
+                        Title="Name">
+                    </RadzenDropDownDataGridColumn>
+                </Columns>
+            </RadzenDropDownDataGrid>
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+            <RadzenText
+                TagName="TagName.H3"
+                Text="Clinic"
+                TextStyle="TextStyle.Subtitle2">
+            </RadzenText>
+
+            <RadzenDropDownDataGrid
+                @bind-Value=@ClinicId
+                AllowClear="true"
+                AllowSorting="true"
+                AllowVirtualization="true"
+                Change="@(args => OnChangeClinicFilter(args))"
+                Class="w-100"
+                Count=@ClinicFilterCount
+                Data=@ClinicFilterValues
+                Disabled=@(!IsClinicDropDownEnabled)
+                FilterDelay="500"
+                LoadData="@ClinicFilterLoadData"
+                SearchText="Search..."
+                TextProperty="Name"
+                TValue="int?"
+                ValueProperty="Id">
+                <Columns>
+                    <RadzenDropDownDataGridColumn
+                        Property="Name"
+                        Sortable="true"
+                        SortOrder="SortOrder.Ascending"
+                        TextAlign="TextAlign.Left"
+                        Title="Name">
+                    </RadzenDropDownDataGridColumn>
+                </Columns>
+            </RadzenDropDownDataGrid>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <RadzenScheduler
+                @ref=@Scheduler
+                AppointmentRender=@OnAppointmentRender
+                AppointmentSelect=@OnAppointmentSelect
+                Data=@StoredAppointments
+                EndProperty="EndOn"
+                SelectedIndex="1"
+                SlotRender=@OnSlotRender
+                SlotSelect=@OnSlotSelect
+                StartProperty="StartOn"
+                TextProperty="Title"
+                LoadData=@SchedulerLoadData
+                TItem="AppointmentVm">
+                <RadzenDayView StartTime=@TimeSpan.FromMinutes(0)></RadzenDayView>
+                <RadzenWeekView StartTime=@TimeSpan.FromMinutes(0)></RadzenWeekView>
+                <RadzenMonthView></RadzenMonthView>
+            </RadzenScheduler>
+        </div>
+    </div>
+</RadzenCard>
