@@ -14,6 +14,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<HttpService>();
 
 // register http services
+builder.Services.AddScoped<AppointmentService>();
 builder.Services.AddScoped<AppointmentTypeService>();
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<ClinicService>();
