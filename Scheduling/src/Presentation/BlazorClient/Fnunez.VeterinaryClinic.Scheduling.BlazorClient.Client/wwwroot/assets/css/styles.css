@@ -85,5 +85,18 @@
 }
 
 .datagrid-filter-menu button {
-  margin-left: .5rem;
+  margin-left: 1rem;
+}
+
+/* Input Dialog */
+.input-dialog-imgage-container {
+  text-align: center;
+  width: 100%;
+}
+
+.input-dialog-imgage-container img {
+  border-style: none;
+  max-height: 5rem;
+  max-width: 5rem;
+  vertical-align: middle;
 }
