@@ -1,0 +1,27 @@
+@using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.TimeZone
+
+<div class="container">
+    <div class="row mb-3">
+        <RadzenText
+            TagName="TagName.H3"
+            Text="Time Zone"
+            TextStyle="TextStyle.Subtitle2">
+        </RadzenText>
+
+        <TimeZoneComponent
+            Class="w-100"
+            SelectedTimeZoneId=@TimeZoneId
+            ValueChanged="TimeZoneChanged">
+        </TimeZoneComponent>
+    </div>
+
+    <div class="row mb-3">
+        <RadzenButton
+            ButtonStyle="ButtonStyle.Secondary"
+            Class="w-100"
+            Click=@ResetSettings
+            Shade="Shade.Lighter"
+            Text="RESET SETTINGS">
+        </RadzenButton>
+    </div>
+</div>
