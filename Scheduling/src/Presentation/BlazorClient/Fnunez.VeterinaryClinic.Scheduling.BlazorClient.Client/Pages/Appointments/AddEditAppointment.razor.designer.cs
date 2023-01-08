@@ -70,6 +70,9 @@ public partial class AddEditAppointmentComponent : ComponentBase
     public bool IsAppointmentToAdd { get; set; } = true;
 
     [Parameter]
+    public string SelectedTimezoneName { get; set; }
+
+    [Parameter]
     public int SelectedTimezoneOffset { get; set; }
 
     protected override void OnParametersSet()
