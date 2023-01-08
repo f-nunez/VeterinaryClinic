@@ -24,6 +24,9 @@ public partial class AppointmentsComponent : ComponentBase
     [Inject]
     private IJSRuntime _jSRuntime { get; set; }
 
+    [Inject]
+    private UserSettingsService _userSettingsService { get; set; }
+
     #region Client filter properties
     protected List<ClientFilterValueDto> ClientFilterValues = new();
 
