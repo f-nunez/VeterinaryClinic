@@ -227,7 +227,8 @@ public partial class AppointmentsComponent : ComponentBase
         var response = await _appointmentService
             .GetAppointmentDetailAsync(request);
 
-        var selectedTimezoneOffset = GetSelectedTimezoneOffsetFromDropDown();
+        var selectedTimezoneName = await _userSettingsService.GetTimeZoneNameAsync();
+        var selectedTimezoneOffset = await _userSettingsService.GetUtcOffsetInMinutesAsync();
 
         var appointmentToEdit = AppointmentHelper.MapAppointmentItemViewModel(
             response.Appointment, selectedTimezoneOffset);
@@ -238,6 +239,7 @@ public partial class AppointmentsComponent : ComponentBase
             {
                 { "IsAppointmentToAdd", false },
                 { "Appointment", appointmentToEdit },
+                { "SelectedTimezoneName", selectedTimezoneName },
                 { "SelectedTimezoneOffset", selectedTimezoneOffset },
                 { "PreselectedAppointmentTypeFilterValues", response.AppointmentTypeFilterValues },
                 { "PreselectedDoctorFilterValues", response.DoctorFilterValues },
@@ -299,7 +301,8 @@ public partial class AppointmentsComponent : ComponentBase
             return;
         }
 
-        var selectedTimezoneOffset = GetSelectedTimezoneOffsetFromDropDown();
+        var selectedTimezoneName = await _userSettingsService.GetTimeZoneNameAsync();
+        var selectedTimezoneOffset = await _userSettingsService.GetUtcOffsetInMinutesAsync();
 
         var endOn = new DateTimeOffset(
             args.End.ToUnspecifiedKind(),
@@ -327,6 +330,7 @@ public partial class AppointmentsComponent : ComponentBase
             {
                 { "IsAppointmentToAdd", true},
                 { "Appointment", newAppointment },
+                { "SelectedTimezoneName", selectedTimezoneName },
                 { "SelectedTimezoneOffset", selectedTimezoneOffset }
             },
             new DialogOptions
@@ -352,7 +356,7 @@ public partial class AppointmentsComponent : ComponentBase
 
     private async Task<List<AppointmentVm>> GetScheduledAppointmentsAsync()
     {
-        var selectedTimezoneOffset = GetSelectedTimezoneOffsetFromDropDown();
+        var selectedTimezoneOffset = await _userSettingsService.GetUtcOffsetInMinutesAsync();
 
         var startOnWithOffset = new DateTimeOffset(
             Scheduler.SelectedView.StartDate.ToUnspecifiedKind(),
@@ -389,12 +393,4 @@ public partial class AppointmentsComponent : ComponentBase
         await InvokeAsync(StateHasChanged);
     }
     #endregion
-
-    private int GetSelectedTimezoneOffsetFromDropDown()
-    {
-        int dropdownValue = -8;
-        int oneHourInMinutes = 60;
-
-        return dropdownValue * oneHourInMinutes;
-    }
 }
