@@ -1,6 +1,7 @@
 @inherits Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.MainLayoutComponent
 
 @using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components
+@using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.UserSettings
 
 <RadzenDialog></RadzenDialog>
 <RadzenNotification></RadzenNotification>
@@ -14,7 +15,9 @@
                     <RadzenLabel Text="Scheduling" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"></RadzenLabel>
                 </div>
 
-                <div class="col-7 d-flex align-items-center justify-content-end"></div>
+                <div class="col-7 d-flex align-items-center justify-content-end">
+                    <UserSettingsComponent></UserSettingsComponent>
+                </div>
             </div>
         </ChildContent>
     </RadzenHeader>
