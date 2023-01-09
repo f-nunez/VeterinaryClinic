@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Radzen;
 
-namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.RadzenTextBoxSearchComponent;
+namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.RadzenTextBoxSearch;
 
-public partial class RadzenTextBoxSearch : FormComponent<string>
+public partial class RadzenTextBoxSearchComponent : FormComponent<string>
 {
     /// <summary>
     /// Gets or sets a value indicating the browser built-in autocomplete is enabled.
