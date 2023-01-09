@@ -12,18 +12,27 @@ namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Doctors;
 public partial class DoctorsComponent : ComponentBase
 {
     [Inject]
-    private DoctorService _doctorService { get; set; }
+    private IDoctorService _doctorService { get; set; }
+
     protected RadzenDataGrid<DoctorDto> DoctorsGrid;
+
     protected List<DoctorDto> Doctors;
+
     protected int Count;
+
     [Inject]
     protected DialogService DialogService { get; set; }
+
     protected bool IsLoading = false;
+
     protected IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 20, 30, 50, 100 };
+
     protected string PagingSummaryFormat = "Displaying page {0} of {1} (total {2} records)";
 
     protected string FullNameFilterValue { get; set; }
+
     protected string IdFilterValue { get; set; }
+
     protected string SearchFilterValue { get; set; }
 
     protected async Task LoadData(LoadDataArgs args)

@@ -11,20 +11,31 @@ namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Clinics;
 public partial class ClinicsComponent : ComponentBase
 {
     [Inject]
-    private ClinicService _ClinicService { get; set; }
+    private IClinicService _ClinicService { get; set; }
+
     protected RadzenDataGrid<ClinicDto> ClinicsGrid;
+
     protected List<ClinicDto> Clinics;
+
     protected int Count;
+
     [Inject]
     protected DialogService DialogService { get; set; }
-    protected bool IsLoading = false;
-    protected IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 20, 30, 50, 100 };
-    protected string PagingSummaryFormat = "Displaying page {0} of {1} (total {2} records)";
 
+    protected bool IsLoading = false;
+
+    protected IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 20, 30, 50, 100 };
+
+    protected string PagingSummaryFormat = "Displaying page {0} of {1} (total {2} records)";
+    
     protected string AddressFilterValue { get; set; }
+
     protected string EmailAddressFilterValue { get; set; }
+
     protected string IdFilterValue { get; set; }
+
     protected string NameFilterValue { get; set; }
+    
     protected string SearchFilterValue { get; set; }
 
     protected async Task LoadData(LoadDataArgs args)

@@ -16,7 +16,7 @@ namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Appointme
 public partial class AppointmentsComponent : ComponentBase
 {
     [Inject]
-    private AppointmentService _appointmentService { get; set; }
+    private IAppointmentService _appointmentService { get; set; }
 
     [Inject]
     private DialogService _dialogService { get; set; }
@@ -25,7 +25,7 @@ public partial class AppointmentsComponent : ComponentBase
     private IJSRuntime _jSRuntime { get; set; }
 
     [Inject]
-    private UserSettingsService _userSettingsService { get; set; }
+    private IUserSettingsService _userSettingsService { get; set; }
 
     #region Client filter properties
     protected List<ClientFilterValueDto> ClientFilterValues = new();

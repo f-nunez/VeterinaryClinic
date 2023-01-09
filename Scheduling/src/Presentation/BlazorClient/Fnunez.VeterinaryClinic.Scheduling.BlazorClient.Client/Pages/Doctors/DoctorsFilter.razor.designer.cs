@@ -8,13 +8,19 @@ namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Doctors;
 public partial class DoctorsFilter : ComponentBase
 {
     [Inject]
-    private DoctorService _roomService { get; set; }
+    private IDoctorService _roomService { get; set; }
+
     protected IEnumerable<string> DoctorFullNames;
+
     protected IEnumerable<string> DoctorIds;
+
     [Inject]
     protected DialogService DialogService { get; set; }
+
     protected string FullNameFilterValue { get; set; }
+
     protected string IdFilterValue { get; set; }
+
     [Parameter]
     public DoctorsFilterValues DoctorsFilterValues { get; set; }
 

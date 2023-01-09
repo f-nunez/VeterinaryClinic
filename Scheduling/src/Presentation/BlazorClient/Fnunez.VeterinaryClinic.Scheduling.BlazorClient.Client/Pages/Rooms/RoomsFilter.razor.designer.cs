@@ -7,13 +7,19 @@ namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Rooms;
 public partial class RoomsFilter : ComponentBase
 {
     [Inject]
-    private RoomService _roomService { get; set; }
+    private IRoomService _roomService { get; set; }
+
     protected IEnumerable<string> RoomIds;
+
     protected IEnumerable<string> RoomNames;
+
     [Inject]
     protected DialogService DialogService { get; set; }
+
     protected string IdFilterValue { get; set; }
+
     protected string NameFilterValue { get; set; }
+
     [Parameter]
     public RoomsFilterValues RoomsFilterValues { get; set; }
 

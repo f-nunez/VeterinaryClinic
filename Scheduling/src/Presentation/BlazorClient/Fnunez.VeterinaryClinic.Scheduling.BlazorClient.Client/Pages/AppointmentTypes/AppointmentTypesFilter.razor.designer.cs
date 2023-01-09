@@ -7,17 +7,25 @@ namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Appointme
 public partial class AppointmentTypesFilter : ComponentBase
 {
     [Inject]
-    private AppointmentTypeService _appointmentTypeService { get; set; }
+    private IAppointmentTypeService _appointmentTypeService { get; set; }
+
     protected IEnumerable<string> AppointmentTypeCodes;
+
     protected IEnumerable<string> AppointmentTypeDurations;
+
     protected IEnumerable<string> AppointmentTypeIds;
+
     protected IEnumerable<string> AppointmentTypeNames;
+
     [Inject]
     protected DialogService DialogService { get; set; }
 
     protected string CodeFilterValue { get; set; }
+
     protected string DurationFilterValue { get; set; }
+
     protected string IdFilterValue { get; set; }
+
     protected string NameFilterValue { get; set; }
 
     [Parameter]

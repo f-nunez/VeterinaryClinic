@@ -3,7 +3,6 @@ using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.Get
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterRoom;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Helpers;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
-using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.ViewModels.Appointments;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -15,7 +14,7 @@ namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Appointme
 public partial class AddEditAppointmentComponent : ComponentBase
 {
     [Inject]
-    private AppointmentService _appointmentService { get; set; }
+    private IAppointmentService _appointmentService { get; set; }
 
     [Inject]
     private DialogService _dialogService { get; set; }
@@ -24,7 +23,7 @@ public partial class AddEditAppointmentComponent : ComponentBase
     private IJSRuntime _jSRuntime { get; set; }
 
     [Inject]
-    private LayoutSpinnerService _layoutSpinnerService { get; set; }
+    private ISpinnerService _spinnerService { get; set; }
 
     #region AppointmentType filter properties
     protected RadzenDropDownDataGrid<int> AppointmentTypeDropDownDataGrid;
@@ -184,7 +183,7 @@ public partial class AddEditAppointmentComponent : ComponentBase
 
         bool isValidAppointment = true;
 
-        _layoutSpinnerService.Show();
+        _spinnerService.Show();
 
         try
         {
@@ -208,7 +207,7 @@ public partial class AddEditAppointmentComponent : ComponentBase
             isValidAppointment = false;
         }
 
-        _layoutSpinnerService.Hide();
+        _spinnerService.Hide();
 
         if (!isValidAppointment)
             if (IsAppointmentToAdd)
@@ -243,7 +242,7 @@ public partial class AddEditAppointmentComponent : ComponentBase
         if (Appointment.StartOn.ToUnspecifiedKind() >= userLocalTime)
             return true;
 
-        _layoutSpinnerService.Hide();
+        _spinnerService.Hide();
 
         string titleDialog = IsAppointmentToAdd ? "Add" : "Edit";
         string bodyDialog = IsAppointmentToAdd ? "add" : "edit";
@@ -258,7 +257,7 @@ public partial class AddEditAppointmentComponent : ComponentBase
             }
         );
 
-        _layoutSpinnerService.Show();
+        _spinnerService.Show();
 
         return isAcceptIt.HasValue ? isAcceptIt.Value : isAcceptIt.HasValue;
     }

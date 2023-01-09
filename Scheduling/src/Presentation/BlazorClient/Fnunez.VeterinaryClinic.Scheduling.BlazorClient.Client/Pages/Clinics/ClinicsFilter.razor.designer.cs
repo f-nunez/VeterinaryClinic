@@ -7,17 +7,27 @@ namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Clinics;
 public partial class ClinicsFilter : ComponentBase
 {
     [Inject]
-    private ClinicService _clinicService { get; set; }
+    private IClinicService _clinicService { get; set; }
+
     protected IEnumerable<string> ClinicAddresses;
+
     protected IEnumerable<string> ClinicEmailAddresses;
+
     protected IEnumerable<string> ClinicIds;
+
     protected IEnumerable<string> ClinicNames;
+
     [Inject]
     protected DialogService DialogService { get; set; }
+
     protected string AddressFilterValue { get; set; }
+
     protected string EmailAddressFilterValue { get; set; }
+
     protected string IdFilterValue { get; set; }
+
     protected string NameFilterValue { get; set; }
+
     [Parameter]
     public ClinicsFilterValues ClinicsFilterValues { get; set; }
 
