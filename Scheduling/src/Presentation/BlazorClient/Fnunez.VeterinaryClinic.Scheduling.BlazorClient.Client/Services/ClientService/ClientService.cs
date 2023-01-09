@@ -9,13 +9,13 @@ using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Common;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 
-public class ClientService
+public class ClientService : IClientService
 {
-    private readonly HttpService _httpService;
+    private readonly IHttpService _httpService;
     private readonly ILogger<ClientService> _logger;
 
     public ClientService(
-        HttpService httpService,
+        IHttpService httpService,
         ILogger<ClientService> logger)
     {
         _httpService = httpService;
