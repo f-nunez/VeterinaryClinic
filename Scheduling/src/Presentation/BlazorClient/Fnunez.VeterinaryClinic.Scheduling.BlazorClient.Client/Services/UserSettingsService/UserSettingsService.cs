@@ -16,17 +16,6 @@ public class UserSettingsService : IUserSettingsService
         _timeZoneComponentService = timeZoneComponentService;
     }
 
-    public async Task<int> GetUtcOffsetInMinutesAsync()
-    {
-        var userSettings = await _userSettingsComponentService
-            .GetSettingsAsync();
-
-        var timeZone = _timeZoneComponentService
-            .GetTimeZone(userSettings.TimeZoneId);
-
-        return timeZone.UtcOffsetInMinutes;
-    }
-
     public async Task<string> GetTimeZoneNameAsync()
     {
         var userSettings = await _userSettingsComponentService
@@ -36,5 +25,16 @@ public class UserSettingsService : IUserSettingsService
             .GetTimeZone(userSettings.TimeZoneId);
 
         return timeZone.DisplayName;
+    }
+
+    public async Task<int> GetUtcOffsetInMinutesAsync()
+    {
+        var userSettings = await _userSettingsComponentService
+            .GetSettingsAsync();
+
+        var timeZone = _timeZoneComponentService
+            .GetTimeZone(userSettings.TimeZoneId);
+
+        return timeZone.UtcOffsetInMinutes;
     }
 }
