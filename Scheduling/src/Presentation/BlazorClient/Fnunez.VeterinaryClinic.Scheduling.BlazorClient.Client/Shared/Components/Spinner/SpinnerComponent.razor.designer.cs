@@ -1,18 +1,18 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components;
+namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.Spinner;
 
-public partial class LayoutSpinnerComponent : ComponentBase
+public partial class SpinnerComponent : ComponentBase
 {
     [Inject]
-    private LayoutSpinnerService _spinnerService { get; set; } = null!;
+    private ISpinnerComponentService _SpinnerComponentService { get; set; } = null!;
 
     protected bool IsVisible { get; set; }
 
     protected override void OnInitialized()
     {
-        _spinnerService.OnShow += ShowSpinner;
-        _spinnerService.OnHide += HideSpinner;
+        _SpinnerComponentService.OnShow += ShowSpinner;
+        _SpinnerComponentService.OnHide += HideSpinner;
     }
 
     public void ShowSpinner()

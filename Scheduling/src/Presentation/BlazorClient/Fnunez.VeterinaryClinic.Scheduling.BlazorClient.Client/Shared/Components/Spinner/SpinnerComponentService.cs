@@ -1,6 +1,6 @@
-namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components;
+namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.Spinner;
 
-public class LayoutSpinnerService
+public class SpinnerComponentService : ISpinnerComponentService
 {
     public event Action? OnShow;
     public event Action? OnHide;
