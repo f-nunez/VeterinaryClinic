@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 
-public class HttpService
+public class HttpService : IHttpService
 {
     private readonly string _apiUrl;
     private readonly HttpClient _httpClient;
@@ -18,27 +18,6 @@ public class HttpService
 
         _httpClient = httpClient;
         _apiUrl = _httpClient.BaseAddress.ToString();
-    }
-
-    public async Task<T?> HttpGetAsync<T>(string uri)
-        where T : class
-    {
-        var result = await _httpClient.GetAsync($"{_apiUrl}{uri}");
-
-        if (!result.IsSuccessStatusCode)
-            return null;
-
-        return await FromHttpResponseMessageAsync<T>(result);
-    }
-
-    public async Task<string?> HttpGetAsync(string uri)
-    {
-        var result = await _httpClient.GetAsync($"{_apiUrl}{uri}");
-
-        if (!result.IsSuccessStatusCode)
-            return null;
-
-        return await result.Content.ReadAsStringAsync();
     }
 
     public async Task<T?> HttpDeleteAsync<T>(string uri)
@@ -61,6 +40,27 @@ public class HttpService
             return null;
 
         return await FromHttpResponseMessageAsync<T>(result);
+    }
+
+    public async Task<T?> HttpGetAsync<T>(string uri)
+        where T : class
+    {
+        var result = await _httpClient.GetAsync($"{_apiUrl}{uri}");
+
+        if (!result.IsSuccessStatusCode)
+            return null;
+
+        return await FromHttpResponseMessageAsync<T>(result);
+    }
+
+    public async Task<string?> HttpGetAsync(string uri)
+    {
+        var result = await _httpClient.GetAsync($"{_apiUrl}{uri}");
+
+        if (!result.IsSuccessStatusCode)
+            return null;
+
+        return await result.Content.ReadAsStringAsync();
     }
 
     public async Task<T?> HttpPostAsync<T>(string uri, object dataToSend)
