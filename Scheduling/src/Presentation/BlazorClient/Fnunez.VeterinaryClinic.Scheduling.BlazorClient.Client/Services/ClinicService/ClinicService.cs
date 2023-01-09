@@ -5,17 +5,16 @@ using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic.GetClini
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic.GetClinicsFilterId;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic.GetClinicsFilterName;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Common;
-using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 
-public class ClinicService
+public class ClinicService : IClinicService
 {
-    private readonly HttpService _httpService;
+    private readonly IHttpService _httpService;
     private readonly ILogger<ClinicService> _logger;
 
     public ClinicService(
-        HttpService httpService,
+        IHttpService httpService,
         ILogger<ClinicService> logger)
     {
         _httpService = httpService;
