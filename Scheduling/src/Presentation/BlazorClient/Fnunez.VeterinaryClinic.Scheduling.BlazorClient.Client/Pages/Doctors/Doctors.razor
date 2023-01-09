@@ -3,7 +3,7 @@
 @inherits Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Doctors.DoctorsComponent
 
 @using Application.SharedModel.Doctor
-@using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.RadzenTextBoxSearchComponent
+@using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.RadzenTextBoxSearch
 @using Radzen
 @using Radzen.Blazor
 
@@ -18,13 +18,13 @@
 
         <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
             <div class="datagrid-filter-menu">
-                <RadzenTextBoxSearch
+                <RadzenTextBoxSearchComponent
                     @bind-Value=@SearchFilterValue
                     @onkeyup=@OnKeyUpFilterSearch
                     AutoComplete="false"
                     Click=@OnClickFilterSearch
                     Placeholder="Search...">
-                </RadzenTextBoxSearch>
+                </RadzenTextBoxSearchComponent>
 
                 <RadzenButton
                     ButtonStyle="ButtonStyle.Secondary"
