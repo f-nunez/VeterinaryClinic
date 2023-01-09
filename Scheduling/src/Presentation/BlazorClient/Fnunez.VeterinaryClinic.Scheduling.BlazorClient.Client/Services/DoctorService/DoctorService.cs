@@ -6,13 +6,13 @@ using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Doctor.GetDocto
 
 namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 
-public class DoctorService
+public class DoctorService : IDoctorService
 {
-    private readonly HttpService _httpService;
+    private readonly IHttpService _httpService;
     private readonly ILogger<DoctorService> _logger;
 
     public DoctorService(
-        HttpService httpService,
+        IHttpService httpService,
         ILogger<DoctorService> logger)
     {
         _httpService = httpService;
