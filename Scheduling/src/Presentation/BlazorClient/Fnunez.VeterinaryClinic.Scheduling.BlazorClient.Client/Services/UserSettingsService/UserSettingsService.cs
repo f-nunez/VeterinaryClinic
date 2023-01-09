@@ -3,7 +3,7 @@ using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.U
 
 namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 
-public class UserSettingsService
+public class UserSettingsService : IUserSettingsService
 {
     private readonly IUserSettingsComponentService _userSettingsComponentService;
     private readonly ITimeZoneComponentService _timeZoneComponentService;
