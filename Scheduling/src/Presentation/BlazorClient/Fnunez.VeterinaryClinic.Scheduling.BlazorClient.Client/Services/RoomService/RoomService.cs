@@ -6,13 +6,13 @@ using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Room.GetRoomsFi
 
 namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 
-public class RoomService
+public class RoomService : IRoomService
 {
-    private readonly HttpService _httpService;
+    private readonly IHttpService _httpService;
     private readonly ILogger<RoomService> _logger;
 
     public RoomService(
-        HttpService httpService,
+        IHttpService httpService,
         ILogger<RoomService> logger)
     {
         _httpService = httpService;
