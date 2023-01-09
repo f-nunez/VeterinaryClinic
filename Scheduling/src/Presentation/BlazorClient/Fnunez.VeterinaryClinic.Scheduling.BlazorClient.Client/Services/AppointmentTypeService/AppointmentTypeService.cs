@@ -8,13 +8,13 @@ using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Common;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 
-public class AppointmentTypeService
+public class AppointmentTypeService : IAppointmentTypeService
 {
-    private readonly HttpService _httpService;
+    private readonly IHttpService _httpService;
     private readonly ILogger<AppointmentTypeService> _logger;
 
     public AppointmentTypeService(
-        HttpService httpService,
+        IHttpService httpService,
         ILogger<AppointmentTypeService> logger)
     {
         _httpService = httpService;
