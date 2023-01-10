@@ -5,7 +5,7 @@ using Radzen;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Doctors;
 
-public partial class DoctorsFilter : ComponentBase
+public partial class DoctorsFilterComponent : ComponentBase
 {
     [Inject]
     private IDoctorService _roomService { get; set; }

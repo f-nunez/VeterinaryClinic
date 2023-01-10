@@ -1,5 +1,5 @@
 namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Clinics;
 
-public partial class ClinicsFilter
+public partial class ClinicsFilterComponent
 {
 }
