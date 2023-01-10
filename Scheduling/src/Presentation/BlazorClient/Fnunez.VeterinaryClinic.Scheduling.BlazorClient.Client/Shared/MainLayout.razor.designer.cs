@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using Radzen;
 using Radzen.Blazor;
 
@@ -15,6 +16,9 @@ public partial class MainLayoutComponent : LayoutComponentBase
 
     [Inject]
     protected NotificationService NotificationService { get; set; }
+
+    [Inject]
+    protected IStringLocalizer<MainLayout> StringLocalizer { get; set; }
 
     protected RadzenBody RadzenBody;
 
