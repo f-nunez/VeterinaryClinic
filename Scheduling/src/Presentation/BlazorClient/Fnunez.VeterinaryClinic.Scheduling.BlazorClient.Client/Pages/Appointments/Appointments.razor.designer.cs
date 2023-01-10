@@ -7,6 +7,7 @@ using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Helpers;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.ViewModels.Appointments;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using Radzen;
 using Radzen.Blazor;
@@ -27,6 +28,12 @@ public partial class AppointmentsComponent : ComponentBase
     [Inject]
     private IUserSettingsService _userSettingsService { get; set; }
 
+    [Inject]
+    protected IStringLocalizer<AppointmentsComponent> StringLocalizer { get; set; }
+
+    [Inject]
+    protected IStringLocalizer<AddEditAppointmentComponent> StringLocalizerForAddEditAppointment { get; set; }
+
     #region Client filter properties
     protected List<ClientFilterValueDto> ClientFilterValues = new();
 
@@ -41,6 +48,8 @@ public partial class AppointmentsComponent : ComponentBase
     protected int ClinicFilterCount { get; set; }
 
     protected int? ClinicId { get; set; }
+
+    protected string ClinicName { get; set; }
 
     protected bool IsClinicDropDownEnabled = false;
     #endregion
@@ -89,6 +98,7 @@ public partial class AppointmentsComponent : ComponentBase
     protected async Task OnChangeClientFilter(object value)
     {
         ClinicId = null;
+        ClinicName = string.Empty;
         ClinicFilterValues = new();
         PatientFilterValues = new();
         PatientId = null;
@@ -134,10 +144,13 @@ public partial class AppointmentsComponent : ComponentBase
         if (convertedValue.HasValue && convertedValue.Value > 0)
         {
             ClinicId = convertedValue;
+            ClinicName = ClinicFilterValues
+                .FirstOrDefault(c => c.Id == ClinicId.Value)!.Name;
         }
         else
         {
             ClinicId = null;
+            ClinicName = string.Empty;
         }
 
         await LoadDataToSchedulerAsync();
@@ -165,6 +178,7 @@ public partial class AppointmentsComponent : ComponentBase
         ClinicFilterValues = new();
         ClinicFilterCount = 0;
         ClinicId = null;
+        ClinicName = string.Empty;
 
         var convertedValue = value as Nullable<int>;
         if (convertedValue.HasValue && convertedValue.Value > 0)
@@ -234,7 +248,7 @@ public partial class AppointmentsComponent : ComponentBase
             response.Appointment, selectedTimezoneOffset);
 
         var data = await _dialogService.OpenAsync<AddEditAppointment>(
-            "Edit Appointment",
+            StringLocalizerForAddEditAppointment["AddEditAppointment_Label_EditAppointment"],
             new Dictionary<string, object>
             {
                 { "IsAppointmentToAdd", false },
@@ -257,49 +271,20 @@ public partial class AppointmentsComponent : ComponentBase
 
         var editedAppointment = data as AppointmentItemVm;
 
-        await _dialogService.Alert(
-            $"Appointment {editedAppointment.Title} is successfully edited",
-            "Edit Appointment",
-            new AlertOptions() { OkButtonText = "ACCEPT" }
-        );
+        await ShowAlertAsync(
+            string.Format(StringLocalizer["Appointments_EditedAppointment_Alert_Message"], editedAppointment.Title),
+            StringLocalizer["Appointments_EditedAppointment_Alert_Title"],
+            StringLocalizer["Appointments_EditedAppointment_Alert_Button_Ok"]);
 
         await LoadDataToSchedulerAsync();
     }
 
     protected async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
     {
-        if (ClientId is null)
-        {
-            await _dialogService.Alert(
-                "Please select a client",
-                "Appointments",
-                new AlertOptions() { OkButtonText = "ACCEPT" }
-            );
+        bool canProceedToSchedule = await ValidateRequiredFieldsToScheduleAndAppointmentAsync();
 
+        if (!canProceedToSchedule)
             return;
-        }
-
-        if (PatientId is null)
-        {
-            await _dialogService.Alert(
-                "Please select a patient",
-                "Appointments",
-                new AlertOptions() { OkButtonText = "ACCEPT" }
-            );
-
-            return;
-        }
-
-        if (ClinicId is null)
-        {
-            await _dialogService.Alert(
-                "Please select a clinic",
-                "Appointments",
-                new AlertOptions() { OkButtonText = "ACCEPT" }
-            );
-
-            return;
-        }
 
         var selectedTimezoneName = await _userSettingsService.GetTimeZoneNameAsync();
         var selectedTimezoneOffset = await _userSettingsService.GetUtcOffsetInMinutesAsync();
@@ -318,6 +303,7 @@ public partial class AppointmentsComponent : ComponentBase
         {
             ClientId = ClientId.Value,
             ClinicId = ClinicId.Value,
+            ClinicName = ClinicName,
             EndOn = endOn,
             PatientId = PatientId.Value,
             PatientName = PatientName,
@@ -325,7 +311,7 @@ public partial class AppointmentsComponent : ComponentBase
         };
 
         var data = await _dialogService.OpenAsync<AddEditAppointment>(
-            "Add Appointment",
+            StringLocalizerForAddEditAppointment["AddEditAppointment_Label_AddAppointment"],
             new Dictionary<string, object>
             {
                 { "IsAppointmentToAdd", true},
@@ -345,11 +331,10 @@ public partial class AppointmentsComponent : ComponentBase
 
         var appointment = data as AppointmentItemVm;
 
-        await _dialogService.Alert(
-            $"Appointment {appointment.Title} is successfully added",
-            "Add Appointment",
-            new AlertOptions() { OkButtonText = "ACCEPT" }
-        );
+        await ShowAlertAsync(
+            string.Format(StringLocalizer["Appointments_AddedAppointment_Alert_Message"], appointment.Title),
+            StringLocalizer["Appointments_AddedAppointment_Alert_Title"],
+            StringLocalizer["Appointments_AddedAppointment_Alert_Button_Ok"]);
 
         await LoadDataToSchedulerAsync();
     }
@@ -391,6 +376,56 @@ public partial class AppointmentsComponent : ComponentBase
             StoredAppointments = new();
 
         await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task<bool> ValidateRequiredFieldsToScheduleAndAppointmentAsync()
+    {
+        if (ClientId is null)
+        {
+            await ShowAlertAsync(
+                StringLocalizer["Appointments_Client_Alert_Message"],
+                StringLocalizer["Appointments_Client_Alert_Title"],
+                StringLocalizer["Appointments_Client_Alert_Button_Ok"]);
+
+            return false;
+        }
+
+        if (PatientId is null)
+        {
+            await ShowAlertAsync(
+                StringLocalizer["Appointments_Patient_Alert_Message"],
+                StringLocalizer["Appointments_Patient_Alert_Title"],
+                StringLocalizer["Appointments_Patient_Alert_Button_Ok"]);
+
+            return false;
+        }
+
+        if (ClinicId is null)
+        {
+            await ShowAlertAsync(
+                StringLocalizer["Appointments_Clinic_Alert_Message"],
+                StringLocalizer["Appointments_Clinic_Alert_Title"],
+                StringLocalizer["Appointments_Clinic_Alert_Button_Ok"]);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private async Task<bool?> ShowAlertAsync(
+        string alertMessage,
+        string alertTitle,
+        string alertButtonOkMessage)
+    {
+        return await _dialogService.Alert(
+            alertMessage,
+            alertTitle,
+            new AlertOptions()
+            {
+                OkButtonText = alertButtonOkMessage
+            }
+        );
     }
     #endregion
 }

@@ -8,7 +8,7 @@
 
 <RadzenHeading
     Size="H1"
-    Text="Appointments">
+    Text=@StringLocalizer["Appointments_Title"]>
 </RadzenHeading>
 
 <RadzenCard>
@@ -16,7 +16,7 @@
         <div class="col-sm-6 col-md-4">
             <RadzenText
                 TagName="TagName.H3"
-                Text="Client"
+                Text=@StringLocalizer["Appointments_Client_DropDown_Label"]
                 TextStyle="TextStyle.Subtitle2">
             </RadzenText>
 
@@ -31,7 +31,7 @@
                 Data=@ClientFilterValues
                 FilterDelay="500"
                 LoadData="@ClientFilterLoadData"
-                SearchText="Search..."
+                SearchText=@StringLocalizer["Appointments_Client_DropDown_PlaceHolder"]
                 TextProperty="FullName"
                 TValue="int?"
                 ValueProperty="Id">
@@ -41,14 +41,14 @@
                         Sortable="true"
                         SortOrder="SortOrder.Ascending"
                         TextAlign="TextAlign.Left"
-                        Title="Full Name">
+                        Title=@StringLocalizer["Appointments_Client_DropDown_HeadColumn_FullName"]>
                     </RadzenDropDownDataGridColumn>
 
                     <RadzenDropDownDataGridColumn
                         Property="EmailAddress"
                         Sortable="true"
                         TextAlign="TextAlign.Left"
-                        Title="Email Address">
+                        Title=@StringLocalizer["Appointments_Client_DropDown_HeadColumn_EmailAddress"]>
                     </RadzenDropDownDataGridColumn>
                 </Columns>
             </RadzenDropDownDataGrid>
@@ -57,7 +57,7 @@
         <div class="col-sm-6 col-md-4">
             <RadzenText
                 TagName="TagName.H3"
-                Text="Patient"
+                Text=@StringLocalizer["Appointments_Patient_DropDown_Label"]
                 TextStyle="TextStyle.Subtitle2">
             </RadzenText>
 
@@ -71,7 +71,7 @@
                 Data=@PatientFilterValues
                 Disabled=@(!IsPatientDropDownEnabled)
                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                SearchText="Search..."
+                SearchText=@StringLocalizer["Appointments_Patient_DropDown_PlaceHolder"]
                 TextProperty="Name"
                 TValue="int?"
                 ValueProperty="Id">
@@ -80,7 +80,7 @@
                         Property="Name"
                         SortOrder="SortOrder.Ascending"
                         TextAlign="TextAlign.Left"
-                        Title="Name">
+                        Title=@StringLocalizer["Appointments_Patient_DropDown_HeadColumn_Name"]>
                     </RadzenDropDownDataGridColumn>
                 </Columns>
             </RadzenDropDownDataGrid>
@@ -89,7 +89,7 @@
         <div class="col-sm-6 col-md-4">
             <RadzenText
                 TagName="TagName.H3"
-                Text="Clinic"
+                Text=@StringLocalizer["Appointments_Clinic_DropDown_Label"]
                 TextStyle="TextStyle.Subtitle2">
             </RadzenText>
 
@@ -105,7 +105,7 @@
                 Disabled=@(!IsClinicDropDownEnabled)
                 FilterDelay="500"
                 LoadData="@ClinicFilterLoadData"
-                SearchText="Search..."
+                SearchText=@StringLocalizer["Appointments_Clinic_DropDown_PlaceHolder"]
                 TextProperty="Name"
                 TValue="int?"
                 ValueProperty="Id">
@@ -115,7 +115,7 @@
                         Sortable="true"
                         SortOrder="SortOrder.Ascending"
                         TextAlign="TextAlign.Left"
-                        Title="Name">
+                        Title=@StringLocalizer["Appointments_Clinic_DropDown_HeadColumn_Name"]>
                     </RadzenDropDownDataGridColumn>
                 </Columns>
             </RadzenDropDownDataGrid>

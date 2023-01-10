@@ -10,7 +10,7 @@
     TItem="AppointmentItemVm">
     <div class="row">
         <div class="col-12 text-center">
-            <RadzenLabel Text="Time Zone:"></RadzenLabel>
+            <RadzenLabel Text=@StringLocalizer["AddEditAppointment_Label_TimeZone"]></RadzenLabel>
 
             <RadzenLabel Text="@SelectedTimezoneName"></RadzenLabel>
         </div>
@@ -22,21 +22,21 @@
                 <div class="col-12 mb-3">
                     <RadzenText
                         TagName="TagName.H3"
-                        Text="Clinic"
+                        Text=@StringLocalizer["AddEditAppointment_Clinic_TextBox_Label"]
                         TextStyle="TextStyle.Subtitle2">
                     </RadzenText>
 
                     <RadzenTextBox
                         Class="w-100 d-block"
                         Disabled="true"
-                        Value="Clinic 1">
+                        Value=@Appointment.ClinicName>
                     </RadzenTextBox>
                 </div>
 
                 <div class="col-12 mb-3">
                     <RadzenText
                         TagName="TagName.H3"
-                        Text="Patient"
+                        Text=@StringLocalizer["AddEditAppointment_Patient_TextBox_Label"]
                         TextStyle="TextStyle.Subtitle2">
                     </RadzenText>
 
@@ -55,7 +55,7 @@
                 <div class="col-12 mb-3">
                     <RadzenText
                         TagName="TagName.H3"
-                        Text="Doctor"
+                        Text=@StringLocalizer["AddEditAppointment_Doctor_DropDown_Label"]
                         TextStyle="TextStyle.Subtitle2">
                     </RadzenText>
 
@@ -73,7 +73,7 @@
                         FilterDelay="500"
                         LoadData="@DoctorFilterLoadData"
                         Name="Doctor"
-                        SearchText="Search..."
+                        SearchText=@StringLocalizer["AddEditAppointment_Doctor_DropDown_PlaceHolder"]
                         TextProperty="FullName"
                         TValue="int"
                         ValueProperty="Id">
@@ -83,7 +83,7 @@
                                 Sortable="true"
                                 SortOrder="SortOrder.Ascending"
                                 TextAlign="TextAlign.Left"
-                                Title="Full Name">
+                                Title=@StringLocalizer["AddEditAppointment_Doctor_DropDown_ColumnHeader_FullName"]>
                             </RadzenDropDownDataGridColumn>
                         </Columns>
                     </RadzenDropDownDataGrid>
@@ -92,7 +92,7 @@
                         Class="rz-message rz-messages-error position-absolute"
                         Component="Doctor"
                         Operator="CompareOperator.GreaterThan"
-                        Text="Doctor is required"
+                        Text=@StringLocalizer["AddEditAppointment_Doctor_DropDown_RequiredMessage"]
                         Value="0">
                     </RadzenCompareValidator>
 
@@ -108,7 +108,7 @@
                 <div class="col-6 mb-3">
                     <RadzenText
                         TagName="TagName.H3"
-                        Text="Start"
+                        Text=@StringLocalizer["AddEditAppointment_Start_DatePicker_Label"]
                         TextStyle="TextStyle.Subtitle2">
                     </RadzenText>
 
@@ -123,14 +123,14 @@
                     <RadzenRequiredValidator
                         Class="rz-message rz-messages-error position-absolute"
                         Component="StartOn"
-                        Text="Start is required">
+                        Text=@StringLocalizer["AddEditAppointment_Start_DatePicker_RequiredMessage"]>
                     </RadzenRequiredValidator>
 
                     <RadzenCompareValidator
                         Class="rz-message rz-messages-error position-absolute"
                         Component="StartOn"
-                        Operator="CompareOperator.LessThanEqual"
-                        Text="Start should be less or equals than End"
+                        Operator="CompareOperator.LessThan"
+                        Text=@StringLocalizer["AddEditAppointment_Start_DatePicker_RequiredValidDateMessage"]
                         Value=@Appointment.EndOn>
                     </RadzenCompareValidator>
                 </div>
@@ -138,7 +138,7 @@
                 <div class="col-6 mb-3">
                     <RadzenText
                         TagName="TagName.H3"
-                        Text="End"
+                        Text=@StringLocalizer["AddEditAppointment_End_DatePicker_Label"]
                         TextStyle="TextStyle.Subtitle2">
                     </RadzenText>
 
@@ -153,14 +153,14 @@
                     <RadzenRequiredValidator
                         Class="rz-message rz-messages-error position-absolute"
                         Component="EndOn"
-                        Text="End is required">
+                        Text=@StringLocalizer["AddEditAppointment_End_DatePicker_RequiredMessage"]>
                     </RadzenRequiredValidator>
 
                     <RadzenCompareValidator
                         Class="rz-message rz-messages-error position-absolute"
                         Component="EndOn"
-                        Operator="CompareOperator.GreaterThanEqual"
-                        Text="End should be greater or equals than Start"
+                        Operator="CompareOperator.GreaterThan"
+                        Text=@StringLocalizer["AddEditAppointment_End_DatePicker_RequiredValidDateMessage"]
                         Value=@Appointment.StartOn>
                     </RadzenCompareValidator>
                 </div>
@@ -168,7 +168,7 @@
                 <div class="col-6 mb-3">
                     <RadzenText
                         TagName="TagName.H3"
-                        Text="Appointment Type"
+                        Text=@StringLocalizer["AddEditAppointment_AppointmentType_DropDown_Label"]
                         TextStyle="TextStyle.Subtitle2">
                     </RadzenText>
 
@@ -186,7 +186,7 @@
                         FilterDelay="500"
                         LoadData="@AppointmentTypeFilterLoadData"
                         Name="AppointmentType"
-                        SearchText="Search..."
+                        SearchText=@StringLocalizer["AddEditAppointment_AppointmentType_DropDown_PlaceHolder"]
                         TextProperty="Name"
                         TValue="int"
                         ValueProperty="Id">
@@ -196,7 +196,7 @@
                                 Sortable="true"
                                 SortOrder="SortOrder.Ascending"
                                 TextAlign="TextAlign.Left"
-                                Title="Name">
+                                Title=@StringLocalizer["AddEditAppointment_AppointmentType_DropDown_ColumnHeader_Name"]>
                             </RadzenDropDownDataGridColumn>
                         </Columns>
                     </RadzenDropDownDataGrid>
@@ -205,7 +205,7 @@
                         Class="rz-message rz-messages-error position-absolute"
                         Component="AppointmentType"
                         Operator="CompareOperator.GreaterThan"
-                        Text="Appointment's type is required"
+                        Text=@StringLocalizer["AddEditAppointment_AppointmentType_DropDown_RequiredMessage"]
                         Value="0">
                     </RadzenCompareValidator>
                 </div>
@@ -213,7 +213,7 @@
                 <div class="col-6 mb-3">
                     <RadzenText
                         TagName="TagName.H3"
-                        Text="Room"
+                        Text=@StringLocalizer["AddEditAppointment_Room_DropDown_Label"]
                         TextStyle="TextStyle.Subtitle2">
                     </RadzenText>
 
@@ -231,7 +231,7 @@
                         FilterDelay="500"
                         LoadData="@RoomFilterLoadData"
                         Name="Room"
-                        SearchText="Search..."
+                        SearchText=@StringLocalizer["AddEditAppointment_Room_DropDown_PlaceHolder"]
                         TextProperty="Name"
                         TValue="int"
                         ValueProperty="Id">
@@ -241,7 +241,7 @@
                                 Sortable="true"
                                 SortOrder="SortOrder.Ascending"
                                 TextAlign="TextAlign.Left"
-                                Title="Name">
+                                Title=@StringLocalizer["AddEditAppointment_Room_DropDown_ColumnHeader_Name"]>
                             </RadzenDropDownDataGridColumn>
                         </Columns>
                     </RadzenDropDownDataGrid>
@@ -250,7 +250,7 @@
                         Class="rz-message rz-messages-error position-absolute"
                         Component="Room"
                         Operator="CompareOperator.GreaterThan"
-                        Text="Room is required"
+                        Text=@StringLocalizer["AddEditAppointment_Room_DropDown_RequiredMessage"]
                         Value="0">
                     </RadzenCompareValidator>
                 </div>
@@ -258,7 +258,7 @@
                 <div class="col-12 mb-3">
                     <RadzenText
                         TagName="TagName.H3"
-                        Text="Title"
+                        Text=@StringLocalizer["AddEditAppointment_Title_TextBox_Label"]
                         TextStyle="TextStyle.Subtitle2">
                     </RadzenText>
 
@@ -266,20 +266,20 @@
                         @bind-Value="@Appointment.Title"
                         Class="w-100 d-block"
                         Name="Title"
-                        Placeholder="Enter title here...">
+                        Placeholder=@StringLocalizer["AddEditAppointment_Title_TextBox_PlaceHolder"]>
                     </RadzenTextBox>
 
                     <RadzenRequiredValidator
                         Class="rz-message rz-messages-error position-absolute"
                         Component="Title"
-                        Text="Title is required">
+                        Text=@StringLocalizer["AddEditAppointment_Title_TextBox_RequiredMessage"]>
                     </RadzenRequiredValidator>
                 </div>
 
                 <div class="col-12">
                     <RadzenText
                         TagName="TagName.H3"
-                        Text="Description"
+                        Text=@StringLocalizer["AddEditAppointment_Description_TextBox_Label"]
                         TextStyle="TextStyle.Subtitle2">
                     </RadzenText>
 
@@ -287,14 +287,14 @@
                         @bind-Value="@Appointment.Description"
                         Class="w-100 d-block"
                         Name="Description"
-                        Placeholder="Enter description here..."
+                        Placeholder=@StringLocalizer["AddEditAppointment_Description_TextBox_PlaceHolder"]
                         Rows="5">
                     </RadzenTextArea>
 
                     <RadzenRequiredValidator
                         Class="rz-message rz-messages-error position-absolute"
                         Component="Description"
-                        Text="Description is required">
+                        Text=@StringLocalizer["AddEditAppointment_Description_TextBox_RequiredMessage"]>
                     </RadzenRequiredValidator>
                 </div>
             </div>
@@ -306,7 +306,7 @@
             <RadzenButton
                 ButtonType="ButtonType.Submit"
                 Class="w-100"
-                Text="Save">
+                Text=@StringLocalizer["AddEditAppointment_Button_Save"]>
             </RadzenButton>
         </div>
     </div>

@@ -5,6 +5,7 @@ using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Helpers;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.ViewModels.Appointments;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using Radzen;
 using Radzen.Blazor;
@@ -24,6 +25,9 @@ public partial class AddEditAppointmentComponent : ComponentBase
 
     [Inject]
     private ISpinnerService _spinnerService { get; set; }
+
+    [Inject]
+    protected IStringLocalizer<AddEditAppointmentComponent> StringLocalizer { get; set; }
 
     #region AppointmentType filter properties
     protected RadzenDropDownDataGrid<int> AppointmentTypeDropDownDataGrid;
@@ -212,21 +216,19 @@ public partial class AddEditAppointmentComponent : ComponentBase
         if (!isValidAppointment)
             if (IsAppointmentToAdd)
             {
-                await _dialogService.Alert(
-                    $"The appointment intersects with another",
-                    "Add Appointment",
-                    new AlertOptions() { OkButtonText = "ACCEPT" }
-                );
+                await ShowAlertAsync(
+                    StringLocalizer["AddEditAppointment_ConflictingAddAppointment_Alert_Message"],
+                    StringLocalizer["AddEditAppointment_ConflictingAddAppointment_Alert_Title"],
+                    StringLocalizer["AddEditAppointment_ConflictingAddAppointment_Alert_Button_Ok"]);
 
                 return;
             }
             else
             {
-                await _dialogService.Alert(
-                    $"The appointment intersects with another",
-                    "Edit Appointment",
-                    new AlertOptions() { OkButtonText = "ACCEPT" }
-                );
+                await ShowAlertAsync(
+                    StringLocalizer["AddEditAppointment_ConflictingEditAppointment_Alert_Message"],
+                    StringLocalizer["AddEditAppointment_ConflictingEditAppointment_Alert_Title"],
+                    StringLocalizer["AddEditAppointment_ConflictingEditAppointment_Alert_Button_Ok"]);
 
                 return;
             }
@@ -244,21 +246,59 @@ public partial class AddEditAppointmentComponent : ComponentBase
 
         _spinnerService.Hide();
 
-        string titleDialog = IsAppointmentToAdd ? "Add" : "Edit";
-        string bodyDialog = IsAppointmentToAdd ? "add" : "edit";
+        bool? isAcceptIt;
 
-        var isAcceptIt = await _dialogService.Confirm(
-            $"The appointment has a start date earlier than the current time, are you sure you want to {bodyDialog} it?",
-            $"{titleDialog} Appointment",
-            new ConfirmOptions()
-            {
-                OkButtonText = "Yes",
-                CancelButtonText = "No"
-            }
-        );
+        if (IsAppointmentToAdd)
+        {
+            isAcceptIt = await ShowConfirmationAlertAsync(
+                StringLocalizer["AddEditAppointment_EarlyAddAppointment_Alert_Message"],
+                StringLocalizer["AddEditAppointment_EarlyAddAppointment_Alert_Title"],
+                StringLocalizer["AddEditAppointment_EarlyAddAppointment_Alert_Button_Ok"],
+                StringLocalizer["AddEditAppointment_EarlyAddAppointment_Alert_Button_Cancel"]);
+        }
+        else
+        {
+            isAcceptIt = await ShowConfirmationAlertAsync(
+                StringLocalizer["AddEditAppointment_EarlyEditAppointment_Alert_Message"],
+                StringLocalizer["AddEditAppointment_EarlyEditAppointment_Alert_Title"],
+                StringLocalizer["AddEditAppointment_EarlyEditAppointment_Alert_Button_Ok"],
+                StringLocalizer["AddEditAppointment_EarlyEditAppointment_Alert_Button_Cancel"]);
+        }
 
         _spinnerService.Show();
 
         return isAcceptIt.HasValue ? isAcceptIt.Value : isAcceptIt.HasValue;
+    }
+
+    private async Task<bool?> ShowAlertAsync(
+        string alertMessage,
+        string alertTitle,
+        string alertButtonOkMessage)
+    {
+        return await _dialogService.Alert(
+            alertMessage,
+            alertTitle,
+            new AlertOptions()
+            {
+                OkButtonText = alertButtonOkMessage
+            }
+        );
+    }
+
+    private async Task<bool?> ShowConfirmationAlertAsync(
+        string alertMessage,
+        string alertTitle,
+        string alertButtonOkMessage,
+        string alertButtonCancelMessage)
+    {
+        return await _dialogService.Confirm(
+            alertMessage,
+            alertTitle,
+            new ConfirmOptions()
+            {
+                OkButtonText = alertButtonOkMessage,
+                CancelButtonText = alertButtonCancelMessage
+            }
+        );
     }
 }
