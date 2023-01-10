@@ -9,7 +9,7 @@
 
 <RadzenHeading
     Size="H1"
-    Text="Appointment Types">
+    Text=@StringLocalizer["AppointmentTypes_Title"]>
 </RadzenHeading>
 
 <RadzenCard>
@@ -23,7 +23,7 @@
                     @onkeyup=@OnKeyUpFilterSearch
                     AutoComplete="false"
                     Click=@OnClickFilterSearch
-                    Placeholder="Search...">
+                    Placeholder=@StringLocalizer["AppointmentTypes_Grid_Filter_PlaceHolder_Search"]>
                 </RadzenTextBoxSearchComponent>
 
                 <RadzenButton
@@ -47,7 +47,8 @@
                 PagerHorizontalAlign="HorizontalAlign.Center"
                 PageSize="10"
                 PageSizeOptions="@PageSizeOptions"
-                PagingSummaryFormat=@PagingSummaryFormat
+                PageSizeText=@StringLocalizer["AppointmentTypes_Grid_PageSizeText"]
+                PagingSummaryFormat=@StringLocalizer["AppointmentTypes_Grid_PagingSummaryFormat"]
                 ShowPagingSummary="true"
                 TItem="AppointmentTypeDto">
                 <Columns>
@@ -58,7 +59,7 @@
                         SortOrder="SortOrder.Ascending"
                         TextAlign="TextAlign.Left"
                         TItem="AppointmentTypeDto"
-                        Title="Id">
+                        Title=@StringLocalizer["AppointmentTypes_Grid_Column_Header_Id"]>
                     </RadzenDataGridColumn>
 
                     <RadzenDataGridColumn
@@ -67,7 +68,7 @@
                         Sortable="true"
                         TextAlign="TextAlign.Justify"
                         TItem="AppointmentTypeDto"
-                        Title="Name">
+                        Title=@StringLocalizer["AppointmentTypes_Grid_Column_Header_Name"]>
                     </RadzenDataGridColumn>
 
                     <RadzenDataGridColumn
@@ -76,7 +77,7 @@
                         Sortable="true"
                         TextAlign="TextAlign.Left"
                         TItem="AppointmentTypeDto"
-                        Title="Code">
+                        Title=@StringLocalizer["AppointmentTypes_Grid_Column_Header_Code"]>
                     </RadzenDataGridColumn>
                     
                     <RadzenDataGridColumn
@@ -85,7 +86,7 @@
                         Sortable="true"
                         TextAlign="TextAlign.Left"
                         TItem="AppointmentTypeDto"
-                        Title="Duration">
+                        Title=@StringLocalizer["AppointmentTypes_Grid_Column_Header_Duration"]>
                     </RadzenDataGridColumn>
                 </Columns>
             </RadzenDataGrid>

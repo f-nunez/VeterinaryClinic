@@ -3,6 +3,7 @@ using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Localization;
 using Radzen;
 using Radzen.Blazor;
 
@@ -22,11 +23,15 @@ public partial class AppointmentTypesComponent : ComponentBase
     [Inject]
     protected DialogService DialogService { get; set; }
 
+    [Inject]
+    protected IStringLocalizer<AppointmentTypesComponent> StringLocalizer { get; set; }
+
+    [Inject]
+    protected IStringLocalizer<AppointmentTypesFilterComponent> StringLocalizerForFilter { get; set; }
+
     protected bool IsLoading = false;
 
     protected IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 20, 30, 50, 100 };
-
-    protected string PagingSummaryFormat = "Displaying page {0} of {1} (total {2} records)";
 
     protected string CodeFilterValue { get; set; }
 
@@ -89,11 +94,10 @@ public partial class AppointmentTypesComponent : ComponentBase
             { nameof(AppointmentTypesFilterValues), filterValues }
         };
 
-        var result = await DialogService
-            .OpenSideAsync<AppointmentTypesFilter>(
-                "Filter Menu",
-                filterParameters
-            );
+        var result = await DialogService.OpenSideAsync<AppointmentTypesFilter>(
+            StringLocalizerForFilter["AppointmentTypesFilter_Label_Filter"],
+            filterParameters
+        );
 
         await ProcessClosedFilterMenuAsync(result);
     }

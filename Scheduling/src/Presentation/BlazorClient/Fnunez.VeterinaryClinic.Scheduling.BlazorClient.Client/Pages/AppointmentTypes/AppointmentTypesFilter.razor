@@ -4,7 +4,7 @@
     <div class="row mb-3">
         <RadzenText
             TagName="TagName.H3"
-            Text="Id"
+            Text=@StringLocalizer["AppointmentTypesFilter_Label_Id"]
             TextStyle="TextStyle.Subtitle2">
         </RadzenText>
 
@@ -15,14 +15,14 @@
             Data=@AppointmentTypeIds
             FilterDelay="500"
             LoadData=@LoadDataAppointmentTypesFilterId
-            Placeholder="Select an id...">
+            Placeholder=@StringLocalizer["AppointmentTypesFilter_AutoComplete_PlaceHolder_Id"]>
         </RadzenAutoComplete>
     </div>
 
     <div class="row mb-3">
         <RadzenText
             TagName="TagName.H3"
-            Text="Name"
+            Text=@StringLocalizer["AppointmentTypesFilter_Label_Name"]
             TextStyle="TextStyle.Subtitle2">
         </RadzenText>
 
@@ -33,14 +33,14 @@
             Data=@AppointmentTypeNames
             FilterDelay="500"
             LoadData=@LoadDataAppointmentTypesFilterName
-            Placeholder="Select a name...">
+            Placeholder=@StringLocalizer["AppointmentTypesFilter_AutoComplete_PlaceHolder_Name"]>
         </RadzenAutoComplete>
     </div>
 
     <div class="row mb-3">
         <RadzenText
             TagName="TagName.H3"
-            Text="Code"
+            Text=@StringLocalizer["AppointmentTypesFilter_Label_Code"]
             TextStyle="TextStyle.Subtitle2">
         </RadzenText>
 
@@ -51,14 +51,14 @@
             Data=@AppointmentTypeCodes
             FilterDelay="500"
             LoadData=@LoadDataAppointmentTypesFilterCode
-            Placeholder="Select a code...">
+            Placeholder=@StringLocalizer["AppointmentTypesFilter_AutoComplete_PlaceHolder_Code"]>
         </RadzenAutoComplete>
     </div>
 
     <div class="row mb-4">
         <RadzenText
             TagName="TagName.H3"
-            Text="Duration"
+            Text=@StringLocalizer["AppointmentTypesFilter_Label_Duration"]
             TextStyle="TextStyle.Subtitle2">
         </RadzenText>
 
@@ -69,7 +69,7 @@
             Data=@AppointmentTypeDurations
             FilterDelay="500"
             LoadData=@LoadDataAppointmentTypesFilterDuration
-            Placeholder="Select a duration...">
+            Placeholder=@StringLocalizer["AppointmentTypesFilter_AutoComplete_PlaceHolder_Duration"]>
         </RadzenAutoComplete>
     </div>
 
@@ -80,7 +80,7 @@
                 Class="w-100"
                 Click=@OnClickButtonFilter
                 Shade="Shade.Lighter"
-                Text="FILTER">
+                Text=@StringLocalizer["AppointmentTypesFilter_Button_Filter"]>
             </RadzenButton>
         </div>
 
@@ -90,7 +90,7 @@
                 Class="w-100"
                 Click=@OnClickButtonClean
                 Shade="Shade.Lighter"
-                Text="CLEAN">
+                Text=@StringLocalizer["AppointmentTypesFilter_Button_Clear"]>
             </RadzenButton>
         </div>
     </div>
