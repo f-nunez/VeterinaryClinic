@@ -6,6 +6,7 @@ using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Settings;
 public class UserSettingsComponentService : IUserSettingsComponentService
 {
     private const string DefaultTimeZoneId = "Pacific Standard Time (Mexico)";
+    private const string DefaultLanguageCulture = "en-US";
     private readonly ICookieSettings _cookieSettings;
     private readonly ILocalStorageService _localStorageService;
     private UserSettings? _userSettings { get; set; }
@@ -27,6 +28,7 @@ public class UserSettingsComponentService : IUserSettingsComponentService
         {
             _userSettings = new UserSettings
             {
+                LanguageCultureCode = DefaultLanguageCulture,
                 TimeZoneId = DefaultTimeZoneId
             };
 

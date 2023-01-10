@@ -1,7 +1,22 @@
+@using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.Language
 @using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.TimeZone
 
 <div class="container">
     <div class="row mb-3">
+        <RadzenText
+            TagName="TagName.H3"
+            Text="Language"
+            TextStyle="TextStyle.Subtitle2">
+        </RadzenText>
+
+        <LanguageComponent
+            Class="w-100"
+            SelectedCultureCode=@LanguageCultureCode
+            ValueChanged="LanguageChanged">
+        </LanguageComponent>
+    </div>
+
+    <div class="row mb-4">
         <RadzenText
             TagName="TagName.H3"
             Text="Time Zone"
@@ -15,13 +30,13 @@
         </TimeZoneComponent>
     </div>
 
-    <div class="row mb-3">
+    <div class="row">
         <RadzenButton
-            ButtonStyle="ButtonStyle.Secondary"
+            ButtonStyle="ButtonStyle.Primary"
             Class="w-100"
-            Click=@ResetSettings
+            Click=@SaveSettings
             Shade="Shade.Lighter"
-            Text="RESET SETTINGS">
+            Text="SAVE SETTINGS">
         </RadzenButton>
     </div>
 </div>
