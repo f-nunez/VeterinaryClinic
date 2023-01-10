@@ -3,6 +3,7 @@ using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic.GetClini
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Localization;
 using Radzen;
 using Radzen.Blazor;
 
@@ -22,12 +23,16 @@ public partial class ClinicsComponent : ComponentBase
     [Inject]
     protected DialogService DialogService { get; set; }
 
+    [Inject]
+    protected IStringLocalizer<ClinicsComponent> StringLocalizer { get; set; }
+
+    [Inject]
+    protected IStringLocalizer<ClinicsFilterComponent> StringLocalizerForFilter { get; set; }
+
     protected bool IsLoading = false;
 
     protected IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 20, 30, 50, 100 };
 
-    protected string PagingSummaryFormat = "Displaying page {0} of {1} (total {2} records)";
-    
     protected string AddressFilterValue { get; set; }
 
     protected string EmailAddressFilterValue { get; set; }
@@ -35,7 +40,7 @@ public partial class ClinicsComponent : ComponentBase
     protected string IdFilterValue { get; set; }
 
     protected string NameFilterValue { get; set; }
-    
+
     protected string SearchFilterValue { get; set; }
 
     protected async Task LoadData(LoadDataArgs args)
@@ -89,11 +94,10 @@ public partial class ClinicsComponent : ComponentBase
             { nameof(ClinicsFilterValues), filterValues }
         };
 
-        var result = await DialogService
-            .OpenSideAsync<ClinicsFilter>(
-                "Filter Menu",
-                filterParameters
-            );
+        var result = await DialogService.OpenSideAsync<ClinicsFilter>(
+            StringLocalizerForFilter["ClinicsFilter_Label_Filter"],
+            filterParameters
+        );
 
         await ProcessClosedFilterMenuAsync(result);
     }

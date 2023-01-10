@@ -9,7 +9,7 @@
 
 <RadzenHeading
     Size="H1"
-    Text="Clinics">
+    Text=@StringLocalizer["Clinics_Title"]>
 </RadzenHeading>
 
 <RadzenCard>
@@ -23,7 +23,7 @@
                     @onkeyup=@OnKeyUpFilterSearch
                     AutoComplete="false"
                     Click=@OnClickFilterSearch
-                    Placeholder="Search...">
+                    Placeholder=@StringLocalizer["Clinics_Grid_Filter_PlaceHolder_Search"]>
                 </RadzenTextBoxSearchComponent>
 
                 <RadzenButton
@@ -47,7 +47,8 @@
                 PagerHorizontalAlign="HorizontalAlign.Center"
                 PageSize="10"
                 PageSizeOptions="@PageSizeOptions"
-                PagingSummaryFormat=@PagingSummaryFormat
+                PageSizeText=@StringLocalizer["Clinics_Grid_PageSizeText"]
+                PagingSummaryFormat=@StringLocalizer["Clinics_Grid_PagingSummaryFormat"]
                 ShowPagingSummary="true"
                 TItem="ClinicDto">
                 <Columns>
@@ -58,7 +59,7 @@
                         SortOrder="SortOrder.Ascending"
                         TextAlign="TextAlign.Left"
                         TItem="ClinicDto"
-                        Title="Id">
+                        Title=@StringLocalizer["Clinics_Grid_Column_Header_Id"]>
                     </RadzenDataGridColumn>
 
                     <RadzenDataGridColumn
@@ -67,7 +68,7 @@
                         Sortable="true"
                         TextAlign="TextAlign.Justify"
                         TItem="ClinicDto"
-                        Title="Name">
+                        Title=@StringLocalizer["Clinics_Grid_Column_Header_Name"]>
                     </RadzenDataGridColumn>
 
                     <RadzenDataGridColumn
@@ -76,7 +77,7 @@
                         Sortable="true"
                         TextAlign="TextAlign.Justify"
                         TItem="ClinicDto"
-                        Title="Address">
+                        Title=@StringLocalizer["Clinics_Grid_Column_Header_Address"]>
                     </RadzenDataGridColumn>
 
                     <RadzenDataGridColumn
@@ -85,7 +86,7 @@
                         Sortable="true"
                         TextAlign="TextAlign.Justify"
                         TItem="ClinicDto"
-                        Title="Email Address">
+                        Title=@StringLocalizer["Clinics_Grid_Column_Header_EmailAddress"]>
                     </RadzenDataGridColumn>
                 </Columns>
             </RadzenDataGrid>

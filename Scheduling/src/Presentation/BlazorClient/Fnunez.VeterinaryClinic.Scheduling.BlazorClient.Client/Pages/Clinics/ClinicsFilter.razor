@@ -4,7 +4,7 @@
     <div class="row mb-3">
         <RadzenText
             TagName="TagName.H3"
-            Text="Id"
+            Text=@StringLocalizer["ClinicsFilter_Label_Id"]
             TextStyle="TextStyle.Subtitle2">
         </RadzenText>
 
@@ -15,14 +15,14 @@
             Data=@ClinicIds
             FilterDelay="500"
             LoadData=@LoadDataClinicsFilterId
-            Placeholder="Select an id...">
+            Placeholder=@StringLocalizer["ClinicsFilter_AutoComplete_PlaceHolder_Id"]>
         </RadzenAutoComplete>
     </div>
 
     <div class="row mb-3">
         <RadzenText
             TagName="TagName.H3"
-            Text="Name"
+            Text=@StringLocalizer["ClinicsFilter_Label_Name"]
             TextStyle="TextStyle.Subtitle2">
         </RadzenText>
 
@@ -33,14 +33,14 @@
             Data=@ClinicNames
             FilterDelay="500"
             LoadData=@LoadDataClinicsFilterName
-            Placeholder="Select a name...">
+            Placeholder=@StringLocalizer["ClinicsFilter_AutoComplete_PlaceHolder_Name"]>
         </RadzenAutoComplete>
     </div>
 
     <div class="row mb-3">
         <RadzenText
             TagName="TagName.H3"
-            Text="Address"
+            Text=@StringLocalizer["ClinicsFilter_Label_Address"]
             TextStyle="TextStyle.Subtitle2">
         </RadzenText>
 
@@ -51,14 +51,14 @@
             Data=@ClinicAddresses
             FilterDelay="500"
             LoadData=@LoadDataClinicsFilterAddress
-            Placeholder="Select an address...">
+            Placeholder=@StringLocalizer["ClinicsFilter_AutoComplete_PlaceHolder_Address"]>
         </RadzenAutoComplete>
     </div>
 
     <div class="row mb-4">
         <RadzenText
             TagName="TagName.H3"
-            Text="Email Address"
+            Text=@StringLocalizer["ClinicsFilter_Label_EmailAddress"]
             TextStyle="TextStyle.Subtitle2">
         </RadzenText>
 
@@ -69,7 +69,7 @@
             Data=@ClinicEmailAddresses
             FilterDelay="500"
             LoadData=@LoadDataClinicsFilterEmailAddress
-            Placeholder="Select an email address...">
+            Placeholder=@StringLocalizer["ClinicsFilter_AutoComplete_PlaceHolder_EmailAddress"]>
         </RadzenAutoComplete>
     </div>
 
@@ -80,7 +80,7 @@
                 Class="w-100"
                 Click=@OnClickButtonFilter
                 Shade="Shade.Lighter"
-                Text="FILTER">
+                Text=@StringLocalizer["ClinicsFilter_Button_Filter"]>
             </RadzenButton>
         </div>
 
@@ -90,7 +90,7 @@
                 Class="w-100"
                 Click=@OnClickButtonClean
                 Shade="Shade.Lighter"
-                Text="CLEAN">
+                Text=@StringLocalizer["ClinicsFilter_Button_Clear"]>
             </RadzenButton>
         </div>
     </div>
