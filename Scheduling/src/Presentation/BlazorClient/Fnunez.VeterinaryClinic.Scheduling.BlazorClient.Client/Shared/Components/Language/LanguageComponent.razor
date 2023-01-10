@@ -1,0 +1,29 @@
+@using Radzen.Blazor
+
+<RadzenDropDown
+    @bind-Value=@Value
+    AllowClear="false"
+    AllowFiltering="true"
+    Change="@(args => OnChange(args))"
+    Class=@Class
+    Data=@Languages
+    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+    TextProperty="DisplayName"
+    TValue="string"
+    ValueProperty="CultureCode">
+
+    <ValueTemplate>
+        <div class="language-image-container">
+            <img src="@context.Icon">
+            @StringLocalizer[context.DisplayName]
+        </div>
+    </ValueTemplate>
+
+    <Template>
+        <div class="language-image-container">
+            <img src="@context.Icon">
+            @StringLocalizer[context.DisplayName]
+        </div>
+    </Template>
+    
+</RadzenDropDown>
