@@ -8,6 +8,7 @@ using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Settings;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.UserSettings;
 using Blazored.LocalStorage;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.Spinner;
+using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.Language;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -29,6 +30,10 @@ builder.Services.AddScoped<IUserSettingsService, UserSettingsService>();
 
 // register Cookie settings
 builder.Services.AddSingleton<ICookieSettings>(builder.Configuration.GetSection(typeof(CookieSettings).Name).Get<CookieSettings>()!);
+
+// register Language component
+builder.Services.AddSingleton<ILanguageComponentData>(builder.Configuration.GetSection(typeof(LanguageComponentData).Name).Get<LanguageComponentData>()!);
+builder.Services.AddScoped<ILanguageComponentService, LanguageComponentService>();
 
 // register Spinner component
 builder.Services.AddScoped<ISpinnerComponentService, SpinnerComponentService>();
