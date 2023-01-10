@@ -195,7 +195,7 @@
   <data name="AddEditAppointment_EarlyEditAppointment_Alert_Message" xml:space="preserve">
     <value>The appointment has a start date earlier than the current time, are you sure you want to edit it?</value>
   </data>
-  <data name="AddEditAppointment_EarlyAddAppointment_Alert_Title" xml:space="preserve">
+  <data name="AddEditAppointment_EarlyEditAppointment_Alert_Title" xml:space="preserve">
     <value>Edit Appointment</value>
   </data>
   <data name="AddEditAppointment_End_DatePicker_Label" xml:space="preserve">

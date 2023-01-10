@@ -195,7 +195,7 @@
   <data name="AddEditAppointment_EarlyEditAppointment_Alert_Message" xml:space="preserve">
     <value>La consulta tiene la fecha inicial menor a la hora actual, ¿está seguro de que desea editarla?</value>
   </data>
-  <data name="AddEditAppointment_EarlyAddAppointment_Alert_Title" xml:space="preserve">
+  <data name="AddEditAppointment_EarlyEditAppointment_Alert_Title" xml:space="preserve">
     <value>Editar Consulta</value>
   </data>
   <data name="AddEditAppointment_End_DatePicker_Label" xml:space="preserve">
