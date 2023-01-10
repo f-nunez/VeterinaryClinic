@@ -53,3 +53,6 @@ builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 
 await builder.Build().RunAsync();
+// register Language resources for Localizer
+builder.Services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
+
