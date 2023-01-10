@@ -9,6 +9,7 @@ using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.U
 using Blazored.LocalStorage;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.Spinner;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.Language;
+using System.Globalization;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -52,7 +53,18 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 
-await builder.Build().RunAsync();
 // register Language resources for Localizer
 builder.Services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
 
+// load saved language culture
+var host = builder.Build();
+var userSettingsService = host.Services.GetRequiredService<IUserSettingsService>();
+if (userSettingsService != null)
+{
+    string cultureCode = await userSettingsService.GetLanguageCultureCode();
+    var cultureInfo = CultureInfo.CreateSpecificCulture(cultureCode);
+    CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+    CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+}
+
+await host.RunAsync();
