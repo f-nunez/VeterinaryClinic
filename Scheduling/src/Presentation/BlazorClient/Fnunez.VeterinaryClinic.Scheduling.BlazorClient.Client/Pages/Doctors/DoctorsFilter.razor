@@ -4,7 +4,7 @@
     <div class="row mb-3">
         <RadzenText
             TagName="TagName.H3"
-            Text="Id"
+            Text=@StringLocalizer["DoctorsFilter_Label_Id"]
             TextStyle="TextStyle.Subtitle2">
         </RadzenText>
 
@@ -15,14 +15,14 @@
             Data=@DoctorIds
             FilterDelay="500"
             LoadData=@LoadDataDoctorsFilterId
-            Placeholder="Select an id...">
+            Placeholder=@StringLocalizer["DoctorsFilter_AutoComplete_PlaceHolder_Id"]>
         </RadzenAutoComplete>
     </div>
 
     <div class="row mb-4">
         <RadzenText
             TagName="TagName.H3"
-            Text="Full Name"
+            Text=@StringLocalizer["DoctorsFilter_Label_FullName"]
             TextStyle="TextStyle.Subtitle2">
         </RadzenText>
 
@@ -33,7 +33,7 @@
             Data=@DoctorFullNames
             FilterDelay="500"
             LoadData=@LoadDataDoctorsFilterFullName
-            Placeholder="Select a full name...">
+            Placeholder=@StringLocalizer["DoctorsFilter_AutoComplete_PlaceHolder_FullName"]>
         </RadzenAutoComplete>
     </div>
 
@@ -44,7 +44,7 @@
                 Class="w-100"
                 Click=@OnClickButtonFilter
                 Shade="Shade.Lighter"
-                Text="FILTER">
+                Text=@StringLocalizer["DoctorsFilter_Button_Filter"]>
             </RadzenButton>
         </div>
 
@@ -54,7 +54,7 @@
                 Class="w-100"
                 Click=@OnClickButtonClean
                 Shade="Shade.Lighter"
-                Text="CLEAN">
+                Text=@StringLocalizer["DoctorsFilter_Button_Clear"]>
             </RadzenButton>
         </div>
     </div>

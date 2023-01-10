@@ -4,6 +4,7 @@ using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Rooms;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Localization;
 using Radzen;
 using Radzen.Blazor;
 
@@ -23,11 +24,15 @@ public partial class DoctorsComponent : ComponentBase
     [Inject]
     protected DialogService DialogService { get; set; }
 
+    [Inject]
+    protected IStringLocalizer<DoctorsComponent> StringLocalizer { get; set; }
+
+    [Inject]
+    protected IStringLocalizer<DoctorsFilterComponent> StringLocalizerForFilter { get; set; }
+
     protected bool IsLoading = false;
 
     protected IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 20, 30, 50, 100 };
-
-    protected string PagingSummaryFormat = "Displaying page {0} of {1} (total {2} records)";
 
     protected string FullNameFilterValue { get; set; }
 
@@ -82,11 +87,10 @@ public partial class DoctorsComponent : ComponentBase
             { nameof(DoctorsFilterValues), filterValues }
         };
 
-        var result = await DialogService
-            .OpenSideAsync<DoctorsFilter>(
-                "Filter Menu",
-                filterParameters
-            );
+        var result = await DialogService.OpenSideAsync<DoctorsFilter>(
+            StringLocalizerForFilter["DoctorsFilter_Label_Filter"],
+            filterParameters
+        );
 
         await ProcessClosedFilterMenuAsync(result);
     }

@@ -9,7 +9,7 @@
 
 <RadzenHeading
     Size="H1"
-    Text="Doctors">
+    Text=@StringLocalizer["Doctors_Title"]>
 </RadzenHeading>
 
 <RadzenCard>
@@ -23,7 +23,7 @@
                     @onkeyup=@OnKeyUpFilterSearch
                     AutoComplete="false"
                     Click=@OnClickFilterSearch
-                    Placeholder="Search...">
+                    Placeholder=@StringLocalizer["Doctors_Grid_Filter_PlaceHolder_Search"]>
                 </RadzenTextBoxSearchComponent>
 
                 <RadzenButton
@@ -47,7 +47,8 @@
                 PagerHorizontalAlign="HorizontalAlign.Center"
                 PageSize="10"
                 PageSizeOptions="@PageSizeOptions"
-                PagingSummaryFormat=@PagingSummaryFormat
+                PageSizeText=@StringLocalizer["Doctors_Grid_PageSizeText"]
+                PagingSummaryFormat=@StringLocalizer["Doctors_Grid_PagingSummaryFormat"]
                 ShowPagingSummary="true"
                 TItem="DoctorDto">
                 <Columns>
@@ -58,7 +59,7 @@
                         SortOrder="SortOrder.Ascending"
                         TextAlign="TextAlign.Left"
                         TItem="DoctorDto"
-                        Title="Id">
+                        Title=@StringLocalizer["Doctors_Grid_Column_Header_Id"]>
                     </RadzenDataGridColumn>
 
                     <RadzenDataGridColumn
@@ -67,7 +68,7 @@
                         Sortable="true"
                         TextAlign="TextAlign.Justify"
                         TItem="DoctorDto"
-                        Title="Full Name">
+                        Title=@StringLocalizer["Doctors_Grid_Column_Header_FullName"]>
                     </RadzenDataGridColumn>
                 </Columns>
             </RadzenDataGrid>
