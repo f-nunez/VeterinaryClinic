@@ -244,8 +244,6 @@ public partial class AddEditAppointmentComponent : ComponentBase
         if (Appointment.StartOn.ToUnspecifiedKind() >= userLocalTime)
             return true;
 
-        _spinnerService.Hide();
-
         bool? isAcceptIt;
 
         if (IsAppointmentToAdd)
@@ -264,8 +262,6 @@ public partial class AddEditAppointmentComponent : ComponentBase
                 StringLocalizer["AddEditAppointment_EarlyEditAppointment_Alert_Button_Ok"],
                 StringLocalizer["AddEditAppointment_EarlyEditAppointment_Alert_Button_Cancel"]);
         }
-
-        _spinnerService.Show();
 
         return isAcceptIt.HasValue ? isAcceptIt.Value : isAcceptIt.HasValue;
     }
