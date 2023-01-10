@@ -2,9 +2,8 @@ namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Componen
 
 public class TimeZoneComponentService : ITimeZoneComponentService
 {
-    private readonly ITimeZoneComponentData _timeZoneComponentData;
-
     private TimeZone _timeZone { get; set; } = null!;
+    private readonly ITimeZoneComponentData _timeZoneComponentData;
 
     public TimeZoneComponentService(ITimeZoneComponentData timeZoneComponentData)
     {
@@ -29,12 +28,12 @@ public class TimeZoneComponentService : ITimeZoneComponentService
 
     public void SetTimeZone(string timeZoneId)
     {
-        var selectedTimeZone = _timeZoneComponentData.TimeZones
+        TimeZone? timeZone = _timeZoneComponentData.TimeZones
             .FirstOrDefault(tz => tz.Id == timeZoneId);
 
-        if (selectedTimeZone is null)
-            throw new ArgumentException($"TimeZone id: ({timeZoneId}) not found.");
+        if (timeZone is null)
+            throw new ArgumentException($"TimeZone id: ({timeZoneId}) not found. Please clean your Browser's cache.");
 
-        _timeZone = selectedTimeZone;
+        _timeZone = timeZone;
     }
 }
