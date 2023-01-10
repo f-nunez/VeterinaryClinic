@@ -5,7 +5,7 @@
     <div class="row mb-3">
         <RadzenText
             TagName="TagName.H3"
-            Text="Language"
+            Text=@StringLocalizer["UserSettingsDialog_Label_Language"]
             TextStyle="TextStyle.Subtitle2">
         </RadzenText>
 
@@ -19,7 +19,7 @@
     <div class="row mb-4">
         <RadzenText
             TagName="TagName.H3"
-            Text="Time Zone"
+            Text=@StringLocalizer["UserSettingsDialog_Label_TimeZone"]
             TextStyle="TextStyle.Subtitle2">
         </RadzenText>
 
@@ -36,7 +36,7 @@
             Class="w-100"
             Click=@SaveSettings
             Shade="Shade.Lighter"
-            Text="SAVE SETTINGS">
+            Text=@StringLocalizer["UserSettingsDialog_Button_SaveSettings"]>
         </RadzenButton>
     </div>
 </div>

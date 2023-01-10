@@ -1,5 +1,6 @@
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.Spinner;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using Radzen;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.UserSettings;
@@ -21,6 +22,9 @@ public partial class UserSettingsDialogComponent : ComponentBase
 
     [Inject]
     private IUserSettingsComponentService _userSettingsComponentService { get; set; }
+    
+    [Inject]
+    protected IStringLocalizer<UserSettingsDialogComponent> StringLocalizer { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
