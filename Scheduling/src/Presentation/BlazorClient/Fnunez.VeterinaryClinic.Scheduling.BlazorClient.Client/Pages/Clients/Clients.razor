@@ -9,7 +9,7 @@
 
 <RadzenHeading
     Size="H1"
-    Text="Clients">
+    Text=@StringLocalizer["Clients_Title"]>
 </RadzenHeading>
 
 <RadzenCard>
@@ -23,7 +23,7 @@
                     @onkeyup=@OnKeyUpFilterSearch
                     AutoComplete="false"
                     Click=@OnClickFilterSearch
-                    Placeholder="Search...">
+                    Placeholder=@StringLocalizer["Clients_Grid_Filter_PlaceHolder_Search"]>
                 </RadzenTextBoxSearchComponent>
 
                 <RadzenButton
@@ -47,7 +47,8 @@
                 PagerHorizontalAlign="HorizontalAlign.Center"
                 PageSize="10"
                 PageSizeOptions="@PageSizeOptions"
-                PagingSummaryFormat=@PagingSummaryFormat
+                PageSizeText=@StringLocalizer["Clients_Grid_PageSizeText"]
+                PagingSummaryFormat=@StringLocalizer["Clients_Grid_PagingSummaryFormat"]
                 ShowPagingSummary="true"
                 TItem="ClientDto">
                 <Columns>
@@ -58,7 +59,7 @@
                         SortOrder="SortOrder.Ascending"
                         TextAlign="TextAlign.Left"
                         TItem="ClientDto"
-                        Title="Id">
+                        Title=@StringLocalizer["Clients_Grid_Column_Header_Id"]>
                     </RadzenDataGridColumn>
 
                     <RadzenDataGridColumn
@@ -67,7 +68,7 @@
                         Sortable="true"
                         TextAlign="TextAlign.Justify"
                         TItem="ClientDto"
-                        Title="Full Name">
+                        Title=@StringLocalizer["Clients_Grid_Column_Header_FullName"]>
                     </RadzenDataGridColumn>
 
                     <RadzenDataGridColumn
@@ -76,7 +77,7 @@
                         Sortable="true"
                         TextAlign="TextAlign.Justify"
                         TItem="ClientDto"
-                        Title="Preferred Name">
+                        Title=@StringLocalizer["Clients_Grid_Column_Header_PreferredName"]>
                     </RadzenDataGridColumn>
 
                     <RadzenDataGridColumn
@@ -85,7 +86,7 @@
                         Sortable="true"
                         TextAlign="TextAlign.Justify"
                         TItem="ClientDto"
-                        Title="Salutation">
+                        Title=@StringLocalizer["Clients_Grid_Column_Header_Salutation"]>
                     </RadzenDataGridColumn>
 
                     <RadzenDataGridColumn
@@ -94,7 +95,7 @@
                         Sortable="true"
                         TextAlign="TextAlign.Justify"
                         TItem="ClientDto"
-                        Title="Email Address">
+                        Title=@StringLocalizer["Clients_Grid_Column_Header_EmailAddress"]>
                     </RadzenDataGridColumn>
                 </Columns>
             </RadzenDataGrid>

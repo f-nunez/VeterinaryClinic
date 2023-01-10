@@ -4,7 +4,7 @@
     <div class="row mb-3">
         <RadzenText
             TagName="TagName.H3"
-            Text="Id"
+            Text=@StringLocalizer["ClientsFilter_Label_Id"]
             TextStyle="TextStyle.Subtitle2">
         </RadzenText>
 
@@ -15,14 +15,14 @@
             Data=@ClientIds
             FilterDelay="500"
             LoadData=@LoadDataClientsFilterId
-            Placeholder="Select an id...">
+            Placeholder=@StringLocalizer["ClientsFilter_AutoComplete_PlaceHolder_Id"]>
         </RadzenAutoComplete>
     </div>
 
     <div class="row mb-3">
         <RadzenText
             TagName="TagName.H3"
-            Text="Full Name"
+            Text=@StringLocalizer["ClientsFilter_Label_FullName"]
             TextStyle="TextStyle.Subtitle2">
         </RadzenText>
 
@@ -33,14 +33,14 @@
             Data=@ClientFullNames
             FilterDelay="500"
             LoadData=@LoadDataClientsFilterFullName
-            Placeholder="Select a full name...">
+            Placeholder=@StringLocalizer["ClientsFilter_AutoComplete_PlaceHolder_FullName"]>
         </RadzenAutoComplete>
     </div>
 
     <div class="row mb-3">
         <RadzenText
             TagName="TagName.H3"
-            Text="Preferred Name"
+            Text=@StringLocalizer["ClientsFilter_Label_PreferredName"]
             TextStyle="TextStyle.Subtitle2">
         </RadzenText>
 
@@ -51,14 +51,14 @@
             Data=@ClientPreferredNames
             FilterDelay="500"
             LoadData=@LoadDataClientsFilterPreferredName
-            Placeholder="Select a preferred name...">
+            Placeholder=@StringLocalizer["ClientsFilter_AutoComplete_PlaceHolder_PreferredName"]>
         </RadzenAutoComplete>
     </div>
 
     <div class="row mb-3">
         <RadzenText
             TagName="TagName.H3"
-            Text="Salutation"
+            Text=@StringLocalizer["ClientsFilter_Label_Salutation"]
             TextStyle="TextStyle.Subtitle2">
         </RadzenText>
 
@@ -69,14 +69,14 @@
             Data=@ClientSalutations
             FilterDelay="500"
             LoadData=@LoadDataClientsFilterSalutation
-            Placeholder="Select a salutation...">
+            Placeholder=@StringLocalizer["ClientsFilter_AutoComplete_PlaceHolder_Salutation"]>
         </RadzenAutoComplete>
     </div>
 
     <div class="row mb-4">
         <RadzenText
             TagName="TagName.H3"
-            Text="Email Address"
+            Text=@StringLocalizer["ClientsFilter_Label_EmailAddress"]
             TextStyle="TextStyle.Subtitle2">
         </RadzenText>
 
@@ -87,7 +87,7 @@
             Data=@ClientEmailAddresses
             FilterDelay="500"
             LoadData=@LoadDataClientsFilterEmailAddress
-            Placeholder="Select a email address...">
+            Placeholder=@StringLocalizer["ClientsFilter_AutoComplete_PlaceHolder_EmailAddress"]>
         </RadzenAutoComplete>
     </div>
 
@@ -98,7 +98,7 @@
                 Class="w-100"
                 Click=@OnClickButtonFilter
                 Shade="Shade.Lighter"
-                Text="FILTER">
+                Text=@StringLocalizer["ClientsFilter_Button_Filter"]>
             </RadzenButton>
         </div>
 
@@ -108,7 +108,7 @@
                 Class="w-100"
                 Click=@OnClickButtonClean
                 Shade="Shade.Lighter"
-                Text="CLEAN">
+                Text=@StringLocalizer["ClientsFilter_Button_Clear"]>
             </RadzenButton>
         </div>
     </div>

@@ -1,5 +1,6 @@
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using Radzen;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Clients;
@@ -21,6 +22,9 @@ public partial class ClientsFilterComponent : ComponentBase
 
     [Inject]
     protected DialogService DialogService { get; set; }
+
+    [Inject]
+    protected IStringLocalizer<ClientsFilterComponent> StringLocalizer { get; set; }
 
     protected string EmailAddressFilterValue { get; set; }
 
