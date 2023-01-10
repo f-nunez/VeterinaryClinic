@@ -10,7 +10,7 @@
 <RadzenHeading
     Size="H1"
     style="display: inline-block"
-    Text="Rooms">
+    Text=@StringLocalizer["Rooms_Title"]>
 </RadzenHeading>
 
 <RadzenCard>
@@ -24,7 +24,7 @@
                     @onkeyup=@OnKeyUpFilterSearch
                     AutoComplete="false"
                     Click=@OnClickFilterSearch
-                    Placeholder="Search...">
+                    Placeholder=@StringLocalizer["Rooms_Grid_Filter_PlaceHolder_Search"]>
                 </RadzenTextBoxSearchComponent>
 
                 <RadzenButton
@@ -48,7 +48,8 @@
                 PagerHorizontalAlign="HorizontalAlign.Center"
                 PageSize="10"
                 PageSizeOptions="@PageSizeOptions"
-                PagingSummaryFormat=@PagingSummaryFormat
+                PageSizeText=@StringLocalizer["Rooms_Grid_PageSizeText"]
+                PagingSummaryFormat=@StringLocalizer["Rooms_Grid_PagingSummaryFormat"]
                 ShowPagingSummary="true"
                 TItem="RoomDto">
                 <Columns>
@@ -59,7 +60,7 @@
                         SortOrder="SortOrder.Ascending"
                         TextAlign="TextAlign.Left"
                         TItem="RoomDto"
-                        Title="Id">
+                        Title=@StringLocalizer["Rooms_Grid_Column_Header_Id"]>
                     </RadzenDataGridColumn>
 
                     <RadzenDataGridColumn
@@ -68,7 +69,7 @@
                         Sortable="true"
                         TextAlign="TextAlign.Justify"
                         TItem="RoomDto"
-                        Title="Name">
+                        Title=@StringLocalizer["Rooms_Grid_Column_Header_Name"]>
                     </RadzenDataGridColumn>
                 </Columns>
             </RadzenDataGrid>
