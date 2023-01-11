@@ -130,16 +130,29 @@
                 AppointmentSelect=@OnAppointmentSelect
                 Data=@StoredAppointments
                 EndProperty="EndOn"
+                LoadData=@SchedulerLoadData
                 SelectedIndex="1"
                 SlotRender=@OnSlotRender
                 SlotSelect=@OnSlotSelect
                 StartProperty="StartOn"
                 TextProperty="Title"
-                LoadData=@SchedulerLoadData
-                TItem="AppointmentVm">
-                <RadzenDayView StartTime=@TimeSpan.FromMinutes(0)></RadzenDayView>
-                <RadzenWeekView StartTime=@TimeSpan.FromMinutes(0)></RadzenWeekView>
-                <RadzenMonthView></RadzenMonthView>
+                TItem="AppointmentVm"
+                TodayText=@StringLocalizer["Appointments_Scheduler_Text_Today"]>
+
+                <RadzenDayView
+                    StartTime=@TimeSpan.FromMinutes(0)
+                    Text=@StringLocalizer["Appointments_Scheduler_Text_Day"]>
+                </RadzenDayView>
+
+                <RadzenWeekView
+                    StartTime=@TimeSpan.FromMinutes(0)
+                    Text=@StringLocalizer["Appointments_Scheduler_Text_Week"]>
+                </RadzenWeekView>
+
+                <RadzenMonthView
+                    Text=@StringLocalizer["Appointments_Scheduler_Text_Month"]>
+                </RadzenMonthView>
+                
             </RadzenScheduler>
         </div>
     </div>

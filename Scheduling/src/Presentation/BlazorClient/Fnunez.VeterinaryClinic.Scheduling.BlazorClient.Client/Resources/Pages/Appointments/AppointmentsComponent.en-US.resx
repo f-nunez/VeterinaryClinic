@@ -195,4 +195,16 @@
   <data name="Appointments_Title" xml:space="preserve">
     <value>Appointments</value>
   </data>
+  <data name="Appointments_Scheduler_Text_Day" xml:space="preserve">
+    <value>DAY</value>
+  </data>
+  <data name="Appointments_Scheduler_Text_Month" xml:space="preserve">
+    <value>MONTH</value>
+  </data>
+  <data name="Appointments_Scheduler_Text_Today" xml:space="preserve">
+    <value>TODAY</value>
+  </data>
+  <data name="Appointments_Scheduler_Text_Week" xml:space="preserve">
+    <value>WEEK</value>
+  </data>
 </root>

@@ -64,7 +64,7 @@ public partial class AppointmentsComponent : ComponentBase
     protected bool IsPatientDropDownEnabled = false;
     #endregion
 
-    #region Appointment Scheduler
+    #region Appointment Scheduler properties
     private bool _canSchedulerLoadData
     {
         get
@@ -73,10 +73,21 @@ public partial class AppointmentsComponent : ComponentBase
         }
     }
 
+    private string _schedulerTextDay { get; set; }
+    private string _schedulerTextMonth { get; set; }
+    private string _schedulerTextWeek { get; set; }
+
     protected RadzenScheduler<AppointmentVm> Scheduler;
 
     protected List<AppointmentVm> StoredAppointments = new();
     #endregion
+
+    protected override void OnInitialized()
+    {
+        _schedulerTextDay = StringLocalizer["Appointments_Scheduler_Text_Day"];
+        _schedulerTextMonth = StringLocalizer["Appointments_Scheduler_Text_Month"];
+        _schedulerTextWeek = StringLocalizer["Appointments_Scheduler_Text_Week"];
+    }
 
     #region Client filter methods
     protected async Task ClientFilterLoadData(LoadDataArgs args)
@@ -99,8 +110,6 @@ public partial class AppointmentsComponent : ComponentBase
     {
         ClinicId = null;
         ClinicName = string.Empty;
-        ClinicFilterValues = new();
-        PatientFilterValues = new();
         PatientId = null;
         PatientName = string.Empty;
 
@@ -175,7 +184,6 @@ public partial class AppointmentsComponent : ComponentBase
 
     protected async Task OnChangePatientFilter(object value)
     {
-        ClinicFilterValues = new();
         ClinicFilterCount = 0;
         ClinicId = null;
         ClinicName = string.Empty;
@@ -209,13 +217,13 @@ public partial class AppointmentsComponent : ComponentBase
 
     protected void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
-        if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
+        if ((args.View.Text == _schedulerTextMonth) && args.Start.Date == DateTime.Today)
         {
             args.Attributes["style"] = "background: rgba(255,220,40,.2);";
             return;
         }
 
-        if ((args.View.Text == "Week" || args.View.Text == "Day") &&
+        if ((args.View.Text == _schedulerTextWeek || args.View.Text == _schedulerTextDay) &&
             args.Start.Hour >= 8 && args.Start.Hour <= 19)
         {
             args.Attributes["style"] = "background: rgba(255,220,40,.2);";
