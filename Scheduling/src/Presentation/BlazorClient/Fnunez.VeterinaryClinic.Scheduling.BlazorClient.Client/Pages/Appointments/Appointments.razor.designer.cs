@@ -23,9 +23,6 @@ public partial class AppointmentsComponent : ComponentBase
     private DialogService _dialogService { get; set; }
 
     [Inject]
-    private IJSRuntime _jSRuntime { get; set; }
-
-    [Inject]
     private IUserSettingsService _userSettingsService { get; set; }
 
     [Inject]
@@ -76,17 +73,26 @@ public partial class AppointmentsComponent : ComponentBase
     private string _schedulerTextDay { get; set; }
     private string _schedulerTextMonth { get; set; }
     private string _schedulerTextWeek { get; set; }
+    private DateTime _userTodayDateTime { get; set; }
 
     protected RadzenScheduler<AppointmentVm> Scheduler;
 
     protected List<AppointmentVm> StoredAppointments = new();
     #endregion
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+
         _schedulerTextDay = StringLocalizer["Appointments_Scheduler_Text_Day"];
         _schedulerTextMonth = StringLocalizer["Appointments_Scheduler_Text_Month"];
         _schedulerTextWeek = StringLocalizer["Appointments_Scheduler_Text_Week"];
+
+        int selectedTimezoneOffset = await _userSettingsService
+            .GetUtcOffsetInMinutesAsync();
+
+        _userTodayDateTime = DateTimeOffset.UtcNow
+            .ToOffset(TimeSpan.FromMinutes(selectedTimezoneOffset)).Date;
     }
 
     #region Client filter methods
@@ -217,7 +223,7 @@ public partial class AppointmentsComponent : ComponentBase
 
     protected void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
-        if ((args.View.Text == _schedulerTextMonth) && args.Start.Date == DateTime.Today)
+        if ((args.View.Text == _schedulerTextMonth) && args.Start.Date == _userTodayDateTime)
         {
             args.Attributes["style"] = "background: rgba(255,220,40,.2);";
             return;
