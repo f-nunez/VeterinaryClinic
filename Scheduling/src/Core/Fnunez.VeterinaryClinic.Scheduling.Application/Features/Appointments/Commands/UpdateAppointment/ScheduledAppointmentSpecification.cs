@@ -14,7 +14,6 @@ public class ScheduledAppointmentSpecification : BaseSpecification<Appointment>
         Query
             .AsNoTracking()
             .Where(a => a.Id != request.AppointmentId)
-            .Where(a => a.AppointmentTypeId == request.AppointmentTypeId)
             .Where(a => a.ClientId == clientId)
             .Where(a => a.PatientId == patientId)
             .Where(a =>
@@ -32,13 +31,13 @@ public class ScheduledAppointmentSpecification : BaseSpecification<Appointment>
                 ||
                 (//Cover partial early start dates until end dates
                     a.DateRange.StartOn <= request.StartOn &&
-                    a.DateRange.EndOn >= request.StartOn &&
-                    a.DateRange.EndOn >= request.EndOn
+                    a.DateRange.EndOn > request.StartOn &&
+                    a.DateRange.EndOn <= request.EndOn
                 )
                 ||
                 (//Cover from start dates to partial late end dates
                     a.DateRange.StartOn >= request.StartOn &&
-                    a.DateRange.StartOn <= request.EndOn &&
+                    a.DateRange.StartOn < request.EndOn &&
                     a.DateRange.EndOn >= request.EndOn
                 )
             );
