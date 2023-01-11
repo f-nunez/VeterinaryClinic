@@ -35,8 +35,31 @@ public class AppointmentsSpecification : BaseSpecification<Appointment>
             Query.Where(a => a.PatientId == patientId);
 
         Query
-            .Where(a => a.DateRange.StartOn >= request.StartOn)
-            .Where(a => a.DateRange.EndOn <= request.EndOn);
+            .Where(a =>
+                (//Cover range dates
+                    a.DateRange.StartOn >= request.StartOn &&
+                    a.DateRange.StartOn <= request.EndOn &&
+                    a.DateRange.EndOn >= request.StartOn &&
+                    a.DateRange.EndOn <= request.EndOn
+                )
+                ||
+                (//Cover fully partial dates between start and end
+                    a.DateRange.StartOn <= request.StartOn &&
+                    a.DateRange.EndOn >= request.EndOn
+                )
+                ||
+                (//Cover partial early start dates until end dates
+                    a.DateRange.StartOn <= request.StartOn &&
+                    a.DateRange.EndOn > request.StartOn &&
+                    a.DateRange.EndOn <= request.EndOn
+                )
+                ||
+                (//Cover from start dates to partial late end dates
+                    a.DateRange.StartOn >= request.StartOn &&
+                    a.DateRange.StartOn < request.EndOn &&
+                    a.DateRange.EndOn >= request.EndOn
+                )
+            );
 
         Query.OrderBy(a => a.DateRange.StartOn);
     }
