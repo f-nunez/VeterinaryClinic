@@ -1,5 +1,6 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentDetail;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.AppointmentAggregate;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Mappings;
@@ -45,6 +46,39 @@ public class AppointmentProfile : Profile
             ).ForMember(
                 dto => dto.EndOn,
                 options => options.MapFrom(src => src.DateRange.EndOn)
+            );
+        
+        CreateMap<Appointment, AppointmentDetailDto>()
+            .ForMember(
+                dto => dto.AppointmentId,
+                option => option.MapFrom(src => src.Id)
+            ).ForMember(
+                dto => dto.AppointmentTypeName,
+                option => option.MapFrom(src => src.AppointmentType.Name)
+            ).ForMember(
+                dto => dto.ClientFullName,
+                option => option.MapFrom(src => src.Client.FullName)
+            ).ForMember(
+                dto => dto.ClinicName,
+                option => option.MapFrom(src => src.Clinic.Name)
+            ).ForMember(
+                dto => dto.DoctorFullName,
+                option => option.MapFrom(src => src.Doctor.FullName)
+            ).ForMember(
+                dto => dto.IsConfirmed,
+                option => option.MapFrom(src => src.ConfirmOn.HasValue)
+            ).ForMember(
+                dto => dto.PatientName,
+                option => option.MapFrom(src => src.Patient.Name)
+            ).ForMember(
+                dto => dto.RoomName,
+                option => option.MapFrom(src => src.Room.Name)
+            ).ForMember(
+                dto => dto.StartOn,
+                option => option.MapFrom(src => src.DateRange.StartOn)
+            ).ForMember(
+                dto => dto.EndOn,
+                option => option.MapFrom(src => src.DateRange.EndOn)
             );
     }
 }
