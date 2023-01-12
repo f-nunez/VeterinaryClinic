@@ -2,6 +2,7 @@ using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Comma
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Commands.DeleteAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Commands.UpdateAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointmentDetail;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointmentEdit;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointments;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointmentsFilterAppointmentType;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointmentsFilterClient;
@@ -12,6 +13,7 @@ using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queri
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.CreateAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.DeleteAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentDetail;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentEdit;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointments;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterAppointmentType;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterClient;
@@ -143,14 +145,27 @@ public class AppointmentController : BaseApiController
         return Ok(response);
     }
 
-    [HttpPost("Detail")]
-    public async Task<ActionResult> Detail(
+    [HttpPost("GetAppointmentDetail")]
+    public async Task<ActionResult> GetAppointmentDetail(
         GetAppointmentDetailRequest request,
         CancellationToken cancellationToken)
     {
         var query = new GetAppointmentDetailQuery(request);
 
         GetAppointmentDetailResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("GetAppointmentEdit")]
+    public async Task<ActionResult> GetAppointmentEdit(
+        GetAppointmentEditRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetAppointmentEditQuery(request);
+
+        GetAppointmentEditResponse response = await Mediator
             .Send(query, cancellationToken);
 
         return Ok(response);
