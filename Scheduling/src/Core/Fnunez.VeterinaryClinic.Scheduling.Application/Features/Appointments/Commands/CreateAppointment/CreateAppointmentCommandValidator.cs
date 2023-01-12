@@ -27,11 +27,13 @@ public class CreateAppointmentCommandValidator
         
         RuleFor(v => v.CreateAppointmentRequest.Description)
             .NotNull().WithMessage("Description is required.")
-            .NotEmpty().WithMessage("Description is required.");
+            .NotEmpty().WithMessage("Description is required.")
+            .MaximumLength(2000).WithMessage("Description must be less or equals than 2000 characters.");
 
         RuleFor(v => v.CreateAppointmentRequest.Title)
             .NotNull().WithMessage("Title is required.")
-            .NotEmpty().WithMessage("Title is required.");
+            .NotEmpty().WithMessage("Title is required.")
+            .MaximumLength(200).WithMessage("Title must be less or equals than 2000 characters.");
         
         RuleFor(v => v.CreateAppointmentRequest.StartOn)
             .NotNull().WithMessage("StartOn is required.");
