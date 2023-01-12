@@ -1,4 +1,4 @@
-namespace Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.CreateAppointment;
+namespace Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment;
 
 public class AppointmentDto
 {

@@ -8,7 +8,6 @@ using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.ViewModels.Appointments;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
-using Microsoft.JSInterop;
 using Radzen;
 using Radzen.Blazor;
 

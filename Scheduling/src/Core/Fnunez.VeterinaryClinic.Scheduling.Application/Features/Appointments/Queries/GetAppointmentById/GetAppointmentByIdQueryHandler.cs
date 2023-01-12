@@ -1,6 +1,6 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Exceptions;
-using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.CreateAppointment;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentById;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.AppointmentAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;

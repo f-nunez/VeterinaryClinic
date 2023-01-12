@@ -1,5 +1,5 @@
 using AutoMapper;
-using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.CreateAppointment;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.AppointmentAggregate;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Mappings;
