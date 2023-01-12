@@ -199,7 +199,7 @@
     <value>Editar Consulta</value>
   </data>
   <data name="AddEditAppointment_End_DatePicker_Label" xml:space="preserve">
-    <value>End Date</value>
+    <value>Fecha Final</value>
   </data>
   <data name="AddEditAppointment_End_DatePicker_RequiredMessage" xml:space="preserve">
     <value>Fecha final es requerida</value>
