@@ -1,5 +1,6 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.CreateAppointment;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.DeleteAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentDetail;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentEdit;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointments;
@@ -24,6 +25,7 @@ public interface IAppointmentService
     public Task<DataGridResponse<DoctorFilterValueDto>> DataGridFilterDoctorAsync(GetAppointmentsFilterDoctorRequest request);
     public Task<List<PatientFilterValueDto>> DataGridFilterPatientAsync(GetAppointmentsFilterPatientRequest request);
     public Task<DataGridResponse<RoomFilterValueDto>> DataGridFilterRoomAsync(GetAppointmentsFilterRoomRequest request);
+    public Task<DeleteAppointmentResponse> DeleteAppointmentAsync(DeleteAppointmentRequest request);
     public Task<GetAppointmentDetailResponse> GetAppointmentDetailAsync(GetAppointmentDetailRequest request);
     public Task<GetAppointmentEditResponse> GetAppointmentEditAsync(GetAppointmentEditRequest request);
     public Task<UpdateAppointmentResponse> UpdateAppointmentAsync(UpdateAppointmentRequest request);

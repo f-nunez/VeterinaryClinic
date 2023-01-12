@@ -1,5 +1,6 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.CreateAppointment;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.DeleteAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentDetail;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentEdit;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointments;
@@ -182,6 +183,22 @@ public class AppointmentService : IAppointmentService
             throw new ArgumentNullException(nameof(response.DataGridResponse));
 
         return response.DataGridResponse;
+    }
+
+    public async Task<DeleteAppointmentResponse> DeleteAppointmentAsync(DeleteAppointmentRequest request)
+    {
+        _logger.LogInformation($"DeleteAppointment: {request.AppointmentId}");
+
+        var response = await _httpService
+            .HttpDeleteAsync<DeleteAppointmentResponse>(
+                $"Appointment/Delete",
+                request.AppointmentId
+            );
+
+        if (response is null)
+            throw new ArgumentNullException(nameof(response));
+
+        return response;
     }
 
     public async Task<GetAppointmentDetailResponse> GetAppointmentDetailAsync(
