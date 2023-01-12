@@ -1,8 +1,13 @@
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.DeleteAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentDetail;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentEdit;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointments;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterAppointmentType;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterClient;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterClinic;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterDoctor;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterPatient;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterRoom;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Helpers;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.ViewModels.Appointments;
@@ -29,6 +34,9 @@ public partial class AppointmentsComponent : ComponentBase
 
     [Inject]
     protected IStringLocalizer<AddEditAppointmentComponent> StringLocalizerForAddEditAppointment { get; set; }
+
+    [Inject]
+    protected IStringLocalizer<AppointmentDetailComponent> StringLocalizerForAppointmentDetail { get; set; }
 
     #region Client filter properties
     protected List<ClientFilterValueDto> ClientFilterValues = new();
@@ -222,7 +230,8 @@ public partial class AppointmentsComponent : ComponentBase
 
     protected void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
-        if ((args.View.Text == _schedulerTextMonth) && args.Start.Date == _userTodayDateTime)
+        if ((args.View.Text == _schedulerTextMonth) &&
+            args.Start.Date == _userTodayDateTime)
         {
             args.Attributes["style"] = "background: rgba(255,220,40,.2);";
             return;
@@ -254,53 +263,54 @@ public partial class AppointmentsComponent : ComponentBase
         var response = await _appointmentService
             .GetAppointmentDetailAsync(request);
 
-        var selectedTimezoneName = await _userSettingsService.GetTimeZoneNameAsync();
-        var selectedTimezoneOffset = await _userSettingsService.GetUtcOffsetInMinutesAsync();
+        var selectedTimezoneName = await _userSettingsService
+            .GetTimeZoneNameAsync();
 
-        var appointmentToEdit = AppointmentHelper.MapAppointmentItemViewModel(
-            response.Appointment, selectedTimezoneOffset);
+        var selectedTimezoneOffset = await _userSettingsService
+            .GetUtcOffsetInMinutesAsync();
 
-        var data = await _dialogService.OpenAsync<AddEditAppointment>(
-            StringLocalizerForAddEditAppointment["AddEditAppointment_Label_EditAppointment"],
-            new Dictionary<string, object>
-            {
-                { "IsAppointmentToAdd", false },
-                { "Appointment", appointmentToEdit },
-                { "SelectedTimezoneName", selectedTimezoneName },
-                { "SelectedTimezoneOffset", selectedTimezoneOffset },
-                { "PreselectedAppointmentTypeFilterValues", response.AppointmentTypeFilterValues },
-                { "PreselectedDoctorFilterValues", response.DoctorFilterValues },
-                { "PreselectedRoomFilterValues", response.RoomFilterValues }
-            },
-            new DialogOptions
-            {
-                CssClass = "col-sm-12 col-md-10 col-lg-8",
-                Width = "unset"
-            }
-        );
+        var appointmentDetail = AppointmentHelper.MapAppointmentDetailViewModel(
+            response.Appointment, selectedTimezoneName, selectedTimezoneOffset);
 
-        if (data is null)
+        var appointmentDetailData = await ShowDialogForAppointmentDetailAsync(appointmentDetail);
+
+        if (appointmentDetailData is null)
             return;
 
-        var editedAppointment = data as AppointmentItemVm;
+        var appointmentDetailResponse = (AppointmentDetailResponse)appointmentDetailData;
 
-        await ShowAlertAsync(
-            string.Format(StringLocalizer["Appointments_EditedAppointment_Alert_Message"], editedAppointment.Title),
-            StringLocalizer["Appointments_EditedAppointment_Alert_Title"],
-            StringLocalizer["Appointments_EditedAppointment_Alert_Button_Ok"]);
+        switch (appointmentDetailResponse)
+        {
+            case AppointmentDetailResponse.Delete:
+                await PerformActionToDeleteAppointmentAsync(
+                    args.Data.Id, appointmentDetail.Title);
+                break;
+
+            case AppointmentDetailResponse.Edit:
+                await PerformActionToEditAppointmentAsync(
+                    args.Data.Id, selectedTimezoneName, selectedTimezoneOffset);
+                break;
+
+            default:
+                throw new ArgumentException(
+                    $"Not found the value: {appointmentDetailResponse}");
+        }
 
         await LoadDataToSchedulerAsync();
     }
 
     protected async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
     {
-        bool canProceedToSchedule = await ValidateRequiredFieldsToScheduleAndAppointmentAsync();
+        bool canProceedToSchedule = await ValidateRequiredFieldsToPerformAnAppointmentAsync();
 
         if (!canProceedToSchedule)
             return;
 
-        var selectedTimezoneName = await _userSettingsService.GetTimeZoneNameAsync();
-        var selectedTimezoneOffset = await _userSettingsService.GetUtcOffsetInMinutesAsync();
+        var selectedTimezoneName = await _userSettingsService
+            .GetTimeZoneNameAsync();
+
+        var selectedTimezoneOffset = await _userSettingsService
+            .GetUtcOffsetInMinutesAsync();
 
         var endOn = new DateTimeOffset(
             args.End.ToUnspecifiedKind(),
@@ -323,20 +333,10 @@ public partial class AppointmentsComponent : ComponentBase
             StartOn = startOn
         };
 
-        var data = await _dialogService.OpenAsync<AddEditAppointment>(
-            StringLocalizerForAddEditAppointment["AddEditAppointment_Label_AddAppointment"],
-            new Dictionary<string, object>
-            {
-                { "IsAppointmentToAdd", true},
-                { "Appointment", newAppointment },
-                { "SelectedTimezoneName", selectedTimezoneName },
-                { "SelectedTimezoneOffset", selectedTimezoneOffset }
-            },
-            new DialogOptions
-            {
-                CssClass = "col-sm-12 col-md-10 col-lg-8",
-                Width = "unset"
-            }
+        var data = await ShowDialogToAddAsync(
+            newAppointment,
+            selectedTimezoneName,
+            selectedTimezoneOffset
         );
 
         if (data is null)
@@ -354,7 +354,8 @@ public partial class AppointmentsComponent : ComponentBase
 
     private async Task<List<AppointmentVm>> GetScheduledAppointmentsAsync()
     {
-        var selectedTimezoneOffset = await _userSettingsService.GetUtcOffsetInMinutesAsync();
+        var selectedTimezoneOffset = await _userSettingsService
+            .GetUtcOffsetInMinutesAsync();
 
         var startOnWithOffset = new DateTimeOffset(
             Scheduler.SelectedView.StartDate.ToUnspecifiedKind(),
@@ -391,7 +392,127 @@ public partial class AppointmentsComponent : ComponentBase
         await InvokeAsync(StateHasChanged);
     }
 
-    private async Task<bool> ValidateRequiredFieldsToScheduleAndAppointmentAsync()
+    private async Task PerformActionToDeleteAppointmentAsync(
+        Guid appointmentId,
+        string appointmentTitle)
+    {
+        var request = new DeleteAppointmentRequest
+        {
+            AppointmentId = appointmentId
+        };
+
+        await _appointmentService.DeleteAppointmentAsync(request);
+
+        await ShowAlertAsync(
+            string.Format(StringLocalizer["Appointments_DeletedAppointment_Alert_Message"], appointmentTitle),
+            StringLocalizer["Appointments_DeletedAppointment_Alert_Title"],
+            StringLocalizer["Appointments_DeletedAppointment_Alert_Button_Ok"]);
+    }
+
+    private async Task PerformActionToEditAppointmentAsync(
+        Guid appointmentId,
+        string timezoneName,
+        int timezoneOffset)
+    {
+        var requestEdit = new GetAppointmentEditRequest
+        {
+            AppointmentId = appointmentId
+        };
+
+        var responseEdit = await _appointmentService
+            .GetAppointmentEditAsync(requestEdit);
+
+        var appointmentToEdit = AppointmentHelper.MapAppointmentItemViewModel(
+            responseEdit.Appointment, timezoneOffset);
+
+        var appointmentEditData = await ShowDialogToEditAsync(
+            appointmentToEdit,
+            responseEdit.AppointmentTypeFilterValues,
+            responseEdit.DoctorFilterValues,
+            responseEdit.RoomFilterValues,
+            timezoneName,
+            timezoneOffset
+        );
+
+        if (appointmentEditData is null)
+            return;
+
+        var editedAppointment = appointmentEditData as AppointmentItemVm;
+
+        await ShowAlertAsync(
+            string.Format(StringLocalizer["Appointments_EditedAppointment_Alert_Message"], editedAppointment.Title),
+            StringLocalizer["Appointments_EditedAppointment_Alert_Title"],
+            StringLocalizer["Appointments_EditedAppointment_Alert_Button_Ok"]);
+    }
+
+    private async Task<dynamic> ShowDialogForAppointmentDetailAsync(
+        AppointmentDetailVm appointmentDetail)
+    {
+        return await _dialogService.OpenAsync<AppointmentDetail>(
+            StringLocalizerForAppointmentDetail["AppointmentDetail_Label_AppointmentDetail"],
+            new Dictionary<string, object>
+            {
+                { "Appointment", appointmentDetail }
+            },
+            new DialogOptions
+            {
+                CssClass = "col-md-10 col-lg-8",
+                Width = "unset"
+            }
+        );
+    }
+
+    private async Task<dynamic> ShowDialogToAddAsync(
+        AppointmentItemVm appointment,
+        string timezoneName,
+        int timezoneOffset)
+    {
+        return await _dialogService.OpenAsync<AddEditAppointment>(
+            StringLocalizerForAddEditAppointment["AddEditAppointment_Label_AddAppointment"],
+            new Dictionary<string, object>
+            {
+                { "IsAppointmentToAdd", true},
+                { "Appointment", appointment },
+                { "SelectedTimezoneName", timezoneName },
+                { "SelectedTimezoneOffset", timezoneOffset }
+            },
+            new DialogOptions
+            {
+                CssClass = "col-md-10 col-lg-8",
+                Width = "unset"
+            }
+        );
+    }
+
+    private async Task<dynamic> ShowDialogToEditAsync(
+        AppointmentItemVm appointment,
+        List<AppointmentTypeFilterValueDto> appointmentTypeFilterValues,
+        List<DoctorFilterValueDto> doctorFilterValues,
+        List<RoomFilterValueDto> roomFilterValues,
+        string timezoneName,
+        int timezoneOffset)
+    {
+        return await _dialogService.OpenAsync<AddEditAppointment>(
+            StringLocalizerForAddEditAppointment["AddEditAppointment_Label_EditAppointment"],
+            new Dictionary<string, object>
+            {
+                { "IsAppointmentToAdd", false },
+                { "Appointment", appointment },
+                { "SelectedTimezoneName", timezoneName },
+                { "SelectedTimezoneOffset", timezoneOffset },
+                { "PreselectedAppointmentTypeFilterValues", appointmentTypeFilterValues },
+                { "PreselectedDoctorFilterValues", doctorFilterValues },
+                { "PreselectedRoomFilterValues", roomFilterValues }
+            },
+            new DialogOptions
+            {
+                CssClass = "col-md-10 col-lg-8",
+                Width = "unset"
+            }
+        );
+    }
+
+    private async Task<bool> ValidateRequiredFieldsToPerformAnAppointmentAsync()
     {
         if (ClientId is null)
         {
@@ -434,7 +555,7 @@ public partial class AppointmentsComponent : ComponentBase
         return await _dialogService.Alert(
             alertMessage,
             alertTitle,
-            new AlertOptions()
+            new AlertOptions
             {
                 OkButtonText = alertButtonOkMessage
             }
