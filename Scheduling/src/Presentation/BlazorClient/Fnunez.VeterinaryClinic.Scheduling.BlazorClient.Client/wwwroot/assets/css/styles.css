@@ -89,13 +89,13 @@
   margin-left: 1rem;
 }
 
-/* Input Dialog */
-.input-dialog-imgage-container {
+/* AddEditAppointment Dialog */
+.appointment-add-image-container {
   text-align: center;
   width: 100%;
 }
 
-.input-dialog-imgage-container img {
+.appointment-add-image-container img {
   border-style: none;
   max-height: 5rem;
   max-width: 5rem;

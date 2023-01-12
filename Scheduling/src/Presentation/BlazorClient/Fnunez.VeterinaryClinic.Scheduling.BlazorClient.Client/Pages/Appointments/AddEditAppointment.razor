@@ -47,7 +47,7 @@
                     </RadzenTextBox>
 
                     
-                    <div class="input-dialog-imgage-container mt-3">
+                    <div class="appointment-add-image-container mt-3">
                         <RadzenImage Path=@($"{PatientBase64EncodedImageData}") />
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                         Value="0">
                     </RadzenCompareValidator>
 
-                    <div class="input-dialog-imgage-container mt-3">
+                    <div class="appointment-add-image-container mt-3">
                         <RadzenImage Class="input-dialog-img" Path=@($"{DoctorBase64EncodedImageData}") />
                     </div>
                 </div>
@@ -115,6 +115,7 @@
                     <RadzenDatePicker
                         @bind-Value="@Appointment.StartOn"
                         Class="w-100 d-block"
+                        DateFormat="g"
                         Name="StartOn"
                         ShowSeconds="false"
                         ShowTime="true">
@@ -145,6 +146,7 @@
                     <RadzenDatePicker
                         @bind-Value="@Appointment.EndOn"
                         Class="w-100 d-block"
+                        DateFormat="g"
                         Name="EndOn"
                         ShowSeconds="false"
                         ShowTime="true">
