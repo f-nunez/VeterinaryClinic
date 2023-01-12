@@ -1,0 +1,9 @@
+.language-image-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.language-image-container img {
+    height: 1rem;
+}

@@ -1,0 +1,42 @@
+@using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.Language
+@using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.TimeZone
+
+<div class="container">
+    <div class="row mb-3">
+        <RadzenText
+            TagName="TagName.H3"
+            Text=@StringLocalizer["UserSettingsDialog_Label_Language"]
+            TextStyle="TextStyle.Subtitle2">
+        </RadzenText>
+
+        <LanguageComponent
+            Class="w-100"
+            SelectedCultureCode=@LanguageCultureCode
+            ValueChanged="LanguageChanged">
+        </LanguageComponent>
+    </div>
+
+    <div class="row mb-4">
+        <RadzenText
+            TagName="TagName.H3"
+            Text=@StringLocalizer["UserSettingsDialog_Label_TimeZone"]
+            TextStyle="TextStyle.Subtitle2">
+        </RadzenText>
+
+        <TimeZoneComponent
+            Class="w-100"
+            SelectedTimeZoneId=@TimeZoneId
+            ValueChanged="TimeZoneChanged">
+        </TimeZoneComponent>
+    </div>
+
+    <div class="row">
+        <RadzenButton
+            ButtonStyle="ButtonStyle.Primary"
+            Class="w-100"
+            Click=@SaveSettings
+            Shade="Shade.Lighter"
+            Text=@StringLocalizer["UserSettingsDialog_Button_SaveSettings"]>
+        </RadzenButton>
+    </div>
+</div>

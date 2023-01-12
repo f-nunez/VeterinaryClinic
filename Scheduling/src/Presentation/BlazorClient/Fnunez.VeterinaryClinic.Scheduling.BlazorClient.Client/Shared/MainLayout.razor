@@ -1,0 +1,57 @@
+@inherits Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.MainLayoutComponent
+
+@using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.Spinner
+@using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.UserSettings
+
+<RadzenDialog></RadzenDialog>
+<RadzenNotification></RadzenNotification>
+
+<RadzenLayout>
+    <RadzenHeader>
+        <ChildContent>
+            <div class="row justify-content-start align-items-center">
+                <div class="col-5 d-flex align-items-center">
+                    <RadzenSidebarToggle Click="@SidebarToggleClick"></RadzenSidebarToggle>
+                    <RadzenLabel Text="Scheduling" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"></RadzenLabel>
+                </div>
+
+                <div class="col-7 d-flex align-items-center justify-content-end">
+                    <UserSettingsComponent></UserSettingsComponent>
+                </div>
+            </div>
+        </ChildContent>
+    </RadzenHeader>
+
+    <RadzenBody @ref="RadzenBody" @bind-Expanded="@IsBodyExpanded">
+        <childContent>
+            <RadzenContentContainer Name="main">
+                @Body
+            </RadzenContentContainer>
+        </childContent>
+    </RadzenBody>
+
+    <RadzenSidebar @ref="RadzenSidebar" style="display: flex; flex-direction: column">
+        <ChildContent>
+            <RadzenPanelMenu>
+                <ChildContent>
+                    <RadzenPanelMenuItem Icon="home" Path="home" Text=@StringLocalizer["MainLayout_Menu_Home"]></RadzenPanelMenuItem>
+                    <RadzenPanelMenuItem Icon="event" Path="appointments" Text=@StringLocalizer["MainLayout_Menu_Appointments"]></RadzenPanelMenuItem>
+                    <RadzenPanelMenuItem Icon="widgets" Path="appointmenttypes" Text=@StringLocalizer["MainLayout_Menu_AppointmentTypes"]></RadzenPanelMenuItem>
+                    <RadzenPanelMenuItem Icon="people_alt" Path="clients" Text=@StringLocalizer["MainLayout_Menu_Clients"]></RadzenPanelMenuItem>
+                    <RadzenPanelMenuItem Icon="store" Path="clinics" Text=@StringLocalizer["MainLayout_Menu_Clinics"]></RadzenPanelMenuItem>
+                    <RadzenPanelMenuItem Icon="face" Path="doctors" Text=@StringLocalizer["MainLayout_Menu_Doctors"]></RadzenPanelMenuItem>
+                    <RadzenPanelMenuItem Icon="pets" Path="patients" Text=@StringLocalizer["MainLayout_Menu_Patients"]></RadzenPanelMenuItem>
+                    <RadzenPanelMenuItem Icon="meeting_room" Path="rooms" Text=@StringLocalizer["MainLayout_Menu_Rooms"]></RadzenPanelMenuItem>
+                </ChildContent>
+            </RadzenPanelMenu>
+        </ChildContent>
+    </RadzenSidebar>
+
+    <RadzenFooter>
+        <ChildContent>
+            <RadzenLabel Text="Veterinary Clinic"></RadzenLabel>
+        </ChildContent>
+    </RadzenFooter>
+</RadzenLayout>
+
+<SpinnerComponent></SpinnerComponent>

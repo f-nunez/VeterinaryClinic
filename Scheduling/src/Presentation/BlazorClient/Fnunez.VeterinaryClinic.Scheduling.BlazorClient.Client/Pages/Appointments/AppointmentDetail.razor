@@ -1,0 +1,182 @@
+@inherits Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Appointments.AppointmentDetailComponent
+
+@using Radzen
+@using Radzen.Blazor
+
+<div class="row">
+    <div class="col-12 col-md-6 mb-2 d-flex">
+        <RadzenImage
+            Class="appointment-detail-image"
+            Path=@($"{PatientBase64EncodedImageData}")>
+        </RadzenImage>
+
+        <div>
+            <RadzenText
+                Class="rz-color-primary-light mb-0 d-flex"
+                TextStyle="TextStyle.Overline">
+                @StringLocalizer["AppointmentDetail_Label_Patient"]
+            </RadzenText>
+
+            <RadzenText TextStyle="TextStyle.Body1">
+                <b>@Appointment.PatientName</b>
+            </RadzenText>
+
+            <RadzenText
+                Class="rz-color-primary-light mb-0 mt-3 d-flex"
+                TextStyle="TextStyle.Overline">
+                @StringLocalizer["AppointmentDetail_Label_Client"]
+            </RadzenText>
+
+            <RadzenText TextStyle="TextStyle.Body1">
+                <b>@Appointment.ClientFullName</b>
+            </RadzenText>
+
+            @if (@Appointment.IsConfirmed)
+            {
+                <RadzenBadge
+                    Shade="Shade.Lighter"
+                    BadgeStyle="BadgeStyle.Success">
+                    @StringLocalizer["AppointmentDetail_Label_IsConfirmed"]
+                </RadzenBadge>
+            }
+            else
+            {
+                <RadzenBadge
+                    Shade="Shade.Lighter"
+                    BadgeStyle="BadgeStyle.Info"
+                    Text="No Confirmed">
+                    @StringLocalizer["AppointmentDetail_Label_IsNotConfirmed"]
+                </RadzenBadge>
+            }
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 mb-2 d-flex">
+        <RadzenImage
+            Class="appointment-detail-image"
+            Path=@($"{DoctorBase64EncodedImageData}")>
+        </RadzenImage>
+
+        <div>
+            <RadzenText
+                Class="rz-color-primary-light mb-0 d-flex"
+                TextStyle="TextStyle.Overline">
+                @StringLocalizer["AppointmentDetail_Label_Doctor"]
+            </RadzenText>
+
+            <RadzenText TextStyle="TextStyle.Body1">
+                <b>@Appointment.DoctorFullName</b>
+            </RadzenText>
+
+            <RadzenText
+                Class="rz-color-primary-light mb-0 mt-3 d-flex"
+                TextStyle="TextStyle.Overline">
+                @StringLocalizer["AppointmentDetail_Label_AppointmentType"]
+            </RadzenText>
+
+            <RadzenText TextStyle="TextStyle.Body1">
+                <b>@Appointment.AppointmentTypeName</b>
+            </RadzenText>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 text-center">
+        <RadzenText
+            Class="rz-color-primary-light"
+            TextStyle="TextStyle.Overline">
+            @StringLocalizer["AppointmentDetail_Label_TimeZone"]
+        </RadzenText>
+
+        <RadzenText TextStyle="TextStyle.Body1">
+            @Appointment.TimezoneName
+        </RadzenText>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-6">
+        <RadzenText Class="rz-color-primary-light" TextStyle="TextStyle.Overline">
+            @StringLocalizer["AppointmentDetail_Label_Clinic"]
+        </RadzenText>
+
+        <RadzenText TextStyle="TextStyle.Body1">
+            <b>@Appointment.ClinicName</b>
+        </RadzenText>
+
+        <RadzenText Class="rz-color-primary-light" TextStyle="TextStyle.Overline">
+            @StringLocalizer["AppointmentDetail_Label_Room"]
+        </RadzenText>
+
+        <RadzenText TextStyle="TextStyle.Body1">
+            <b>@Appointment.RoomName</b>
+        </RadzenText>
+    </div>
+    
+    <div class="col-12 col-md-6">
+        <RadzenText Class="rz-color-primary-light" TextStyle="TextStyle.Overline">
+            @StringLocalizer["AppointmentDetail_Label_StartDate"]
+        </RadzenText>
+
+        <RadzenText TextStyle="TextStyle.Body1">
+            <b>@Appointment.StartOn.ToString("g")</b>
+        </RadzenText>
+
+        <RadzenText Class="rz-color-primary-light" TextStyle="TextStyle.Overline">
+            @StringLocalizer["AppointmentDetail_Label_EndDate"]
+        </RadzenText>
+
+        <RadzenText TextStyle="TextStyle.Body1">
+            <b>@Appointment.EndOn.ToString("g")</b>
+        </RadzenText>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <RadzenText Class="rz-color-primary-light" TextStyle="TextStyle.Overline">
+            @StringLocalizer["AppointmentDetail_Label_Title"]
+        </RadzenText>
+
+        <RadzenText TextStyle="TextStyle.Body1">
+            <b>@Appointment.Title</b>
+        </RadzenText>
+    </div>
+
+    <div class="col-12">
+        <RadzenText Class="rz-color-primary-light" TextStyle="TextStyle.Overline">
+            @StringLocalizer["AppointmentDetail_Label_Description"]
+        </RadzenText>
+
+        <RadzenText TextStyle="TextStyle.Body1">
+            <b>@Appointment.Description</b>
+        </RadzenText>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-6 mt-2">
+        <RadzenButton
+            ButtonStyle="ButtonStyle.Primary"
+            ButtonType="ButtonType.Submit"
+            Class="w-100"
+            Click=Edit
+            Icon="edit"
+            Variant="Variant.Text">
+            @StringLocalizer["AppointmentDetail_Button_Edit"]
+        </RadzenButton>
+    </div>
+
+    <div class="col-12 col-md-6 mt-2">
+        <RadzenButton
+            ButtonStyle="ButtonStyle.Danger"
+            ButtonType="ButtonType.Submit"
+            Class="w-100"
+            Click=@Delete
+            Icon="delete"
+            Variant="Variant.Text">
+            @StringLocalizer["AppointmentDetail_Button_Delete"]
+        </RadzenButton>
+    </div>
+</div>

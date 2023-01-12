@@ -1,0 +1,7 @@
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterPatient;
+using MediatR;
+
+namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointmentsFilterPatient;
+
+public record GetAppointmentsFilterPatientQuery(GetAppointmentsFilterPatientRequest GetAppointmentsFilterPatientRequest)
+    : IRequest<GetAppointmentsFilterPatientResponse>;
