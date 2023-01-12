@@ -1,6 +1,7 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.CreateAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentDetail;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentEdit;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointments;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterAppointmentType;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterClient;
@@ -190,7 +191,24 @@ public class AppointmentService : IAppointmentService
 
         var response = await _httpService
             .HttpPostAsync<GetAppointmentDetailResponse>(
-                $"Appointment/Detail",
+                $"Appointment/GetAppointmentDetail",
+                request
+            );
+
+        if (response is null)
+            throw new ArgumentNullException(nameof(response));
+
+        return response;
+    }
+
+    public async Task<GetAppointmentEditResponse> GetAppointmentEditAsync(
+        GetAppointmentEditRequest request)
+    {
+        _logger.LogInformation($"GetAppointmentEdit: {request.CorrelationId}");
+
+        var response = await _httpService
+            .HttpPostAsync<GetAppointmentEditResponse>(
+                $"Appointment/GetAppointmentEdit",
                 request
             );
 
