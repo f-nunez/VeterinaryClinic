@@ -274,7 +274,7 @@ public partial class AddEditAppointmentComponent : ComponentBase
         return await _dialogService.Alert(
             alertMessage,
             alertTitle,
-            new AlertOptions()
+            new AlertOptions
             {
                 OkButtonText = alertButtonOkMessage
             }
@@ -290,7 +290,7 @@ public partial class AddEditAppointmentComponent : ComponentBase
         return await _dialogService.Confirm(
             alertMessage,
             alertTitle,
-            new ConfirmOptions()
+            new ConfirmOptions
             {
                 OkButtonText = alertButtonOkMessage,
                 CancelButtonText = alertButtonCancelMessage
