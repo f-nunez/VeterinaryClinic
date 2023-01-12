@@ -267,6 +267,7 @@
                     <RadzenTextBox
                         @bind-Value="@Appointment.Title"
                         Class="w-100 d-block"
+                        MaxLength="200"
                         Name="Title"
                         Placeholder=@StringLocalizer["AddEditAppointment_Title_TextBox_PlaceHolder"]>
                     </RadzenTextBox>
@@ -288,6 +289,7 @@
                     <RadzenTextArea
                         @bind-Value="@Appointment.Description"
                         Class="w-100 d-block"
+                        MaxLength="2000"
                         Name="Description"
                         Placeholder=@StringLocalizer["AddEditAppointment_Description_TextBox_PlaceHolder"]
                         Rows="5">
