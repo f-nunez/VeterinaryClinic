@@ -1,4 +1,5 @@
 using AutoMapper;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Common;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.GetDoctors;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.DoctorAggregate;
@@ -7,12 +8,13 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.Queries.GetDoctors;
 
-public class GetDoctorsQueryHanlder : IRequestHandler<GetDoctorsQuery, GetDoctorsResponse>
+public class GetDoctorsQueryHandler
+    : IRequestHandler<GetDoctorsQuery, GetDoctorsResponse>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
-    public GetDoctorsQueryHanlder(IMapper mapper, IUnitOfWork unitOfWork)
+    public GetDoctorsQueryHandler(IMapper mapper, IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
@@ -24,16 +26,25 @@ public class GetDoctorsQueryHanlder : IRequestHandler<GetDoctorsQuery, GetDoctor
     {
         GetDoctorsRequest request = query.GetDoctorsRequest;
         var response = new GetDoctorsResponse(request.CorrelationId);
-        var specification = new GetDoctorsOrderedByFullNameSpecification();
+        var specification = new DoctorsSpecification(request);
 
-        var doctors = await _unitOfWork.ReadRepository<Doctor>()
+        var doctors = await _unitOfWork
+            .ReadRepository<Doctor>()
             .ListAsync(specification, cancellationToken);
+
+        int count = await _unitOfWork
+            .ReadRepository<Doctor>()
+            .CountAsync(specification, cancellationToken);
 
         if (doctors is null)
             return response;
 
-        response.Doctors = _mapper.Map<List<DoctorDto>>(doctors);
-        response.Count = response.Doctors.Count;
+        var doctorDtos = _mapper.Map<List<DoctorDto>>(doctors);
+
+        response.DataGridResponse = new DataGridResponse<DoctorDto>(
+            doctorDtos,
+            count
+        );
 
         return response;
     }
