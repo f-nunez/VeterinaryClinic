@@ -1,13 +1,15 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClients;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Common;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClients;
 
-public class GetClientsQueryHandler : IRequestHandler<GetClientsQuery, GetClientsResponse>
+public class GetClientsQueryHandler
+    : IRequestHandler<GetClientsQuery, GetClientsResponse>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
@@ -24,16 +26,25 @@ public class GetClientsQueryHandler : IRequestHandler<GetClientsQuery, GetClient
     {
         GetClientsRequest request = query.GetClientsRequest;
         var response = new GetClientsResponse(request.CorrelationId);
-        var specification = new GetClientsOrderedByFullNameSpecification();
+        var specification = new ClientsSpecification(request);
 
-        var clients = await _unitOfWork.Repository<Client>()
+        var clients = await _unitOfWork
+            .ReadRepository<Client>()
             .ListAsync(specification, cancellationToken);
+
+        int count = await _unitOfWork
+            .ReadRepository<Client>()
+            .CountAsync(specification, cancellationToken);
 
         if (clients is null)
             return response;
 
-        response.Clients = _mapper.Map<List<ClientDto>>(clients);
-        response.Count = response.Clients.Count;
+        var clientsDtos = _mapper.Map<List<ClientDto>>(clients);
+
+        response.DataGridResponse = new DataGridResponse<ClientDto>(
+            clientsDtos,
+            count
+        );
 
         return response;
     }
