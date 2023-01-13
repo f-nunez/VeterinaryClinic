@@ -1,0 +1,14 @@
+@using Radzen.Blazor
+
+<RadzenDropDown
+    @bind-Value=@Value
+    AllowClear="false"
+    AllowFiltering="true"
+    Change="@(args => OnChange(args))"
+    Class=@Class
+    Data=@TimeZones
+    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+    TextProperty="DisplayName"
+    TValue="string"
+    ValueProperty="Id">
+</RadzenDropDown>
