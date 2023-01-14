@@ -111,7 +111,7 @@ public partial class AppointmentTypesPage
     {
         if (AppointmentTypeService is null)
             return;
-
+        await Task.Delay(1);
         throw new NotImplementedException();
         //AppointmentTypes = await AppointmentTypeService.ListAsync();
     }

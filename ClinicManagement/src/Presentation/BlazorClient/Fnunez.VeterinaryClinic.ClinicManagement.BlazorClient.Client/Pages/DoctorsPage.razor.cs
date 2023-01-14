@@ -102,7 +102,7 @@ public partial class DoctorsPage
     {
         if (DoctorService is null)
             return;
-
+        await Task.Delay(1);
         throw new NotImplementedException();
         //Doctors = await DoctorService.ListAsync();
     }

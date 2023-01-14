@@ -136,7 +136,7 @@ public partial class PatientsPage
     {
         if (ClientService is null)
             return;
-
+        await Task.Delay(1);
         throw new NotImplementedException();
         // Clients = await ClientService.ListAsync();
         // Patients = new List<PatientDto>();
