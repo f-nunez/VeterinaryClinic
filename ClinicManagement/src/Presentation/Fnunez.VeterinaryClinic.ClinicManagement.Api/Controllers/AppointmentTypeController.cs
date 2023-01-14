@@ -100,7 +100,7 @@ public class AppointmentTypeController : BaseApiController
         return Ok(response);
     }
 
-    [HttpDelete("Delete/{id}")]
+    [HttpDelete("Delete/{Id}")]
     public async Task<ActionResult> Delete(
         [FromRoute] DeleteAppointmentTypeRequest request,
         CancellationToken cancellationToken)
@@ -113,9 +113,9 @@ public class AppointmentTypeController : BaseApiController
         return Ok(response);
     }
 
-    [HttpGet("GetById")]
+    [HttpGet("GetById/{Id}")]
     public async Task<ActionResult> GetById(
-        [FromQuery] GetAppointmentTypeByIdRequest request,
+        [FromRoute] GetAppointmentTypeByIdRequest request,
         CancellationToken cancellationToken)
     {
         var query = new GetAppointmentTypeByIdQuery(request);
