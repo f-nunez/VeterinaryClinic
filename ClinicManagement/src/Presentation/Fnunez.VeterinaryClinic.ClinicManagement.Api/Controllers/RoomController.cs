@@ -3,10 +3,14 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Comman
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Commands.UpdateRoom;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Queries.GetRoomById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Queries.GetRooms;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Queries.GetRoomsFilterId;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Queries.GetRoomsFilterName;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.CreateRoom;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.DeleteRoom;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.GetRoomById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.GetRooms;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.GetRoomsFilterId;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.GetRoomsFilterName;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.UpdateRoom;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +27,45 @@ public class RoomController : BaseApiController
 
         CreateRoomResponse response = await Mediator
             .Send(command, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGrid")]
+    public async Task<ActionResult> DataGrid(
+        GetRoomsRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetRoomsQuery(request);
+
+        GetRoomsResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGridFilterId")]
+    public async Task<ActionResult> DataGridFilterId(
+        GetRoomsFilterIdRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetRoomsFilterIdQuery(request);
+
+        GetRoomsFilterIdResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGridFilterName")]
+    public async Task<ActionResult> DataGridFilterName(
+        GetRoomsFilterNameRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetRoomsFilterNameQuery(request);
+
+        GetRoomsFilterNameResponse response = await Mediator
+            .Send(query, cancellationToken);
 
         return Ok(response);
     }
