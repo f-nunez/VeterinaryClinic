@@ -150,17 +150,32 @@ public class AppointmentTypeService : IAppointmentTypeService
         return response.AppointemntTypeNames;
     }
 
-    public async Task DeleteAsync(int appointmentTypeId)
+    public async Task DeleteAsync(DeleteAppointmentTypeRequest request)
     {
-        _logger.LogInformation($"Delete: {appointmentTypeId}");
+        _logger.LogInformation($"Delete: {request.Id}");
 
         await _httpService.HttpDeleteAsync<DeleteAppointmentTypeResponse>(
             "AppointmentType/Delete",
-            appointmentTypeId
+            request.Id
         );
     }
 
-    public async Task<AppointmentTypeDto> EditAsync(
+    public async Task<AppointmentTypeDto> GetByIdAsync(
+        GetAppointmentTypeByIdRequest request)
+    {
+        _logger.LogInformation($"GetById: {request.Id}");
+
+        var response = await _httpService
+            .HttpGetAsync<GetAppointmentTypeByIdResponse>(
+                $"AppointmentType/GetById/{request.Id}");
+
+        if (response is null)
+            throw new ArgumentNullException(nameof(response));
+
+        return response.AppointmentType;
+    }
+
+    public async Task<AppointmentTypeDto> UpdateAsync(
         UpdateAppointmentTypeRequest updateAppointmentTypeRequest)
     {
         _logger.LogInformation($"Edit: {updateAppointmentTypeRequest}");
@@ -170,20 +185,6 @@ public class AppointmentTypeService : IAppointmentTypeService
                 "AppointmentType/Update",
                 updateAppointmentTypeRequest
             );
-
-        if (response is null)
-            throw new ArgumentNullException(nameof(response));
-
-        return response.AppointmentType;
-    }
-
-    public async Task<AppointmentTypeDto> GetByIdAsync(int appointmentTypeId)
-    {
-        _logger.LogInformation($"GetById: {appointmentTypeId}");
-
-        var response = await _httpService
-            .HttpGetAsync<GetAppointmentTypeByIdResponse>(
-                $"AppointmentType/GetById/{appointmentTypeId}");
 
         if (response is null)
             throw new ArgumentNullException(nameof(response));
