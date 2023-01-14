@@ -17,16 +17,16 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 // register HttpClient and HttpService
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["ApiUrl"]!) });
-builder.Services.AddScoped<HttpService>();
-
-// register http services
-builder.Services.AddScoped<AppointmentTypeService>();
-builder.Services.AddScoped<ClientService>();
-builder.Services.AddScoped<DoctorService>();
-builder.Services.AddScoped<PatientService>();
-builder.Services.AddScoped<RoomService>();
+builder.Services.AddScoped<IHttpService, HttpService>();
 
 // register Feature services
+builder.Services.AddScoped<IAppointmentTypeService, AppointmentTypeService>();
+builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IClinicService, ClinicService>();
+builder.Services.AddScoped<IDoctorService, DoctorService>();
+builder.Services.AddScoped<PatientService>();
+builder.Services.AddScoped<IRoomService, RoomService>();
+
 builder.Services.AddScoped<ISpinnerService, SpinnerService>();
 builder.Services.AddScoped<IUserSettingsService, UserSettingsService>();
 
