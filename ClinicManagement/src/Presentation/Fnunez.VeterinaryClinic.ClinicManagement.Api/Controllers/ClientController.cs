@@ -3,10 +3,20 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Comm
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Commands.UpdateClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClientById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClients;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClientsFilterEmailAddress;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClientsFilterFullName;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClientsFilterId;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClientsFilterPreferredName;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClientsFilterSalutation;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.CreateClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.DeleteClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClients;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterEmailAddress;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterFullName;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterId;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterPreferredName;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterSalutation;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.UpdateClient;
 using Microsoft.AspNetCore.Mvc;
 
@@ -53,14 +63,79 @@ public class ClientController : BaseApiController
         return Ok(response);
     }
 
-    [HttpGet("List")]
-    public async Task<ActionResult> List(
-        [FromQuery] GetClientsRequest request,
+    [HttpPost("DataGrid")]
+    public async Task<ActionResult> DataGrid(
+        GetClientsRequest request,
         CancellationToken cancellationToken)
     {
         var query = new GetClientsQuery(request);
 
         GetClientsResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGridFilterEmailAddress")]
+    public async Task<ActionResult> DataGridFilterEmailAddress(
+        GetClientsFilterEmailAddressRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetClientsFilterEmailAddressQuery(request);
+
+        GetClientsFilterEmailAddressResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGridFilterFullName")]
+    public async Task<ActionResult> DataGridFilterFullName(
+        GetClientsFilterFullNameRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetClientsFilterFullNameQuery(request);
+
+        GetClientsFilterFullNameResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGridFilterId")]
+    public async Task<ActionResult> DataGridFilterId(
+        GetClientsFilterIdRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetClientsFilterIdQuery(request);
+
+        GetClientsFilterIdResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGridFilterPreferredName")]
+    public async Task<ActionResult> DataGridFilterPreferredName(
+        GetClientsFilterPreferredNameRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetClientsFilterPreferredNameQuery(request);
+
+        GetClientsFilterPreferredNameResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGridFilterSalutation")]
+    public async Task<ActionResult> DataGridFilterSalutation(
+        GetClientsFilterSalutationRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetClientsFilterSalutationQuery(request);
+
+        GetClientsFilterSalutationResponse response = await Mediator
             .Send(query, cancellationToken);
 
         return Ok(response);
