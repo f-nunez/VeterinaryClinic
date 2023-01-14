@@ -117,6 +117,48 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppointmentTypes_Add_Button_Text" xml:space="preserve">
+    <value>ADD</value>
+  </data>
+  <data name="AppointmentTypes_AddedAppointmentType_Alert_Button_Ok" xml:space="preserve">
+    <value>ACCEPT</value>
+  </data>
+  <data name="AppointmentTypes_AddedAppointmentType_Alert_Message" xml:space="preserve">
+    <value>Appointment type {0} was successfully added</value>
+  </data>
+  <data name="AppointmentTypes_AddedAppointmentType_Alert_Title" xml:space="preserve">
+    <value>Add Appointment Type</value>
+  </data>
+  <data name="AppointmentTypes_DeleteAppointmentType_Alert_Button_Cancel" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="AppointmentTypes_DeleteAppointmentType_Alert_Button_Ok" xml:space="preserve">
+    <value>YES</value>
+  </data>
+  <data name="AppointmentTypes_DeleteAppointmentType_Alert_Message" xml:space="preserve">
+    <value>Are you sure you want to delete the appointment type {0}?</value>
+  </data>
+  <data name="AppointmentTypes_DeleteAppointmentType_Alert_Title" xml:space="preserve">
+    <value>Delete Appointment Type</value>
+  </data>
+  <data name="AppointmentTypes_DeletedAppointmentType_Alert_Button_Ok" xml:space="preserve">
+    <value>ACCEPT</value>
+  </data>
+  <data name="AppointmentTypes_DeletedAppointmentType_Alert_Message" xml:space="preserve">
+    <value>Appointment type {0} was successfully deleted</value>
+  </data>
+  <data name="AppointmentTypes_DeletedAppointmentType_Alert_Title" xml:space="preserve">
+    <value>Delete Appointment Type</value>
+  </data>
+  <data name="AppointmentTypes_EditedAppointmentType_Alert_Button_Ok" xml:space="preserve">
+    <value>ACCEPT</value>
+  </data>
+  <data name="AppointmentTypes_EditedAppointmentType_Alert_Message" xml:space="preserve">
+    <value>Appointment type {0} was successfully edited</value>
+  </data>
+  <data name="AppointmentTypes_EditedAppointmentType_Alert_Title" xml:space="preserve">
+    <value>Edit Appointment Type</value>
+  </data>
   <data name="AppointmentTypes_Grid_Column_Header_Code" xml:space="preserve">
     <value>Code</value>
   </data>

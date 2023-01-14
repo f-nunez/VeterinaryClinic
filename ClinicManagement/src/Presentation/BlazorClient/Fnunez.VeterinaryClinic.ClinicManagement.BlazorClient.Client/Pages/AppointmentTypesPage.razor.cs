@@ -54,11 +54,11 @@ public partial class AppointmentTypesPage
 
         if (confirmed)
         {
-            var toDelete = new DeleteAppointmentTypeRequest()
+            var request = new DeleteAppointmentTypeRequest()
             {
                 Id = id,
             };
-            await AppointmentTypeService.DeleteAsync(id);
+            await AppointmentTypeService.DeleteAsync(request);
             await ReloadData();
         }
     }
@@ -87,7 +87,7 @@ public partial class AppointmentTypesPage
                 Duration = ToSave.Duration,
                 Name = ToSave.Name
             };
-            await AppointmentTypeService.EditAsync(toUpdate);
+            await AppointmentTypeService.UpdateAsync(toUpdate);
         }
 
         CancelClick();
