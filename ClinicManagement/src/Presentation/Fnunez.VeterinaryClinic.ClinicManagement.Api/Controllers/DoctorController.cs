@@ -3,10 +3,14 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.Comm
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.Commands.UpdateDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.Queries.GetDoctorById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.Queries.GetDoctors;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.Queries.GetDoctorsFilterFullName;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.Queries.GetDoctorsFilterId;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.CreateDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.DeleteDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.GetDoctorById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.GetDoctors;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.GetDoctorsFilterFullName;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.GetDoctorsFilterId;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.UpdateDoctor;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +27,45 @@ public class DoctorController : BaseApiController
 
         CreateDoctorResponse response = await Mediator
             .Send(command, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGrid")]
+    public async Task<ActionResult> DataGrid(
+        GetDoctorsRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetDoctorsQuery(request);
+
+        GetDoctorsResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGridFilterFullName")]
+    public async Task<ActionResult> DataGridFilterFullName(
+        GetDoctorsFilterFullNameRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetDoctorsFilterFullNameQuery(request);
+
+        GetDoctorsFilterFullNameResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGridFilterId")]
+    public async Task<ActionResult> DataGridFilterId(
+        GetDoctorsFilterIdRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetDoctorsFilterIdQuery(request);
+
+        GetDoctorsFilterIdResponse response = await Mediator
+            .Send(query, cancellationToken);
 
         return Ok(response);
     }
