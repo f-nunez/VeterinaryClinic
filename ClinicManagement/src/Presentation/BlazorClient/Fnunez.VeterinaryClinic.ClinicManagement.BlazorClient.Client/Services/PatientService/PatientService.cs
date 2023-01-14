@@ -2,12 +2,11 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.CreatePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.DeletePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.GetPatientById;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.GetPatients;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.UpdatePatient;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
 
-public class PatientService
+public class PatientService : IPatientService
 {
     private readonly HttpService _httpService;
     private readonly ILogger<PatientService> _logger;
@@ -72,31 +71,5 @@ public class PatientService
             throw new ArgumentNullException(nameof(response));
 
         return response.Patient;
-    }
-
-    public async Task<List<PatientDto>> ListAsync(int clientId)
-    {
-        _logger.LogInformation($"List: {clientId}");
-
-        var response = await _httpService.HttpGetAsync<GetPatientsResponse>(
-            $"Patient/List?ClientId={clientId}");
-
-        if (response is null)
-            throw new ArgumentNullException(nameof(response));
-
-        return response.Patients;
-    }
-
-    public async Task<List<PatientDto>> ListPagedAsync(int pageSize)
-    {
-        _logger.LogInformation($"ListPaged: {pageSize}");
-
-        var response = await _httpService.HttpGetAsync<GetPatientsResponse>(
-            $"Patient/List");
-
-        if (response is null)
-            throw new ArgumentNullException(nameof(response));
-
-        return response.Patients;
     }
 }
