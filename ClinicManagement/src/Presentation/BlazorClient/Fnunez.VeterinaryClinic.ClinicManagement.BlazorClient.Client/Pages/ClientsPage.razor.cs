@@ -111,7 +111,7 @@ public partial class ClientsPage
     {
         if (ClientService is null)
             return;
-
-        Clients = await ClientService.ListAsync();
+        throw new NotImplementedException();
+        //Clients = await ClientService.ListAsync();
     }
 }

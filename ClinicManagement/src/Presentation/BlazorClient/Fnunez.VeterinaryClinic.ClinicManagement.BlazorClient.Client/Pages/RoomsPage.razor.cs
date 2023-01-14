@@ -107,7 +107,7 @@ public partial class RoomsPage
     {
         if (RoomService is null)
             return;
-
-        Rooms = await RoomService.ListAsync();
+        throw new NotImplementedException();
+        // Rooms = await RoomService.ListAsync();
     }
 }

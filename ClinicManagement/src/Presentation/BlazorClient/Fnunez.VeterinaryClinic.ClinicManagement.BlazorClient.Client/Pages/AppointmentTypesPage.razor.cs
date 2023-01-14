@@ -112,6 +112,7 @@ public partial class AppointmentTypesPage
         if (AppointmentTypeService is null)
             return;
 
-        AppointmentTypes = await AppointmentTypeService.ListAsync();
+        throw new NotImplementedException();
+        //AppointmentTypes = await AppointmentTypeService.ListAsync();
     }
 }

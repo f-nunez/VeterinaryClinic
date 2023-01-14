@@ -137,10 +137,11 @@ public partial class PatientsPage
         if (ClientService is null)
             return;
 
-        Clients = await ClientService.ListAsync();
-        Patients = new List<PatientDto>();
+        throw new NotImplementedException();
+        // Clients = await ClientService.ListAsync();
+        // Patients = new List<PatientDto>();
 
-        StateHasChanged();
+        // StateHasChanged();
     }
 
     private async Task ReloadPatientData()

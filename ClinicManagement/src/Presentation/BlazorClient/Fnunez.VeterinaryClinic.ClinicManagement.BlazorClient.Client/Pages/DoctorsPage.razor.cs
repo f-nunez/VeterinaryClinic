@@ -103,6 +103,7 @@ public partial class DoctorsPage
         if (DoctorService is null)
             return;
 
-        Doctors = await DoctorService.ListAsync();
+        throw new NotImplementedException();
+        //Doctors = await DoctorService.ListAsync();
     }
 }
