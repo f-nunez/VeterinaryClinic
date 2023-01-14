@@ -148,10 +148,10 @@ public partial class PatientsPage
     {
         if (PatientService is null)
             return;
+        await Task.Delay(1);
+        throw new NotImplementedException();
+        // if (int.TryParse(SelectedClientId, out int clientId))
 
-        if (int.TryParse(SelectedClientId, out int clientId))
-            Patients = await PatientService.ListAsync(clientId);
-
-        StateHasChanged();
+        // StateHasChanged();
     }
 }
