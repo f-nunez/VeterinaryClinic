@@ -6,14 +6,14 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Helpers;
 public static class AppointmentTypeHelper
 {
     public static AppointmentTypeVm MapAppointmentTypeViewModel(
-        AppointmentTypeDto appointmentType)
+        AppointmentTypeDto appointmentTypeDto)
     {
         return new AppointmentTypeVm
         {
-            Code = appointmentType.Code,
-            Duration = appointmentType.Duration,
-            Id = appointmentType.Id,
-            Name = appointmentType.Name
+            Code = appointmentTypeDto.Code,
+            Duration = appointmentTypeDto.Duration,
+            Id = appointmentTypeDto.Id,
+            Name = appointmentTypeDto.Name
         };
     }
 }
