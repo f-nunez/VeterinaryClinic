@@ -169,20 +169,20 @@ public class ClientService : IClientService
         return response.ClientSalutations;
     }
 
-    public async Task DeleteAsync(int clientId)
+    public async Task DeleteAsync(DeleteClientRequest request)
     {
-        _logger.LogInformation($"Delete: {clientId}");
+        _logger.LogInformation($"Delete: {request.Id}");
 
         await _httpService
-            .HttpDeleteAsync<DeleteClientResponse>("Client/Delete", clientId);
+            .HttpDeleteAsync<DeleteClientResponse>("Client/Delete", request.Id);
     }
 
-    public async Task<ClientDto> EditAsync(UpdateClientRequest client)
+    public async Task<ClientDto> GetByIdAsync(GetClientByIdRequest request)
     {
-        _logger.LogInformation($"Edit: {client}");
+        _logger.LogInformation($"GetById: {request.Id}");
 
         var response = await _httpService
-            .HttpPutAsync<UpdateClientResponse>("Client/Update", client);
+            .HttpGetAsync<GetClientByIdResponse>($"Client/GetById/{request.Id}");
 
         if (response is null)
             throw new ArgumentNullException(nameof(response));
@@ -190,12 +190,12 @@ public class ClientService : IClientService
         return response.Client;
     }
 
-    public async Task<ClientDto> GetByIdAsync(int clientId)
+    public async Task<ClientDto> UpdateAsync(UpdateClientRequest client)
     {
-        _logger.LogInformation($"GetById: {clientId}");
+        _logger.LogInformation($"Edit: {client}");
 
         var response = await _httpService
-            .HttpGetAsync<GetClientByIdResponse>($"Client/GetById/{clientId}");
+            .HttpPutAsync<UpdateClientResponse>("Client/Update", client);
 
         if (response is null)
             throw new ArgumentNullException(nameof(response));
