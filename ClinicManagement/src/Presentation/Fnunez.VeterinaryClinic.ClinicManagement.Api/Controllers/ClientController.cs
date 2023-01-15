@@ -2,19 +2,25 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Comm
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Commands.DeleteClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Commands.UpdateClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClientById;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClientDetail;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClientEdit;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClients;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClientsFilterEmailAddress;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClientsFilterFullName;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClientsFilterId;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClientsFilterPreferredDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClientsFilterPreferredName;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClientsFilterSalutation;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.CreateClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.DeleteClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientById;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientDetail;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientEdit;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClients;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterEmailAddress;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterFullName;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterId;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterPreferredDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterPreferredName;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterSalutation;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.UpdateClient;
@@ -33,32 +39,6 @@ public class ClientController : BaseApiController
 
         CreateClientResponse response = await Mediator
             .Send(command, cancellationToken);
-
-        return Ok(response);
-    }
-
-    [HttpDelete("Delete/{Id}")]
-    public async Task<ActionResult> Delete(
-        [FromRoute] DeleteClientRequest request,
-        CancellationToken cancellationToken)
-    {
-        var command = new DeleteClientCommand(request);
-
-        DeleteClientResponse response = await Mediator
-            .Send(command, cancellationToken);
-
-        return Ok(response);
-    }
-
-    [HttpGet("GetById/{Id}")]
-    public async Task<ActionResult> GetById(
-        [FromRoute] GetClientByIdRequest request,
-        CancellationToken cancellationToken)
-    {
-        var query = new GetClientByIdQuery(request);
-
-        GetClientByIdResponse response = await Mediator
-            .Send(query, cancellationToken);
 
         return Ok(response);
     }
@@ -115,6 +95,19 @@ public class ClientController : BaseApiController
         return Ok(response);
     }
 
+    [HttpPost("DataGridFilterPreferredDoctor")]
+    public async Task<ActionResult> DataGridFilterPreferredDoctor(
+        GetClientsFilterPreferredDoctorRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetClientsFilterPreferredDoctorQuery(request);
+
+        GetClientsFilterPreferredDoctorResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
     [HttpPost("DataGridFilterPreferredName")]
     public async Task<ActionResult> DataGridFilterPreferredName(
         GetClientsFilterPreferredNameRequest request,
@@ -136,6 +129,58 @@ public class ClientController : BaseApiController
         var query = new GetClientsFilterSalutationQuery(request);
 
         GetClientsFilterSalutationResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpDelete("Delete/{Id}")]
+    public async Task<ActionResult> Delete(
+        [FromRoute] DeleteClientRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = new DeleteClientCommand(request);
+
+        DeleteClientResponse response = await Mediator
+            .Send(command, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpGet("GetById/{Id}")]
+    public async Task<ActionResult> GetById(
+        [FromRoute] GetClientByIdRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetClientByIdQuery(request);
+
+        GetClientByIdResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("GetClientDetail")]
+    public async Task<ActionResult> GetClientDetail(
+        GetClientDetailRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetClientDetailQuery(request);
+
+        GetClientDetailResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("GetClientEdit")]
+    public async Task<ActionResult> GetClientEdit(
+        GetClientEditRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetClientEditQuery(request);
+
+        GetClientEditResponse response = await Mediator
             .Send(query, cancellationToken);
 
         return Ok(response);
