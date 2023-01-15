@@ -1,4 +1,5 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Entities;
+using Fnunez.VeterinaryClinic.ClinicManagement.Domain.DoctorAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
@@ -12,6 +13,10 @@ public class Client : BaseEntity<int>, IAggregateRoot
     public string EmailAddress { get; private set; }
     public int PreferredDoctorId { get; private set; }
     public IReadOnlyList<Patient> Patients => _patients.AsReadOnly();
+
+    #region Navigations
+    public Doctor PreferredDoctor { get; private set; } = null!;
+    #endregion
 
     public Client()
     {
