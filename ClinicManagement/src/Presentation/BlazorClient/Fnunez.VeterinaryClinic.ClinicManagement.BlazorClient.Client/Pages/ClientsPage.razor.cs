@@ -53,7 +53,7 @@ public partial class ClientsPage
 
         if (confirmed)
         {
-            await ClientService.DeleteAsync(id);
+            // await ClientService.DeleteAsync(id);
             await ReloadData();
         }
     }
@@ -87,7 +87,7 @@ public partial class ClientsPage
                 PreferredName = ToSave.PreferredName,
             };
 
-            await ClientService.EditAsync(toUpdate);
+            await ClientService.UpdateAsync(toUpdate);
         }
 
         CancelClick();
