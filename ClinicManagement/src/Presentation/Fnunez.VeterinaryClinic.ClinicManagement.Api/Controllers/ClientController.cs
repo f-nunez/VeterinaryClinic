@@ -37,7 +37,7 @@ public class ClientController : BaseApiController
         return Ok(response);
     }
 
-    [HttpDelete("Delete/{id}")]
+    [HttpDelete("Delete/{Id}")]
     public async Task<ActionResult> Delete(
         [FromRoute] DeleteClientRequest request,
         CancellationToken cancellationToken)
@@ -50,9 +50,9 @@ public class ClientController : BaseApiController
         return Ok(response);
     }
 
-    [HttpGet("GetById")]
+    [HttpGet("GetById/{Id}")]
     public async Task<ActionResult> GetById(
-        [FromQuery] GetClientByIdRequest request,
+        [FromRoute] GetClientByIdRequest request,
         CancellationToken cancellationToken)
     {
         var query = new GetClientByIdQuery(request);
