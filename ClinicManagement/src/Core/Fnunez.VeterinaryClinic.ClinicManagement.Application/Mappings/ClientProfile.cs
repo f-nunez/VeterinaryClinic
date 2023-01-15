@@ -2,6 +2,7 @@ using AutoMapper;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.CreateClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.DeleteClient;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientDetail;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.UpdateClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Entities;
@@ -16,6 +17,15 @@ public class ClientProfile : Profile
             .ForMember(
                 dto => dto.ClientId,
                 options => options.MapFrom(src => src.Id)
+            );
+
+        CreateMap<Client, ClientDetailDto>()
+            .ForMember(
+                dto => dto.ClientId,
+                options => options.MapFrom(src => src.Id)
+            ).ForMember(
+                dto => dto.PreferredDoctorFullName,
+                options => options.MapFrom(src => src.PreferredDoctor.FullName)
             );
 
         CreateMap<ClientDto, Client>()
