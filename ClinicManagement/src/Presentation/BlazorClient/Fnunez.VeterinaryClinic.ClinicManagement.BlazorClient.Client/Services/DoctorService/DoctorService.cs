@@ -103,15 +103,28 @@ public class DoctorService : IDoctorService
         return response.DoctorIds;
     }
 
-    public async Task DeleteAsync(int doctorId)
+    public async Task DeleteAsync(DeleteDoctorRequest request)
     {
-        _logger.LogInformation($"Delete: {doctorId}");
+        _logger.LogInformation($"Delete: {request.Id}");
 
         await _httpService
-            .HttpDeleteAsync<DeleteDoctorResponse>("Doctor/Delete", doctorId);
+            .HttpDeleteAsync<DeleteDoctorResponse>("Doctor/Delete", request.Id);
     }
 
-    public async Task<DoctorDto> EditAsync(
+    public async Task<DoctorDto> GetByIdAsync(GetDoctorByIdRequest request)
+    {
+        _logger.LogInformation($"GetById: {request.Id}");
+
+        var response = await _httpService
+            .HttpGetAsync<GetDoctorByIdResponse>($"Doctor/GetById/{request.Id}");
+
+        if (response is null)
+            throw new ArgumentNullException(nameof(response));
+
+        return response.Doctor;
+    }
+
+    public async Task<DoctorDto> UpdateAsync(
         UpdateDoctorRequest updateDoctorRequest)
     {
         _logger.LogInformation($"Edit: {updateDoctorRequest}");
@@ -120,19 +133,6 @@ public class DoctorService : IDoctorService
             "Doctor/Update",
             updateDoctorRequest
         );
-
-        if (response is null)
-            throw new ArgumentNullException(nameof(response));
-
-        return response.Doctor;
-    }
-
-    public async Task<DoctorDto> GetByIdAsync(int doctorId)
-    {
-        _logger.LogInformation($"GetById: {doctorId}");
-
-        var response = await _httpService
-            .HttpGetAsync<GetDoctorByIdResponse>($"Doctor/GetById/{doctorId}");
 
         if (response is null)
             throw new ArgumentNullException(nameof(response));

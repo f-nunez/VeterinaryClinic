@@ -1,6 +1,8 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Common;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.CreateDoctor;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.DeleteDoctor;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.GetDoctorById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.GetDoctors;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.UpdateDoctor;
 
@@ -12,7 +14,7 @@ public interface IDoctorService
     public Task<DataGridResponse<DoctorDto>> DataGridAsync(GetDoctorsRequest request);
     public Task<List<string>> DataGridFilterFullNameAsync(string filterValue);
     public Task<List<string>> DataGridFilterIdAsync(string filterValue);
-    public Task DeleteAsync(int doctorId);
-    public Task<DoctorDto> EditAsync(UpdateDoctorRequest updateDoctorRequest);
-    public Task<DoctorDto> GetByIdAsync(int doctorId);
+    public Task DeleteAsync(DeleteDoctorRequest request);
+    public Task<DoctorDto> GetByIdAsync(GetDoctorByIdRequest request);
+    public Task<DoctorDto> UpdateAsync(UpdateDoctorRequest updateDoctorRequest);
 }
