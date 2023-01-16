@@ -6,6 +6,7 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.Ge
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterEmailAddress;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterFullName;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterId;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterPreferredDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterPreferredName;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterSalutation;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.UpdateClient;
@@ -123,6 +124,24 @@ public class ClientService : IClientService
             throw new ArgumentNullException(nameof(response));
 
         return response.ClientIds;
+    }
+
+    public async Task<DataGridResponse<PreferredDoctorFilterValueDto>> DataGridFilterPreferredDoctorAsync(
+        GetClientsFilterPreferredDoctorRequest request)
+    {
+        var response = await _httpService
+            .HttpPostAsync<GetClientsFilterPreferredDoctorResponse>(
+                $"Client/DataGridFilterPreferredDoctor",
+                request
+            );
+
+        if (response is null)
+            throw new ArgumentNullException(nameof(response));
+
+        if (response.DataGridResponse is null)
+            throw new ArgumentNullException(nameof(response.DataGridResponse));
+
+        return response.DataGridResponse;
     }
 
     public async Task<List<string>> DataGridFilterPreferredNameAsync(
