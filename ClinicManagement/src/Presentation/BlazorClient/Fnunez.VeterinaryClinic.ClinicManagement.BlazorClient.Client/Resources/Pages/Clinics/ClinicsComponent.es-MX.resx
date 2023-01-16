@@ -117,6 +117,48 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Clinics_Add_Button_Text" xml:space="preserve">
+    <value>ADD</value>
+  </data>
+  <data name="Clinics_AddedClinic_Alert_Button_Ok" xml:space="preserve">
+    <value>ACEPTAR</value>
+  </data>
+  <data name="Clinics_AddedClinic_Alert_Message" xml:space="preserve">
+    <value>La Cliníca {0} se agregó exitosamente</value>
+  </data>
+  <data name="Clinics_AddedClinic_Alert_Title" xml:space="preserve">
+    <value>Agregar Cliníca</value>
+  </data>
+  <data name="Clinics_DeleteClinic_Alert_Button_Cancel" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="Clinics_DeleteClinic_Alert_Button_Ok" xml:space="preserve">
+    <value>SÍ</value>
+  </data>
+  <data name="Clinics_DeleteClinic_Alert_Message" xml:space="preserve">
+    <value>¿Está seguro que desea eliminar la cliníca {0}?</value>
+  </data>
+  <data name="Clinics_DeleteClinic_Alert_Title" xml:space="preserve">
+    <value>Eliminar Cliníca</value>
+  </data>
+  <data name="Clinics_DeletedClinic_Alert_Button_Ok" xml:space="preserve">
+    <value>ACEPTAR</value>
+  </data>
+  <data name="Clinics_DeletedClinic_Alert_Message" xml:space="preserve">
+    <value>La Cliníca {0} se eliminó exitosamente</value>
+  </data>
+  <data name="Clinics_DeletedClinic_Alert_Title" xml:space="preserve">
+    <value>Eliminar Cliníca</value>
+  </data>
+  <data name="Clinics_EditedClinic_Alert_Button_Ok" xml:space="preserve">
+    <value>ACEPTAR</value>
+  </data>
+  <data name="Clinics_EditedClinic_Alert_Message" xml:space="preserve">
+    <value>La Cliníca {0} se editó exitosamente</value>
+  </data>
+  <data name="Clinics_EditedClinic_Alert_Title" xml:space="preserve">
+    <value>Editar Cliníca</value>
+  </data>
   <data name="Clinics_Grid_Column_Header_Address" xml:space="preserve">
     <value>Dirección</value>
   </data>

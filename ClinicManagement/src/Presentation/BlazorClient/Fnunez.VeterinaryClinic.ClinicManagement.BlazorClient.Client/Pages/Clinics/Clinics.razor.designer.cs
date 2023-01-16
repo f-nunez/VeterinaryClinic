@@ -1,6 +1,10 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.DeleteClinic;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.GetClinicById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.GetClinics;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Helpers;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.ViewModels.Clinics;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Localization;
@@ -12,7 +16,19 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Pages.Cli
 public partial class ClinicsComponent : ComponentBase
 {
     [Inject]
-    private IClinicService _ClinicService { get; set; }
+    private IClinicService _clinicService { get; set; }
+
+    [Inject]
+    private DialogService _dialogService { get; set; }
+
+    [Inject]
+    private IStringLocalizer<AddEditClinicComponent> _stringLocalizerForAdd { get; set; }
+
+    [Inject]
+    private IStringLocalizer<ClinicDetailComponent> _stringLocalizerForDetail { get; set; }
+
+    [Inject]
+    private IStringLocalizer<ClinicsFilterComponent> _stringLocalizerForFilter { get; set; }
 
     protected RadzenDataGrid<ClinicDto> ClinicsGrid;
 
@@ -21,13 +37,7 @@ public partial class ClinicsComponent : ComponentBase
     protected int Count;
 
     [Inject]
-    protected DialogService DialogService { get; set; }
-
-    [Inject]
     protected IStringLocalizer<ClinicsComponent> StringLocalizer { get; set; }
-
-    [Inject]
-    protected IStringLocalizer<ClinicsFilterComponent> StringLocalizerForFilter { get; set; }
 
     protected bool IsLoading = false;
 
@@ -56,7 +66,7 @@ public partial class ClinicsComponent : ComponentBase
             SearchFilterValue = SearchFilterValue
         };
 
-        var dataGridResponse = await _ClinicService
+        var dataGridResponse = await _clinicService
             .DataGridAsync(request);
 
         Clinics = dataGridResponse.Items;
@@ -64,6 +74,116 @@ public partial class ClinicsComponent : ComponentBase
         IsLoading = false;
 
         await InvokeAsync(StateHasChanged);
+    }
+
+    protected async Task OnClickAdd()
+    {
+        var response = await _dialogService.OpenAsync<AddEditClinic>(
+            _stringLocalizerForAdd["AddEditClinic_Label_Add"],
+            new Dictionary<string, object>
+            {
+                { "IsClinicToAdd", true }
+            }
+        );
+
+        if (response is null)
+            return;
+
+        var savedClinic = response as ClinicVm;
+
+        await ShowAlertAsync(
+            string.Format(StringLocalizer["Clinics_AddedClinic_Alert_Message"], savedClinic.Name),
+            StringLocalizer["Clinics_AddedClinic_Alert_Title"],
+            StringLocalizer["Clinics_AddedClinic_Alert_Button_Ok"]);
+
+        await ClinicsGrid.Reload();
+    }
+
+    protected async Task OnClickDelete(ClinicDto doctor)
+    {
+        string message = string.Format(
+            StringLocalizer["Clinics_DeleteClinic_Alert_Message"],
+            doctor.Name);
+
+        bool? proceedToDelete = await _dialogService.Confirm(
+            message,
+            StringLocalizer["Clinics_DeleteClinic_Alert_Title"],
+            new ConfirmOptions
+            {
+                OkButtonText = StringLocalizer["Clinics_DeleteClinic_Alert_Button_Ok"],
+                CancelButtonText = StringLocalizer["Clinics_DeleteClinic_Alert_Button_Cancel"]
+            }
+        );
+
+        if (!proceedToDelete.HasValue || !proceedToDelete.Value)
+            return;
+
+        var request = new DeleteClinicRequest
+        {
+            Id = doctor.Id
+        };
+
+        await _clinicService.DeleteAsync(request);
+
+        await ShowAlertAsync(
+            string.Format(StringLocalizer["Clinics_DeletedClinic_Alert_Message"], doctor.Name),
+            StringLocalizer["Clinics_DeletedClinic_Alert_Title"],
+            StringLocalizer["Clinics_DeletedClinic_Alert_Button_Ok"]);
+
+        await ClinicsGrid.Reload();
+    }
+
+    protected async Task OnClickDetail(ClinicDto doctor)
+    {
+        var request = new GetClinicByIdRequest
+        {
+            Id = doctor.Id
+        };
+
+        var currentClinic = await _clinicService.GetByIdAsync(request);
+
+        var clinicForDetail = ClinicHelper.MapClinicViewModel(doctor);
+
+        await _dialogService.OpenAsync<ClinicDetail>(
+            _stringLocalizerForDetail["ClinicDetail_Label_ClinicDetail"],
+            new Dictionary<string, object>
+            {
+                { "Model", clinicForDetail }
+            }
+        );
+    }
+
+    protected async Task OnClickEdit(ClinicDto doctor)
+    {
+        var request = new GetClinicByIdRequest
+        {
+            Id = doctor.Id
+        };
+
+        var currentClinic = await _clinicService.GetByIdAsync(request);
+
+        var clinicToEdit = ClinicHelper.MapClinicViewModel(doctor);
+
+        var response = await _dialogService.OpenAsync<AddEditClinic>(
+            _stringLocalizerForAdd["AddEditClinic_Label_Edit"],
+            new Dictionary<string, object>
+            {
+                { "IsClinicToAdd", false },
+                { "Model", clinicToEdit }
+            }
+        );
+
+        if (response is null)
+            return;
+
+        var savedClinic = response as ClinicVm;
+
+        await ShowAlertAsync(
+            string.Format(StringLocalizer["Clinics_EditedClinic_Alert_Message"], savedClinic.Name),
+            StringLocalizer["Clinics_EditedClinic_Alert_Title"],
+            StringLocalizer["Clinics_EditedClinic_Alert_Button_Ok"]);
+
+        await ClinicsGrid.Reload();
     }
 
     protected async Task OnClickFilterSearch()
@@ -94,8 +214,8 @@ public partial class ClinicsComponent : ComponentBase
             { nameof(ClinicsFilterValues), filterValues }
         };
 
-        var result = await DialogService.OpenSideAsync<ClinicsFilter>(
-            StringLocalizerForFilter["ClinicsFilter_Label_Filter"],
+        var result = await _dialogService.OpenSideAsync<ClinicsFilter>(
+            _stringLocalizerForFilter["ClinicsFilter_Label_Filter"],
             filterParameters
         );
 
@@ -119,5 +239,20 @@ public partial class ClinicsComponent : ComponentBase
     {
         ClinicsGrid.Reset(false);
         await ClinicsGrid.FirstPage(true);
+    }
+
+    private async Task<bool?> ShowAlertAsync(
+        string alertMessage,
+        string alertTitle,
+        string alertButtonOkMessage)
+    {
+        return await _dialogService.Alert(
+            alertMessage,
+            alertTitle,
+            new AlertOptions
+            {
+                OkButtonText = alertButtonOkMessage
+            }
+        );
     }
 }

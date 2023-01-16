@@ -14,7 +14,13 @@
 
 <RadzenCard>
     <div class="row mb-3">
-        <div class="col-12 col-sm-4 col-md-6 col-lg-7 col-xl-8"></div>
+        <div class="col-12 col-sm-4 col-md-6 col-lg-7 col-xl-8">
+            <RadzenButton
+                Click=@OnClickAdd
+                Icon="add"
+                Text=@StringLocalizer["Clinics_Add_Button_Text"]>
+            </RadzenButton>
+        </div>
 
         <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
             <div class="datagrid-filter-menu">
@@ -87,6 +93,45 @@
                         TextAlign="TextAlign.Justify"
                         TItem="ClinicDto"
                         Title=@StringLocalizer["Clinics_Grid_Column_Header_EmailAddress"]>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn
+                        Width="160px"
+                        Filterable="false"
+                        Sortable="false"
+                        TextAlign="TextAlign.Right"
+                        TItem="ClinicDto">
+
+                        <Template Context="clinic">
+
+                            <RadzenButton
+                                ButtonStyle="ButtonStyle.Light"
+                                Click="@((args) => OnClickDetail(clinic))"
+                                Icon="find_in_page"
+                                Size="ButtonSize.Medium"
+                                Variant="Variant.Flat">
+                            </RadzenButton>
+
+                            <RadzenButton
+                                ButtonStyle="ButtonStyle.Light"
+                                Class="mx-1"
+                                Click="@((args) => OnClickEdit(clinic))"
+                                Icon="edit"
+                                Size="ButtonSize.Medium"
+                                Variant="Variant.Flat">
+                            </RadzenButton>
+
+                            <RadzenButton
+                                ButtonStyle="ButtonStyle.Danger"
+                                Click="@((args) => OnClickDelete(clinic))"
+                                Icon="delete"
+                                Shade="Shade.Lighter"
+                                Size="ButtonSize.Medium"
+                                Variant="Variant.Flat">
+                            </RadzenButton>
+
+                        </Template>
+
                     </RadzenDataGridColumn>
                 </Columns>
             </RadzenDataGrid>

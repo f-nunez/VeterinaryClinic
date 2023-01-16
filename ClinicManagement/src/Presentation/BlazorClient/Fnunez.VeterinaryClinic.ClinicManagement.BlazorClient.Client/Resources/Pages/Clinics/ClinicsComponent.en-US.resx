@@ -117,6 +117,48 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Clinics_Add_Button_Text" xml:space="preserve">
+    <value>ADD</value>
+  </data>
+  <data name="Clinics_AddedClinic_Alert_Button_Ok" xml:space="preserve">
+    <value>ACCEPT</value>
+  </data>
+  <data name="Clinics_AddedClinic_Alert_Message" xml:space="preserve">
+    <value>Clinic {0} was successfully added</value>
+  </data>
+  <data name="Clinics_AddedClinic_Alert_Title" xml:space="preserve">
+    <value>Add Clinic</value>
+  </data>
+  <data name="Clinics_DeleteClinic_Alert_Button_Cancel" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="Clinics_DeleteClinic_Alert_Button_Ok" xml:space="preserve">
+    <value>YES</value>
+  </data>
+  <data name="Clinics_DeleteClinic_Alert_Message" xml:space="preserve">
+    <value>Are you sure you want to delete the clinic {0}?</value>
+  </data>
+  <data name="Clinics_DeleteClinic_Alert_Title" xml:space="preserve">
+    <value>Delete Clinic</value>
+  </data>
+  <data name="Clinics_DeletedClinic_Alert_Button_Ok" xml:space="preserve">
+    <value>ACCEPT</value>
+  </data>
+  <data name="Clinics_DeletedClinic_Alert_Message" xml:space="preserve">
+    <value>Clinic {0} was successfully deleted</value>
+  </data>
+  <data name="Clinics_DeletedClinic_Alert_Title" xml:space="preserve">
+    <value>Delete Clinic</value>
+  </data>
+  <data name="Clinics_EditedClinic_Alert_Button_Ok" xml:space="preserve">
+    <value>ACCEPT</value>
+  </data>
+  <data name="Clinics_EditedClinic_Alert_Message" xml:space="preserve">
+    <value>Clinic {0} was successfully edited</value>
+  </data>
+  <data name="Clinics_EditedClinic_Alert_Title" xml:space="preserve">
+    <value>Edit Clinic</value>
+  </data>
   <data name="Clinics_Grid_Column_Header_Address" xml:space="preserve">
     <value>Address</value>
   </data>
