@@ -121,7 +121,7 @@
     <value>Full Name</value>
   </data>
   <data name="AddEditDoctor_FullName_TextBox_PlaceHolder" xml:space="preserve">
-    <value>Enter doctor here...</value>
+    <value>Enter full name here...</value>
   </data>
   <data name="AddEditDoctor_FullName_TextBox_RequiredMessage" xml:space="preserve">
     <value>Full name is required</value>
