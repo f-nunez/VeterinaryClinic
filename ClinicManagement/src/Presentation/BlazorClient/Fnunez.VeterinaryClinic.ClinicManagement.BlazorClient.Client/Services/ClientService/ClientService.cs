@@ -3,6 +3,7 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.Cr
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.DeleteClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientDetail;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientEdit;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClients;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterEmailAddress;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterFullName;
@@ -218,6 +219,23 @@ public class ClientService : IClientService
         var response = await _httpService
             .HttpPostAsync<GetClientDetailResponse>(
                 $"Client/GetClientDetail",
+                request
+            );
+
+        if (response is null)
+            throw new ArgumentNullException(nameof(response));
+
+        return response;
+    }
+
+    public async Task<GetClientEditResponse> GetClientEditAsync(
+        GetClientEditRequest request)
+    {
+        _logger.LogInformation($"GetClientEdit: {request.CorrelationId}");
+
+        var response = await _httpService
+            .HttpPostAsync<GetClientEditResponse>(
+                $"Client/GetClientEdit",
                 request
             );
 

@@ -3,6 +3,7 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.Cr
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.DeleteClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientDetail;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientEdit;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClients;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterPreferredDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.UpdateClient;
@@ -23,5 +24,6 @@ public interface IClientService
     public Task DeleteAsync(DeleteClientRequest request);
     public Task<ClientDto> GetByIdAsync(GetClientByIdRequest request);
     public Task<GetClientDetailResponse> GetClientDetailAsync(GetClientDetailRequest request);
+    public Task<GetClientEditResponse> GetClientEditAsync(GetClientEditRequest request);
     public Task<ClientDto> UpdateAsync(UpdateClientRequest client);
 }
