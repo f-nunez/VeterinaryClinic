@@ -1,0 +1,174 @@
+@inherits Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Pages.Clients.AddEditClientComponent
+
+@using Radzen.Blazor
+@using ViewModels.Clients
+
+<RadzenTemplateForm
+    Data="@Model"
+    Submit=@OnSubmit
+    TItem="ClientVm">
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="row mb-3">
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditClient_FullName_TextBox_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenTextBox
+                        @bind-Value="@Model.FullName"
+                        AutoComplete="false"
+                        Class="w-100 d-block"
+                        MaxLength="200"
+                        Name="FullName"
+                        Placeholder=@StringLocalizer["AddEditClient_FullName_TextBox_PlaceHolder"]>
+                    </RadzenTextBox>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="FullName"
+                        Text=@StringLocalizer["AddEditClient_FullName_TextBox_RequiredMessage"]>
+                    </RadzenRequiredValidator>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditClient_PreferredName_TextBox_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenTextBox
+                        @bind-Value="@Model.PreferredName"
+                        AutoComplete="false"
+                        Class="w-100 d-block"
+                        MaxLength="200"
+                        Name="PreferredName"
+                        Placeholder=@StringLocalizer["AddEditClient_PreferredName_TextBox_PlaceHolder"]>
+                    </RadzenTextBox>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="PreferredName"
+                        Text=@StringLocalizer["AddEditClient_PreferredName_TextBox_RequiredMessage"]>
+                    </RadzenRequiredValidator>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditClient_Salutation_TextBox_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenTextBox
+                        @bind-Value="@Model.Salutation"
+                        AutoComplete="false"
+                        Class="w-100 d-block"
+                        MaxLength="200"
+                        Name="Salutation"
+                        Placeholder=@StringLocalizer["AddEditClient_Salutation_TextBox_PlaceHolder"]>
+                    </RadzenTextBox>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Salutation"
+                        Text=@StringLocalizer["AddEditClient_Salutation_TextBox_RequiredMessage"]>
+                    </RadzenRequiredValidator>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditClient_EmailAddress_TextBox_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenTextBox
+                        @bind-Value="@Model.EmailAddress"
+                        AutoComplete="false"
+                        Class="w-100 d-block"
+                        MaxLength="320"
+                        Name="EmailAddress"
+                        Placeholder=@StringLocalizer["AddEditClient_EmailAddress_TextBox_PlaceHolder"]>
+                    </RadzenTextBox>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="EmailAddress"
+                        Text=@StringLocalizer["AddEditClient_EmailAddress_TextBox_RequiredMessage"]>
+                    </RadzenRequiredValidator>
+
+                    <RadzenEmailValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="EmailAddress"
+                        Text=@StringLocalizer["AddEditClient_EmailAddress_TextBox_RequiredValidEmailAddressMessage"]>
+                    </RadzenEmailValidator>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditClient_PreferredDoctor_DropDown_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenDropDownDataGrid
+                        @ref=@PreferredDoctorDropDownDataGrid
+                        @bind-Value="Model.PreferredDoctorId"
+                        AllowClear="true"
+                        AllowFiltering="true"
+                        AllowSorting="true"
+                        AllowVirtualization="true"
+                        Change="@(args => OnChangePreferredDoctorFilter(args))"
+                        Class="w-100 d-block"
+                        Count=@PreferredDoctorFilterCount
+                        Data=@PreferredDoctorFilterValues
+                        FilterDelay="500"
+                        LoadData="@PreferredDoctorFilterLoadData"
+                        Name="PreferredDoctor"
+                        SearchText=@StringLocalizer["AddEditClient_PreferredDoctor_DropDown_PlaceHolder"]
+                        TextProperty="FullName"
+                        TValue="int"
+                        ValueProperty="Id">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn
+                                Property="FullName"
+                                Sortable="true"
+                                SortOrder="SortOrder.Ascending"
+                                TextAlign="TextAlign.Left"
+                                Title=@StringLocalizer["AddEditClient_PreferredDoctor_DropDown_ColumnHeader_FullName"]>
+                            </RadzenDropDownDataGridColumn>
+                        </Columns>
+                    </RadzenDropDownDataGrid>
+
+                    <RadzenCompareValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="PreferredDoctor"
+                        Operator="CompareOperator.GreaterThan"
+                        Text=@StringLocalizer["AddEditClient_PreferredDoctor_DropDown_RequiredMessage"]
+                        Value="0">
+                    </RadzenCompareValidator>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <RadzenButton
+                BusyText=@StringLocalizer["AddEditClient_Save_Button_BusyText"]
+                ButtonStyle="ButtonStyle.Success"
+                ButtonType="ButtonType.Submit"
+                Class="w-100"
+                Icon="save"
+                IsBusy=@IsSaving
+                Text=@StringLocalizer["AddEditClient_Save_Button_Text"]>
+            </RadzenButton>
+        </div>
+    </div>
+
+</RadzenTemplateForm>
