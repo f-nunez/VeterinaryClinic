@@ -70,7 +70,7 @@ public class DoctorController : BaseApiController
         return Ok(response);
     }
 
-    [HttpDelete("Delete/{id}")]
+    [HttpDelete("Delete/{Id}")]
     public async Task<ActionResult> Delete(
         [FromRoute] DeleteDoctorRequest request,
         CancellationToken cancellationToken)
@@ -83,9 +83,9 @@ public class DoctorController : BaseApiController
         return Ok(response);
     }
 
-    [HttpGet("GetById")]
+    [HttpGet("GetById/{Id}")]
     public async Task<ActionResult> GetById(
-        [FromQuery] GetDoctorByIdRequest request,
+        [FromRoute] GetDoctorByIdRequest request,
         CancellationToken cancellationToken)
     {
         var query = new GetDoctorByIdQuery(request);
