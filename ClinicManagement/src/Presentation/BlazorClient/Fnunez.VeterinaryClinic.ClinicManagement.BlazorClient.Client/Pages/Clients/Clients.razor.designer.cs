@@ -1,6 +1,11 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.DeleteClient;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientDetail;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientEdit;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClients;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Helpers;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.ViewModels.Clients;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Localization;
@@ -14,6 +19,18 @@ public partial class ClientsComponent : ComponentBase
     [Inject]
     private IClientService _clientService { get; set; }
 
+    [Inject]
+    private DialogService _dialogService { get; set; }
+
+    [Inject]
+    private IStringLocalizer<AddEditClientComponent> _stringLocalizerForAdd { get; set; }
+
+    [Inject]
+    private IStringLocalizer<ClientDetailComponent> _stringLocalizerForDetail { get; set; }
+
+    [Inject]
+    protected IStringLocalizer<ClientsFilterComponent> _stringLocalizerForFilter { get; set; }
+
     protected RadzenDataGrid<ClientDto> ClientsGrid;
 
     protected List<ClientDto> Clients;
@@ -21,13 +38,7 @@ public partial class ClientsComponent : ComponentBase
     protected int Count;
 
     [Inject]
-    protected DialogService DialogService { get; set; }
-
-    [Inject]
     protected IStringLocalizer<ClientsComponent> StringLocalizer { get; set; }
-
-    [Inject]
-    protected IStringLocalizer<ClientsFilterComponent> StringLocalizerForFilter { get; set; }
 
     protected bool IsLoading = false;
 
@@ -69,6 +80,124 @@ public partial class ClientsComponent : ComponentBase
         await InvokeAsync(StateHasChanged);
     }
 
+    protected async Task OnClickAdd()
+    {
+        var response = await _dialogService.OpenAsync<AddEditClient>(
+            _stringLocalizerForAdd["AddEditClient_Label_Add"],
+            new Dictionary<string, object>
+            {
+                { "IsClientToAdd", true }
+            }
+        );
+
+        if (response is null)
+            return;
+
+        var savedClient = response as ClientVm;
+
+        await ShowAlertAsync(
+            string.Format(StringLocalizer["Clients_AddedClient_Alert_Message"], savedClient.FullName),
+            StringLocalizer["Clients_AddedClient_Alert_Title"],
+            StringLocalizer["Clients_AddedClient_Alert_Button_Ok"]);
+
+        await ClientsGrid.Reload();
+    }
+
+    protected async Task OnClickDelete(ClientDto client)
+    {
+        string message = string.Format(
+            StringLocalizer["Clients_DeleteClient_Alert_Message"],
+            client.FullName);
+
+        bool? proceedToDelete = await _dialogService.Confirm(
+            message,
+            StringLocalizer["Clients_DeleteClient_Alert_Title"],
+            new ConfirmOptions
+            {
+                OkButtonText = StringLocalizer["Clients_DeleteClient_Alert_Button_Ok"],
+                CancelButtonText = StringLocalizer["Clients_DeleteClient_Alert_Button_Cancel"]
+            }
+        );
+
+        if (!proceedToDelete.HasValue || !proceedToDelete.Value)
+            return;
+
+        var request = new DeleteClientRequest
+        {
+            Id = client.ClientId
+        };
+
+        await _clientService.DeleteAsync(request);
+
+        await ShowAlertAsync(
+            string.Format(StringLocalizer["Clients_DeletedClient_Alert_Message"], client.FullName),
+            StringLocalizer["Clients_DeletedClient_Alert_Title"],
+            StringLocalizer["Clients_DeletedClient_Alert_Button_Ok"]);
+
+        await ClientsGrid.Reload();
+    }
+
+    protected async Task OnClickDetail(ClientDto client)
+    {
+        var request = new GetClientDetailRequest
+        {
+            ClientId = client.ClientId
+        };
+
+        var currentClientData = await _clientService
+            .GetClientDetailAsync(request);
+
+        var clientDetail = ClientHelper
+            .MapClientDetailViewModel(currentClientData.ClientDetail);
+
+        await _dialogService.OpenAsync<ClientDetail>(
+            _stringLocalizerForDetail["ClientDetail_Label_ClientDetail"],
+            new Dictionary<string, object>
+            {
+                { "Model", clientDetail }
+            }
+        );
+    }
+
+    protected async Task OnClickEdit(ClientDto client)
+    {
+        var request = new GetClientEditRequest
+        {
+            ClientId = client.ClientId
+        };
+
+        var currentClientData = await _clientService
+            .GetClientEditAsync(request);
+
+        var clientToEdit = ClientHelper
+            .MapClientViewModel(currentClientData.Client);
+
+        var response = await _dialogService.OpenAsync<AddEditClient>(
+            _stringLocalizerForAdd["AddEditClient_Label_Edit"],
+            new Dictionary<string, object>
+            {
+                { "IsClientToAdd", false },
+                { "Model", clientToEdit },
+                {
+                    "PreselectedPreferredDoctorFilterValues",
+                    currentClientData.PreferredDoctorFilterValues
+                }
+            }
+        );
+
+        if (response is null)
+            return;
+
+        var savedClient = response as ClientVm;
+
+        await ShowAlertAsync(
+            string.Format(StringLocalizer["Clients_EditedClient_Alert_Message"], savedClient.FullName),
+            StringLocalizer["Clients_EditedClient_Alert_Title"],
+            StringLocalizer["Clients_EditedClient_Alert_Button_Ok"]);
+
+        await ClientsGrid.Reload();
+    }
+
     protected async Task OnClickFilterSearch()
     {
         await ResetGridAndSearchAsync();
@@ -98,8 +227,8 @@ public partial class ClientsComponent : ComponentBase
             { nameof(ClientsFilterValues), filterValues }
         };
 
-        var result = await DialogService.OpenSideAsync<ClientsFilter>(
-            StringLocalizerForFilter["ClientsFilter_Label_Filter"],
+        var result = await _dialogService.OpenSideAsync<ClientsFilter>(
+            _stringLocalizerForFilter["ClientsFilter_Label_Filter"],
             filterParameters
         );
 
@@ -124,5 +253,20 @@ public partial class ClientsComponent : ComponentBase
     {
         ClientsGrid.Reset(false);
         await ClientsGrid.FirstPage(true);
+    }
+
+    private async Task<bool?> ShowAlertAsync(
+        string alertMessage,
+        string alertTitle,
+        string alertButtonOkMessage)
+    {
+        return await _dialogService.Alert(
+            alertMessage,
+            alertTitle,
+            new AlertOptions
+            {
+                OkButtonText = alertButtonOkMessage
+            }
+        );
     }
 }
