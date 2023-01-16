@@ -53,7 +53,7 @@ public partial class DoctorsPage
 
         if (confirmed)
         {
-            await DoctorService.DeleteAsync(id);
+            // await DoctorService.DeleteAsync(id);
             await ReloadData();
         }
     }
@@ -78,7 +78,7 @@ public partial class DoctorsPage
                 Id = ToSave.Id,
                 FullName = ToSave.FullName,
             };
-            await DoctorService.EditAsync(toUpdate);
+            await DoctorService.UpdateAsync(toUpdate);
         }
 
         CancelClick();
