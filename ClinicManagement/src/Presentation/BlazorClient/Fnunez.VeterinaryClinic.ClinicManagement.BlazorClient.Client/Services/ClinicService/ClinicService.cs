@@ -1,9 +1,13 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.CreateClinic;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.DeleteClinic;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.GetClinicById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.GetClinics;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.GetClinicsFilterAddress;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.GetClinicsFilterEmailAddress;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.GetClinicsFilterId;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.GetClinicsFilterName;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.UpdateClinic;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Common;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
@@ -19,6 +23,22 @@ public class ClinicService : IClinicService
     {
         _httpService = httpService;
         _logger = logger;
+    }
+
+    public async Task<ClinicDto> CreateAsync(
+        CreateClinicRequest createClinicRequest)
+    {
+        _logger.LogInformation($"Create: {createClinicRequest}");
+
+        var response = await _httpService.HttpPostAsync<CreateClinicResponse>(
+            "Clinic/Create",
+            createClinicRequest
+        );
+
+        if (response is null)
+            throw new ArgumentNullException(nameof(response));
+
+        return response.Clinic;
     }
 
     public async Task<DataGridResponse<ClinicDto>> DataGridAsync(
@@ -127,5 +147,42 @@ public class ClinicService : IClinicService
             throw new ArgumentNullException(nameof(response));
 
         return response.ClinicNames;
+    }
+
+    public async Task DeleteAsync(DeleteClinicRequest request)
+    {
+        _logger.LogInformation($"Delete: {request.Id}");
+
+        await _httpService
+            .HttpDeleteAsync<DeleteClinicResponse>("Clinic/Delete", request.Id);
+    }
+
+    public async Task<ClinicDto> GetByIdAsync(GetClinicByIdRequest request)
+    {
+        _logger.LogInformation($"GetById: {request.Id}");
+
+        var response = await _httpService
+            .HttpGetAsync<GetClinicByIdResponse>($"Clinic/GetById/{request.Id}");
+
+        if (response is null)
+            throw new ArgumentNullException(nameof(response));
+
+        return response.Clinic;
+    }
+
+    public async Task<ClinicDto> UpdateAsync(
+        UpdateClinicRequest updateClinicRequest)
+    {
+        _logger.LogInformation($"Edit: {updateClinicRequest}");
+
+        var response = await _httpService.HttpPutAsync<UpdateClinicResponse>(
+            "Clinic/Update",
+            updateClinicRequest
+        );
+
+        if (response is null)
+            throw new ArgumentNullException(nameof(response));
+
+        return response.Clinic;
     }
 }
