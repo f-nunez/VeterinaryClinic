@@ -2,6 +2,7 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.CreateClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.DeleteClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientById;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientDetail;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClients;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterEmailAddress;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterFullName;
@@ -207,6 +208,23 @@ public class ClientService : IClientService
             throw new ArgumentNullException(nameof(response));
 
         return response.Client;
+    }
+
+    public async Task<GetClientDetailResponse> GetClientDetailAsync(
+        GetClientDetailRequest request)
+    {
+        _logger.LogInformation($"GetClientDetail: {request.CorrelationId}");
+
+        var response = await _httpService
+            .HttpPostAsync<GetClientDetailResponse>(
+                $"Client/GetClientDetail",
+                request
+            );
+
+        if (response is null)
+            throw new ArgumentNullException(nameof(response));
+
+        return response;
     }
 
     public async Task<ClientDto> UpdateAsync(UpdateClientRequest client)

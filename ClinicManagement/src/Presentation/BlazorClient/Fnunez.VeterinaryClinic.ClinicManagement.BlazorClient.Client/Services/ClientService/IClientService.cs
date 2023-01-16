@@ -2,6 +2,7 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.CreateClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.DeleteClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientById;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientDetail;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClients;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterPreferredDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.UpdateClient;
@@ -21,5 +22,6 @@ public interface IClientService
     public Task<List<string>> DataGridFilterSalutationsync(string filterValue);
     public Task DeleteAsync(DeleteClientRequest request);
     public Task<ClientDto> GetByIdAsync(GetClientByIdRequest request);
+    public Task<GetClientDetailResponse> GetClientDetailAsync(GetClientDetailRequest request);
     public Task<ClientDto> UpdateAsync(UpdateClientRequest client);
 }
