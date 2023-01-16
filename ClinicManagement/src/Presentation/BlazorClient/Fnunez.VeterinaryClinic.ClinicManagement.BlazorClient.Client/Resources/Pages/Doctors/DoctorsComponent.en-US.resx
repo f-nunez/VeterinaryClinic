@@ -117,6 +117,48 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Doctors_Add_Button_Text" xml:space="preserve">
+    <value>ADD</value>
+  </data>
+  <data name="Doctors_AddedDoctor_Alert_Button_Ok" xml:space="preserve">
+    <value>ACCEPT</value>
+  </data>
+  <data name="Doctors_AddedDoctor_Alert_Message" xml:space="preserve">
+    <value>Doctor {0} was successfully added</value>
+  </data>
+  <data name="Doctors_AddedDoctor_Alert_Title" xml:space="preserve">
+    <value>Add Doctor</value>
+  </data>
+  <data name="Doctors_DeletedDoctor_Alert_Button_Ok" xml:space="preserve">
+    <value>ACCEPT</value>
+  </data>
+  <data name="Doctors_DeletedDoctor_Alert_Message" xml:space="preserve">
+    <value>Doctor {0} was successfully deleted</value>
+  </data>
+  <data name="Doctors_DeletedDoctor_Alert_Title" xml:space="preserve">
+    <value>Delete Doctor</value>
+  </data>
+  <data name="Doctors_DeleteDoctor_Alert_Button_Cancel" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="Doctors_DeleteDoctor_Alert_Button_Ok" xml:space="preserve">
+    <value>YES</value>
+  </data>
+  <data name="Doctors_DeleteDoctor_Alert_Message" xml:space="preserve">
+    <value>Are you sure you want to delete the doctor {0}?</value>
+  </data>
+  <data name="Doctors_DeleteDoctor_Alert_Title" xml:space="preserve">
+    <value>Delete Doctor</value>
+  </data>
+  <data name="Doctors_EditedDoctor_Alert_Button_Ok" xml:space="preserve">
+    <value>ACCEPT</value>
+  </data>
+  <data name="Doctors_EditedDoctor_Alert_Message" xml:space="preserve">
+    <value>Doctor {0} was successfully edited</value>
+  </data>
+  <data name="Doctors_EditedDoctor_Alert_Title" xml:space="preserve">
+    <value>Edit Doctor</value>
+  </data>
   <data name="Doctors_Grid_Column_Header_FullName" xml:space="preserve">
     <value>Full Name</value>
   </data>
