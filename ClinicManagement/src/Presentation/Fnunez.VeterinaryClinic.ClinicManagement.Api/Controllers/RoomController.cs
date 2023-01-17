@@ -70,7 +70,7 @@ public class RoomController : BaseApiController
         return Ok(response);
     }
 
-    [HttpDelete("Delete/{id}")]
+    [HttpDelete("Delete/{Id}")]
     public async Task<ActionResult> Delete(
         [FromRoute] DeleteRoomRequest request,
         CancellationToken cancellationToken)
@@ -83,27 +83,14 @@ public class RoomController : BaseApiController
         return Ok(response);
     }
 
-    [HttpGet("GetById")]
+    [HttpGet("GetById/{Id}")]
     public async Task<ActionResult> GetById(
-        [FromQuery] GetRoomByIdRequest request,
+        [FromRoute] GetRoomByIdRequest request,
         CancellationToken cancellationToken)
     {
         var query = new GetRoomByIdQuery(request);
 
         GetRoomByIdResponse response = await Mediator
-            .Send(query, cancellationToken);
-
-        return Ok(response);
-    }
-
-    [HttpGet("List")]
-    public async Task<ActionResult> List(
-        [FromQuery] GetRoomsRequest request,
-        CancellationToken cancellationToken)
-    {
-        var query = new GetRoomsQuery(request);
-
-        GetRoomsResponse response = await Mediator
             .Send(query, cancellationToken);
 
         return Ok(response);
