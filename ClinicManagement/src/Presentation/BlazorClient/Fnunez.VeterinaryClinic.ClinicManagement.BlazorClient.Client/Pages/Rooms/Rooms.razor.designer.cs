@@ -1,6 +1,10 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.DeleteRoom;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.GetRoomById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.GetRooms;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Helpers;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.ViewModels.Rooms;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Localization;
@@ -12,7 +16,19 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Pages.Roo
 public partial class RoomsComponent : ComponentBase
 {
     [Inject]
+    private DialogService _dialogService { get; set; }
+
+    [Inject]
     private IRoomService _roomService { get; set; }
+
+    [Inject]
+    private IStringLocalizer<AddEditRoomComponent> _stringLocalizerForAdd { get; set; }
+
+    [Inject]
+    private IStringLocalizer<RoomDetailComponent> _stringLocalizerForDetail { get; set; }
+
+    [Inject]
+    private IStringLocalizer<RoomsFilterComponent> _stringLocalizerForFilter { get; set; }
 
     protected RadzenDataGrid<RoomDto> RoomsGrid;
 
@@ -21,13 +37,7 @@ public partial class RoomsComponent : ComponentBase
     protected int Count;
 
     [Inject]
-    protected DialogService DialogService { get; set; }
-
-    [Inject]
     protected IStringLocalizer<RoomsComponent> StringLocalizer { get; set; }
-
-    [Inject]
-    protected IStringLocalizer<RoomsFilterComponent> StringLocalizerForFilter { get; set; }
 
     protected bool IsLoading = false;
 
@@ -64,6 +74,116 @@ public partial class RoomsComponent : ComponentBase
         await InvokeAsync(StateHasChanged);
     }
 
+    protected async Task OnClickAdd()
+    {
+        var response = await _dialogService.OpenAsync<AddEditRoom>(
+            _stringLocalizerForAdd["AddEditRoom_Label_Add"],
+            new Dictionary<string, object>
+            {
+                { "IsRoomToAdd", true }
+            }
+        );
+
+        if (response is null)
+            return;
+
+        var savedRoom = response as RoomVm;
+
+        await ShowAlertAsync(
+            string.Format(StringLocalizer["Rooms_AddedRoom_Alert_Message"], savedRoom.Name),
+            StringLocalizer["Rooms_AddedRoom_Alert_Title"],
+            StringLocalizer["Rooms_AddedRoom_Alert_Button_Ok"]);
+
+        await RoomsGrid.Reload();
+    }
+
+    protected async Task OnClickDelete(RoomDto doctor)
+    {
+        string message = string.Format(
+            StringLocalizer["Rooms_DeleteRoom_Alert_Message"],
+            doctor.Name);
+
+        bool? proceedToDelete = await _dialogService.Confirm(
+            message,
+            StringLocalizer["Rooms_DeleteRoom_Alert_Title"],
+            new ConfirmOptions
+            {
+                OkButtonText = StringLocalizer["Rooms_DeleteRoom_Alert_Button_Ok"],
+                CancelButtonText = StringLocalizer["Rooms_DeleteRoom_Alert_Button_Cancel"]
+            }
+        );
+
+        if (!proceedToDelete.HasValue || !proceedToDelete.Value)
+            return;
+
+        var request = new DeleteRoomRequest
+        {
+            Id = doctor.Id
+        };
+
+        await _roomService.DeleteAsync(request);
+
+        await ShowAlertAsync(
+            string.Format(StringLocalizer["Rooms_DeletedRoom_Alert_Message"], doctor.Name),
+            StringLocalizer["Rooms_DeletedRoom_Alert_Title"],
+            StringLocalizer["Rooms_DeletedRoom_Alert_Button_Ok"]);
+
+        await RoomsGrid.Reload();
+    }
+
+    protected async Task OnClickDetail(RoomDto doctor)
+    {
+        var request = new GetRoomByIdRequest
+        {
+            Id = doctor.Id
+        };
+
+        var currentRoom = await _roomService.GetByIdAsync(request);
+
+        var roomForDetail = RoomHelper.MapRoomViewModel(doctor);
+
+        await _dialogService.OpenAsync<RoomDetail>(
+            _stringLocalizerForDetail["RoomDetail_Label_RoomDetail"],
+            new Dictionary<string, object>
+            {
+                { "Model", roomForDetail }
+            }
+        );
+    }
+
+    protected async Task OnClickEdit(RoomDto doctor)
+    {
+        var request = new GetRoomByIdRequest
+        {
+            Id = doctor.Id
+        };
+
+        var currentRoom = await _roomService.GetByIdAsync(request);
+
+        var roomToEdit = RoomHelper.MapRoomViewModel(doctor);
+
+        var response = await _dialogService.OpenAsync<AddEditRoom>(
+            _stringLocalizerForAdd["AddEditRoom_Label_Edit"],
+            new Dictionary<string, object>
+            {
+                { "IsRoomToAdd", false },
+                { "Model", roomToEdit }
+            }
+        );
+
+        if (response is null)
+            return;
+
+        var savedRoom = response as RoomVm;
+
+        await ShowAlertAsync(
+            string.Format(StringLocalizer["Rooms_EditedRoom_Alert_Message"], savedRoom.Name),
+            StringLocalizer["Rooms_EditedRoom_Alert_Title"],
+            StringLocalizer["Rooms_EditedRoom_Alert_Button_Ok"]);
+
+        await RoomsGrid.Reload();
+    }
+
     protected async Task OnClickFilterSearch()
     {
         await ResetGridAndSearchAsync();
@@ -90,8 +210,8 @@ public partial class RoomsComponent : ComponentBase
             { nameof(RoomsFilterValues), filterValues }
         };
 
-        var result = await DialogService.OpenSideAsync<RoomsFilter>(
-            StringLocalizerForFilter["RoomsFilter_Label_Filter"],
+        var result = await _dialogService.OpenSideAsync<RoomsFilter>(
+            _stringLocalizerForFilter["RoomsFilter_Label_Filter"],
             filterParameters
         );
 
@@ -113,5 +233,20 @@ public partial class RoomsComponent : ComponentBase
     {
         RoomsGrid.Reset(false);
         await RoomsGrid.FirstPage(true);
+    }
+
+    private async Task<bool?> ShowAlertAsync(
+        string alertMessage,
+        string alertTitle,
+        string alertButtonOkMessage)
+    {
+        return await _dialogService.Alert(
+            alertMessage,
+            alertTitle,
+            new AlertOptions
+            {
+                OkButtonText = alertButtonOkMessage
+            }
+        );
     }
 }

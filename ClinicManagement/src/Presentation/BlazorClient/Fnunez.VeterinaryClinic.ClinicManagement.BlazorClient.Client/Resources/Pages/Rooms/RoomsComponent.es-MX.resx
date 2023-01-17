@@ -117,6 +117,48 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Rooms_Add_Button_Text" xml:space="preserve">
+    <value>AGREGAR</value>
+  </data>
+  <data name="Rooms_AddedRoom_Alert_Button_Ok" xml:space="preserve">
+    <value>ACEPTAR</value>
+  </data>
+  <data name="Rooms_AddedRoom_Alert_Message" xml:space="preserve">
+    <value>La habitación {0} se agregó exitosamente</value>
+  </data>
+  <data name="Rooms_AddedRoom_Alert_Title" xml:space="preserve">
+    <value>Agregar Habitación</value>
+  </data>
+  <data name="Rooms_DeletedRoom_Alert_Button_Ok" xml:space="preserve">
+    <value>ACEPTAR</value>
+  </data>
+  <data name="Rooms_DeletedRoom_Alert_Message" xml:space="preserve">
+    <value>La habitación {0} se eliminó exitosamente</value>
+  </data>
+  <data name="Rooms_DeletedRoom_Alert_Title" xml:space="preserve">
+    <value>Eliminar Habitación</value>
+  </data>
+  <data name="Rooms_DeleteRoom_Alert_Button_Cancel" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="Rooms_DeleteRoom_Alert_Button_Ok" xml:space="preserve">
+    <value>SÍ</value>
+  </data>
+  <data name="Rooms_DeleteRoom_Alert_Message" xml:space="preserve">
+    <value>¿Está seguro que desea eliminar la habitación {0}?</value>
+  </data>
+  <data name="Rooms_DeleteRoom_Alert_Title" xml:space="preserve">
+    <value>Eliminar Habitación</value>
+  </data>
+  <data name="Rooms_EditedRoom_Alert_Button_Ok" xml:space="preserve">
+    <value>ACEPTAR</value>
+  </data>
+  <data name="Rooms_EditedRoom_Alert_Message" xml:space="preserve">
+    <value>La habitación {0} se editó exitosamente</value>
+  </data>
+  <data name="Rooms_EditedRoom_Alert_Title" xml:space="preserve">
+    <value>Editar Habitación</value>
+  </data>
   <data name="Rooms_Grid_Column_Header_Id" xml:space="preserve">
     <value>Id</value>
   </data>
