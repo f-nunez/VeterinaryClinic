@@ -100,20 +100,20 @@ public class RoomService : IRoomService
         return response.RoomNames;
     }
 
-    public async Task DeleteAsync(int roomId)
+    public async Task DeleteAsync(DeleteRoomRequest request)
     {
-        _logger.LogInformation($"Delete: {roomId}");
+        _logger.LogInformation($"Delete: {request.Id}");
 
         await _httpService
-            .HttpDeleteAsync<DeleteRoomResponse>("Room/Delete", roomId);
+            .HttpDeleteAsync<DeleteRoomResponse>("Room/Delete", request.Id);
     }
 
-    public async Task<RoomDto> EditAsync(UpdateRoomRequest updateRoomRequest)
+    public async Task<RoomDto> GetByIdAsync(GetRoomByIdRequest request)
     {
-        _logger.LogInformation($"Edit: {updateRoomRequest}");
+        _logger.LogInformation($"GetById: {request.Id}");
 
         var response = await _httpService
-            .HttpPutAsync<UpdateRoomResponse>("Room/Update", updateRoomRequest);
+            .HttpGetAsync<GetRoomByIdResponse>($"Room/GetById/{request.Id}");
 
         if (response is null)
             throw new ArgumentNullException(nameof(response));
@@ -121,12 +121,12 @@ public class RoomService : IRoomService
         return response.Room;
     }
 
-    public async Task<RoomDto> GetByIdAsync(int roomId)
+    public async Task<RoomDto> UpdateAsync(UpdateRoomRequest updateRoomRequest)
     {
-        _logger.LogInformation($"GetById: {roomId}");
+        _logger.LogInformation($"Edit: {updateRoomRequest}");
 
         var response = await _httpService
-            .HttpGetAsync<GetRoomByIdResponse>($"Room/GetById/{roomId}");
+            .HttpPutAsync<UpdateRoomResponse>("Room/Update", updateRoomRequest);
 
         if (response is null)
             throw new ArgumentNullException(nameof(response));
