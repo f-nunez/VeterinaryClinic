@@ -58,7 +58,7 @@ public partial class RoomsPage
             {
                 Id = id,
             };
-            await RoomService.DeleteAsync(id);
+            // await RoomService.DeleteAsync(id);
             await ReloadData();
         }
     }
@@ -83,7 +83,7 @@ public partial class RoomsPage
                 Id = ToSave.Id,
                 Name = ToSave.Name,
             };
-            await RoomService.EditAsync(toUpdate);
+            await RoomService.UpdateAsync(toUpdate);
         }
 
         CancelClick();
