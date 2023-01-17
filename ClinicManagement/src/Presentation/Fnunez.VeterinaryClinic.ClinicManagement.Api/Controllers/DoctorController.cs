@@ -96,19 +96,6 @@ public class DoctorController : BaseApiController
         return Ok(response);
     }
 
-    [HttpGet("List")]
-    public async Task<ActionResult> List(
-        [FromQuery] GetDoctorsRequest request,
-        CancellationToken cancellationToken)
-    {
-        var query = new GetDoctorsQuery(request);
-
-        GetDoctorsResponse response = await Mediator
-            .Send(query, cancellationToken);
-
-        return Ok(response);
-    }
-
     [HttpPut("Update")]
     public async Task<ActionResult> Update(
         UpdateDoctorRequest request,
