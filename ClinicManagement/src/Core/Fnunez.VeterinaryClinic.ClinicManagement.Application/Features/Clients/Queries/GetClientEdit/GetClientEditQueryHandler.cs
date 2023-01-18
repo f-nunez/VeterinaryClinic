@@ -4,7 +4,6 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientEdit;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterPreferredDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
-using Fnunez.VeterinaryClinic.ClinicManagement.Domain.DoctorAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
@@ -37,17 +36,21 @@ public class GetClientEditQueryHandler
         if (client is null)
             throw new NotFoundException(nameof(client), request.ClientId);
 
-        var preferredDoctorFilterValues = new List<PreferredDoctorFilterValueDto>
-        {
-            new PreferredDoctorFilterValueDto
-            {
-                FullName = client.PreferredDoctor.FullName,
-                Id = client.PreferredDoctor.Id
-            }
-        };
-
         response.Client = _mapper.Map<ClientDto>(client);
-        response.PreferredDoctorFilterValues = preferredDoctorFilterValues;
+
+        if (client.PreferredDoctorId != null)
+        {
+            var preferredDoctorFilterValues = new List<PreferredDoctorFilterValueDto>
+            {
+                new PreferredDoctorFilterValueDto
+                {
+                    FullName = client.PreferredDoctor.FullName,
+                    Id = client.PreferredDoctor.Id
+                }
+            };
+
+            response.PreferredDoctorFilterValues = preferredDoctorFilterValues;
+        }
 
         return response;
     }

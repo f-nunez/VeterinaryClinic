@@ -132,7 +132,7 @@
                         Name="PreferredDoctor"
                         SearchText=@StringLocalizer["AddEditClient_PreferredDoctor_DropDown_PlaceHolder"]
                         TextProperty="FullName"
-                        TValue="int"
+                        TValue="int?"
                         ValueProperty="Id">
                         <Columns>
                             <RadzenDropDownDataGridColumn
@@ -144,14 +144,6 @@
                             </RadzenDropDownDataGridColumn>
                         </Columns>
                     </RadzenDropDownDataGrid>
-
-                    <RadzenCompareValidator
-                        Class="rz-message rz-messages-error position-absolute"
-                        Component="PreferredDoctor"
-                        Operator="CompareOperator.GreaterThan"
-                        Text=@StringLocalizer["AddEditClient_PreferredDoctor_DropDown_RequiredMessage"]
-                        Value="0">
-                    </RadzenCompareValidator>
                 </div>
             </div>
         </div>

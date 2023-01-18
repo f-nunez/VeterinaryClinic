@@ -33,7 +33,7 @@ public partial class AddEditClientComponent : ComponentBase
     public ClientVm Model { get; set; } = new();
 
     #region PreferredDoctor properties
-    protected RadzenDropDownDataGrid<int> PreferredDoctorDropDownDataGrid;
+    protected RadzenDropDownDataGrid<int?> PreferredDoctorDropDownDataGrid;
 
     protected int PreferredDoctorFilterCount;
 
@@ -122,7 +122,7 @@ public partial class AddEditClientComponent : ComponentBase
         }
         else
         {
-            Model.PreferredDoctorId = 0;
+            Model.PreferredDoctorId = null;
         }
     }
     #endregion

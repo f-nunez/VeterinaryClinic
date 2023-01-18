@@ -53,18 +53,21 @@
         </RadzenText>
     </div>
 
-    <div class="col-12">
-        <RadzenText
-            Class="rz-color-primary-light"
-            Text=@StringLocalizer["ClientDetail_Label_PreferredDoctor"]
-            TextStyle="TextStyle.Overline">
-        </RadzenText>
+    @if(!string.IsNullOrEmpty(Model.PreferredDoctorFullName))
+    {
+        <div class="col-12">
+            <RadzenText
+                Class="rz-color-primary-light"
+                Text=@StringLocalizer["ClientDetail_Label_PreferredDoctor"]
+                TextStyle="TextStyle.Overline">
+            </RadzenText>
 
-        <RadzenText
-            TextStyle="TextStyle.Body1">
-            <b>@Model.PreferredDoctorFullName</b>
-        </RadzenText>
-    </div>
+            <RadzenText
+                TextStyle="TextStyle.Body1">
+                <b>@Model.PreferredDoctorFullName</b>
+            </RadzenText>
+        </div>
+    }
 </div>
 
 <div class="row mt-2">

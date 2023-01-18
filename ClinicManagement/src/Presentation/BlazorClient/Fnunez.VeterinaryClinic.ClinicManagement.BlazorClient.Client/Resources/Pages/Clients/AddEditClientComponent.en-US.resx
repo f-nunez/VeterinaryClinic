@@ -153,9 +153,6 @@
   <data name="AddEditClient_PreferredDoctor_DropDown_PlaceHolder" xml:space="preserve">
     <value>Search preferred doctor...</value>
   </data>
-  <data name="AddEditClient_PreferredDoctor_DropDown_RequiredMessage" xml:space="preserve">
-    <value>Preferred doctor is required</value>
-  </data>
   <data name="AddEditClient_PreferredName_TextBox_Label" xml:space="preserve">
     <value>Preferred Name</value>
   </data>
