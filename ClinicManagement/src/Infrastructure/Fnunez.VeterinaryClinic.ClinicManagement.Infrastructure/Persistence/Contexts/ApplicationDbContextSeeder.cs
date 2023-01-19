@@ -190,6 +190,7 @@ public class ApplicationDbContextSeeder
             "Booster",
             AnimalSex.Male,
             new AnimalType("Dobermann", "Dog"),
+            new Photo("booster.png", "F8F90EB9-E0B4-44C6-9E33-18606796E537.png"),
             null
         );
 
@@ -198,6 +199,7 @@ public class ApplicationDbContextSeeder
             "Vina",
             AnimalSex.Female,
             new AnimalType("Albino", "Ferret"),
+            new Photo("vina.jpg", "34D6B187-A8A3-4704-9B7E-945CBC553591.jpg"),
             null
         );
 
@@ -206,6 +208,7 @@ public class ApplicationDbContextSeeder
             "Mata",
             AnimalSex.Male,
             new AnimalType("Domestic Shorthair", "Cat"),
+            new Photo("mata.jpg", "C1AC842C-3DBE-4C9E-96EA-426D21F29689.jpg"),
             null
         );
 
