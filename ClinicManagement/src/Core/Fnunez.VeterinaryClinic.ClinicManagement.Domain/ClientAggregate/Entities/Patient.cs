@@ -36,8 +36,8 @@ public class Patient : BaseEntity<int>
 
         if (animalType is null)
             throw new ArgumentNullException(
-                nameof(name),
-                $"Required input {nameof(name)} was empty.");
+                nameof(animalType),
+                $"Required input {nameof(animalType)} was empty.");
 
         if (preferredDoctorId != null && preferredDoctorId <= 0)
             throw new ArgumentException(
@@ -76,8 +76,8 @@ public class Patient : BaseEntity<int>
 
         if (animalType is null)
             throw new ArgumentNullException(
-                nameof(name),
-                $"Required input {nameof(name)} was empty.");
+                nameof(animalType),
+                $"Required input {nameof(animalType)} was empty.");
 
         if (preferredDoctorId != null && preferredDoctorId <= 0)
             throw new ArgumentException(
