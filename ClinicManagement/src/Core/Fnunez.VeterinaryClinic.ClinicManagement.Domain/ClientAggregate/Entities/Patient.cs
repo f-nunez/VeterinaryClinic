@@ -10,6 +10,7 @@ public class Patient : BaseEntity<int>
     public string Name { get; private set; }
     public AnimalSex AnimalSex { get; private set; }
     public AnimalType AnimalType { get; private set; } = null!;
+    public Photo Photo { get; set; } = null!;
     public int? PreferredDoctorId { get; private set; }
 
     public Patient()
@@ -22,6 +23,7 @@ public class Patient : BaseEntity<int>
         string name,
         AnimalSex animalSex,
         AnimalType animalType,
+        Photo photo,
         int? preferredDoctorId)
     {
         if (clientId <= 0)
@@ -39,6 +41,11 @@ public class Patient : BaseEntity<int>
                 nameof(animalType),
                 $"Required input {nameof(animalType)} was empty.");
 
+        if (photo is null)
+            throw new ArgumentNullException(
+                nameof(photo),
+                $"Required input {nameof(photo)} was empty.");
+
         if (preferredDoctorId != null && preferredDoctorId <= 0)
             throw new ArgumentException(
                 $"Required input {nameof(preferredDoctorId)} cannot be zero or negative.",
@@ -48,6 +55,7 @@ public class Patient : BaseEntity<int>
         Name = name;
         AnimalSex = animalSex;
         AnimalType = animalType;
+        Photo = photo;
         PreferredDoctorId = preferredDoctorId;
     }
 
@@ -57,6 +65,7 @@ public class Patient : BaseEntity<int>
         string name,
         AnimalSex animalSex,
         AnimalType animalType,
+        Photo photo,
         int? preferredDoctorId)
     {
         if (id <= 0)
@@ -79,6 +88,11 @@ public class Patient : BaseEntity<int>
                 nameof(animalType),
                 $"Required input {nameof(animalType)} was empty.");
 
+        if (photo is null)
+            throw new ArgumentNullException(
+                nameof(photo),
+                $"Required input {nameof(photo)} was empty.");
+
         if (preferredDoctorId != null && preferredDoctorId <= 0)
             throw new ArgumentException(
                 $"Required input {nameof(preferredDoctorId)} cannot be zero or negative.",
@@ -88,6 +102,7 @@ public class Patient : BaseEntity<int>
         Name = name;
         AnimalSex = animalSex;
         AnimalType = animalType;
+        Photo = photo;
         PreferredDoctorId = preferredDoctorId;
     }
 
@@ -113,6 +128,16 @@ public class Patient : BaseEntity<int>
                 $"Required input {nameof(name)} was empty.", nameof(name));
 
         Name = name;
+    }
+
+    public void UpdatePhoto(Photo photo)
+    {
+        if (photo is null)
+            throw new ArgumentNullException(
+                nameof(photo),
+                $"Required input {nameof(photo)} was empty.");
+
+        Photo = photo;
     }
 
     public void UpdatePreferredDoctorId(int? preferredDoctorId)
