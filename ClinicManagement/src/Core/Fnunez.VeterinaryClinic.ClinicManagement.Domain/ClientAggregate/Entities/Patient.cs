@@ -91,6 +91,21 @@ public class Patient : BaseEntity<int>
         PreferredDoctorId = preferredDoctorId;
     }
 
+    public void UpdateAnimalSex(AnimalSex animalSex)
+    {
+        AnimalSex = animalSex;
+    }
+
+    public void UpdateAnimalType(AnimalType animalType)
+    {
+        if (animalType is null)
+            throw new ArgumentNullException(
+                nameof(animalType),
+                $"Required input {nameof(animalType)} was empty.");
+
+        AnimalType = animalType;
+    }
+
     public void UpdateName(string name)
     {
         if (string.IsNullOrEmpty(name))
