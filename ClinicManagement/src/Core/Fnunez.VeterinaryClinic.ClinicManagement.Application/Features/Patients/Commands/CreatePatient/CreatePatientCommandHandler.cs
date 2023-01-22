@@ -1,4 +1,6 @@
 using AutoMapper;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.CreatePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
@@ -12,12 +14,17 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients
 
 public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand, CreatePatientResponse>
 {
-    private readonly IMapper _mapper;
+    private readonly IClientStorageSetting _clientStorageSetting;
+    private readonly IFileSystemWriterService _fileSystemWriterService;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreatePatientCommandHandler(IMapper mapper, IUnitOfWork unitOfWork)
+    public CreatePatientCommandHandler(
+        IClientStorageSetting clientStorageSetting,
+        IFileSystemWriterService fileSystemWriterService,
+        IUnitOfWork unitOfWork)
     {
-        _mapper = mapper;
+        _clientStorageSetting = clientStorageSetting;
+        _fileSystemWriterService = fileSystemWriterService;
         _unitOfWork = unitOfWork;
     }
 
@@ -35,11 +42,14 @@ public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand,
         if (client is null)
             return response;
 
+        string savedPhotoName = await SavePhotoAsync(request);
+
         var newPatient = new Patient(
-            clientId: request.ClientId,
-            name: request.PatientName,
-            animalSex: AnimalSex.Female,
-            animalType: new AnimalType("Dog", "Chihuahua"),
+            request.ClientId,
+            request.Name,
+            (AnimalSex)Enum.ToObject(typeof(AnimalSex), request.Sex),
+            new AnimalType(request.Breed, request.Species),
+            new Photo(request.PhotoName, savedPhotoName),
             preferredDoctorId: request.PreferredDoctorId
         );
 
@@ -47,11 +57,26 @@ public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand,
 
         await _unitOfWork.Repository<Client>()
             .UpdateAsync(client, cancellationToken);
-        
+
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        response.Patient = _mapper.Map<PatientDto>(newPatient);
-
         return response;
+    }
+
+    private async Task<string> SavePhotoAsync(CreatePatientRequest request)
+    {
+        string photoExtension = Path.GetExtension(request.PhotoName).ToLower();
+
+        string photoNameToSave = $"{Guid.NewGuid().ToString()}{photoExtension}";
+
+        string relativePhotoPath = Path.Combine(
+            request.ClientId.ToString(), photoNameToSave);
+
+        string photoPath = Path.Combine(
+            _clientStorageSetting.BasePath, relativePhotoPath);
+
+        await _fileSystemWriterService.WriteAsync(request.PhotoData, photoPath);
+
+        return photoNameToSave;
     }
 }

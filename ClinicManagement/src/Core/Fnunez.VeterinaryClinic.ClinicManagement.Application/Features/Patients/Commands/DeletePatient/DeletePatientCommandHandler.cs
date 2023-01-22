@@ -1,6 +1,10 @@
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Commands.CreatePatient;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.DeletePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
+using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Entities;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
@@ -8,10 +12,17 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients
 
 public class DeletePatientCommandHandler : IRequestHandler<DeletePatientCommand, DeletePatientResponse>
 {
+    private readonly IClientStorageSetting _clientStorageSetting;
+    private readonly IFileSystemDeleterService _fileSystemDeleterService;
     private readonly IUnitOfWork _unitOfWork;
 
-    public DeletePatientCommandHandler(IUnitOfWork unitOfWork)
+    public DeletePatientCommandHandler(
+        IClientStorageSetting clientStorageSetting,
+        IFileSystemDeleterService fileSystemDeleterService,
+        IUnitOfWork unitOfWork)
     {
+        _clientStorageSetting = clientStorageSetting;
+        _fileSystemDeleterService = fileSystemDeleterService;
         _unitOfWork = unitOfWork;
     }
 
@@ -21,27 +32,46 @@ public class DeletePatientCommandHandler : IRequestHandler<DeletePatientCommand,
     {
         DeletePatientRequest request = command.DeletePatientRequest;
         var response = new DeletePatientResponse(request.CorrelationId);
-        var specification = new ClientByIdIncludePatientsSpecification(request.ClientId);
 
-        var client = await _unitOfWork.Repository<Client>()
+        var specification = new ClientByIdIncludePatientsSpecification(
+            request.ClientId);
+
+        var client = await _unitOfWork
+            .Repository<Client>()
             .FirstOrDefaultAsync(specification, cancellationToken);
 
         if (client is null)
-            return response;
+            throw new NotFoundException(
+                nameof(client), request.ClientId);
 
         var patientToDelete = client.Patients
             .FirstOrDefault(p => p.Id == request.PatientId);
 
         if (patientToDelete is null)
-            return response;
+            throw new NotFoundException(
+                nameof(patientToDelete), request.PatientId);
+        
+        DeletePhoto(patientToDelete);
 
         client.RemovePatient(patientToDelete);
 
-        await _unitOfWork.Repository<Client>()
+        await _unitOfWork
+            .Repository<Client>()
             .UpdateAsync(client);
-        
+
         await _unitOfWork.CommitAsync(cancellationToken);
 
         return response;
+    }
+
+    private void DeletePhoto(Patient patient)
+    {
+        string relativePhotoPath = Path.Combine(
+            patient.ClientId.ToString(), patient.Photo.StoredName);
+
+        string photoPath = Path.Combine(
+            _clientStorageSetting.BasePath, relativePhotoPath);
+
+        _fileSystemDeleterService.Delete(photoPath);
     }
 }

@@ -1,0 +1,140 @@
+@page "/clinics"
+@layout Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.MainLayout
+@inherits Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Pages.Clinics.ClinicsComponent
+
+@using Application.SharedModel.Clinic
+@using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.RadzenTextBoxSearch
+@using Radzen
+@using Radzen.Blazor
+
+<RadzenHeading
+    Size="H1"
+    Text=@StringLocalizer["Clinics_Title"]>
+</RadzenHeading>
+
+<RadzenCard>
+    <div class="row mb-3">
+        <div class="col-12 col-sm-4 col-md-6 col-lg-7 col-xl-8">
+            <RadzenButton
+                Click=@OnClickAdd
+                Icon="add"
+                Text=@StringLocalizer["Clinics_Add_Button_Text"]>
+            </RadzenButton>
+        </div>
+
+        <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+            <div class="datagrid-filter-menu">
+                <RadzenTextBoxSearchComponent
+                    @bind-Value=@SearchFilterValue
+                    @onkeyup=@OnKeyUpFilterSearch
+                    AutoComplete="false"
+                    Click=@OnClickFilterSearch
+                    Placeholder=@StringLocalizer["Clinics_Grid_Filter_PlaceHolder_Search"]>
+                </RadzenTextBoxSearchComponent>
+
+                <RadzenButton
+                    ButtonStyle="ButtonStyle.Secondary"
+                    Click=@OpenFilterMenu
+                    Icon="filter_list">
+                </RadzenButton>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <RadzenDataGrid @ref=@ClinicsGrid
+                AllowPaging="true"
+                AllowSorting="true"
+                Count=@Count
+                Data=@Clinics
+                IsLoading=@IsLoading
+                LoadData=@LoadData
+                PagerHorizontalAlign="HorizontalAlign.Center"
+                PageSize="10"
+                PageSizeOptions="@PageSizeOptions"
+                PageSizeText=@StringLocalizer["Clinics_Grid_PageSizeText"]
+                PagingSummaryFormat=@StringLocalizer["Clinics_Grid_PagingSummaryFormat"]
+                ShowPagingSummary="true"
+                TItem="ClinicDto">
+                <Columns>
+                    <RadzenDataGridColumn
+                        Filterable="true"
+                        Property="Id"
+                        Sortable="true"
+                        SortOrder="SortOrder.Ascending"
+                        TextAlign="TextAlign.Left"
+                        TItem="ClinicDto"
+                        Title=@StringLocalizer["Clinics_Grid_Column_Header_Id"]>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn
+                        Filterable="true"
+                        Property="Name"
+                        Sortable="true"
+                        TextAlign="TextAlign.Justify"
+                        TItem="ClinicDto"
+                        Title=@StringLocalizer["Clinics_Grid_Column_Header_Name"]>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn
+                        Filterable="true"
+                        Property="Address"
+                        Sortable="true"
+                        TextAlign="TextAlign.Justify"
+                        TItem="ClinicDto"
+                        Title=@StringLocalizer["Clinics_Grid_Column_Header_Address"]>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn
+                        Filterable="true"
+                        Property="EmailAddress"
+                        Sortable="true"
+                        TextAlign="TextAlign.Justify"
+                        TItem="ClinicDto"
+                        Title=@StringLocalizer["Clinics_Grid_Column_Header_EmailAddress"]>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn
+                        Width="160px"
+                        Filterable="false"
+                        Sortable="false"
+                        TextAlign="TextAlign.Right"
+                        TItem="ClinicDto">
+
+                        <Template Context="clinic">
+
+                            <RadzenButton
+                                ButtonStyle="ButtonStyle.Light"
+                                Click="@((args) => OnClickDetail(clinic))"
+                                Icon="find_in_page"
+                                Size="ButtonSize.Medium"
+                                Variant="Variant.Flat">
+                            </RadzenButton>
+
+                            <RadzenButton
+                                ButtonStyle="ButtonStyle.Light"
+                                Class="mx-1"
+                                Click="@((args) => OnClickEdit(clinic))"
+                                Icon="edit"
+                                Size="ButtonSize.Medium"
+                                Variant="Variant.Flat">
+                            </RadzenButton>
+
+                            <RadzenButton
+                                ButtonStyle="ButtonStyle.Danger"
+                                Click="@((args) => OnClickDelete(clinic))"
+                                Icon="delete"
+                                Shade="Shade.Lighter"
+                                Size="ButtonSize.Medium"
+                                Variant="Variant.Flat">
+                            </RadzenButton>
+
+                        </Template>
+
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
+        </div>
+    </div>
+</RadzenCard>

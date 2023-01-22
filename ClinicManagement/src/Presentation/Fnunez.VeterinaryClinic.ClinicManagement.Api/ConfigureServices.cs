@@ -6,13 +6,13 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddWebServices(this IServiceCollection services)
+    public static IServiceCollection AddWebServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddCors(options =>
         {
             options.AddPolicy("CorsPolicy", policy =>
             {
-                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:7004");
+                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins(configuration["BlazorClientUrl"]!);
             });
         });
 
@@ -40,6 +40,8 @@ public static class ConfigureServices
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+
+            Task.Run(() => SeedDataAsync(app));
         }
 
         app.UseHttpsRedirection();
@@ -53,5 +55,18 @@ public static class ConfigureServices
         app.MapControllers();
 
         return app;
+    }
+
+    private static async void SeedDataAsync(WebApplication app)
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            var seeder = scope.ServiceProvider
+                .GetRequiredService<ApplicationDbContextSeeder>();
+
+            await seeder.MigrateAsync();
+
+            await seeder.SeedDataAsync();
+        }
     }
 }

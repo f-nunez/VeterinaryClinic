@@ -1,0 +1,205 @@
+@inherits Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Pages.Patients.AddEditPatientComponent
+
+@using ViewModels.Patients
+
+<RadzenTemplateForm
+    Data="@Model"
+    Submit=@OnSubmit
+    TItem="AddEditPatientVm">
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="row mb-3">
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditPatient_Photo_Uploader_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <div class="w-100 text-center">
+                        <RadzenImage
+                            Class="patient-photo-image"
+                            Path=@($"data:image/png;base64,{PhotoBase64Encoded}")>
+                        </RadzenImage>
+                    </div>
+
+                    <div class="rz-fileupload-buttonbar">
+                        <span class="rz-fileupload-choose rz-button rz-secondary" tabindex="0" onkeydown="if(event.keyCode == 32 || event.keyCode == 13){event.preventDefault();this.firstElementChild.click();}">
+                            <InputFile OnChange=@OnChangePhoto accept="@PhotoFileSetting.AllowedExtensions" />
+                            <span class="rz-button-text">
+                                @StringLocalizer["AddEditPatient_Photo_Uploader_Button_Text"]
+                            </span>
+                        </span>
+
+                        <span class="patient-photo-name">
+                            @Model.PhotoName
+                        </span>
+                    </div>
+
+                    <RadzenTextBox
+                        @bind-Value=@Model.PhotoName
+                        Name="Photo"
+                        Style="display: none">
+                    </RadzenTextBox>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Photo"
+                        Text=@StringLocalizer["AddEditPatient_Photo_Uploader_RequiredMessage"]>
+                    </RadzenRequiredValidator>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditPatient_Name_TextBox_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenTextBox
+                        @bind-Value="@Model.Name"
+                        AutoComplete="false"
+                        Class="w-100 d-block"
+                        MaxLength="200"
+                        Name="Name"
+                        Placeholder=@StringLocalizer["AddEditPatient_Name_TextBox_PlaceHolder"]>
+                    </RadzenTextBox>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Name"
+                        Text=@StringLocalizer["AddEditPatient_Name_TextBox_RequiredMessage"]>
+                    </RadzenRequiredValidator>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditPatient_Breed_TextBox_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenTextBox
+                        @bind-Value="@Model.Breed"
+                        AutoComplete="false"
+                        Class="w-100 d-block"
+                        MaxLength="200"
+                        Name="Breed"
+                        Placeholder=@StringLocalizer["AddEditPatient_Breed_TextBox_PlaceHolder"]>
+                    </RadzenTextBox>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Breed"
+                        Text=@StringLocalizer["AddEditPatient_Breed_TextBox_RequiredMessage"]>
+                    </RadzenRequiredValidator>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditPatient_Species_TextBox_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenTextBox
+                        @bind-Value="@Model.Species"
+                        AutoComplete="false"
+                        Class="w-100 d-block"
+                        MaxLength="200"
+                        Name="Species"
+                        Placeholder=@StringLocalizer["AddEditPatient_Species_TextBox_PlaceHolder"]>
+                    </RadzenTextBox>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Species"
+                        Text=@StringLocalizer["AddEditPatient_Species_TextBox_RequiredMessage"]>
+                    </RadzenRequiredValidator>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditPatient_AnimalSex_DropDown_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenDropDown 
+                        @bind-Value="Sex"
+                        AllowClear="false"
+                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                        AllowFiltering="true"
+                        Class="w-100 d-block"
+                        Change="@(args => OnChangeSexDropDown(args))"
+                        Data=@AnimalSexDropDownValues
+                        Name="AnimalSex"
+                        Placeholder=@StringLocalizer["AddEditPatient_AnimalSex_DropDown_PlaceHolder"]
+                        TextProperty="Text"
+                        TValue="int?"
+                        ValueProperty="Value">
+                    </RadzenDropDown>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="AnimalSex"
+                        Text=@StringLocalizer["AddEditPatient_AnimalSex_DropDown_RequiredMessage"]>
+                    </RadzenRequiredValidator>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditPatient_PreferredDoctor_DropDown_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenDropDownDataGrid
+                        @ref=@PreferredDoctorDropDownDataGrid
+                        @bind-Value="Model.PreferredDoctorId"
+                        AllowClear="true"
+                        AllowFiltering="true"
+                        AllowSorting="true"
+                        AllowVirtualization="true"
+                        Change="@(args => OnChangePreferredDoctorFilter(args))"
+                        Class="w-100 d-block"
+                        Count=@PreferredDoctorFilterCount
+                        Data=@PreferredDoctorFilterValues
+                        FilterDelay="500"
+                        LoadData="@PreferredDoctorFilterLoadData"
+                        Name="PreferredDoctor"
+                        SearchText=@StringLocalizer["AddEditPatient_PreferredDoctor_DropDown_PlaceHolder"]
+                        TextProperty="FullName"
+                        TValue="int?"
+                        ValueProperty="Id">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn
+                                Property="FullName"
+                                Sortable="true"
+                                SortOrder="SortOrder.Ascending"
+                                TextAlign="TextAlign.Left"
+                                Title=@StringLocalizer["AddEditPatient_PreferredDoctor_DropDown_ColumnHeader_FullName"]>
+                            </RadzenDropDownDataGridColumn>
+                        </Columns>
+                    </RadzenDropDownDataGrid>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <RadzenButton
+                BusyText=@StringLocalizer["AddEditPatient_Save_Button_BusyText"]
+                ButtonStyle="ButtonStyle.Success"
+                ButtonType="ButtonType.Submit"
+                Class="w-100"
+                Icon="save"
+                IsBusy=@IsSaving
+                Text=@StringLocalizer["AddEditPatient_Save_Button_Text"]>
+            </RadzenButton>
+        </div>
+    </div>
+
+</RadzenTemplateForm>

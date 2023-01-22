@@ -7,22 +7,22 @@ public class UserSettingsComponentService : IUserSettingsComponentService
 {
     private const string DefaultTimeZoneId = "Pacific Standard Time (Mexico)";
     private const string DefaultLanguageCulture = "en-US";
-    private readonly ICookieSettings _cookieSettings;
+    private readonly ICookieSetting _cookieSetting;
     private readonly ILocalStorageService _localStorageService;
     private UserSettings? _userSettings { get; set; }
 
     public UserSettingsComponentService(
-        ICookieSettings cookieSettings,
+        ICookieSetting cookieSetting,
         ILocalStorageService localStorageService)
     {
-        _cookieSettings = cookieSettings;
+        _cookieSetting = cookieSetting;
         _localStorageService = localStorageService;
     }
 
     public async Task<UserSettings> GetSettingsAsync()
     {
         _userSettings = await _localStorageService
-            .GetItemAsync<UserSettings>(_cookieSettings.UserSettingsKey);
+            .GetItemAsync<UserSettings>(_cookieSetting.UserSettingsKey);
 
         if (_userSettings is null)
         {
@@ -47,7 +47,7 @@ public class UserSettingsComponentService : IUserSettingsComponentService
     public async Task SaveSettingsAsync(UserSettings userSettings)
     {
         await _localStorageService
-            .SetItemAsync(_cookieSettings.UserSettingsKey, userSettings);
+            .SetItemAsync(_cookieSetting.UserSettingsKey, userSettings);
 
         _userSettings = userSettings;
     }

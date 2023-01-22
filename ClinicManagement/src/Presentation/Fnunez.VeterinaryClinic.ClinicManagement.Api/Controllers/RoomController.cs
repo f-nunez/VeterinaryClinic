@@ -3,10 +3,14 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Comman
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Commands.UpdateRoom;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Queries.GetRoomById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Queries.GetRooms;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Queries.GetRoomsFilterId;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Queries.GetRoomsFilterName;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.CreateRoom;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.DeleteRoom;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.GetRoomById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.GetRooms;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.GetRoomsFilterId;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.GetRoomsFilterName;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.UpdateRoom;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +31,46 @@ public class RoomController : BaseApiController
         return Ok(response);
     }
 
-    [HttpDelete("Delete/{id}")]
+    [HttpPost("DataGrid")]
+    public async Task<ActionResult> DataGrid(
+        GetRoomsRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetRoomsQuery(request);
+
+        GetRoomsResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGridFilterId")]
+    public async Task<ActionResult> DataGridFilterId(
+        GetRoomsFilterIdRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetRoomsFilterIdQuery(request);
+
+        GetRoomsFilterIdResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGridFilterName")]
+    public async Task<ActionResult> DataGridFilterName(
+        GetRoomsFilterNameRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetRoomsFilterNameQuery(request);
+
+        GetRoomsFilterNameResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpDelete("Delete/{Id}")]
     public async Task<ActionResult> Delete(
         [FromRoute] DeleteRoomRequest request,
         CancellationToken cancellationToken)
@@ -40,27 +83,14 @@ public class RoomController : BaseApiController
         return Ok(response);
     }
 
-    [HttpGet("GetById")]
+    [HttpGet("GetById/{Id}")]
     public async Task<ActionResult> GetById(
-        [FromQuery] GetRoomByIdRequest request,
+        [FromRoute] GetRoomByIdRequest request,
         CancellationToken cancellationToken)
     {
         var query = new GetRoomByIdQuery(request);
 
         GetRoomByIdResponse response = await Mediator
-            .Send(query, cancellationToken);
-
-        return Ok(response);
-    }
-
-    [HttpGet("List")]
-    public async Task<ActionResult> List(
-        [FromQuery] GetRoomsRequest request,
-        CancellationToken cancellationToken)
-    {
-        var query = new GetRoomsQuery(request);
-
-        GetRoomsResponse response = await Mediator
             .Send(query, cancellationToken);
 
         return Ok(response);

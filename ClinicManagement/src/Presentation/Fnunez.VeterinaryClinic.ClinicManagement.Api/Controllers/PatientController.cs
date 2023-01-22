@@ -2,11 +2,19 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Com
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Commands.DeletePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Commands.UpdatePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Queries.GetPatientById;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Queries.GetPatientDetail;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Queries.GetPatientEdit;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Queries.GetPatients;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Queries.GetPatientsFilterClient;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Queries.GetPatientsFilterPreferredDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.CreatePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.DeletePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.GetPatientById;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.GetPatientDetail;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.GetPatientEdit;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.GetPatients;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.GetPatientsFilterClient;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.GetPatientsFilterPreferredDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.UpdatePatient;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +35,32 @@ public class PatientController : BaseApiController
         return Ok(response);
     }
 
+    [HttpPost("DataGridFilterClient")]
+    public async Task<ActionResult> DataGridFilterClient(
+        GetPatientsFilterClientRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetPatientsFilterClientQuery(request);
+
+        GetPatientsFilterClientResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGridFilterPreferredDoctor")]
+    public async Task<ActionResult> DataGridFilterPreferredDoctor(
+        GetPatientsFilterPreferredDoctorRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetPatientsFilterPreferredDoctorQuery(request);
+
+        GetPatientsFilterPreferredDoctorResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
     [HttpDelete("Delete/{PatientId}/Client/{ClientId}")]
     public async Task<ActionResult> Delete(
         [FromRoute] DeletePatientRequest request,
@@ -40,9 +74,9 @@ public class PatientController : BaseApiController
         return Ok(response);
     }
 
-    [HttpGet("GetById")]
+    [HttpGet("GetById/{Id}")]
     public async Task<ActionResult> GetById(
-        [FromQuery] GetPatientByIdRequest request,
+        [FromRoute] GetPatientByIdRequest request,
         CancellationToken cancellationToken)
     {
         var query = new GetPatientByIdQuery(request);
@@ -53,9 +87,35 @@ public class PatientController : BaseApiController
         return Ok(response);
     }
 
-    [HttpGet("List")]
-    public async Task<ActionResult> List(
-        [FromQuery] GetPatientsRequest request,
+    [HttpGet("GetPatientDetail/{PatientId}/Client/{ClientId}")]
+    public async Task<ActionResult> GetPatientDetail(
+        [FromRoute] GetPatientDetailRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetPatientDetailQuery(request);
+
+        GetPatientDetailResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpGet("GetPatientEdit/{PatientId}/Client/{ClientId}")]
+    public async Task<ActionResult> GetPatientEdit(
+        [FromRoute] GetPatientEditRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetPatientEditQuery(request);
+
+        GetPatientEditResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpGet("GetPatients/{ClientId}")]
+    public async Task<ActionResult> GetPatients(
+        [FromRoute] GetPatientsRequest request,
         CancellationToken cancellationToken)
     {
         var query = new GetPatientsQuery(request);

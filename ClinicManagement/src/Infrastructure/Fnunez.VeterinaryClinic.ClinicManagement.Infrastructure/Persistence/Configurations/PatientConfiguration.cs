@@ -25,8 +25,25 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
                 .IsRequired();
         });
 
+        builder.OwnsOne(p => p.Photo, p =>
+        {
+            p.Property(p => p.Name)
+                .HasColumnName("Photo_Name")
+                .HasMaxLength(200)
+                .IsRequired();
+
+            p.Property(p => p.StoredName)
+                .HasColumnName("Photo_StoredName")
+                .HasMaxLength(200)
+                .IsRequired();
+        });
+
         builder.Metadata
             .FindNavigation(nameof(Patient.AnimalType))?
+            .SetPropertyAccessMode(PropertyAccessMode.Field);
+
+        builder.Metadata
+            .FindNavigation(nameof(Patient.Photo))?
             .SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 }

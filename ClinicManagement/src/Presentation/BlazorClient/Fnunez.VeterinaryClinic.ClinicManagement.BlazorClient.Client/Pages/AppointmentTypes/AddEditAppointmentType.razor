@@ -1,0 +1,110 @@
+@inherits Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Pages.AppointmentTypes.AddEditAppointmentTypeComponent
+
+@using Radzen.Blazor
+@using ViewModels.AppointmentTypes
+
+<RadzenTemplateForm
+    Data="@Model"
+    Submit=@OnSubmit
+    TItem="AppointmentTypeVm">
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="row mb-3">
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditAppointmentType_Name_TextBox_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenTextBox
+                        @bind-Value="@Model.Name"
+                        AutoComplete="false"
+                        Class="w-100 d-block"
+                        MaxLength="200"
+                        Name="Name"
+                        Placeholder=@StringLocalizer["AddEditAppointmentType_Name_TextBox_PlaceHolder"]>
+                    </RadzenTextBox>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Name"
+                        Text=@StringLocalizer["AddEditAppointmentType_Name_TextBox_RequiredMessage"]>
+                    </RadzenRequiredValidator>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditAppointmentType_Code_TextBox_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenTextBox
+                        @bind-Value="@Model.Code"
+                        AutoComplete="false"
+                        Class="w-100 d-block"
+                        MaxLength="100"
+                        Name="Code"
+                        Placeholder=@StringLocalizer["AddEditAppointmentType_Code_TextBox_PlaceHolder"]>
+                    </RadzenTextBox>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Code"
+                        Text=@StringLocalizer["AddEditAppointmentType_Code_TextBox_RequiredMessage"]>
+                    </RadzenRequiredValidator>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditAppointmentType_Duration_TextBox_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenNumeric
+                        @bind-Value=@Model.Duration
+                        AutoComplete="false"
+                        Class="w-100 d-block"
+                        Name="Duration"
+                        Max="999"
+                        Min="1"
+                        Placeholder=@StringLocalizer["AddEditAppointmentType_Duration_TextBox_PlaceHolder"]
+                        TValue="int?">
+                    </RadzenNumeric>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Duration"
+                        Text=@StringLocalizer["AddEditAppointmentType_Duration_TextBox_RequiredMessage"]>
+                    </RadzenRequiredValidator>
+
+                    <RadzenCompareValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Duration"
+                        Operator="CompareOperator.GreaterThan"
+                        Text=@StringLocalizer["AddEditAppointmentType_Duration_TextBox_RequiredMessage"]
+                        Value="0">
+                    </RadzenCompareValidator>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <RadzenButton
+                BusyText=@StringLocalizer["AddEditAppointmentType_Save_Button_BusyText"]
+                ButtonStyle="ButtonStyle.Success"
+                ButtonType="ButtonType.Submit"
+                Class="w-100"
+                Icon="save"
+                IsBusy=@IsSaving
+                Text=@StringLocalizer["AddEditAppointmentType_Save_Button_Text"]>
+            </RadzenButton>
+        </div>
+    </div>
+
+</RadzenTemplateForm>

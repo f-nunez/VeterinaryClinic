@@ -3,4 +3,5 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.Queries.GetDoctors;
 
-public record GetDoctorsQuery(GetDoctorsRequest GetDoctorsRequest) : IRequest<GetDoctorsResponse>;
+public record GetDoctorsQuery(GetDoctorsRequest GetDoctorsRequest)
+    : IRequest<GetDoctorsResponse>;

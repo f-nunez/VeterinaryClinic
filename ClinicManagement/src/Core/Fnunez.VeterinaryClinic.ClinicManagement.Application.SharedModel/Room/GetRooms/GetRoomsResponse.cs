@@ -4,9 +4,7 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.
 
 public class GetRoomsResponse : BaseResponse
 {
-    public List<RoomDto> Rooms { get; set; } = new List<RoomDto>();
-
-    public int Count { get; set; }
+    public DataGridResponse<RoomDto>? DataGridResponse { get; set; }
 
     public GetRoomsResponse(Guid correlationId) : base(correlationId)
     {

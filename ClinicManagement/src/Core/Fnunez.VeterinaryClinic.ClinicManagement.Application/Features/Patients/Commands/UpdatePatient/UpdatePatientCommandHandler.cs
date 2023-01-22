@@ -1,7 +1,12 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Commands.CreatePatient;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.UpdatePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
+using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Entities;
+using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Enums;
+using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.ValueObjects;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
@@ -9,12 +14,21 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients
 
 public class UpdatePatientCommandHandler : IRequestHandler<UpdatePatientCommand, UpdatePatientResponse>
 {
-    private readonly IMapper _mapper;
+    private readonly IClientStorageSetting _clientStorageSetting;
+    private readonly IFileSystemDeleterService _fileSystemDeleterService;
+    private readonly IFileSystemWriterService _fileSystemWriterService;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdatePatientCommandHandler(IMapper mapper, IUnitOfWork unitOfWork)
+    public UpdatePatientCommandHandler(
+        IClientStorageSetting clientStorageSetting,
+        IFileSystemDeleterService fileSystemDeleterService,
+        IFileSystemWriterService fileSystemWriterService,
+        IMapper mapper,
+        IUnitOfWork unitOfWork)
     {
-        _mapper = mapper;
+        _clientStorageSetting = clientStorageSetting;
+        _fileSystemDeleterService = fileSystemDeleterService;
+        _fileSystemWriterService = fileSystemWriterService;
         _unitOfWork = unitOfWork;
     }
 
@@ -38,14 +52,67 @@ public class UpdatePatientCommandHandler : IRequestHandler<UpdatePatientCommand,
         if (patientToUpdate is null)
             return response;
 
-        patientToUpdate.UpdateName(request.PatientName);
+        patientToUpdate.UpdateAnimalSex(
+            (AnimalSex)Enum.ToObject(typeof(AnimalSex), request.Sex));
+
+        patientToUpdate.UpdateAnimalType(
+            new AnimalType(request.Breed, request.Species));
+
+        patientToUpdate.UpdateName(request.Name);
+
+        await UpdateNewPhotoAsync(request, patientToUpdate);
+
         patientToUpdate.UpdatePreferredDoctorId(request.PreferredDoctorId);
 
-        await _unitOfWork.Repository<Client>()
+        await _unitOfWork
+            .Repository<Client>()
             .UpdateAsync(client, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
         return response;
+    }
+
+    private async Task UpdateNewPhotoAsync(
+        UpdatePatientRequest request,
+        Patient patientToUpdate)
+    {
+        if (!request.IsNewPhoto)
+            return;
+
+        DeleteCurrentPhoto(patientToUpdate);
+
+        string savedNewPhotoName = await SaveNewPhotoAsync(request);
+
+        patientToUpdate.UpdatePhoto(
+            new Photo(request.PhotoName, savedNewPhotoName));
+    }
+
+    private void DeleteCurrentPhoto(Patient patient)
+    {
+        string relativePhotoPath = Path.Combine(
+            patient.ClientId.ToString(), patient.Photo.StoredName);
+
+        string photoPath = Path.Combine(
+            _clientStorageSetting.BasePath, relativePhotoPath);
+
+        _fileSystemDeleterService.Delete(photoPath);
+    }
+
+    private async Task<string> SaveNewPhotoAsync(UpdatePatientRequest request)
+    {
+        string photoExtension = Path.GetExtension(request.PhotoName).ToLower();
+
+        string photoNameToSave = $"{Guid.NewGuid().ToString()}{photoExtension}";
+
+        string relativePhotoPath = Path.Combine(
+            request.ClientId.ToString(), photoNameToSave);
+
+        string photoPath = Path.Combine(
+            _clientStorageSetting.BasePath, relativePhotoPath);
+
+        await _fileSystemWriterService.WriteAsync(request.PhotoData, photoPath);
+
+        return photoNameToSave;
     }
 }

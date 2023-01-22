@@ -4,8 +4,7 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clien
 
 public class GetClientsResponse : BaseResponse
 {
-    public List<ClientDto> Clients { get; set; } = new List<ClientDto>();
-    public int Count { get; set; }
+    public DataGridResponse<ClientDto>? DataGridResponse { get; set; }
 
     public GetClientsResponse(Guid correlationId) : base(correlationId)
     {

@@ -1,11 +1,20 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Commands.CreateAppointmentType;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Commands.DeleteAppointmentType;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Commands.UpdateAppointmentType;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Queries.GetAppointmentTypeById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Queries.GetAppointmentTypes;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Queries.GetAppointmentTypesFilterCode;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Queries.GetAppointmentTypesFilterDuration;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Queries.GetAppointmentTypesFilterId;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Queries.GetAppointmentTypesFilterName;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.CreateAppointmentType;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.DeleteAppointmentType;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.GetAppointmentTypeById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.GetAppointmentTypes;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.GetAppointmentTypesFilterCode;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.GetAppointmentTypesFilterDuration;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.GetAppointmentTypesFilterId;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.GetAppointmentTypesFilterName;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.UpdateAppointmentType;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +35,72 @@ public class AppointmentTypeController : BaseApiController
         return Ok(response);
     }
 
-    [HttpDelete("Delete/{id}")]
+    [HttpPost("DataGrid")]
+    public async Task<ActionResult> DataGrid(
+        GetAppointmentTypesRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetAppointmentTypesQuery(request);
+
+        GetAppointmentTypesResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGridFilterCode")]
+    public async Task<ActionResult> DataGridFilterCode(
+        GetAppointmentTypesFilterCodeRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetAppointmentTypesFilterCodeQuery(request);
+
+        GetAppointmentTypesFilterCodeResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGridFilterDuration")]
+    public async Task<ActionResult> DataGridFilterDuration(
+        GetAppointmentTypesFilterDurationRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetAppointmentTypesFilterDurationQuery(request);
+
+        GetAppointmentTypesFilterDurationResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGridFilterId")]
+    public async Task<ActionResult> DataGridFilterId(
+        GetAppointmentTypesFilterIdRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetAppointmentTypesFilterIdQuery(request);
+
+        GetAppointmentTypesFilterIdResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DataGridFilterName")]
+    public async Task<ActionResult> DataGridFilterName(
+        GetAppointmentTypesFilterNameRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetAppointmentTypesFilterNameQuery(request);
+
+        GetAppointmentTypesFilterNameResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpDelete("Delete/{Id}")]
     public async Task<ActionResult> Delete(
         [FromRoute] DeleteAppointmentTypeRequest request,
         CancellationToken cancellationToken)
@@ -39,27 +113,14 @@ public class AppointmentTypeController : BaseApiController
         return Ok(response);
     }
 
-    [HttpGet("GetById")]
+    [HttpGet("GetById/{Id}")]
     public async Task<ActionResult> GetById(
-        [FromQuery] GetAppointmentTypeByIdRequest request,
+        [FromRoute] GetAppointmentTypeByIdRequest request,
         CancellationToken cancellationToken)
     {
         var query = new GetAppointmentTypeByIdQuery(request);
 
         GetAppointmentTypeByIdResponse response = await Mediator
-            .Send(query, cancellationToken);
-
-        return Ok(response);
-    }
-
-    [HttpGet("List")]
-    public async Task<ActionResult> List(
-        [FromQuery] GetAppointmentTypesRequest request,
-        CancellationToken cancellationToken)
-    {
-        var query = new GetAppointmentTypesQuery(request);
-
-        GetAppointmentTypesResponse response = await Mediator
             .Send(query, cancellationToken);
 
         return Ok(response);

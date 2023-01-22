@@ -1,5 +1,9 @@
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Contexts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Repositories;
+using Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Settings;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +29,19 @@ public static class ConfigureServices
                 )
             );
 
+        services.AddScoped<ApplicationDbContextSeeder>();
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.AddScoped<IFileSystemDeleterService, FileSystemDeleterService>();
+
+        services.AddScoped<IFileSystemReaderService, FileSystemReaderService>();
+
+        services.AddScoped<IFileSystemWriterService, FileSystemWriterService>();
+
+        services.AddSingleton<IClientStorageSetting>(configuration
+            .GetSection(typeof(ClientStorageSetting).Name)
+            .Get<ClientStorageSetting>()!);
 
         return services;
     }

@@ -6,9 +6,10 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Domain.AppointmentTypeAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
-namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Queries.GetAppointmentTypes;
+namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Queries.GetAppointmentTypeById;
 
-public class GetAppointmentTypeByIdQueryHandler : IRequestHandler<GetAppointmentTypeByIdQuery, GetAppointmentTypeByIdResponse>
+public class GetAppointmentTypeByIdQueryHandler
+    : IRequestHandler<GetAppointmentTypeByIdQuery, GetAppointmentTypeByIdResponse>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;

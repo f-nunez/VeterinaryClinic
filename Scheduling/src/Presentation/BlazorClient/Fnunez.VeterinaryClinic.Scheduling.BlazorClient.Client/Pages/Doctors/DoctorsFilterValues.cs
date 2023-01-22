@@ -1,4 +1,4 @@
-namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Rooms;
+namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Doctors;
 
 public class DoctorsFilterValues
 {

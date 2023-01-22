@@ -1,0 +1,61 @@
+@inherits Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Pages.Doctors.DoctorsFilterComponent
+
+<div class="container">
+    <div class="row mb-3">
+        <RadzenText
+            TagName="TagName.H3"
+            Text=@StringLocalizer["DoctorsFilter_Label_Id"]
+            TextStyle="TextStyle.Subtitle2">
+        </RadzenText>
+
+        <RadzenAutoComplete
+            @bind-Value=@IdFilterValue
+            @oninput=@OnChangeId
+            Class="w-100"
+            Data=@DoctorIds
+            FilterDelay="500"
+            LoadData=@LoadDataDoctorsFilterId
+            Placeholder=@StringLocalizer["DoctorsFilter_AutoComplete_PlaceHolder_Id"]>
+        </RadzenAutoComplete>
+    </div>
+
+    <div class="row mb-4">
+        <RadzenText
+            TagName="TagName.H3"
+            Text=@StringLocalizer["DoctorsFilter_Label_FullName"]
+            TextStyle="TextStyle.Subtitle2">
+        </RadzenText>
+
+        <RadzenAutoComplete
+            @bind-Value=@FullNameFilterValue
+            @oninput=@OnChangeFullName
+            Class="w-100"
+            Data=@DoctorFullNames
+            FilterDelay="500"
+            LoadData=@LoadDataDoctorsFilterFullName
+            Placeholder=@StringLocalizer["DoctorsFilter_AutoComplete_PlaceHolder_FullName"]>
+        </RadzenAutoComplete>
+    </div>
+
+    <div class="row">
+        <div class="col-6 pl-0 pr-2">
+            <RadzenButton
+                ButtonStyle="ButtonStyle.Secondary"
+                Class="w-100"
+                Click=@OnClickButtonFilter
+                Shade="Shade.Lighter"
+                Text=@StringLocalizer["DoctorsFilter_Button_Filter"]>
+            </RadzenButton>
+        </div>
+
+        <div class="col-6 pl-2 pr-0">
+            <RadzenButton
+                ButtonStyle="ButtonStyle.Light"
+                Class="w-100"
+                Click=@OnClickButtonClean
+                Shade="Shade.Lighter"
+                Text=@StringLocalizer["DoctorsFilter_Button_Clear"]>
+            </RadzenButton>
+        </div>
+    </div>
+</div>

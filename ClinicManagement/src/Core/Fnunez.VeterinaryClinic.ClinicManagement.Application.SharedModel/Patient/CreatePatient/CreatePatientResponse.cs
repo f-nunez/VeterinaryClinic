@@ -4,8 +4,6 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patie
 
 public class CreatePatientResponse : BaseResponse
 {
-    public PatientDto Patient { get; set; } = new PatientDto();
-
     public CreatePatientResponse(Guid correlationId) : base(correlationId)
     {
     }

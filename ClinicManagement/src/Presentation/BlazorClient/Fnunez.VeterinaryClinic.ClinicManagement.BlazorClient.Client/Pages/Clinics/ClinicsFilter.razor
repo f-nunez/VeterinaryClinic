@@ -1,0 +1,97 @@
+@inherits Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Pages.Clinics.ClinicsFilterComponent
+
+<div class="container">
+    <div class="row mb-3">
+        <RadzenText
+            TagName="TagName.H3"
+            Text=@StringLocalizer["ClinicsFilter_Label_Id"]
+            TextStyle="TextStyle.Subtitle2">
+        </RadzenText>
+
+        <RadzenAutoComplete
+            @bind-Value=@IdFilterValue
+            @oninput=@OnChangeId
+            Class="w-100"
+            Data=@ClinicIds
+            FilterDelay="500"
+            LoadData=@LoadDataClinicsFilterId
+            Placeholder=@StringLocalizer["ClinicsFilter_AutoComplete_PlaceHolder_Id"]>
+        </RadzenAutoComplete>
+    </div>
+
+    <div class="row mb-3">
+        <RadzenText
+            TagName="TagName.H3"
+            Text=@StringLocalizer["ClinicsFilter_Label_Name"]
+            TextStyle="TextStyle.Subtitle2">
+        </RadzenText>
+
+        <RadzenAutoComplete
+            @bind-Value=@NameFilterValue
+            @oninput=@OnChangeName
+            Class="w-100"
+            Data=@ClinicNames
+            FilterDelay="500"
+            LoadData=@LoadDataClinicsFilterName
+            Placeholder=@StringLocalizer["ClinicsFilter_AutoComplete_PlaceHolder_Name"]>
+        </RadzenAutoComplete>
+    </div>
+
+    <div class="row mb-3">
+        <RadzenText
+            TagName="TagName.H3"
+            Text=@StringLocalizer["ClinicsFilter_Label_Address"]
+            TextStyle="TextStyle.Subtitle2">
+        </RadzenText>
+
+        <RadzenAutoComplete
+            @bind-Value=@AddressFilterValue
+            @oninput=@OnChangeAddress
+            Class="w-100"
+            Data=@ClinicAddresses
+            FilterDelay="500"
+            LoadData=@LoadDataClinicsFilterAddress
+            Placeholder=@StringLocalizer["ClinicsFilter_AutoComplete_PlaceHolder_Address"]>
+        </RadzenAutoComplete>
+    </div>
+
+    <div class="row mb-4">
+        <RadzenText
+            TagName="TagName.H3"
+            Text=@StringLocalizer["ClinicsFilter_Label_EmailAddress"]
+            TextStyle="TextStyle.Subtitle2">
+        </RadzenText>
+
+        <RadzenAutoComplete
+            @bind-Value=@EmailAddressFilterValue
+            @oninput=@OnChangeEmailAddress
+            Class="w-100"
+            Data=@ClinicEmailAddresses
+            FilterDelay="500"
+            LoadData=@LoadDataClinicsFilterEmailAddress
+            Placeholder=@StringLocalizer["ClinicsFilter_AutoComplete_PlaceHolder_EmailAddress"]>
+        </RadzenAutoComplete>
+    </div>
+
+    <div class="row">
+        <div class="col-6 pl-0 pr-2">
+            <RadzenButton
+                ButtonStyle="ButtonStyle.Secondary"
+                Class="w-100"
+                Click=@OnClickButtonFilter
+                Shade="Shade.Lighter"
+                Text=@StringLocalizer["ClinicsFilter_Button_Filter"]>
+            </RadzenButton>
+        </div>
+
+        <div class="col-6 pl-2 pr-0">
+            <RadzenButton
+                ButtonStyle="ButtonStyle.Light"
+                Class="w-100"
+                Click=@OnClickButtonClean
+                Shade="Shade.Lighter"
+                Text=@StringLocalizer["ClinicsFilter_Button_Clear"]>
+            </RadzenButton>
+        </div>
+    </div>
+</div>

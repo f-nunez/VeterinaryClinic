@@ -1,0 +1,77 @@
+.radzen-text-box-search-container {
+    position: relative;
+    width: 100%;
+}
+
+.radzen-text-box-search-container input {
+    display: block;
+    padding-right: calc(var(--rz-icon-size) + 0.75rem);
+    width: 100%;
+}
+
+/* Chrome, Firefox, Opera, Safari 10.1+ */
+.radzen-text-box-search-container input::placeholder {
+    color: var(--rz-base-600);
+    /* Firefox */
+    opacity: 1;
+}
+
+.radzen-text-box-search-container input:focus::placeholder {
+    color: var(--rz-base-600);
+    /* Firefox */
+    opacity: 1;
+}
+
+.radzen-text-box-search-container input:hover::placeholder {
+    color: var(--rz-base-600);
+    /* Firefox */
+    opacity: 1;
+}
+
+/* Internet Explorer 10-11 */
+.radzen-text-box-search-container input:-ms-input-placeholder {
+    color: var(--rz-base-600);
+}
+
+.radzen-text-box-search-container input:focus:-ms-input-placeholder {
+    color: var(--rz-base-600);
+}
+
+.radzen-text-box-search-container input:hover:-ms-input-placeholder {
+    color: var(--rz-base-600);
+}
+
+/* Microsoft Edge */
+.radzen-text-box-search-container input::-ms-input-placeholder {
+    color: var(--rz-base-600);
+}
+
+.radzen-text-box-search-container input:focus::-ms-input-placeholder {
+    color: var(--rz-base-600);
+}
+
+.radzen-text-box-search-container input:hover::-ms-input-placeholder {
+    color: var(--rz-base-600);
+}
+
+.radzen-text-box-search-container button {
+    position: absolute;
+    display: grid;
+    align-items: center;
+    right: 0;
+    top: 0;
+    height: 100%;
+    background: transparent;
+    border: transparent;
+    color: var(--rz-base-500);
+    cursor: pointer;
+    outline: 0;
+}
+
+.radzen-text-box-search-container button:hover {
+    color: var(--rz-base-600);
+}
+
+.radzen-text-box-search-container button:active {
+    color: var(--rz-base-800);
+}

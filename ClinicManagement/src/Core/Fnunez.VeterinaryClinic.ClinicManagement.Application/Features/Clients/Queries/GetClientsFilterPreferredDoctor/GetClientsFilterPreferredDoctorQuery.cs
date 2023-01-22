@@ -1,0 +1,7 @@
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterPreferredDoctor;
+using MediatR;
+
+namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClientsFilterPreferredDoctor;
+
+public record GetClientsFilterPreferredDoctorQuery(GetClientsFilterPreferredDoctorRequest GetClientsFilterPreferredDoctorRequest)
+    : IRequest<GetClientsFilterPreferredDoctorResponse>;

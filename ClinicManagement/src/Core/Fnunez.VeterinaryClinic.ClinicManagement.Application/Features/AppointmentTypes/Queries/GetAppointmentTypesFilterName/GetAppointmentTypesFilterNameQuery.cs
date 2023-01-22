@@ -1,0 +1,7 @@
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.GetAppointmentTypesFilterName;
+using MediatR;
+
+namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Queries.GetAppointmentTypesFilterName;
+
+public record GetAppointmentTypesFilterNameQuery(GetAppointmentTypesFilterNameRequest GetAppointmentTypesFilterNameRequest)
+    : IRequest<GetAppointmentTypesFilterNameResponse>;
