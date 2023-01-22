@@ -88,3 +88,13 @@
 .datagrid-filter-menu button {
   margin-left: 1rem;
 }
+
+.patient-photo-image {
+  border-radius: 10%;
+  height: 10rem;
+  width: 10rem;
+}
+
+.patient-photo-name {
+  word-wrap: break-word;
+}
