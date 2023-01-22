@@ -26,7 +26,7 @@
 
                     <div class="rz-fileupload-buttonbar">
                         <span class="rz-fileupload-choose rz-button rz-secondary" tabindex="0" onkeydown="if(event.keyCode == 32 || event.keyCode == 13){event.preventDefault();this.firstElementChild.click();}">
-                            <InputFile OnChange=@OnChangePhoto />
+                            <InputFile OnChange=@OnChangePhoto accept="@PhotoFileSetting.AllowedExtensions" />
                             <span class="rz-button-text">
                                 @StringLocalizer["AddEditPatient_Photo_Uploader_Button_Text"]
                             </span>

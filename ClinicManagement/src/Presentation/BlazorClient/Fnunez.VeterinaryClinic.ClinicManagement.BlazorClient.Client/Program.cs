@@ -32,6 +32,7 @@ builder.Services.AddScoped<IUserSettingsService, UserSettingsService>();
 
 // register Cookie settings
 builder.Services.AddSingleton<ICookieSettings>(builder.Configuration.GetSection(typeof(CookieSettings).Name).Get<CookieSettings>()!);
+builder.Services.AddSingleton<IPhotoFileSetting>(builder.Configuration.GetSection(typeof(PhotoFileSetting).Name).Get<PhotoFileSetting>()!);
 
 // register Language component
 builder.Services.AddSingleton<ILanguageComponentData>(builder.Configuration.GetSection(typeof(LanguageComponentData).Name).Get<LanguageComponentData>()!);

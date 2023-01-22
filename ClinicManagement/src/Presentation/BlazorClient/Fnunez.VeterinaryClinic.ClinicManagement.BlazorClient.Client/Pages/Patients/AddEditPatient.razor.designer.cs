@@ -2,6 +2,7 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.G
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Helpers;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Models.Patients;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.ViewModels.Patients;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -25,6 +26,9 @@ public partial class AddEditPatientComponent : ComponentBase
     protected List<AnimalSexDropDownValue> AnimalSexDropDownValues { get; set; }
 
     protected bool IsSaving { get; set; }
+
+    [Inject]
+    protected IPhotoFileSetting PhotoFileSetting { get; set; }
 
     protected int? Sex { get; set; }
 
