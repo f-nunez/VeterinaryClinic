@@ -1,0 +1,114 @@
+@inherits Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Pages.Patients.PatientDetailComponent
+
+<div class="row">
+    <div class="col-12">
+        <RadzenText
+            Class="rz-color-primary-light"
+            Text=@StringLocalizer["PatientDetail_Label_Photo"]
+            TextStyle="TextStyle.Overline">
+        </RadzenText>
+
+        <div class="w-100 text-center">
+            <RadzenImage
+                Class="patient-photo-image"
+                Path=@($"data:image/png;base64,{Model.PhotoBase64Encoded}")>
+            </RadzenImage>
+        </div>
+
+        <RadzenText
+            TextStyle="TextStyle.Body1">
+            <b>@Model.PhotoName</b>
+        </RadzenText>
+    </div>
+
+    <div class="col-12">
+        <RadzenText
+            Class="rz-color-primary-light"
+            Text=@StringLocalizer["PatientDetail_Label_Name"]
+            TextStyle="TextStyle.Overline">
+        </RadzenText>
+
+        <RadzenText
+            TextStyle="TextStyle.Body1">
+            <b>@Model.Name</b>
+        </RadzenText>
+    </div>
+
+    <div class="col-12">
+        <RadzenText
+            Class="rz-color-primary-light"
+            Text=@StringLocalizer["PatientDetail_Label_Breed"]
+            TextStyle="TextStyle.Overline">
+        </RadzenText>
+
+        <RadzenText
+            TextStyle="TextStyle.Body1">
+            <b>@Model.Breed</b>
+        </RadzenText>
+    </div>
+
+    <div class="col-12">
+        <RadzenText
+            Class="rz-color-primary-light"
+            Text=@StringLocalizer["PatientDetail_Label_Species"]
+            TextStyle="TextStyle.Overline">
+        </RadzenText>
+
+        <RadzenText
+            TextStyle="TextStyle.Body1">
+            <b>@Model.Species</b>
+        </RadzenText>
+    </div>
+
+    <div class="col-12">
+        <RadzenText
+            Class="rz-color-primary-light"
+            Text=@StringLocalizer["PatientDetail_Label_AnimalSex"]
+            TextStyle="TextStyle.Overline">
+        </RadzenText>
+
+        <RadzenText
+            TextStyle="TextStyle.Body1">
+            @switch (Model.Sex)
+            {
+                case Models.Patients.AnimalSex.Female:
+                    <b>@StringLocalizer["PatientDetail_Label_AnimalSex_Female"]</b>
+                    break;
+                case Models.Patients.AnimalSex.Male:
+                    <b>@StringLocalizer["PatientDetail_Label_AnimalSex_Male"]</b>
+                    break;
+                default:
+                    throw new ArgumentException($"Not found {nameof(Model.Sex)} with value {Model.Sex}");
+            }
+        </RadzenText>
+    </div>
+
+    @if(!string.IsNullOrEmpty(Model.PreferredDoctorFullName))
+    {
+        <div class="col-12">
+            <RadzenText
+                Class="rz-color-primary-light"
+                Text=@StringLocalizer["PatientDetail_Label_PreferredDoctor"]
+                TextStyle="TextStyle.Overline">
+            </RadzenText>
+
+            <RadzenText
+                TextStyle="TextStyle.Body1">
+                <b>@Model.PreferredDoctorFullName</b>
+            </RadzenText>
+        </div>
+    }
+</div>
+
+<div class="row mt-2">
+    <div class="col-12">
+        <RadzenButton
+            ButtonStyle="ButtonStyle.Primary"
+            ButtonType="ButtonType.Submit"
+            Class="w-100"
+            Click=@OnClickAccept
+            Variant="Variant.Text">
+            @StringLocalizer["PatientDetail_Button_Accept"]
+        </RadzenButton>
+    </div>
+</div>
