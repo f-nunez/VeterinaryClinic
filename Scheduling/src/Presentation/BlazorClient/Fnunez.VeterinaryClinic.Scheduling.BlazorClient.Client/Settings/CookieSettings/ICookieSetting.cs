@@ -1,6 +1,6 @@
 namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Settings;
 
-public interface ICookieSettings
+public interface ICookieSetting
 {
     public string UserSettingsKey { get; }
 }
