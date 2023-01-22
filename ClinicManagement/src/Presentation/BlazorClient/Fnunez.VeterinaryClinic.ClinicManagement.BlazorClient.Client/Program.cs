@@ -30,8 +30,8 @@ builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<ISpinnerService, SpinnerService>();
 builder.Services.AddScoped<IUserSettingsService, UserSettingsService>();
 
-// register Cookie settings
-builder.Services.AddSingleton<ICookieSettings>(builder.Configuration.GetSection(typeof(CookieSettings).Name).Get<CookieSettings>()!);
+// register Settings
+builder.Services.AddSingleton<ICookieSetting>(builder.Configuration.GetSection(typeof(CookieSetting).Name).Get<CookieSetting>()!);
 builder.Services.AddSingleton<IPhotoFileSetting>(builder.Configuration.GetSection(typeof(PhotoFileSetting).Name).Get<PhotoFileSetting>()!);
 
 // register Language component

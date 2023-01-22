@@ -7,12 +7,12 @@ public class UserSettingsComponentService : IUserSettingsComponentService
 {
     private const string DefaultTimeZoneId = "Pacific Standard Time (Mexico)";
     private const string DefaultLanguageCulture = "en-US";
-    private readonly ICookieSettings _cookieSettings;
+    private readonly ICookieSetting _cookieSettings;
     private readonly ILocalStorageService _localStorageService;
     private UserSettings? _userSettings { get; set; }
 
     public UserSettingsComponentService(
-        ICookieSettings cookieSettings,
+        ICookieSetting cookieSettings,
         ILocalStorageService localStorageService)
     {
         _cookieSettings = cookieSettings;
