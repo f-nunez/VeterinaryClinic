@@ -10,7 +10,7 @@ public class Client : BaseEntity<int>, IAggregateRoot
     public string PreferredName { get; private set; }
     public string Salutation { get; private set; }
     public string EmailAddress { get; private set; }
-    public int PreferredDoctorId { get; private set; }
+    public int? PreferredDoctorId { get; private set; }
     public IReadOnlyList<Patient> Patients => _patients.AsReadOnly();
 
     public Client()
