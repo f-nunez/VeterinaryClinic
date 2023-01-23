@@ -9,7 +9,7 @@ public class Patient : BaseEntity<int>
     public int ClientId { get; private set; }
     public string Name { get; private set; }
     public AnimalSex AnimalSex { get; private set; }
-    public AnimalType? AnimalType { get; private set; }
+    public AnimalType AnimalType { get; private set; } = null!;
     public int? PreferredDoctorId { get; private set; }
 
     public Patient()
