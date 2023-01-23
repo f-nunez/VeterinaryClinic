@@ -13,6 +13,12 @@ public class Photo : ValueObject
         StoredName = string.Empty;
     }
 
+    public Photo(string name, string storedName)
+    {
+        Name = name;
+        StoredName = storedName;
+    }
+
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Name;
