@@ -11,12 +11,6 @@ public class Room : BaseEntity<int>, IAggregateRoot
         Name = string.Empty;
     }
 
-    public Room(int id, string name)
-    {
-        Id = id;
-        Name = name;
-    }
-
     public override string ToString()
     {
         return Name.ToString();
