@@ -11,6 +11,11 @@ public class Doctor : BaseEntity<int>, IAggregateRoot
         FullName = string.Empty;
     }
 
+    public Doctor(string fullName)
+    {
+        FullName = fullName;
+    }
+
     public override string ToString()
     {
         return FullName.ToString();
