@@ -18,6 +18,22 @@ public class Patient : BaseEntity<int>
         Name = string.Empty;
     }
 
+    public Patient(
+        int clientId,
+        string name,
+        AnimalSex animalSex,
+        AnimalType animalType,
+        Photo photo,
+        int? preferredDoctorId)
+    {
+        ClientId = clientId;
+        Name = name;
+        AnimalSex = animalSex;
+        AnimalType = animalType;
+        Photo = photo;
+        PreferredDoctorId = preferredDoctorId;
+    }
+
     public override string ToString()
     {
         return Name.ToString();
