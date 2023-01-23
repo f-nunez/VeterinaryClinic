@@ -8,10 +8,10 @@ public class Clinic : BaseEntity<int>, IAggregateRoot
     public string EmailAddress { get; set; }
     public string Name { get; set; }
 
-    public Clinic(string address, string emailAddress, string name)
+    public Clinic()
     {
-        Address = address;
-        EmailAddress = emailAddress;
-        Name = name;
+        Address = string.Empty;
+        EmailAddress = string.Empty;
+        Name = string.Empty;
     }
 }
