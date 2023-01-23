@@ -11,12 +11,6 @@ public class AnimalType : ValueObject
     {
     }
 
-    public AnimalType(string breed, string species)
-    {
-        Breed = breed;
-        Species = species;
-    }
-
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Breed;
