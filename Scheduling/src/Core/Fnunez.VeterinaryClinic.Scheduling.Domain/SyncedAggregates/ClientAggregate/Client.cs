@@ -21,6 +21,20 @@ public class Client : BaseEntity<int>, IAggregateRoot
         EmailAddress = string.Empty;
     }
 
+    public Client(
+        string fullName,
+        string preferredName,
+        string salutation,
+        string emailAddress,
+        int? preferredDoctorId)
+    {
+        FullName = fullName;
+        PreferredName = preferredName;
+        Salutation = salutation;
+        EmailAddress = emailAddress;
+        PreferredDoctorId = preferredDoctorId;
+    }
+
     public override string ToString()
     {
         return FullName.ToString();
