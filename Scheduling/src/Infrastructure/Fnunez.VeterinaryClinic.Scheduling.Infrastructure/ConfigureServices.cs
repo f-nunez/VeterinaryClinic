@@ -25,6 +25,8 @@ public static class ConfigureServices
                 )
             );
 
+        services.AddScoped<ApplicationDbContextSeeder>();
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
