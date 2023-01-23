@@ -14,4 +14,11 @@ public class Clinic : BaseEntity<int>, IAggregateRoot
         EmailAddress = string.Empty;
         Name = string.Empty;
     }
+
+    public Clinic(string address, string emailAddress, string name)
+    {
+        Address = address;
+        EmailAddress = emailAddress;
+        Name = name;
+    }
 }
