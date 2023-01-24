@@ -1,6 +1,7 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Commands.CreateAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Commands.DeleteAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Commands.UpdateAppointment;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointmentAdd;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointmentDetail;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointmentEdit;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointments;
@@ -12,6 +13,7 @@ using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queri
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointmentsFilterRoom;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.CreateAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.DeleteAppointment;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentAdd;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentDetail;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentEdit;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointments;
@@ -141,6 +143,19 @@ public class AppointmentController : BaseApiController
 
         DeleteAppointmentResponse response = await Mediator
             .Send(command, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("GetAppointmentAdd")]
+    public async Task<ActionResult> GetAppointmentAdd(
+        GetAppointmentAddRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetAppointmentAddQuery(request);
+
+        GetAppointmentAddResponse response = await Mediator
+            .Send(query, cancellationToken);
 
         return Ok(response);
     }
