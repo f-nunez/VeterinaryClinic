@@ -1,5 +1,7 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Client;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Client.GetClientDetail;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Client.GetClients;
+using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Helpers;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -14,6 +16,15 @@ public partial class ClientsComponent : ComponentBase
     [Inject]
     private IClientService _clientService { get; set; }
 
+    [Inject]
+    private DialogService _dialogService { get; set; }
+
+    [Inject]
+    private IStringLocalizer<ClientDetailComponent> _stringLocalizerForDetail { get; set; }
+
+    [Inject]
+    private IStringLocalizer<ClientsFilterComponent> _stringLocalizerForFilter { get; set; }
+
     protected RadzenDataGrid<ClientDto> ClientsGrid;
 
     protected List<ClientDto> Clients;
@@ -21,13 +32,7 @@ public partial class ClientsComponent : ComponentBase
     protected int Count;
 
     [Inject]
-    protected DialogService DialogService { get; set; }
-
-    [Inject]
     protected IStringLocalizer<ClientsComponent> StringLocalizer { get; set; }
-
-    [Inject]
-    protected IStringLocalizer<ClientsFilterComponent> StringLocalizerForFilter { get; set; }
 
     protected bool IsLoading = false;
 
@@ -69,6 +74,28 @@ public partial class ClientsComponent : ComponentBase
         await InvokeAsync(StateHasChanged);
     }
 
+    protected async Task OnClickDetail(ClientDto client)
+    {
+        var request = new GetClientDetailRequest
+        {
+            ClientId = client.ClientId
+        };
+
+        var currentClientData = await _clientService
+            .GetClientDetailAsync(request);
+
+        var clientDetail = ClientHelper
+            .MapClientDetailViewModel(currentClientData.ClientDetail);
+
+        await _dialogService.OpenAsync<ClientDetail>(
+            _stringLocalizerForDetail["ClientDetail_Label_ClientDetail"],
+            new Dictionary<string, object>
+            {
+                { "Model", clientDetail }
+            }
+        );
+    }
+
     protected async Task OnClickFilterSearch()
     {
         await ResetGridAndSearchAsync();
@@ -98,8 +125,8 @@ public partial class ClientsComponent : ComponentBase
             { nameof(ClientsFilterValues), filterValues }
         };
 
-        var result = await DialogService.OpenSideAsync<ClientsFilter>(
-            StringLocalizerForFilter["ClientsFilter_Label_Filter"],
+        var result = await _dialogService.OpenSideAsync<ClientsFilter>(
+            _stringLocalizerForFilter["ClientsFilter_Label_Filter"],
             filterParameters
         );
 

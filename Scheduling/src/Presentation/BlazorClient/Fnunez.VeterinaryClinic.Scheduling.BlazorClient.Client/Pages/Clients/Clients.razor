@@ -97,6 +97,25 @@
                         TItem="ClientDto"
                         Title=@StringLocalizer["Clients_Grid_Column_Header_EmailAddress"]>
                     </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn
+                        Width="70px"
+                        Filterable="false"
+                        Sortable="false"
+                        TextAlign="TextAlign.Right"
+                        TItem="ClientDto">
+
+                        <Template Context="client">
+                            <RadzenButton
+                                ButtonStyle="ButtonStyle.Light"
+                                Click="@((args) => OnClickDetail(client))"
+                                Icon="find_in_page"
+                                Size="ButtonSize.Medium"
+                                Variant="Variant.Flat">
+                            </RadzenButton>
+                        </Template>
+
+                    </RadzenDataGridColumn>
                 </Columns>
             </RadzenDataGrid>
         </div>
