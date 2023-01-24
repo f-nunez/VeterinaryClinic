@@ -1,9 +1,11 @@
+using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clients.Queries.GetClientDetail;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clients.Queries.GetClients;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clients.Queries.GetClientsFilterEmailAddress;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clients.Queries.GetClientsFilterFullName;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clients.Queries.GetClientsFilterId;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clients.Queries.GetClientsFilterPreferredName;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clients.Queries.GetClientsFilterSalutation;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Client.GetClientDetail;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Client.GetClients;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Client.GetClientsFilterEmailAddress;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Client.GetClientsFilterFullName;
@@ -89,6 +91,19 @@ public class ClientController : BaseApiController
         var query = new GetClientsFilterSalutationQuery(request);
 
         GetClientsFilterSalutationResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("GetClientDetail")]
+    public async Task<ActionResult> GetClientDetail(
+        GetClientDetailRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetClientDetailQuery(request);
+
+        GetClientDetailResponse response = await Mediator
             .Send(query, cancellationToken);
 
         return Ok(response);
