@@ -1,4 +1,5 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypeById;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypes;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Common;
 
@@ -11,4 +12,5 @@ public interface IAppointmentTypeService
     public Task<List<string>> DataGridFilterDurationAsync(string filterValue);
     public Task<List<string>> DataGridFilterIdAsync(string filterValue);
     public Task<List<string>> DataGridFilterNameAsync(string filterValue);
+    public Task<AppointmentTypeDto> GetByIdAsync(GetAppointmentTypeByIdRequest request);
 }

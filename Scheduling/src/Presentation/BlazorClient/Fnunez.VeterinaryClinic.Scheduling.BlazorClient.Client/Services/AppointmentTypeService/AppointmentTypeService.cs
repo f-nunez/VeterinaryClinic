@@ -1,4 +1,5 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypeById;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypes;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypesFilterCode;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypesFilterDuration;
@@ -127,5 +128,20 @@ public class AppointmentTypeService : IAppointmentTypeService
             throw new ArgumentNullException(nameof(response));
 
         return response.AppointemntTypeNames;
+    }
+
+    public async Task<AppointmentTypeDto> GetByIdAsync(
+        GetAppointmentTypeByIdRequest request)
+    {
+        _logger.LogInformation($"GetById: {request.Id}");
+
+        var response = await _httpService
+            .HttpGetAsync<GetAppointmentTypeByIdResponse>(
+                $"AppointmentType/GetById/{request.Id}");
+
+        if (response is null)
+            throw new ArgumentNullException(nameof(response));
+
+        return response.AppointmentType;
     }
 }
