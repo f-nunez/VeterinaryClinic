@@ -1,5 +1,6 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Common;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Room;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Room.GetRoomById;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Room.GetRooms;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Room.GetRoomsFilterId;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Room.GetRoomsFilterName;
@@ -81,5 +82,18 @@ public class RoomService : IRoomService
             throw new ArgumentNullException(nameof(response));
 
         return response.RoomNames;
+    }
+
+    public async Task<RoomDto> GetByIdAsync(GetRoomByIdRequest request)
+    {
+        _logger.LogInformation($"GetById: {request.Id}");
+
+        var response = await _httpService
+            .HttpGetAsync<GetRoomByIdResponse>($"Room/GetById/{request.Id}");
+
+        if (response is null)
+            throw new ArgumentNullException(nameof(response));
+
+        return response.Room;
     }
 }
