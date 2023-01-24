@@ -1,6 +1,8 @@
+using Fnunez.VeterinaryClinic.Scheduling.Application.Interfaces.Services;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Interfaces.Settings;
 using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Contexts;
 using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Repositories;
+using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Services;
 using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Settings;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +32,8 @@ public static class ConfigureServices
         services.AddScoped<ApplicationDbContextSeeder>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.AddScoped<IFileSystemReaderService, FileSystemReaderService>();
 
         services.AddSingleton<IClientStorageSetting>(configuration
             .GetSection(typeof(ClientStorageSetting).Name)
