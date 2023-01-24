@@ -7,7 +7,7 @@
     <div class="col-12 col-md-6 mb-2 d-flex">
         <RadzenImage
             Class="appointment-detail-image"
-            Path=@($"{PatientBase64EncodedImageData}")>
+            Path=@($"data:image/png;base64,{Model.PatientPhotoBase64Encoded}")>
         </RadzenImage>
 
         <div>
@@ -18,7 +18,7 @@
             </RadzenText>
 
             <RadzenText TextStyle="TextStyle.Body1">
-                <b>@Appointment.PatientName</b>
+                <b>@Model.PatientName</b>
             </RadzenText>
 
             <RadzenText
@@ -28,10 +28,10 @@
             </RadzenText>
 
             <RadzenText TextStyle="TextStyle.Body1">
-                <b>@Appointment.ClientFullName</b>
+                <b>@Model.ClientFullName</b>
             </RadzenText>
 
-            @if (@Appointment.IsConfirmed)
+            @if (Model.IsConfirmed)
             {
                 <RadzenBadge
                     Shade="Shade.Lighter"
@@ -54,7 +54,7 @@
     <div class="col-12 col-md-6 mb-2 d-flex">
         <RadzenImage
             Class="appointment-detail-image"
-            Path=@($"{DoctorBase64EncodedImageData}")>
+            Path=@($"data:image/png;base64,{DoctorPhotoBase64Encoded}")>
         </RadzenImage>
 
         <div>
@@ -65,7 +65,7 @@
             </RadzenText>
 
             <RadzenText TextStyle="TextStyle.Body1">
-                <b>@Appointment.DoctorFullName</b>
+                <b>@Model.DoctorFullName</b>
             </RadzenText>
 
             <RadzenText
@@ -75,7 +75,7 @@
             </RadzenText>
 
             <RadzenText TextStyle="TextStyle.Body1">
-                <b>@Appointment.AppointmentTypeName</b>
+                <b>@Model.AppointmentTypeName</b>
             </RadzenText>
         </div>
     </div>
@@ -90,7 +90,7 @@
         </RadzenText>
 
         <RadzenText TextStyle="TextStyle.Body1">
-            @Appointment.TimezoneName
+            @Model.TimezoneName
         </RadzenText>
     </div>
 </div>
@@ -102,7 +102,7 @@
         </RadzenText>
 
         <RadzenText TextStyle="TextStyle.Body1">
-            <b>@Appointment.ClinicName</b>
+            <b>@Model.ClinicName</b>
         </RadzenText>
 
         <RadzenText Class="rz-color-primary-light" TextStyle="TextStyle.Overline">
@@ -110,7 +110,7 @@
         </RadzenText>
 
         <RadzenText TextStyle="TextStyle.Body1">
-            <b>@Appointment.RoomName</b>
+            <b>@Model.RoomName</b>
         </RadzenText>
     </div>
     
@@ -120,7 +120,7 @@
         </RadzenText>
 
         <RadzenText TextStyle="TextStyle.Body1">
-            <b>@Appointment.StartOn.ToString("g")</b>
+            <b>@Model.StartOn.ToString("g")</b>
         </RadzenText>
 
         <RadzenText Class="rz-color-primary-light" TextStyle="TextStyle.Overline">
@@ -128,7 +128,7 @@
         </RadzenText>
 
         <RadzenText TextStyle="TextStyle.Body1">
-            <b>@Appointment.EndOn.ToString("g")</b>
+            <b>@Model.EndOn.ToString("g")</b>
         </RadzenText>
     </div>
 </div>
@@ -140,7 +140,7 @@
         </RadzenText>
 
         <RadzenText TextStyle="TextStyle.Body1">
-            <b>@Appointment.Title</b>
+            <b>@Model.Title</b>
         </RadzenText>
     </div>
 
@@ -150,7 +150,7 @@
         </RadzenText>
 
         <RadzenText TextStyle="TextStyle.Body1">
-            <b>@Appointment.Description</b>
+            <b>@Model.Description</b>
         </RadzenText>
     </div>
 </div>
