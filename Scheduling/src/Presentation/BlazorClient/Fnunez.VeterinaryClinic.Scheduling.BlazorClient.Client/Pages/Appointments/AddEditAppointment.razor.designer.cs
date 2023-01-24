@@ -62,15 +62,15 @@ public partial class AddEditAppointmentComponent : ComponentBase
     protected List<RoomFilterValueDto> RoomFilterValues = new();
     #endregion
 
-    protected string DoctorBase64EncodedImageData = string.Empty;
+    protected string DoctorPhotoBase64Encoded { get; set; }
 
-    protected string PatientBase64EncodedImageData = string.Empty;
-
-    [Parameter]
-    public AppointmentItemVm Appointment { get; set; }
+    protected string PatientPhotoBase64Encoded { get; set; }
 
     [Parameter]
     public bool IsAppointmentToAdd { get; set; } = true;
+
+    [Parameter]
+    public AddEditAppointmentVm Model { get; set; }
 
     [Parameter]
     public string SelectedTimezoneName { get; set; }
@@ -78,11 +78,17 @@ public partial class AddEditAppointmentComponent : ComponentBase
     [Parameter]
     public int SelectedTimezoneOffset { get; set; }
 
+    protected override void OnInitialized()
+    {
+        DoctorPhotoBase64Encoded = DoctorHelper.GetDoctorThumbnail();
+
+        PatientPhotoBase64Encoded = Model.PatientPhotoData is null
+            ? PatientHelper.GetPatientThumbnail()
+            : Convert.ToBase64String(Model.PatientPhotoData);
+    }
+
     protected override void OnParametersSet()
     {
-        DoctorBase64EncodedImageData = AppointmentHelper.GetDemoDoctorPhoto();
-        PatientBase64EncodedImageData = AppointmentHelper.GetDemoPatientPhoto();
-
         if (!IsAppointmentToAdd)
         {
             AppointmentTypeFilterValues = PreselectedAppointmentTypeFilterValues;
@@ -113,11 +119,11 @@ public partial class AddEditAppointmentComponent : ComponentBase
         var convertedValue = value as Nullable<int>;
         if (convertedValue.HasValue && convertedValue.Value > 0)
         {
-            Appointment.AppointmentTypeId = convertedValue.Value;
+            Model.AppointmentTypeId = convertedValue.Value;
         }
         else
         {
-            Appointment.AppointmentTypeId = 0;
+            Model.AppointmentTypeId = 0;
         }
     }
     #endregion
@@ -144,11 +150,11 @@ public partial class AddEditAppointmentComponent : ComponentBase
         var convertedValue = value as Nullable<int>;
         if (convertedValue.HasValue && convertedValue.Value > 0)
         {
-            Appointment.DoctorId = convertedValue.Value;
+            Model.DoctorId = convertedValue.Value;
         }
         else
         {
-            Appointment.DoctorId = 0;
+            Model.DoctorId = 0;
         }
     }
     #endregion
@@ -174,9 +180,9 @@ public partial class AddEditAppointmentComponent : ComponentBase
     {
         var convertedValue = value as Nullable<int>;
         if (convertedValue.HasValue && convertedValue.Value > 0)
-            Appointment.RoomId = convertedValue.Value;
+            Model.RoomId = convertedValue.Value;
         else
-            Appointment.RoomId = 0;
+            Model.RoomId = 0;
     }
     #endregion
 
@@ -194,14 +200,14 @@ public partial class AddEditAppointmentComponent : ComponentBase
             if (IsAppointmentToAdd)
             {
                 var request = AppointmentHelper.MapCreateAppointmentRequest(
-                    Appointment, SelectedTimezoneOffset);
+                    Model, SelectedTimezoneOffset);
 
                 await _appointmentService.CreateAppointmentAsync(request);
             }
             else
             {
                 var request = AppointmentHelper.MapUpdateAppointmentRequest(
-                    Appointment, SelectedTimezoneOffset);
+                    Model, SelectedTimezoneOffset);
 
                 await _appointmentService.UpdateAppointmentAsync(request);
             }
@@ -233,7 +239,7 @@ public partial class AddEditAppointmentComponent : ComponentBase
                 return;
             }
 
-        _dialogService.Close(Appointment);
+        _dialogService.Close(Model);
     }
 
     private async Task<bool> ValidateIfSelectedDatesAreEarlierThanCurrentAsync()
@@ -241,7 +247,7 @@ public partial class AddEditAppointmentComponent : ComponentBase
         var userLocalTime = DateTimeOffset.UtcNow
             .ToOffset(TimeSpan.FromMinutes(SelectedTimezoneOffset));
 
-        if (Appointment.StartOn.ToUnspecifiedKind() >= userLocalTime)
+        if (Model.StartOn.ToUnspecifiedKind() >= userLocalTime)
             return true;
 
         bool? isAcceptIt;

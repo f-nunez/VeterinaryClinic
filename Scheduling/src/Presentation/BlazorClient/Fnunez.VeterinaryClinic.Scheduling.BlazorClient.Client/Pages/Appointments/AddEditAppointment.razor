@@ -5,9 +5,9 @@
 @using ViewModels.Appointments
 
 <RadzenTemplateForm
-    Data="@Appointment"
+    Data="@Model"
     Submit=@OnSubmit
-    TItem="AppointmentItemVm">
+    TItem="AddEditAppointmentVm">
     <div class="row">
         <div class="col-12 text-center">
             <RadzenLabel Text=@StringLocalizer["AddEditAppointment_Label_TimeZone"]></RadzenLabel>
@@ -29,7 +29,7 @@
                     <RadzenTextBox
                         Class="w-100 d-block"
                         Disabled="true"
-                        Value=@Appointment.ClinicName>
+                        Value=@Model.ClinicName>
                     </RadzenTextBox>
                 </div>
 
@@ -43,12 +43,12 @@
                     <RadzenTextBox
                         Class="w-100 d-block"
                         Disabled="true"
-                        Value="@Appointment.PatientName">
+                        Value="@Model.PatientName">
                     </RadzenTextBox>
 
                     
                     <div class="appointment-add-image-container mt-3">
-                        <RadzenImage Path=@($"{PatientBase64EncodedImageData}") />
+                        <RadzenImage Path=@($"data:image/png;base64,{PatientPhotoBase64Encoded}") />
                     </div>
                 </div>
 
@@ -61,7 +61,7 @@
 
                     <RadzenDropDownDataGrid
                         @ref=@DoctorDropDownDataGrid
-                        @bind-Value="Appointment.DoctorId"
+                        @bind-Value="Model.DoctorId"
                         AllowClear="true"
                         AllowFiltering="true"
                         AllowSorting="true"
@@ -97,7 +97,7 @@
                     </RadzenCompareValidator>
 
                     <div class="appointment-add-image-container mt-3">
-                        <RadzenImage Class="input-dialog-img" Path=@($"{DoctorBase64EncodedImageData}") />
+                        <RadzenImage Class="input-dialog-img" Path=@($"data:image/png;base64,{DoctorPhotoBase64Encoded}") />
                     </div>
                 </div>
             </div>
@@ -113,7 +113,7 @@
                     </RadzenText>
 
                     <RadzenDatePicker
-                        @bind-Value="@Appointment.StartOn"
+                        @bind-Value="@Model.StartOn"
                         Class="w-100 d-block"
                         DateFormat="g"
                         Name="StartOn"
@@ -132,7 +132,7 @@
                         Component="StartOn"
                         Operator="CompareOperator.LessThan"
                         Text=@StringLocalizer["AddEditAppointment_Start_DatePicker_RequiredValidDateMessage"]
-                        Value=@Appointment.EndOn>
+                        Value=@Model.EndOn>
                     </RadzenCompareValidator>
                 </div>
 
@@ -144,7 +144,7 @@
                     </RadzenText>
 
                     <RadzenDatePicker
-                        @bind-Value="@Appointment.EndOn"
+                        @bind-Value="@Model.EndOn"
                         Class="w-100 d-block"
                         DateFormat="g"
                         Name="EndOn"
@@ -163,7 +163,7 @@
                         Component="EndOn"
                         Operator="CompareOperator.GreaterThan"
                         Text=@StringLocalizer["AddEditAppointment_End_DatePicker_RequiredValidDateMessage"]
-                        Value=@Appointment.StartOn>
+                        Value=@Model.StartOn>
                     </RadzenCompareValidator>
                 </div>
 
@@ -176,7 +176,7 @@
 
                     <RadzenDropDownDataGrid
                         @ref=@AppointmentTypeDropDownDataGrid
-                        @bind-Value="Appointment.AppointmentTypeId"
+                        @bind-Value="Model.AppointmentTypeId"
                         AllowClear="true"
                         AllowFiltering="true"
                         AllowSorting="true"
@@ -221,7 +221,7 @@
 
                     <RadzenDropDownDataGrid
                         @ref=@RoomDropDownDataGrid
-                        @bind-Value="Appointment.RoomId"
+                        @bind-Value="Model.RoomId"
                         AllowClear="true"
                         AllowFiltering="true"
                         AllowSorting="true"
@@ -265,7 +265,7 @@
                     </RadzenText>
 
                     <RadzenTextBox
-                        @bind-Value="@Appointment.Title"
+                        @bind-Value="@Model.Title"
                         Class="w-100 d-block"
                         MaxLength="200"
                         Name="Title"
@@ -287,7 +287,7 @@
                     </RadzenText>
 
                     <RadzenTextArea
-                        @bind-Value="@Appointment.Description"
+                        @bind-Value="@Model.Description"
                         Class="w-100 d-block"
                         MaxLength="2000"
                         Name="Description"
