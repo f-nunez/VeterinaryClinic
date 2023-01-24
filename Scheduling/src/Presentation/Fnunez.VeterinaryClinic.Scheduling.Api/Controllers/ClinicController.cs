@@ -1,8 +1,10 @@
+using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clinics.Queries.GetClinicById;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clinics.Queries.GetClinics;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clinics.Queries.GetClinicsFilterAddress;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clinics.Queries.GetClinicsFilterEmailAddress;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clinics.Queries.GetClinicsFilterId;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clinics.Queries.GetClinicsFilterName;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic.GetClinicById;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic.GetClinics;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic.GetClinicsFilterAddress;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic.GetClinicsFilterEmailAddress;
@@ -74,6 +76,19 @@ public class ClinicController : BaseApiController
         var query = new GetClinicsFilterNameQuery(request);
 
         GetClinicsFilterNameResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpGet("GetById/{Id}")]
+    public async Task<ActionResult> GetById(
+        [FromRoute] GetClinicByIdRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetClinicByIdQuery(request);
+
+        GetClinicByIdResponse response = await Mediator
             .Send(query, cancellationToken);
 
         return Ok(response);
