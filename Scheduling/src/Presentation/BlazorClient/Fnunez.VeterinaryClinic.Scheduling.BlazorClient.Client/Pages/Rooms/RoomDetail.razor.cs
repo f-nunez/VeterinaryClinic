@@ -1,4 +1,4 @@
-namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Pages.Rooms;
+namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Rooms;
 
 public partial class RoomDetailComponent
 {
