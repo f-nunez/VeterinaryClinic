@@ -1,5 +1,7 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Room;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Room.GetRoomById;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Room.GetRooms;
+using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Helpers;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -12,7 +14,16 @@ namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Rooms;
 public partial class RoomsComponent : ComponentBase
 {
     [Inject]
+    private DialogService _dialogService { get; set; }
+
+    [Inject]
     private IRoomService _roomService { get; set; }
+
+    [Inject]
+    private IStringLocalizer<RoomDetailComponent> _stringLocalizerForDetail { get; set; }
+
+    [Inject]
+    private IStringLocalizer<RoomsFilterComponent> _stringLocalizerForFilter { get; set; }
 
     protected RadzenDataGrid<RoomDto> RoomsGrid;
 
@@ -21,13 +32,7 @@ public partial class RoomsComponent : ComponentBase
     protected int Count;
 
     [Inject]
-    protected DialogService DialogService { get; set; }
-
-    [Inject]
     protected IStringLocalizer<RoomsComponent> StringLocalizer { get; set; }
-
-    [Inject]
-    protected IStringLocalizer<RoomsFilterComponent> StringLocalizerForFilter { get; set; }
 
     protected bool IsLoading = false;
 
@@ -64,6 +69,26 @@ public partial class RoomsComponent : ComponentBase
         await InvokeAsync(StateHasChanged);
     }
 
+    protected async Task OnClickDetail(RoomDto doctor)
+    {
+        var request = new GetRoomByIdRequest
+        {
+            Id = doctor.Id
+        };
+
+        var currentRoom = await _roomService.GetByIdAsync(request);
+
+        var roomForDetail = RoomHelper.MapRoomViewModel(doctor);
+
+        await _dialogService.OpenAsync<RoomDetail>(
+            _stringLocalizerForDetail["RoomDetail_Label_RoomDetail"],
+            new Dictionary<string, object>
+            {
+                { "Model", roomForDetail }
+            }
+        );
+    }
+
     protected async Task OnClickFilterSearch()
     {
         await ResetGridAndSearchAsync();
@@ -90,8 +115,8 @@ public partial class RoomsComponent : ComponentBase
             { nameof(RoomsFilterValues), filterValues }
         };
 
-        var result = await DialogService.OpenSideAsync<RoomsFilter>(
-            StringLocalizerForFilter["RoomsFilter_Label_Filter"],
+        var result = await _dialogService.OpenSideAsync<RoomsFilter>(
+            _stringLocalizerForFilter["RoomsFilter_Label_Filter"],
             filterParameters
         );
 
