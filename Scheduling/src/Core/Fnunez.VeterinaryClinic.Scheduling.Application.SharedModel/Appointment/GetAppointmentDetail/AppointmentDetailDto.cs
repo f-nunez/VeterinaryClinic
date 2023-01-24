@@ -11,6 +11,7 @@ public class AppointmentDetailDto
     public DateTimeOffset EndOn { get; set; }
     public bool IsConfirmed { get; set; }
     public string PatientName { get; set; } = string.Empty;
+    public byte[] PatientPhotoData { get; set; } = null!;
     public string RoomName { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public DateTimeOffset StartOn { get; set; }
