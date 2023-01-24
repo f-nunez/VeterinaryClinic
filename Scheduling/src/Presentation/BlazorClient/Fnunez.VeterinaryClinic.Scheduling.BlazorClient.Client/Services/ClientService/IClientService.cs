@@ -1,4 +1,5 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Client;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Client.GetClientDetail;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Client.GetClients;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Common;
 
@@ -12,4 +13,5 @@ public interface IClientService
     public Task<List<string>> DataGridFilterIdAsync(string filterValue);
     public Task<List<string>> DataGridFilterPreferredNameAsync(string filterValue);
     public Task<List<string>> DataGridFilterSalutationsync(string filterValue);
+    public Task<GetClientDetailResponse> GetClientDetailAsync(GetClientDetailRequest request);
 }
