@@ -1,5 +1,7 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypeById;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypes;
+using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Helpers;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -14,6 +16,15 @@ public partial class AppointmentTypesComponent : ComponentBase
     [Inject]
     private IAppointmentTypeService _appointmentTypeService { get; set; }
 
+    [Inject]
+    private DialogService _dialogService { get; set; }
+
+    [Inject]
+    private IStringLocalizer<AppointmentTypeDetailComponent> _stringLocalizerForDetail { get; set; }
+
+    [Inject]
+    private IStringLocalizer<AppointmentTypesFilterComponent> _stringLocalizerForFilter { get; set; }
+
     protected RadzenDataGrid<AppointmentTypeDto> AppointmentTypesGrid;
 
     protected List<AppointmentTypeDto> AppointmentTypes;
@@ -21,13 +32,7 @@ public partial class AppointmentTypesComponent : ComponentBase
     protected int Count;
 
     [Inject]
-    protected DialogService DialogService { get; set; }
-
-    [Inject]
     protected IStringLocalizer<AppointmentTypesComponent> StringLocalizer { get; set; }
-
-    [Inject]
-    protected IStringLocalizer<AppointmentTypesFilterComponent> StringLocalizerForFilter { get; set; }
 
     protected bool IsLoading = false;
 
@@ -66,6 +71,28 @@ public partial class AppointmentTypesComponent : ComponentBase
         await InvokeAsync(StateHasChanged);
     }
 
+    protected async Task OnClickDetail(AppointmentTypeDto appointmentType)
+    {
+        var request = new GetAppointmentTypeByIdRequest
+        {
+            Id = appointmentType.Id
+        };
+
+        var currentAppointmentType = await _appointmentTypeService
+            .GetByIdAsync(request);
+
+        var appointmentTypeForDetail = AppointmentTypeHelper
+            .MapAppointmentTypeViewModel(appointmentType);
+
+        await _dialogService.OpenAsync<AppointmentTypeDetail>(
+            _stringLocalizerForDetail["AppointmentTypeDetail_Label_AppointmentTypeDetail"],
+            new Dictionary<string, object>
+            {
+                { "Model", appointmentTypeForDetail }
+            }
+        );
+    }
+
     protected async Task OnClickFilterSearch()
     {
         await ResetGridAndSearchAsync();
@@ -94,8 +121,8 @@ public partial class AppointmentTypesComponent : ComponentBase
             { nameof(AppointmentTypesFilterValues), filterValues }
         };
 
-        var result = await DialogService.OpenSideAsync<AppointmentTypesFilter>(
-            StringLocalizerForFilter["AppointmentTypesFilter_Label_Filter"],
+        var result = await _dialogService.OpenSideAsync<AppointmentTypesFilter>(
+            _stringLocalizerForFilter["AppointmentTypesFilter_Label_Filter"],
             filterParameters
         );
 
