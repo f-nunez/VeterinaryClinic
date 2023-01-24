@@ -1,5 +1,6 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Common;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Doctor;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Doctor.GetDoctorById;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Doctor.GetDoctors;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Doctor.GetDoctorsFilterFullName;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Doctor.GetDoctorsFilterId;
@@ -81,5 +82,18 @@ public class DoctorService : IDoctorService
             throw new ArgumentNullException(nameof(response));
 
         return response.DoctorIds;
+    }
+
+    public async Task<DoctorDto> GetByIdAsync(GetDoctorByIdRequest request)
+    {
+        _logger.LogInformation($"GetById: {request.Id}");
+
+        var response = await _httpService
+            .HttpGetAsync<GetDoctorByIdResponse>($"Doctor/GetById/{request.Id}");
+
+        if (response is null)
+            throw new ArgumentNullException(nameof(response));
+
+        return response.Doctor;
     }
 }
