@@ -159,12 +159,6 @@
   <data name="Patients_EditedPatient_Alert_Title" xml:space="preserve">
     <value>Edit Patient</value>
   </data>
-  <data name="Patients_Grid_Column_Body_Female" xml:space="preserve">
-    <value>Female</value>
-  </data>
-  <data name="Patients_Grid_Column_Body_Male" xml:space="preserve">
-    <value>Male</value>
-  </data>
   <data name="Patients_Client_DropDown_HeadColumn_FullName" xml:space="preserve">
     <value>Full Name</value>
   </data>
@@ -176,6 +170,12 @@
   </data>
   <data name="Patients_Client_DropDown_PlaceHolder" xml:space="preserve">
     <value>Search client...</value>
+  </data>
+  <data name="Patients_Grid_Column_Body_Female" xml:space="preserve">
+    <value>Female</value>
+  </data>
+  <data name="Patients_Grid_Column_Body_Male" xml:space="preserve">
+    <value>Male</value>
   </data>
   <data name="Patients_Grid_PageSizeText" xml:space="preserve">
     <value>records per page</value>
