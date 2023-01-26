@@ -80,7 +80,7 @@ public partial class ClinicsComponent : ComponentBase
 
         var currentClinic = await _clinicService.GetByIdAsync(request);
 
-        var clinicForDetail = ClinicHelper.MapClinicViewModel(doctor);
+        var clinicForDetail = ClinicHelper.MapClinicViewModel(currentClinic);
 
         await _dialogService.OpenAsync<ClinicDetail>(
             _stringLocalizerForDetail["ClinicDetail_Label_ClinicDetail"],
