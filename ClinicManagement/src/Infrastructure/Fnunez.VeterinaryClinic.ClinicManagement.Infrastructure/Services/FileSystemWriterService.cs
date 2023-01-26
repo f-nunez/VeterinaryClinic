@@ -17,12 +17,15 @@ public class FileSystemWriterService : IFileSystemWriterService
         if (memoryStream.Length <= 0)
             throw new ArgumentNullException(nameof(memoryStream));
 
-        string directory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
+        var directory = Path.GetDirectoryName(filePath);
 
-        if (Directory.Exists(directory))
+        if (string.IsNullOrEmpty(directory))
+            throw new ArgumentNullException(directory);
+
+        if (!Directory.Exists(directory))
             Directory.CreateDirectory(directory);
 
-        using (var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+        using (var stream = new FileStream(filePath, FileMode.Create))
             await memoryStream.CopyToAsync(stream);
     }
 }
