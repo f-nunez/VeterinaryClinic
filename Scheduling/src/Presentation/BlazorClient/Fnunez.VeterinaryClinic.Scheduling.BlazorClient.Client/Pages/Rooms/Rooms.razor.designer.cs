@@ -69,16 +69,16 @@ public partial class RoomsComponent : ComponentBase
         await InvokeAsync(StateHasChanged);
     }
 
-    protected async Task OnClickDetail(RoomDto doctor)
+    protected async Task OnClickDetail(RoomDto room)
     {
         var request = new GetRoomByIdRequest
         {
-            Id = doctor.Id
+            Id = room.Id
         };
 
         var currentRoom = await _roomService.GetByIdAsync(request);
 
-        var roomForDetail = RoomHelper.MapRoomViewModel(doctor);
+        var roomForDetail = RoomHelper.MapRoomViewModel(currentRoom);
 
         await _dialogService.OpenAsync<RoomDetail>(
             _stringLocalizerForDetail["RoomDetail_Label_RoomDetail"],
