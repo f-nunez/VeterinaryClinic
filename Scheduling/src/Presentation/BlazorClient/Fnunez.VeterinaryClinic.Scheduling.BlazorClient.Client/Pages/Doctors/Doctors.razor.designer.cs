@@ -74,7 +74,7 @@ public partial class DoctorsComponent : ComponentBase
 
         var currentDoctor = await _doctorService.GetByIdAsync(request);
 
-        var doctorForDetail = DoctorHelper.MapDoctorViewModel(doctor);
+        var doctorForDetail = DoctorHelper.MapDoctorViewModel(currentDoctor);
 
         await _dialogService.OpenAsync<DoctorDetail>(
             _stringLocalizerForDetail["DoctorDetail_Label_DoctorDetail"],
