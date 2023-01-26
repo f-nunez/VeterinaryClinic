@@ -82,7 +82,7 @@ public partial class AppointmentTypesComponent : ComponentBase
             .GetByIdAsync(request);
 
         var appointmentTypeForDetail = AppointmentTypeHelper
-            .MapAppointmentTypeViewModel(appointmentType);
+            .MapAppointmentTypeViewModel(currentAppointmentType);
 
         await _dialogService.OpenAsync<AppointmentTypeDetail>(
             _stringLocalizerForDetail["AppointmentTypeDetail_Label_AppointmentTypeDetail"],
