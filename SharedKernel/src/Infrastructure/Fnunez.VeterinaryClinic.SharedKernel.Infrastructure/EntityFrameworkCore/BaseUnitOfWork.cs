@@ -30,6 +30,25 @@ public abstract class BaseUnitOfWork : IUnitOfWork
     }
 
     /// <inheritdoc/>
+    public virtual async Task<int> ExecuteSqlCommandAsync(
+        string sql,
+        CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Database.ExecuteSqlRawAsync(
+            sql, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task<int> ExecuteSqlCommandAsync(
+        string sql,
+        IEnumerable<object> parameters,
+        CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Database.ExecuteSqlRawAsync(
+            sql, parameters, cancellationToken);
+    }
+
+    /// <inheritdoc/>
     public virtual async Task<List<T>> GetFromRawSqlAsync<T>(
         string sql,
         CancellationToken cancellationToken = default)
