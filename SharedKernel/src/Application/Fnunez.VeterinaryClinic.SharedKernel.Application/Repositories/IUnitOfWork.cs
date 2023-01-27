@@ -7,6 +7,21 @@ public interface IUnitOfWork : IDisposable
     Task<int> CommitAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Executes the specified raw SQL command in the database
+    /// </summary>
+    /// <param name="sql">The raw SQL.</param>
+    /// <returns>The number of state entities written to database.</returns>
+    Task<int> ExecuteSqlCommandAsync(string sql, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Executes the specified raw SQL command in the database
+    /// </summary>
+    /// <param name="sql">The raw SQL.</param>
+    /// <param name="parameters">The parameters in the raw SQL.</param>
+    /// <returns>The number of state entities written to database.</returns>
+    Task<int> ExecuteSqlCommandAsync(string sql, IEnumerable<object> parameters, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// This method takes <paramref name="sql"/> string as parameter and returns the result of the provided sql.
     /// </summary>
     /// <typeparam name="T">The <see langword="type"/> to which the result will be mapped.</typeparam>
