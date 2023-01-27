@@ -29,6 +29,44 @@ public abstract class BaseUnitOfWork : IUnitOfWork
         GC.SuppressFinalize(this);
     }
 
+    /// <inheritdoc/>
+    public virtual async Task<List<T>> GetFromRawSqlAsync<T>(
+        string sql,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(sql))
+            throw new ArgumentNullException(nameof(sql));
+
+        return await _dbContext.GetFromQueryAsync<T>(
+            sql, new List<object>(), cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task<List<T>> GetFromRawSqlAsync<T>(
+        string sql,
+        object parameter,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(sql))
+            throw new ArgumentNullException(nameof(sql));
+
+        return await _dbContext.GetFromQueryAsync<T>(
+            sql, new List<object>() { parameter }, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task<List<T>> GetFromRawSqlAsync<T>(
+        string sql,
+        IEnumerable<object> parameters,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(sql))
+            throw new ArgumentNullException(nameof(sql));
+
+        return await _dbContext.GetFromQueryAsync<T>(
+            sql, parameters, cancellationToken);
+    }
+
     IReadRepository<T> IUnitOfWork.ReadRepository<T>()
     {
         Type entityType = typeof(T);
