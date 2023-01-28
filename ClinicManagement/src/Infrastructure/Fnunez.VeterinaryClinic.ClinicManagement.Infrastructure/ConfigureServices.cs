@@ -8,6 +8,7 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.ServiceBus.Observe
 using Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Services;
 using Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Settings;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -59,6 +60,19 @@ public static class ConfigureServices
         services.AddReceiveObserver<LoggingReceiveObserver>();
 
         services.AddSendObserver<LoggingSendObserver>();
+
+        services.AddMassTransit(mt =>
+        {
+            mt.UsingRabbitMq((context, cfg) =>
+            {
+                var rabbitMqSetting = context
+                    .GetRequiredService<IRabbitMqSetting>();
+
+                cfg.Host(rabbitMqSetting.HostAddress);
+
+                cfg.ConfigureEndpoints(context);
+            });
+        });
 
         return services;
     }
