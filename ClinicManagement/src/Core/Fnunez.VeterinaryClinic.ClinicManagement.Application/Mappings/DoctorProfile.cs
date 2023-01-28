@@ -18,8 +18,7 @@ public class DoctorProfile : Profile
                 dto => new Doctor(dto.Id, dto.FullName)
             );
 
-        CreateMap<CreateDoctorRequest, Doctor>()
-            .ConstructUsing(dto => new Doctor(0, dto.FullName));
+        CreateMap<CreateDoctorRequest, Doctor>();
 
         CreateMap<UpdateDoctorRequest, Doctor>();
 
