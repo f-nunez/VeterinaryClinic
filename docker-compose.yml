@@ -1,0 +1,12 @@
+# docker run -p 15672:15672 -p 5672:5672 masstransit/rabbitmq
+
+version: "3.8"
+
+services:
+
+  rabbitmq:
+    image: masstransit/rabbitmq:latest
+    ports:
+      - 5672:5672
+      - 15672:15672
+    restart: always
