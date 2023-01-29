@@ -1,7 +1,9 @@
+using Fnunez.VeterinaryClinic.Scheduling.Application.Interfaces.ServiceBus;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Interfaces.Services;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Interfaces.Settings;
 using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Contexts;
 using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Repositories;
+using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.ServiceBus;
 using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Services;
 using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Settings;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
@@ -42,6 +44,8 @@ public static class ConfigureServices
             .Get<RabbitMqSetting>()!);
 
         services.AddScoped<IFileSystemReaderService, FileSystemReaderService>();
+
+        services.AddScoped<IServiceBus, MassTransitServiceBus>();
 
         return services;
     }
