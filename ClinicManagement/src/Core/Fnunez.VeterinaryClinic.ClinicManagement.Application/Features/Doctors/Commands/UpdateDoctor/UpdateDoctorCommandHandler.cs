@@ -1,4 +1,6 @@
 using AutoMapper;
+using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.SendIntegrationEvents.DoctorUpdated;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.UpdateDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.DoctorAggregate;
@@ -10,11 +12,16 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.
 public class UpdateDoctorCommandHandler : IRequestHandler<UpdateDoctorCommand, UpdateDoctorResponse>
 {
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateDoctorCommandHandler(IMapper mapper, IUnitOfWork unitOfWork)
+    public UpdateDoctorCommandHandler(
+        IMapper mapper,
+        IMediator mediator,
+        IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
+        _mediator = mediator;
         _unitOfWork = unitOfWork;
     }
 
@@ -34,6 +41,33 @@ public class UpdateDoctorCommandHandler : IRequestHandler<UpdateDoctorCommand, U
         var doctorDto = _mapper.Map<DoctorDto>(doctorToUpdate);
         response.Doctor = doctorDto;
 
+        await SendIntegrationEventAsync(
+            doctorToUpdate,
+            request.CorrelationId,
+            cancellationToken
+        );
+
         return response;
+    }
+
+    private async Task SendIntegrationEventAsync(
+        Doctor doctor,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var message = new DoctorUpdatedIntegrationEventContract
+        {
+            CausationId = correlationId,
+            CorrelationId = correlationId,
+            Id = Guid.NewGuid(),
+            OccurredOn = DateTimeOffset.UtcNow,
+            DoctorFullName = doctor.FullName,
+            DoctorId = doctor.Id
+        };
+
+        await _mediator.Publish(
+            new DoctorUpdatedSendIntegrationEvent(message),
+            cancellationToken
+        );
     }
 }
