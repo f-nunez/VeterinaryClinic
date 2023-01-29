@@ -1,4 +1,6 @@
 using AutoMapper;
+using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.SendIntegrationEvents.AppointmentTypeUpdated;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.UpdateAppointmentType;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.AppointmentTypeAggregate;
@@ -10,13 +12,16 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Appointm
 public class UpdateAppointmentTypeCommandHandler : IRequestHandler<UpdateAppointmentTypeCommand, UpdateAppointmentTypeResponse>
 {
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
     public UpdateAppointmentTypeCommandHandler(
         IMapper mapper,
+        IMediator mediator,
         IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
+        _mediator = mediator;
         _unitOfWork = unitOfWork;
     }
 
@@ -36,6 +41,35 @@ public class UpdateAppointmentTypeCommandHandler : IRequestHandler<UpdateAppoint
         response.AppointmentType = _mapper
             .Map<AppointmentTypeDto>(appointmentTypeToUpdate);
 
+        await SendIntegrationEventAsync(
+            appointmentTypeToUpdate,
+            request.CorrelationId,
+            cancellationToken
+        );
+
         return response;
+    }
+
+    private async Task SendIntegrationEventAsync(
+        AppointmentType appointmentType,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var message = new AppointmentTypeUpdatedIntegrationEventContract
+        {
+            CausationId = correlationId,
+            CorrelationId = correlationId,
+            Id = Guid.NewGuid(),
+            OccurredOn = DateTimeOffset.UtcNow,
+            AppointmentTypeCode = appointmentType.Code,
+            AppointmentTypeDuration = appointmentType.Duration,
+            AppointmentTypeId = appointmentType.Id,
+            AppointmentTypeName = appointmentType.Name
+        };
+
+        await _mediator.Publish(
+            new AppointmentTypeUpdatedSendIntegrationEvent(message),
+            cancellationToken
+        );
     }
 }
