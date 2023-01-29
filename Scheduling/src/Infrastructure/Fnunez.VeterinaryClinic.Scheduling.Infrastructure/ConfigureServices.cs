@@ -33,11 +33,15 @@ public static class ConfigureServices
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-        services.AddScoped<IFileSystemReaderService, FileSystemReaderService>();
-
         services.AddSingleton<IClientStorageSetting>(configuration
             .GetSection(typeof(ClientStorageSetting).Name)
             .Get<ClientStorageSetting>()!);
+
+        services.AddSingleton<IRabbitMqSetting>(configuration
+            .GetSection(typeof(RabbitMqSetting).Name)
+            .Get<RabbitMqSetting>()!);
+
+        services.AddScoped<IFileSystemReaderService, FileSystemReaderService>();
 
         return services;
     }
