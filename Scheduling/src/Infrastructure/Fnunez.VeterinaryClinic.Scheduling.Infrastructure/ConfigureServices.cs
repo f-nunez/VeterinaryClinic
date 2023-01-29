@@ -1,3 +1,4 @@
+using System.Reflection;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Interfaces.ServiceBus;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Interfaces.Services;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Interfaces.Settings;
@@ -8,6 +9,7 @@ using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.ServiceBus.Observers;
 using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Services;
 using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Settings;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -55,6 +57,21 @@ public static class ConfigureServices
         services.AddReceiveObserver<LoggingReceiveObserver>();
 
         services.AddSendObserver<LoggingSendObserver>();
+
+        services.AddMassTransit(mt =>
+        {
+            mt.AddConsumers(Assembly.GetExecutingAssembly());
+
+            mt.UsingRabbitMq((context, cfg) =>
+            {
+                var rabbitMqSetting = context
+                    .GetRequiredService<IRabbitMqSetting>();
+
+                cfg.Host(rabbitMqSetting.HostAddress);
+
+                cfg.ConfigureEndpoints(context);
+            });
+        });
 
         return services;
     }
