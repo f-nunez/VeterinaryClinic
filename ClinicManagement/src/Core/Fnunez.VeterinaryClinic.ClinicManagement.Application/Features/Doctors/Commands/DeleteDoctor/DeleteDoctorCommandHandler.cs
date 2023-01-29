@@ -1,4 +1,6 @@
 using AutoMapper;
+using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.SendIntegrationEvents.DoctorDeleted;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.DeleteDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.DoctorAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
@@ -9,11 +11,16 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.
 public class DeleteDoctorCommandHandler : IRequestHandler<DeleteDoctorCommand, DeleteDoctorResponse>
 {
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteDoctorCommandHandler(IMapper mapper, IUnitOfWork unitOfWork)
+    public DeleteDoctorCommandHandler(
+        IMapper mapper,
+        IMediator mediator,
+        IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
+        _mediator = mediator;
         _unitOfWork = unitOfWork;
     }
 
@@ -27,9 +34,35 @@ public class DeleteDoctorCommandHandler : IRequestHandler<DeleteDoctorCommand, D
 
         await _unitOfWork.Repository<Doctor>()
             .DeleteAsync(doctorToDelete, cancellationToken);
-        
+
         await _unitOfWork.CommitAsync(cancellationToken);
 
+        await SendIntegrationEventAsync(
+            request.Id,
+            request.CorrelationId,
+            cancellationToken
+        );
+
         return response;
+    }
+
+    private async Task SendIntegrationEventAsync(
+        int doctorId,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var message = new DoctorDeletedIntegrationEventContract
+        {
+            CausationId = correlationId,
+            CorrelationId = correlationId,
+            Id = Guid.NewGuid(),
+            OccurredOn = DateTimeOffset.UtcNow,
+            DoctorId = doctorId
+        };
+
+        await _mediator.Publish(
+            new DoctorDeletedSendIntegrationEvent(message),
+            cancellationToken
+        );
     }
 }
