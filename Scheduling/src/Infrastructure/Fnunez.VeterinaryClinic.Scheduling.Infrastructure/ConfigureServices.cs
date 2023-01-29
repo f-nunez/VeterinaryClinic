@@ -4,6 +4,7 @@ using Fnunez.VeterinaryClinic.Scheduling.Application.Interfaces.Settings;
 using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Contexts;
 using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Repositories;
 using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.ServiceBus;
+using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.ServiceBus.Observers;
 using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Services;
 using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Settings;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
@@ -46,6 +47,14 @@ public static class ConfigureServices
         services.AddScoped<IFileSystemReaderService, FileSystemReaderService>();
 
         services.AddScoped<IServiceBus, MassTransitServiceBus>();
+
+        services.AddConsumeObserver<LoggingConsumeObserver>();
+
+        services.AddPublishObserver<LoggingPublishObserver>();
+
+        services.AddReceiveObserver<LoggingReceiveObserver>();
+
+        services.AddSendObserver<LoggingSendObserver>();
 
         return services;
     }
