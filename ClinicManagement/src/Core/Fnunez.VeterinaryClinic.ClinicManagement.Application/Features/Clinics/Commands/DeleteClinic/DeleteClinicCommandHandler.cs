@@ -1,4 +1,6 @@
 using AutoMapper;
+using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.SendIntegrationEvents.ClinicDeleted;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.DeleteClinic;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClinicAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
@@ -9,11 +11,16 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.
 public class DeleteClinicCommandHandler : IRequestHandler<DeleteClinicCommand, DeleteClinicResponse>
 {
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteClinicCommandHandler(IMapper mapper, IUnitOfWork unitOfWork)
+    public DeleteClinicCommandHandler(
+        IMapper mapper,
+        IMediator mediator,
+        IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
+        _mediator = mediator;
         _unitOfWork = unitOfWork;
     }
 
@@ -31,6 +38,32 @@ public class DeleteClinicCommandHandler : IRequestHandler<DeleteClinicCommand, D
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
+        await SendIntegrationEventAsync(
+            request.Id,
+            request.CorrelationId,
+            cancellationToken
+        );
+
         return response;
+    }
+
+    private async Task SendIntegrationEventAsync(
+        int clinicId,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var message = new ClinicDeletedIntegrationEventContract
+        {
+            CausationId = correlationId,
+            CorrelationId = correlationId,
+            Id = Guid.NewGuid(),
+            OccurredOn = DateTimeOffset.UtcNow,
+            ClinicId = clinicId
+        };
+
+        await _mediator.Publish(
+            new ClinicDeletedSendIntegrationEvent(message),
+            cancellationToken
+        );
     }
 }
