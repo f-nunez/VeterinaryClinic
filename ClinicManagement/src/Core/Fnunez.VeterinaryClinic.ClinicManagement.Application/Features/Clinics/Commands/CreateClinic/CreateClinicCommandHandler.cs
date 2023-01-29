@@ -1,4 +1,6 @@
 using AutoMapper;
+using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.SendIntegrationEvents.ClinicCreated;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.CreateClinic;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClinicAggregate;
@@ -10,11 +12,16 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.
 public class CreateClinicCommandHandler : IRequestHandler<CreateClinicCommand, CreateClinicResponse>
 {
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateClinicCommandHandler(IMapper mapper, IUnitOfWork unitOfWork)
+    public CreateClinicCommandHandler(
+        IMapper mapper,
+        IMediator mediator,
+        IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
+        _mediator = mediator;
         _unitOfWork = unitOfWork;
     }
 
@@ -34,6 +41,35 @@ public class CreateClinicCommandHandler : IRequestHandler<CreateClinicCommand, C
 
         response.Clinic = _mapper.Map<ClinicDto>(newClinic);
 
+        await SendIntegrationEventAsync(
+            newClinic,
+            request.CorrelationId,
+            cancellationToken
+        );
+
         return response;
+    }
+
+    private async Task SendIntegrationEventAsync(
+        Clinic clinic,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var message = new ClinicCreatedIntegrationEventContract
+        {
+            CausationId = correlationId,
+            CorrelationId = correlationId,
+            Id = Guid.NewGuid(),
+            OccurredOn = DateTimeOffset.UtcNow,
+            ClinicAddress = clinic.Address,
+            ClinicEmailAddress = clinic.EmailAddress,
+            ClinicId = clinic.Id,
+            ClinicName = clinic.Name
+        };
+
+        await _mediator.Publish(
+            new ClinicCreatedSendIntegrationEvent(message),
+            cancellationToken
+        );
     }
 }
