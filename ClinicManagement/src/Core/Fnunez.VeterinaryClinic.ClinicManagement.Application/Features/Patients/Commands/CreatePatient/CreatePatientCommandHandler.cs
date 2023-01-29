@@ -1,7 +1,7 @@
-using AutoMapper;
+using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.SendIntegrationEvents.PatientCreated;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Settings;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.CreatePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Entities;
@@ -16,15 +16,18 @@ public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand,
 {
     private readonly IClientStorageSetting _clientStorageSetting;
     private readonly IFileSystemWriterService _fileSystemWriterService;
+    private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreatePatientCommandHandler(
         IClientStorageSetting clientStorageSetting,
         IFileSystemWriterService fileSystemWriterService,
+        IMediator mediator,
         IUnitOfWork unitOfWork)
     {
         _clientStorageSetting = clientStorageSetting;
         _fileSystemWriterService = fileSystemWriterService;
+        _mediator = mediator;
         _unitOfWork = unitOfWork;
     }
 
@@ -60,6 +63,12 @@ public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand,
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
+        await SendIntegrationEventAsync(
+            newPatient,
+            request.CorrelationId,
+            cancellationToken
+        );
+
         return response;
     }
 
@@ -78,5 +87,33 @@ public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand,
         await _fileSystemWriterService.WriteAsync(request.PhotoData, photoPath);
 
         return photoNameToSave;
+    }
+
+    private async Task SendIntegrationEventAsync(
+        Patient patient,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var message = new PatientCreatedIntegrationEventContract
+        {
+            CausationId = correlationId,
+            CorrelationId = correlationId,
+            Id = Guid.NewGuid(),
+            OccurredOn = DateTimeOffset.UtcNow,
+            PatientBreed = patient.AnimalType.Breed,
+            PatientClientId = patient.ClientId,
+            PatientId = patient.Id,
+            PatientName = patient.Name,
+            PatientPhotoName = patient.Photo.Name,
+            PatientPhotoStoredName = patient.Photo.StoredName,
+            PatientPreferredDoctorId = patient.PreferredDoctorId,
+            PatientSex = (int)patient.AnimalSex,
+            PatientSpecies = patient.AnimalType.Species
+        };
+
+        await _mediator.Publish(
+            new PatientCreatedSendIntegrationEvent(message),
+            cancellationToken
+        );
     }
 }
