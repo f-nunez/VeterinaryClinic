@@ -1,6 +1,8 @@
+using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Rooms.Queries.GetRoomById;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Rooms.Queries.GetRooms;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Rooms.Queries.GetRoomsFilterId;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Rooms.Queries.GetRoomsFilterName;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Room.GetRoomById;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Room.GetRooms;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Room.GetRoomsFilterId;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Room.GetRoomsFilterName;
@@ -44,6 +46,19 @@ public class RoomController : BaseApiController
         var query = new GetRoomsFilterNameQuery(request);
 
         GetRoomsFilterNameResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpGet("GetById/{Id}")]
+    public async Task<ActionResult> GetById(
+        [FromRoute] GetRoomByIdRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetRoomByIdQuery(request);
+
+        GetRoomByIdResponse response = await Mediator
             .Send(query, cancellationToken);
 
         return Ok(response);

@@ -1,10 +1,14 @@
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.ServiceBus;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Contexts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Repositories;
+using Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.ServiceBus;
+using Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.ServiceBus.Observers;
 using Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Services;
 using Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Settings;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -33,15 +37,42 @@ public static class ConfigureServices
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+        services.AddSingleton<IClientStorageSetting>(configuration
+            .GetSection(typeof(ClientStorageSetting).Name)
+            .Get<ClientStorageSetting>()!);
+
+        services.AddSingleton<IRabbitMqSetting>(configuration
+            .GetSection(typeof(RabbitMqSetting).Name)
+            .Get<RabbitMqSetting>()!);
+
         services.AddScoped<IFileSystemDeleterService, FileSystemDeleterService>();
 
         services.AddScoped<IFileSystemReaderService, FileSystemReaderService>();
 
         services.AddScoped<IFileSystemWriterService, FileSystemWriterService>();
 
-        services.AddSingleton<IClientStorageSetting>(configuration
-            .GetSection(typeof(ClientStorageSetting).Name)
-            .Get<ClientStorageSetting>()!);
+        services.AddScoped<IServiceBus, MassTransitServiceBus>();
+
+        services.AddConsumeObserver<LoggingConsumeObserver>();
+
+        services.AddPublishObserver<LoggingPublishObserver>();
+
+        services.AddReceiveObserver<LoggingReceiveObserver>();
+
+        services.AddSendObserver<LoggingSendObserver>();
+
+        services.AddMassTransit(mt =>
+        {
+            mt.UsingRabbitMq((context, cfg) =>
+            {
+                var rabbitMqSetting = context
+                    .GetRequiredService<IRabbitMqSetting>();
+
+                cfg.Host(rabbitMqSetting.HostAddress);
+
+                cfg.ConfigureEndpoints(context);
+            });
+        });
 
         return services;
     }

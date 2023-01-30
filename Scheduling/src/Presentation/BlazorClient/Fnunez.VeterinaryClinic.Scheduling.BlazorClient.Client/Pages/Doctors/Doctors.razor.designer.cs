@@ -1,5 +1,7 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Doctor;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Doctor.GetDoctorById;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Doctor.GetDoctors;
+using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Helpers;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -12,7 +14,16 @@ namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Doctors;
 public partial class DoctorsComponent : ComponentBase
 {
     [Inject]
+    private DialogService _dialogService { get; set; }
+
+    [Inject]
     private IDoctorService _doctorService { get; set; }
+
+    [Inject]
+    private IStringLocalizer<DoctorDetailComponent> _stringLocalizerForDetail { get; set; }
+
+    [Inject]
+    private IStringLocalizer<DoctorsFilterComponent> _stringLocalizerForFilter { get; set; }
 
     protected RadzenDataGrid<DoctorDto> DoctorsGrid;
 
@@ -21,13 +32,7 @@ public partial class DoctorsComponent : ComponentBase
     protected int Count;
 
     [Inject]
-    protected DialogService DialogService { get; set; }
-
-    [Inject]
     protected IStringLocalizer<DoctorsComponent> StringLocalizer { get; set; }
-
-    [Inject]
-    protected IStringLocalizer<DoctorsFilterComponent> StringLocalizerForFilter { get; set; }
 
     protected bool IsLoading = false;
 
@@ -60,6 +65,26 @@ public partial class DoctorsComponent : ComponentBase
         await InvokeAsync(StateHasChanged);
     }
 
+    protected async Task OnClickDetail(DoctorDto doctor)
+    {
+        var request = new GetDoctorByIdRequest
+        {
+            Id = doctor.Id
+        };
+
+        var currentDoctor = await _doctorService.GetByIdAsync(request);
+
+        var doctorForDetail = DoctorHelper.MapDoctorViewModel(currentDoctor);
+
+        await _dialogService.OpenAsync<DoctorDetail>(
+            _stringLocalizerForDetail["DoctorDetail_Label_DoctorDetail"],
+            new Dictionary<string, object>
+            {
+                { "Model", doctorForDetail }
+            }
+        );
+    }
+
     protected async Task OnClickFilterSearch()
     {
         await ResetGridAndSearchAsync();
@@ -86,8 +111,8 @@ public partial class DoctorsComponent : ComponentBase
             { nameof(DoctorsFilterValues), filterValues }
         };
 
-        var result = await DialogService.OpenSideAsync<DoctorsFilter>(
-            StringLocalizerForFilter["DoctorsFilter_Label_Filter"],
+        var result = await _dialogService.OpenSideAsync<DoctorsFilter>(
+            _stringLocalizerForFilter["DoctorsFilter_Label_Filter"],
             filterParameters
         );
 

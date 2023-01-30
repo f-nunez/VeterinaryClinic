@@ -11,6 +11,7 @@ public class AppointmentDetailVm
     public DateTime EndOn { get; set; }
     public bool IsConfirmed { get; set; }
     public string PatientName { get; set; } = string.Empty;
+    public string PatientPhotoBase64Encoded { get; set; } = string.Empty;
     public string RoomName { get; set; } = string.Empty;
     public DateTime StartOn { get; set; }
     public string TimezoneName { get; set; } = string.Empty;

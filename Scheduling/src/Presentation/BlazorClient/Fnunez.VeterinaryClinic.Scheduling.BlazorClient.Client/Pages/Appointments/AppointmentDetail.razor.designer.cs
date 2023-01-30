@@ -14,24 +14,21 @@ public partial class AppointmentDetailComponent : ComponentBase
     [Inject]
     protected IStringLocalizer<AppointmentDetailComponent> StringLocalizer { get; set; }
 
-    protected string DoctorBase64EncodedImageData = string.Empty;
-
-    protected string PatientBase64EncodedImageData = string.Empty;
+    protected string DoctorPhotoBase64Encoded { get; set; }
 
     [Parameter]
-    public AppointmentDetailVm Appointment { get; set; }
+    public AppointmentDetailVm Model { get; set; }
 
     protected override void OnInitialized()
     {
-        DoctorBase64EncodedImageData = AppointmentHelper.GetDemoDoctorPhoto();
-        PatientBase64EncodedImageData = AppointmentHelper.GetDemoPatientPhoto();
+        DoctorPhotoBase64Encoded = DoctorHelper.GetDoctorThumbnail();
     }
 
     protected async void Delete()
     {
         string message = string.Format(
             StringLocalizer["AppointmentDetail_DeleteAppointment_Alert_Message"],
-            Appointment.Title);
+            Model.Title);
 
         bool? proceedToDelete = await _dialogService.Confirm(
             message,

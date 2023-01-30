@@ -7,7 +7,7 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment
 
 public class GetAppointmentEditResponse : BaseResponse
 {
-    public AppointmentDto? Appointment { get; set; }
+    public AppointmentEditDto? Appointment { get; set; }
     public List<AppointmentTypeFilterValueDto> AppointmentTypeFilterValues { get; set; } = new();
     public List<DoctorFilterValueDto> DoctorFilterValues { get; set; } = new();
     public List<RoomFilterValueDto> RoomFilterValues { get; set; } = new();

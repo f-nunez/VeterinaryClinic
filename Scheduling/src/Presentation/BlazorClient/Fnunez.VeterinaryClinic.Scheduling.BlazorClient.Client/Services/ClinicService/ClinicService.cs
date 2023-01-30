@@ -1,4 +1,5 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic.GetClinicById;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic.GetClinics;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic.GetClinicsFilterAddress;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic.GetClinicsFilterEmailAddress;
@@ -127,5 +128,18 @@ public class ClinicService : IClinicService
             throw new ArgumentNullException(nameof(response));
 
         return response.ClinicNames;
+    }
+
+    public async Task<ClinicDto> GetByIdAsync(GetClinicByIdRequest request)
+    {
+        _logger.LogInformation($"GetById: {request.Id}");
+
+        var response = await _httpService
+            .HttpGetAsync<GetClinicByIdResponse>($"Clinic/GetById/{request.Id}");
+
+        if (response is null)
+            throw new ArgumentNullException(nameof(response));
+
+        return response.Clinic;
     }
 }

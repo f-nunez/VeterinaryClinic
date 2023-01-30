@@ -17,7 +17,7 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Migratio
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0")
+                .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -119,7 +119,7 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Migratio
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("PreferredDoctorId")
+                    b.Property<int?>("PreferredDoctorId")
                         .HasColumnType("int");
 
                     b.Property<string>("PreferredName")
@@ -338,7 +338,36 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Migratio
                                 .HasForeignKey("PatientId");
                         });
 
-                    b.Navigation("AnimalType");
+                    b.OwnsOne("Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClientAggregate.ValueObjects.Photo", "Photo", b1 =>
+                        {
+                            b1.Property<int>("PatientId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("nvarchar(200)")
+                                .HasColumnName("Photo_Name");
+
+                            b1.Property<string>("StoredName")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("nvarchar(200)")
+                                .HasColumnName("Photo_StoredName");
+
+                            b1.HasKey("PatientId");
+
+                            b1.ToTable("Patients");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PatientId");
+                        });
+
+                    b.Navigation("AnimalType")
+                        .IsRequired();
+
+                    b.Navigation("Photo")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClientAggregate.Client", b =>

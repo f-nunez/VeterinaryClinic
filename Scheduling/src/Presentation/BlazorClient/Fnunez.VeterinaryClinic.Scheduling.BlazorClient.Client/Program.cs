@@ -25,6 +25,7 @@ builder.Services.AddScoped<IAppointmentTypeService, AppointmentTypeService>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IClinicService, ClinicService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
+builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<ISpinnerService, SpinnerService>();
 builder.Services.AddScoped<IUserSettingsService, UserSettingsService>();

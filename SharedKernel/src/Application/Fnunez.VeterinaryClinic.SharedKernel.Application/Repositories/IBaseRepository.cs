@@ -26,6 +26,22 @@ public interface IBaseRepository<T> where T : class
         CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Removes an entity in the database
+    /// </summary>
+    /// <param name="entity">The entity to delete.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    Task DeleteAsync(T entity, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Removes the given entities in the database
+    /// </summary>
+    /// <param name="entities">The entities to remove.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    Task DeleteRangeAsync(
+        IEnumerable<T> entities,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Updates an entity in the database
     /// </summary>
     /// <param name="entity">The entity to update.</param>
@@ -39,22 +55,6 @@ public interface IBaseRepository<T> where T : class
     /// <param name="cancellationToken"></param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     Task UpdateRangeAsync(
-        IEnumerable<T> entities,
-        CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Removes an entity in the database
-    /// </summary>
-    /// <param name="entity">The entity to delete.</param>
-    /// <returns>A task that represents the asynchronous operation.</returns>
-    Task DeleteAsync(T entity, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Removes the given entities in the database
-    /// </summary>
-    /// <param name="entities">The entities to remove.</param>
-    /// <returns>A task that represents the asynchronous operation.</returns>
-    Task DeleteRangeAsync(
         IEnumerable<T> entities,
         CancellationToken cancellationToken = default);
 }

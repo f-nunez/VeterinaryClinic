@@ -1,6 +1,7 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.CreateAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.DeleteAppointment;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentAdd;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentDetail;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentEdit;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointments;
@@ -193,6 +194,23 @@ public class AppointmentService : IAppointmentService
             .HttpDeleteAsync<DeleteAppointmentResponse>(
                 $"Appointment/Delete",
                 request.AppointmentId
+            );
+
+        if (response is null)
+            throw new ArgumentNullException(nameof(response));
+
+        return response;
+    }
+
+    public async Task<GetAppointmentAddResponse> GetAppointmentAddAsync(
+        GetAppointmentAddRequest request)
+    {
+        _logger.LogInformation($"GetAppointmentAdd: {request.CorrelationId}");
+
+        var response = await _httpService
+            .HttpPostAsync<GetAppointmentAddResponse>(
+                "Appointment/GetAppointmentAdd",
+                request
             );
 
         if (response is null)

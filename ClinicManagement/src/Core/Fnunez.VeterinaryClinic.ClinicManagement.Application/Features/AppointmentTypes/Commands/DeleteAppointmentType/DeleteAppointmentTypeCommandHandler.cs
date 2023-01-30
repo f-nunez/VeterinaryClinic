@@ -1,4 +1,6 @@
 using AutoMapper;
+using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.SendIntegrationEvents.AppointmentTypeDeleted;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.DeleteAppointmentType;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.AppointmentTypeAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
@@ -9,13 +11,16 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Appointm
 public class DeleteAppointmentTypeCommandHandler : IRequestHandler<DeleteAppointmentTypeCommand, DeleteAppointmentTypeResponse>
 {
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
     public DeleteAppointmentTypeCommandHandler(
         IMapper mapper,
+        IMediator mediator,
         IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
+        _mediator = mediator;
         _unitOfWork = unitOfWork;
     }
 
@@ -32,6 +37,32 @@ public class DeleteAppointmentTypeCommandHandler : IRequestHandler<DeleteAppoint
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
+        await SendIntegrationEventAsync(
+            appointmentTypeToDelete,
+            request.CorrelationId,
+            cancellationToken
+        );
+
         return response;
+    }
+
+    private async Task SendIntegrationEventAsync(
+        AppointmentType appointmentType,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var message = new AppointmentTypeDeletedIntegrationEventContract
+        {
+            CausationId = correlationId,
+            CorrelationId = correlationId,
+            Id = Guid.NewGuid(),
+            OccurredOn = DateTimeOffset.UtcNow,
+            AppointmentTypeId = appointmentType.Id
+        };
+
+        await _mediator.Publish(
+            new AppointmentTypeDeletedSendIntegrationEvent(message),
+            cancellationToken
+        );
     }
 }

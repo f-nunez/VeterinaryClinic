@@ -6,7 +6,6 @@ using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClientAggregate
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClinicAggregate;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.DoctorAggregate;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.RoomAggregate;
-using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,22 +43,8 @@ public class ApplicationDbContext : DbContext
         int result = await base.SaveChangesAsync(cancellationToken)
             .ConfigureAwait(false);
 
-        if (_mediator == null)
-            return result;
-
-        var entities = ChangeTracker
-            .Entries<BaseEntity<Guid>>()
-            .Where(e => e.Entity.DomainEvents.Any())
-            .Select(e => e.Entity);
-
-        var domainEvents = entities
-            .SelectMany(e => e.DomainEvents)
-            .ToList();
-
-        entities.ToList().ForEach(e => e.ClearDomainEvents());
-
-        foreach (var domainEvent in domainEvents)
-            await _mediator.Publish(domainEvent);
+        if (_mediator != null)
+            await _mediator.DispatchDomainEventsAsync(this);
 
         return result;
     }

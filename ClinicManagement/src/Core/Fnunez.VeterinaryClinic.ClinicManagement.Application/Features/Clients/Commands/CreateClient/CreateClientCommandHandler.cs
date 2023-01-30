@@ -1,4 +1,6 @@
 using AutoMapper;
+using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.SendIntegrationEvents.ClientCreated;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.CreateClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
@@ -10,11 +12,16 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.
 public class CreateClientCommandHandler : IRequestHandler<CreateClientCommand, CreateClientResponse>
 {
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateClientCommandHandler(IMapper mapper, IUnitOfWork unitOfWork)
+    public CreateClientCommandHandler(
+        IMapper mapper,
+        IMediator mediator,
+        IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
+        _mediator = mediator;
         _unitOfWork = unitOfWork;
     }
 
@@ -33,6 +40,37 @@ public class CreateClientCommandHandler : IRequestHandler<CreateClientCommand, C
 
         response.Client = _mapper.Map<ClientDto>(newClient);
 
+        await SendIntegrationEventAsync(
+            newClient,
+            request.CorrelationId,
+            cancellationToken
+        );
+
         return response;
+    }
+
+    private async Task SendIntegrationEventAsync(
+        Client client,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var message = new ClientCreatedIntegrationEventContract
+        {
+            CausationId = correlationId,
+            CorrelationId = correlationId,
+            Id = Guid.NewGuid(),
+            OccurredOn = DateTimeOffset.UtcNow,
+            ClientEmailAddress = client.EmailAddress,
+            ClientFullName = client.FullName,
+            ClientId = client.Id,
+            ClientPreferredDoctorId = client.PreferredDoctorId,
+            ClientPreferredName = client.PreferredName,
+            ClientSalutation = client.Salutation
+        };
+
+        await _mediator.Publish(
+            new ClientCreatedSendIntegrationEvent(message),
+            cancellationToken
+        );
     }
 }

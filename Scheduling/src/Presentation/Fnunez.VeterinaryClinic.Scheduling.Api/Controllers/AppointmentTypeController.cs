@@ -1,8 +1,10 @@
+using Fnunez.VeterinaryClinic.Scheduling.Application.Features.AppointmentTypes.Queries.GetAppointmentTypeById;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.AppointmentTypes.Queries.GetAppointmentTypes;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.AppointmentTypes.Queries.GetAppointmentTypesFilterCode;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.AppointmentTypes.Queries.GetAppointmentTypesFilterDuration;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.AppointmentTypes.Queries.GetAppointmentTypesFilterId;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.AppointmentTypes.Queries.GetAppointmentTypesFilterName;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypeById;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypes;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypesFilterCode;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypesFilterDuration;
@@ -74,6 +76,19 @@ public class AppointmentTypeController : BaseApiController
         var query = new GetAppointmentTypesFilterNameQuery(request);
 
         GetAppointmentTypesFilterNameResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpGet("GetById/{Id}")]
+    public async Task<ActionResult> GetById(
+        [FromRoute] GetAppointmentTypeByIdRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetAppointmentTypeByIdQuery(request);
+
+        GetAppointmentTypeByIdResponse response = await Mediator
             .Send(query, cancellationToken);
 
         return Ok(response);

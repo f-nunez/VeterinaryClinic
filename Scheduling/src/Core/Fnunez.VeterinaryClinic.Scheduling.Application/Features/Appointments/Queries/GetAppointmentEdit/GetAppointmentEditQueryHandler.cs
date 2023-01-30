@@ -1,12 +1,14 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Exceptions;
-using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Interfaces.Services;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Interfaces.Settings;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentEdit;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterAppointmentType;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterDoctor;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterRoom;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.AppointmentAggregate;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.AppointmentTypeAggregate;
+using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClientAggregate.Entities;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.DoctorAggregate;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.RoomAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
@@ -17,13 +19,19 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Q
 public class GetAppointmentEditQueryHandler
     : IRequestHandler<GetAppointmentEditQuery, GetAppointmentEditResponse>
 {
+    private readonly IClientStorageSetting _clientStorageSetting;
+    private readonly IFileSystemReaderService _fileSystemReaderService;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
     public GetAppointmentEditQueryHandler(
+        IClientStorageSetting clientStorageSetting,
+        IFileSystemReaderService fileSystemReaderService,
         IMapper mapper,
         IUnitOfWork unitOfWork)
     {
+        _clientStorageSetting = clientStorageSetting;
+        _fileSystemReaderService = fileSystemReaderService;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
     }
@@ -47,11 +55,14 @@ public class GetAppointmentEditQueryHandler
 
         if (appointment is null)
             throw new NotFoundException(
-                nameof(appointment),
-                request.AppointmentId
-            );
+                nameof(appointment), request.AppointmentId);
 
-        response.Appointment = _mapper.Map<AppointmentDto>(appointment);
+        var appointmentEditDto = _mapper.Map<AppointmentEditDto>(appointment);
+
+        appointmentEditDto.PatientPhotoData = await GetPatientPhotoDataAsync(
+            appointment.Patient);
+
+        response.Appointment = appointmentEditDto;
 
         response.AppointmentTypeFilterValues = MapAppointemntTypeFilterValues(
             appointment.AppointmentType);
@@ -61,6 +72,17 @@ public class GetAppointmentEditQueryHandler
         response.RoomFilterValues = MapRoomFilterValues(appointment.Room);
 
         return response;
+    }
+
+    private async Task<byte[]> GetPatientPhotoDataAsync(Patient patient)
+    {
+        string relativePhotoPath = Path.Combine(
+            patient.ClientId.ToString(), patient.Photo.StoredName);
+
+        string photoPath = Path.Combine(
+            _clientStorageSetting.BasePath, relativePhotoPath);
+
+        return await _fileSystemReaderService.ReadAsync(photoPath);
     }
 
     private List<AppointmentTypeFilterValueDto> MapAppointemntTypeFilterValues(

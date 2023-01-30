@@ -1,4 +1,5 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.DeleteAppointment;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentAdd;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentDetail;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentEdit;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointments;
@@ -312,26 +313,21 @@ public partial class AppointmentsComponent : ComponentBase
         var selectedTimezoneOffset = await _userSettingsService
             .GetUtcOffsetInMinutesAsync();
 
-        var endOn = new DateTimeOffset(
-            args.End.ToUnspecifiedKind(),
-            TimeSpan.FromMinutes(selectedTimezoneOffset)
-        ).DateTime.ToUnspecifiedKind();
-
-        var startOn = new DateTimeOffset(
-            args.Start.ToUnspecifiedKind(),
-            TimeSpan.FromMinutes(selectedTimezoneOffset)
-        ).DateTime.ToUnspecifiedKind();
-
-        var newAppointment = new AppointmentItemVm
+        var request = new GetAppointmentAddRequest
         {
             ClientId = ClientId.Value,
             ClinicId = ClinicId.Value,
-            ClinicName = ClinicName,
-            EndOn = endOn,
-            PatientId = PatientId.Value,
-            PatientName = PatientName,
-            StartOn = startOn
+            PatientId = PatientId.Value
         };
+
+        var response = await _appointmentService.GetAppointmentAddAsync(request);
+
+        var newAppointment = AppointmentHelper.MapAddEditAppointmentViewModel(
+            response.Appointment,
+            args.End,
+            args.Start,
+            selectedTimezoneOffset
+        );
 
         var data = await ShowDialogToAddAsync(
             newAppointment,
@@ -342,7 +338,7 @@ public partial class AppointmentsComponent : ComponentBase
         if (data is null)
             return;
 
-        var appointment = data as AppointmentItemVm;
+        var appointment = data as AddEditAppointmentVm;
 
         await ShowAlertAsync(
             string.Format(StringLocalizer["Appointments_AddedAppointment_Alert_Message"], appointment.Title),
@@ -422,7 +418,7 @@ public partial class AppointmentsComponent : ComponentBase
         var responseEdit = await _appointmentService
             .GetAppointmentEditAsync(requestEdit);
 
-        var appointmentToEdit = AppointmentHelper.MapAppointmentItemViewModel(
+        var appointmentToEdit = AppointmentHelper.MapAddEditAppointmentViewModel(
             responseEdit.Appointment, timezoneOffset);
 
         var appointmentEditData = await ShowDialogToEditAsync(
@@ -437,7 +433,7 @@ public partial class AppointmentsComponent : ComponentBase
         if (appointmentEditData is null)
             return;
 
-        var editedAppointment = appointmentEditData as AppointmentItemVm;
+        var editedAppointment = appointmentEditData as AddEditAppointmentVm;
 
         await ShowAlertAsync(
             string.Format(StringLocalizer["Appointments_EditedAppointment_Alert_Message"], editedAppointment.Title),
@@ -452,7 +448,7 @@ public partial class AppointmentsComponent : ComponentBase
             StringLocalizerForAppointmentDetail["AppointmentDetail_Label_AppointmentDetail"],
             new Dictionary<string, object>
             {
-                { "Appointment", appointmentDetail }
+                { "Model", appointmentDetail }
             },
             new DialogOptions
             {
@@ -463,7 +459,7 @@ public partial class AppointmentsComponent : ComponentBase
     }
 
     private async Task<dynamic> ShowDialogToAddAsync(
-        AppointmentItemVm appointment,
+        AddEditAppointmentVm appointment,
         string timezoneName,
         int timezoneOffset)
     {
@@ -472,7 +468,7 @@ public partial class AppointmentsComponent : ComponentBase
             new Dictionary<string, object>
             {
                 { "IsAppointmentToAdd", true},
-                { "Appointment", appointment },
+                { "Model", appointment },
                 { "SelectedTimezoneName", timezoneName },
                 { "SelectedTimezoneOffset", timezoneOffset }
             },
@@ -485,7 +481,7 @@ public partial class AppointmentsComponent : ComponentBase
     }
 
     private async Task<dynamic> ShowDialogToEditAsync(
-        AppointmentItemVm appointment,
+        AddEditAppointmentVm appointment,
         List<AppointmentTypeFilterValueDto> appointmentTypeFilterValues,
         List<DoctorFilterValueDto> doctorFilterValues,
         List<RoomFilterValueDto> roomFilterValues,
@@ -497,7 +493,7 @@ public partial class AppointmentsComponent : ComponentBase
             new Dictionary<string, object>
             {
                 { "IsAppointmentToAdd", false },
-                { "Appointment", appointment },
+                { "Model", appointment },
                 { "SelectedTimezoneName", timezoneName },
                 { "SelectedTimezoneOffset", timezoneOffset },
                 { "PreselectedAppointmentTypeFilterValues", appointmentTypeFilterValues },

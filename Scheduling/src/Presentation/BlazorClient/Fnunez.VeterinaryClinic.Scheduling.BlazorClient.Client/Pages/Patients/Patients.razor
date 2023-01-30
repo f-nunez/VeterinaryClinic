@@ -2,11 +2,112 @@
 @layout Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.MainLayout
 @inherits Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Patients.PatientsComponent
 
+@using Models.Patients
 @using Radzen
 @using Radzen.Blazor
+@using ViewModels.Patients
 
-<RadzenContent Container="main">
-    <ChildContent>
-        <RadzenHeading Size="H1" style="display: inline-block" Text="Patients"></RadzenHeading>
-    </ChildContent>
-</RadzenContent>
+<RadzenHeading
+    Size="H1"
+    Text=@StringLocalizer["Patients_Title"]>
+</RadzenHeading>
+
+<RadzenCard>
+    <div class="row mb-3">
+        <div class="col-12">
+            <RadzenText
+                TagName="TagName.H3"
+                Text=@StringLocalizer["Patients_Client_DropDown_Label"]
+                TextStyle="TextStyle.Subtitle2">
+            </RadzenText>
+
+            <RadzenDropDownDataGrid
+                @bind-Value=@ClientId
+                AllowClear="true"
+                AllowSorting="true"
+                AllowVirtualization="true"
+                Change="@(args => OnChangeClientFilter(args))"
+                Class="w-100"
+                Count=@ClientFilterCount
+                Data=@ClientFilterValues
+                FilterDelay="500"
+                LoadData="@ClientFilterLoadData"
+                SearchText=@StringLocalizer["Patients_Client_DropDown_PlaceHolder"]
+                TextProperty="FullName"
+                TValue="int?"
+                ValueProperty="Id">
+                <Columns>
+                    <RadzenDropDownDataGridColumn
+                        Property="FullName"
+                        Sortable="true"
+                        SortOrder="SortOrder.Ascending"
+                        TextAlign="TextAlign.Left"
+                        Title=@StringLocalizer["Patients_Client_DropDown_HeadColumn_FullName"]>
+                    </RadzenDropDownDataGridColumn>
+
+                    <RadzenDropDownDataGridColumn
+                        Property="EmailAddress"
+                        Sortable="true"
+                        TextAlign="TextAlign.Left"
+                        Title=@StringLocalizer["Patients_Client_DropDown_HeadColumn_EmailAddress"]>
+                    </RadzenDropDownDataGridColumn>
+                </Columns>
+            </RadzenDropDownDataGrid>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <RadzenDataList @ref=@PatientsDataList
+                WrapItems="true"
+                AllowPaging="true"
+                Data="@Patients"
+                IsLoading=@IsLoading
+                PagerHorizontalAlign="HorizontalAlign.Center"
+                PageSize="6"
+                PageSizeOptions="@PageSizeOptions"
+                PageSizeText=@StringLocalizer["Patients_Grid_PageSizeText"]
+                PagingSummaryFormat=@StringLocalizer["Patients_Grid_PagingSummaryFormat"]
+                ShowPagingSummary="true"
+                TItem="PatientsVm">
+                <Template Context="patient">
+                    <RadzenCard>
+                        <div class="patient-card d-flex flex-row align-items-center">
+                            <RadzenImage
+                                Class="patient-card-image"
+                                Path=@($"data:image/png;base64, {patient.PhotoBase64Encoded}")>
+                            </RadzenImage>
+                            <div>
+                                <div class="patient-card-name">@patient.Name</div>
+                                <div class="patient-card-species">@patient.Species</div>
+                                <div class="patient-card-sex">
+                                    @switch (patient.Sex)
+                                    {
+                                        case AnimalSex.Female:
+                                            @(StringLocalizer["Patients_Grid_Column_Body_Female"])
+                                            break;
+                                        case AnimalSex.Male:
+                                            @(StringLocalizer["Patients_Grid_Column_Body_Male"])
+                                            break;
+                                        default:
+                                            throw new ArgumentException($"Not found {nameof(patient.Sex)} with value {patient.Sex}");
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="patient-card-breaker" />
+                        <div class="row justify-content-center">
+                            <RadzenButton
+                                ButtonStyle="ButtonStyle.Light"
+                                Click="@((args) => OnClickDetail(patient))"
+                                Icon="find_in_page"
+                                Size="ButtonSize.Medium"
+                                Variant="Variant.Flat">
+                            </RadzenButton>
+                        </div>
+                    </RadzenCard>
+                </Template>
+            </RadzenDataList>
+        </div>
+    </div>
+</RadzenCard>

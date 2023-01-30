@@ -1,0 +1,29 @@
+@inherits Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Doctors.DoctorDetailComponent
+
+<div class="row">
+    <div class="col-12">
+        <RadzenText
+            Class="rz-color-primary-light"
+            Text=@StringLocalizer["DoctorDetail_Label_FullName"]
+            TextStyle="TextStyle.Overline">
+        </RadzenText>
+
+        <RadzenText
+            TextStyle="TextStyle.Body1">
+            <b>@Model.FullName</b>
+        </RadzenText>
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col-12">
+        <RadzenButton
+            ButtonStyle="ButtonStyle.Primary"
+            ButtonType="ButtonType.Submit"
+            Class="w-100"
+            Click=@OnClickAccept
+            Variant="Variant.Text">
+            @StringLocalizer["DoctorDetail_Button_Accept"]
+        </RadzenButton>
+    </div>
+</div>

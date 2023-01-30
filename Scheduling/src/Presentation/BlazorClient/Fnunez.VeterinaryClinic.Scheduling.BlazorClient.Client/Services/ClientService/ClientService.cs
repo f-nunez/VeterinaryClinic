@@ -1,4 +1,5 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Client;
+using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Client.GetClientDetail;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Client.GetClients;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Client.GetClientsFilterEmailAddress;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Client.GetClientsFilterFullName;
@@ -150,5 +151,22 @@ public class ClientService : IClientService
             throw new ArgumentNullException(nameof(response));
 
         return response.ClientSalutations;
+    }
+
+    public async Task<GetClientDetailResponse> GetClientDetailAsync(
+        GetClientDetailRequest request)
+    {
+        _logger.LogInformation($"GetClientDetail: {request.CorrelationId}");
+
+        var response = await _httpService
+            .HttpPostAsync<GetClientDetailResponse>(
+                $"Client/GetClientDetail",
+                request
+            );
+
+        if (response is null)
+            throw new ArgumentNullException(nameof(response));
+
+        return response;
     }
 }

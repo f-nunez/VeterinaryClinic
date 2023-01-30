@@ -25,7 +25,8 @@ public class UserSettingsService : IUserSettingsService
         var userSettings = await _userSettingsComponentService
             .GetSettingsAsync();
 
-        var language = _languageComponentService.GetLanguage(userSettings.LanguageCultureCode);
+        var language = _languageComponentService
+            .GetLanguage(userSettings.LanguageCultureCode);
 
         return language.CultureCode;
     }

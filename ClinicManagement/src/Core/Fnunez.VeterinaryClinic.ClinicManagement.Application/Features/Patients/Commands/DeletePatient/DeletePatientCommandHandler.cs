@@ -1,5 +1,7 @@
+using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Commands.CreatePatient;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.SendIntegrationEvents.PatientDeleted;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.DeletePatient;
@@ -14,15 +16,18 @@ public class DeletePatientCommandHandler : IRequestHandler<DeletePatientCommand,
 {
     private readonly IClientStorageSetting _clientStorageSetting;
     private readonly IFileSystemDeleterService _fileSystemDeleterService;
+    private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
     public DeletePatientCommandHandler(
         IClientStorageSetting clientStorageSetting,
         IFileSystemDeleterService fileSystemDeleterService,
+        IMediator mediator,
         IUnitOfWork unitOfWork)
     {
         _clientStorageSetting = clientStorageSetting;
         _fileSystemDeleterService = fileSystemDeleterService;
+        _mediator = mediator;
         _unitOfWork = unitOfWork;
     }
 
@@ -50,7 +55,7 @@ public class DeletePatientCommandHandler : IRequestHandler<DeletePatientCommand,
         if (patientToDelete is null)
             throw new NotFoundException(
                 nameof(patientToDelete), request.PatientId);
-        
+
         DeletePhoto(patientToDelete);
 
         client.RemovePatient(patientToDelete);
@@ -60,6 +65,12 @@ public class DeletePatientCommandHandler : IRequestHandler<DeletePatientCommand,
             .UpdateAsync(client);
 
         await _unitOfWork.CommitAsync(cancellationToken);
+
+        await SendIntegrationEventAsync(
+            request.PatientId,
+            request.CorrelationId,
+            cancellationToken
+        );
 
         return response;
     }
@@ -73,5 +84,25 @@ public class DeletePatientCommandHandler : IRequestHandler<DeletePatientCommand,
             _clientStorageSetting.BasePath, relativePhotoPath);
 
         _fileSystemDeleterService.Delete(photoPath);
+    }
+
+    private async Task SendIntegrationEventAsync(
+        int patientId,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var message = new PatientDeletedIntegrationEventContract
+        {
+            CausationId = correlationId,
+            CorrelationId = correlationId,
+            Id = Guid.NewGuid(),
+            OccurredOn = DateTimeOffset.UtcNow,
+            PatientId = patientId
+        };
+
+        await _mediator.Publish(
+            new PatientDeletedSendIntegrationEvent(message),
+            cancellationToken
+        );
     }
 }
