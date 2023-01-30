@@ -1,0 +1,7 @@
+using Contracts;
+using MediatR;
+
+namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.AppointmentTypes.ReceiveIntegrationEvents.AppointmentTypeUpdated;
+
+public record AppointmentTypeUpdatedReceiveIntegrationEvent(AppointmentTypeUpdatedIntegrationEventContract AppointmentTypeUpdatedIntegrationEventContract)
+    : INotification;
