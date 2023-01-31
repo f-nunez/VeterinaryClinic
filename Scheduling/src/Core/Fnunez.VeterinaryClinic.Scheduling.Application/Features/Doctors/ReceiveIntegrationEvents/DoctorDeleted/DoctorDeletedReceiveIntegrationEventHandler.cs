@@ -22,7 +22,8 @@ public class DoctorDeletedReceiveIntegrationEventHandler
             .DoctorDeletedIntegrationEventContract;
 
         string sql = @$"
-        DELETE FROM [dbo].[Doctors]
+        UPDATE [dbo].[Doctors]
+        SET [IsActive] = 0
         WHERE Id = {contract.DoctorId}";
 
         var result = await _unitOfWork
