@@ -3,4 +3,5 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Commands.DeleteRoom;
 
-public record DeleteRoomCommand(DeleteRoomRequest DeleteRoomRequest) : IRequest<DeleteRoomResponse>;
+public record DeleteRoomCommand(DeleteRoomRequest DeleteRoomRequest)
+    : IRequest<DeleteRoomResponse>;
