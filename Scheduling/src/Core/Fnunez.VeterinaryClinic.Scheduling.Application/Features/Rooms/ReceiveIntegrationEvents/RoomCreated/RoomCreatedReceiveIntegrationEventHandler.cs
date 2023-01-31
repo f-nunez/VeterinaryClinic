@@ -25,9 +25,11 @@ public class RoomCreatedReceiveIntegrationEventHandler
         SET IDENTITY_INSERT [dbo].[Rooms] ON;
 
         INSERT [dbo].[Rooms] (
+            [IsActive],
             [Id],
             [Name]
         ) VALUES (
+            1,
             {contract.RoomId},
             N'{contract.RoomName}'
         );
