@@ -9,6 +9,7 @@ public class ClinicIdsSpecification : BaseSpecification<Clinic, string>
     {
         Query
             .AsNoTracking()
+            .Where(c => c.IsActive)
             .Where(c => c.Id.ToString().Contains(
                 idFilterValue.Trim().ToLower()))
             .Take(10);
