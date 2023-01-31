@@ -22,7 +22,8 @@ public class RoomDeletedReceiveIntegrationEventHandler
             .RoomDeletedIntegrationEventContract;
 
         string sql = @$"
-        DELETE FROM [dbo].[Rooms]
+        UPDATE [dbo].[Rooms]
+        SET [IsActive] = 0
         WHERE Id = {contract.RoomId}";
 
         var result = await _unitOfWork
