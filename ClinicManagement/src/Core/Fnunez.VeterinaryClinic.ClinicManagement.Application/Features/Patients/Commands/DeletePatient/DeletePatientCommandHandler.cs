@@ -12,7 +12,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Commands.DeletePatient;
 
-public class DeletePatientCommandHandler : IRequestHandler<DeletePatientCommand, DeletePatientResponse>
+public class DeletePatientCommandHandler
+    : IRequestHandler<DeletePatientCommand, DeletePatientResponse>
 {
     private readonly IClientStorageSetting _clientStorageSetting;
     private readonly IFileSystemDeleterService _fileSystemDeleterService;
@@ -38,7 +39,7 @@ public class DeletePatientCommandHandler : IRequestHandler<DeletePatientCommand,
         DeletePatientRequest request = command.DeletePatientRequest;
         var response = new DeletePatientResponse(request.CorrelationId);
 
-        var specification = new ClientByIdIncludePatientsSpecification(
+        var specification = new ClientByIdSpecification(
             request.ClientId);
 
         var client = await _unitOfWork
