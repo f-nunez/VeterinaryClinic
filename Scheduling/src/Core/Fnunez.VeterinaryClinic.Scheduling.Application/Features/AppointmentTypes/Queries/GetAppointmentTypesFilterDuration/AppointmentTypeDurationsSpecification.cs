@@ -10,6 +10,7 @@ public class AppointmentTypeDurationsSpecification
     {
         Query
             .AsNoTracking()
+            .Where(at => at.IsActive)
             .Where(at => at.Duration.ToString().Contains(durationFilterValue))
             .OrderBy(at => at.Duration)
             .Take(10);
