@@ -1,5 +1,6 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.SendIntegrationEvents.ClientDeleted;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.DeleteClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
@@ -30,9 +31,16 @@ public class DeleteClientCommandHandler : IRequestHandler<DeleteClientCommand, D
     {
         DeleteClientRequest request = command.DeleteClientRequest;
         var response = new DeleteClientResponse(request.CorrelationId);
-        var clientToDelete = _mapper.Map<Client>(request);
 
-        await _unitOfWork.Repository<Client>()
+        var clientToDelete = await _unitOfWork
+            .Repository<Client>()
+            .GetByIdAsync(request.Id, cancellationToken);
+
+        if (clientToDelete is null)
+            throw new NotFoundException(nameof(clientToDelete), request.Id);
+
+        await _unitOfWork
+            .Repository<Client>()
             .DeleteAsync(clientToDelete, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
