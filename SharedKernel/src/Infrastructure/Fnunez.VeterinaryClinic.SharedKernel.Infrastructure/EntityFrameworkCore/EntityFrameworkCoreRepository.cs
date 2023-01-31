@@ -1,3 +1,4 @@
+using System.Reflection;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +7,8 @@ namespace Fnunez.VeterinaryClinic.SharedKernel.Infrastructure.EntityFrameworkCor
 public abstract class EntityFrameworkCoreRepository<T>
     : EntityFrameworkCoreReadRepository<T>, IBaseRepository<T> where T : class
 {
+    private const string IsActive = "IsActive";
+
     public EntityFrameworkCoreRepository(DbContext dbContext)
         : base(dbContext)
     {
@@ -34,12 +37,35 @@ public abstract class EntityFrameworkCoreRepository<T>
         T entity,
         CancellationToken cancellationToken = default)
     {
-        _dbContext.Set<T>().Remove(entity);
+        TrySetProperty(entity, IsActive, false);
+
+        _dbContext.Set<T>().Update(entity);
         await Task.CompletedTask;
     }
 
     /// <inheritdoc/>
     public virtual async Task DeleteRangeAsync(
+        IEnumerable<T> entities,
+        CancellationToken cancellationToken = default)
+    {
+        foreach (var entity in entities)
+            TrySetProperty(entity, IsActive, false);
+
+        _dbContext.Set<T>().UpdateRange(entities);
+        await Task.CompletedTask;
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task HardDeleteAsync(
+        T entity,
+        CancellationToken cancellationToken = default)
+    {
+        _dbContext.Set<T>().Remove(entity);
+        await Task.CompletedTask;
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task HardDeleteRangeAsync(
         IEnumerable<T> entities,
         CancellationToken cancellationToken = default)
     {
@@ -63,5 +89,15 @@ public abstract class EntityFrameworkCoreRepository<T>
     {
         _dbContext.Set<T>().UpdateRange(entities);
         await Task.CompletedTask;
+    }
+
+    private void TrySetProperty(object obj, string property, object value)
+    {
+        var foundProperty = obj
+            .GetType()
+            .GetProperty(property, BindingFlags.Public | BindingFlags.Instance);
+
+        if (foundProperty != null && foundProperty.CanWrite)
+            foundProperty.SetValue(obj, value, null);
     }
 }
