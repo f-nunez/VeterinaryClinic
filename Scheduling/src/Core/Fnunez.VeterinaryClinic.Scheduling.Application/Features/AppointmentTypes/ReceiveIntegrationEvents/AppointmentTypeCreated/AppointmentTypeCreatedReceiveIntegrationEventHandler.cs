@@ -25,11 +25,13 @@ public class AppointmentTypeCreatedReceiveIntegrationEventHandler
         SET IDENTITY_INSERT [dbo].[AppointmentTypes] ON;
 
         INSERT [dbo].[AppointmentTypes] (
+            [IsActive],
             [Id],
             [Name],
             [Code],
             [Duration]
         ) VALUES (
+            1,
             {contract.AppointmentTypeId},
             N'{contract.AppointmentTypeName}',
             N'{contract.AppointmentTypeCode}',
