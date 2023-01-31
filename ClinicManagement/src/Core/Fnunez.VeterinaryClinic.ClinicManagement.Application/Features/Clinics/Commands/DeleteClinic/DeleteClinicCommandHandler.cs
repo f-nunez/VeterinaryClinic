@@ -9,7 +9,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.Commands.DeleteClinic;
 
-public class DeleteClinicCommandHandler : IRequestHandler<DeleteClinicCommand, DeleteClinicResponse>
+public class DeleteClinicCommandHandler
+    : IRequestHandler<DeleteClinicCommand, DeleteClinicResponse>
 {
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
