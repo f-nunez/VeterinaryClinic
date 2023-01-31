@@ -11,7 +11,9 @@ public class ClinicsSpecification : BaseSpecification<Clinic>
 {
     public ClinicsSpecification(GetClinicsRequest request)
     {
-        Query.AsNoTracking();
+        Query
+            .AsNoTracking()
+            .Where(c => c.IsActive);
 
         ApplyFilterAddress(request);
 
