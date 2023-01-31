@@ -1,6 +1,5 @@
 using AutoMapper;
 using Contracts;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Commands.CreatePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.SendIntegrationEvents.PatientUpdated;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Settings;
@@ -14,7 +13,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Commands.UpdatePatient;
 
-public class UpdatePatientCommandHandler : IRequestHandler<UpdatePatientCommand, UpdatePatientResponse>
+public class UpdatePatientCommandHandler
+    : IRequestHandler<UpdatePatientCommand, UpdatePatientResponse>
 {
     private readonly IClientStorageSetting _clientStorageSetting;
     private readonly IFileSystemDeleterService _fileSystemDeleterService;
@@ -43,9 +43,10 @@ public class UpdatePatientCommandHandler : IRequestHandler<UpdatePatientCommand,
     {
         UpdatePatientRequest request = command.UpdatePatientRequest;
         var response = new UpdatePatientResponse(request.CorrelationId);
-        var specification = new ClientByIdIncludePatientsSpecification(request.ClientId);
+        var specification = new ClientByIdSpecification(request.ClientId);
 
-        var client = await _unitOfWork.Repository<Client>()
+        var client = await _unitOfWork
+            .Repository<Client>()
             .FirstOrDefaultAsync(specification, cancellationToken);
 
         if (client is null)
