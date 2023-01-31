@@ -3,4 +3,5 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Queries.GetRoomById;
 
-public record GetRoomByIdQuery(GetRoomByIdRequest GetByIdRoomRequest) : IRequest<GetRoomByIdResponse>;
+public record GetRoomByIdQuery(GetRoomByIdRequest GetByIdRoomRequest)
+    : IRequest<GetRoomByIdResponse>;
