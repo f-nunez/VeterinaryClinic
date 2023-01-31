@@ -1,5 +1,6 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.SendIntegrationEvents.AppointmentTypeDeleted;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.DeleteAppointmentType;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.AppointmentTypeAggregate;
@@ -28,11 +29,22 @@ public class DeleteAppointmentTypeCommandHandler : IRequestHandler<DeleteAppoint
         DeleteAppointmentTypeCommand command,
         CancellationToken cancellationToken)
     {
-        DeleteAppointmentTypeRequest request = command.DeleteAppointmentTypeRequest;
-        var response = new DeleteAppointmentTypeResponse(request.CorrelationId);
-        var appointmentTypeToDelete = _mapper.Map<AppointmentType>(request);
+        DeleteAppointmentTypeRequest request = command
+            .DeleteAppointmentTypeRequest;
 
-        await _unitOfWork.Repository<AppointmentType>()
+        var response = new DeleteAppointmentTypeResponse(
+            request.CorrelationId);
+
+        var appointmentTypeToDelete = await _unitOfWork
+            .Repository<AppointmentType>()
+            .GetByIdAsync(request.Id, cancellationToken);
+
+        if (appointmentTypeToDelete is null)
+            throw new NotFoundException(
+                nameof(appointmentTypeToDelete), request.Id);
+
+        await _unitOfWork
+            .Repository<AppointmentType>()
             .DeleteAsync(appointmentTypeToDelete, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
