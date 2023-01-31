@@ -9,7 +9,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Commands.DeleteAppointmentType;
 
-public class DeleteAppointmentTypeCommandHandler : IRequestHandler<DeleteAppointmentTypeCommand, DeleteAppointmentTypeResponse>
+public class DeleteAppointmentTypeCommandHandler
+    : IRequestHandler<DeleteAppointmentTypeCommand, DeleteAppointmentTypeResponse>
 {
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
