@@ -6,6 +6,8 @@ public abstract class BaseEntity<TId> : IEntity
 {
     public TId? Id { get; set; }
 
+    public bool IsActive { get; set; } = true;
+
     private readonly List<BaseDomainEvent> _domainEvents = new();
 
     [NotMapped]
