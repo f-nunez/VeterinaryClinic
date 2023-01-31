@@ -13,7 +13,9 @@ public class AppointmentTypeFilterValuesSpecification
     public AppointmentTypeFilterValuesSpecification(
         GetAppointmentsFilterAppointmentTypeRequest request)
     {
-        Query.AsNoTracking();
+        Query
+            .AsNoTracking()
+            .Where(at => at.IsActive);
 
         ApplyFilterSearch(request);
 
