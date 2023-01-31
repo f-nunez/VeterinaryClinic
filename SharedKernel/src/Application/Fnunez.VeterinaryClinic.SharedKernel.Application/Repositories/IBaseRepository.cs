@@ -58,6 +58,17 @@ public interface IBaseRepository<T> where T : class
     Task HardDeleteAsync(T entity, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Removes the given entities in the database.
+    /// </summary>
+    /// <param name="entities">The entities to remove.</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken" /> to observe
+    /// while waiting for the task to complete.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    Task HardDeleteRangeAsync(
+        IEnumerable<T> entities,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Updates an entity in the database.
     /// </summary>
     /// <param name="entity">The entity to update.</param>
