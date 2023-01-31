@@ -33,7 +33,8 @@ public class UpdateAppointmentTypeCommandHandler : IRequestHandler<UpdateAppoint
         var response = new UpdateAppointmentTypeResponse(request.CorrelationId);
         var appointmentTypeToUpdate = _mapper.Map<AppointmentType>(request);
 
-        await _unitOfWork.Repository<AppointmentType>()
+        await _unitOfWork
+            .Repository<AppointmentType>()
             .UpdateAsync(appointmentTypeToUpdate, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
