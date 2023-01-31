@@ -11,7 +11,9 @@ public class RoomsSpecification : BaseSpecification<Room>
 {
     public RoomsSpecification(GetRoomsRequest request)
     {
-        Query.AsNoTracking();
+        Query
+            .AsNoTracking()
+            .Where(r => r.IsActive);
 
         ApplyFilterId(request);
 
