@@ -22,7 +22,8 @@ public class ClientDeletedReceiveIntegrationEventHandler
             .ClientDeletedIntegrationEventContract;
 
         string sql = @$"
-        DELETE FROM [dbo].[Clients]
+        UPDATE [dbo].[Clients]
+        SET [IsActive] = 0
         WHERE Id = {contract.ClientId}";
 
         var result = await _unitOfWork
