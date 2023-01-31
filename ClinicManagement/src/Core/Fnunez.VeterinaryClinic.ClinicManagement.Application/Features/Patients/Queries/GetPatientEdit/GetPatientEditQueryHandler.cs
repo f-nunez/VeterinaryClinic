@@ -11,7 +11,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Queries.GetPatientEdit;
 
-public class GetPatientEditQueryHandler : IRequestHandler<GetPatientEditQuery, GetPatientEditResponse>
+public class GetPatientEditQueryHandler
+    : IRequestHandler<GetPatientEditQuery, GetPatientEditResponse>
 {
     private readonly IClientStorageSetting _clientStorageSetting;
     private readonly IFileSystemReaderService _fileSystemReaderService;
