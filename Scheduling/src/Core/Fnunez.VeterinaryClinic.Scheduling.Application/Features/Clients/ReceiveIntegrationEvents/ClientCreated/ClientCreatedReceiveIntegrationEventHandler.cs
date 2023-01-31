@@ -29,6 +29,7 @@ public class ClientCreatedReceiveIntegrationEventHandler
         SET IDENTITY_INSERT [dbo].[Clients] ON;
 
         INSERT [dbo].[Clients] (
+            [IsActive],
             [Id],
             [FullName],
             [PreferredName],
@@ -36,6 +37,7 @@ public class ClientCreatedReceiveIntegrationEventHandler
             [EmailAddress],
             [PreferredDoctorId]
         ) VALUES (
+            1,
             {contract.ClientId},
             N'{contract.ClientFullName}',
             N'{contract.ClientPreferredName}',
