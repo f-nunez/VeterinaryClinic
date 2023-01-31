@@ -2,7 +2,8 @@ using FluentValidation;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.Queries.GetClinicsFilterName;
 
-public class GetClinicsFilterNameQueryValidator : AbstractValidator<GetClinicsFilterNameQuery>
+public class GetClinicsFilterNameQueryValidator
+    : AbstractValidator<GetClinicsFilterNameQuery>
 {
     public GetClinicsFilterNameQueryValidator()
     {
