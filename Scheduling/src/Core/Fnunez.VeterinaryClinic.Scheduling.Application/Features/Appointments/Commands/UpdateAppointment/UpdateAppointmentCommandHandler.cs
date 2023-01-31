@@ -96,7 +96,7 @@ public class UpdateAppointmentCommandHandler
     {
         var appointmentType = await _unitOfWork
             .Repository<AppointmentType>()
-            .GetByIdAsync(request.AppointmentTypeId);
+            .GetByIdAsync(request.AppointmentTypeId, cancellationToken);
 
         if (appointmentType is null)
             throw new NotFoundException(
