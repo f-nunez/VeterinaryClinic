@@ -13,6 +13,7 @@ public class ScheduledAppointmentSpecification : BaseSpecification<Appointment>
     {
         Query
             .AsNoTracking()
+            .Where(a => a.IsActive)
             .Where(a => a.Id != request.AppointmentId)
             .Where(a => a.ClientId == clientId)
             .Where(a => a.PatientId == patientId)
