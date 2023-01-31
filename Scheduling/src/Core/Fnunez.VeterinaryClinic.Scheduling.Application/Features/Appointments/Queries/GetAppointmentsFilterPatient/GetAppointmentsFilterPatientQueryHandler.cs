@@ -42,8 +42,11 @@ public class GetAppointmentsFilterPatientQueryHandler
         if (client.Patients is null)
             return response;
 
+        var patients = client.Patients
+            .Where(p => p.IsActive).ToList();
+
         var patientFilterValues = _mapper
-            .Map<List<PatientFilterValueDto>>(client.Patients);
+            .Map<List<PatientFilterValueDto>>(patients);
 
         response.PatientFilterValues = patientFilterValues
             .OrderBy(p => p.Name).ToList();
