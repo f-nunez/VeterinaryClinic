@@ -34,7 +34,8 @@ public class CreateRoomCommandHandler
         var response = new CreateRoomResponse(request.CorrelationId);
         var newRoom = _mapper.Map<Room>(request);
 
-        newRoom = await _unitOfWork.Repository<Room>()
+        newRoom = await _unitOfWork
+            .Repository<Room>()
             .AddAsync(newRoom, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
