@@ -10,6 +10,7 @@ public class AppointmentTypeNamesSpecification
     {
         Query
             .AsNoTracking()
+            .Where(at => at.IsActive)
             .Where(at => at.Name.Trim().ToLower().Contains(
                 nameFilterValue.Trim().ToLower()))
             .OrderBy(at => at.Name)
