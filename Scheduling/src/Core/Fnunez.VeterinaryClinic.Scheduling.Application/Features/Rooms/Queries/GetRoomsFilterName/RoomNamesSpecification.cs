@@ -9,6 +9,7 @@ public class RoomNamesSpecification : BaseSpecification<Room, string>
     {
         Query
             .AsNoTracking()
+            .Where(r => r.IsActive)
             .Where(r => r.Name.Trim().ToLower().Contains(
                 nameFilterValue.Trim().ToLower()))
             .OrderBy(r => r.Name)
