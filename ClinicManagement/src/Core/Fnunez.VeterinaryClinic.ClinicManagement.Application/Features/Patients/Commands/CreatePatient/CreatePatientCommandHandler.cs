@@ -12,7 +12,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Commands.CreatePatient;
 
-public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand, CreatePatientResponse>
+public class CreatePatientCommandHandler
+    : IRequestHandler<CreatePatientCommand, CreatePatientResponse>
 {
     private readonly IClientStorageSetting _clientStorageSetting;
     private readonly IFileSystemWriterService _fileSystemWriterService;
@@ -37,9 +38,10 @@ public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand,
     {
         CreatePatientRequest request = command.CreatePatientRequest;
         var response = new CreatePatientResponse(request.CorrelationId);
-        var specification = new ClientByIdIncludePatientsSpecification(request.ClientId);
+        var specification = new ClientByIdSpecification(request.ClientId);
 
-        var client = await _unitOfWork.Repository<Client>()
+        var client = await _unitOfWork
+            .Repository<Client>()
             .FirstOrDefaultAsync(specification, cancellationToken);
 
         if (client is null)
@@ -58,7 +60,8 @@ public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand,
 
         client.AddPatient(newPatient);
 
-        await _unitOfWork.Repository<Client>()
+        await _unitOfWork
+            .Repository<Client>()
             .UpdateAsync(client, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);

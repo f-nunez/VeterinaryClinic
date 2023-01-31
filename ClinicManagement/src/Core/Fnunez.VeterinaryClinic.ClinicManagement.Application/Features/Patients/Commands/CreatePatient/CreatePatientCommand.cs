@@ -3,4 +3,5 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Commands.CreatePatient;
 
-public record CreatePatientCommand(CreatePatientRequest CreatePatientRequest) : IRequest<CreatePatientResponse>;
+public record CreatePatientCommand(CreatePatientRequest CreatePatientRequest)
+    : IRequest<CreatePatientResponse>;
