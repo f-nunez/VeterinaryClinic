@@ -7,7 +7,12 @@ public class ClientByIdSpecification : BaseSpecification<Client>
 {
     public ClientByIdSpecification(int clientId)
     {
-        Query.Where(client => client.Id == clientId);
-        Query.Include(client => client.Patients);
+        Query
+            .AsNoTracking()
+            .Where(c => c.IsActive)
+            .Where(c => c.Id == clientId);
+
+        Query
+            .Include(c => c.Patients);
     }
 }
