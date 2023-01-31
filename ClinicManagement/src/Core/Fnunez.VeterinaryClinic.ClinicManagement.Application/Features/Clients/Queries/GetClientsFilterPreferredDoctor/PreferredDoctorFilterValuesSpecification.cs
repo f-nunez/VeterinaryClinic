@@ -13,7 +13,9 @@ public class PreferredDoctorFilterValuesSpecification
     public PreferredDoctorFilterValuesSpecification(
         GetClientsFilterPreferredDoctorRequest request)
     {
-        Query.AsNoTracking();
+        Query
+            .AsNoTracking()
+            .Where(c => c.IsActive);
 
         ApplyFilterSearch(request);
 
