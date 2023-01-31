@@ -29,6 +29,7 @@ public class PatientCreatedReceiveIntegrationEventHandler
         SET IDENTITY_INSERT [dbo].[Patients] ON;
         
         INSERT [dbo].[Patients] (
+            [IsActive],
             [Id],
             [ClientId],
             [Name],
@@ -39,6 +40,7 @@ public class PatientCreatedReceiveIntegrationEventHandler
             [Photo_StoredName],
             [PreferredDoctorId]
         ) VALUES (
+            1,
             {contract.PatientId},
             {contract.PatientClientId},
             N'{contract.PatientName}',

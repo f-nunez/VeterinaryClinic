@@ -9,6 +9,7 @@ public class DoctorFullNamesSpecification : BaseSpecification<Doctor, string>
     {
         Query
             .AsNoTracking()
+            .Where(d => d.IsActive)
             .Where(d => d.FullName.Trim().ToLower().Contains(
                 fullNameFilterValue.Trim().ToLower()))
             .OrderBy(d => d.FullName)

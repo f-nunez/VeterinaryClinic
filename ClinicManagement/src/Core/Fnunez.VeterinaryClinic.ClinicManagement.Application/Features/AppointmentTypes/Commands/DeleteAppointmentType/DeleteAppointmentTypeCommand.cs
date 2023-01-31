@@ -3,4 +3,5 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Commands.DeleteAppointmentType;
 
-public record DeleteAppointmentTypeCommand(DeleteAppointmentTypeRequest DeleteAppointmentTypeRequest) : IRequest<DeleteAppointmentTypeResponse>;
+public record DeleteAppointmentTypeCommand(DeleteAppointmentTypeRequest DeleteAppointmentTypeRequest)
+    : IRequest<DeleteAppointmentTypeResponse>;

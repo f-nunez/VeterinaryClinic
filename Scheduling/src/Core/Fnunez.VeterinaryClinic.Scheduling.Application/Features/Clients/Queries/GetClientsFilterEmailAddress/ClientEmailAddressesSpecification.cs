@@ -10,6 +10,7 @@ public class ClientEmailAddressesSpecification
     {
         Query
             .AsNoTracking()
+            .Where(c => c.IsActive)
             .Where(c => c.EmailAddress.Trim().ToLower().Contains(
                 emailAddressFilterValue.Trim().ToLower()))
             .OrderBy(c => c.EmailAddress)

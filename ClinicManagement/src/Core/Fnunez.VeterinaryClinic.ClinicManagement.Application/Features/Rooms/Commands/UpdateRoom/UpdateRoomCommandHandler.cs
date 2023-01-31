@@ -9,7 +9,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Commands.UpdateRoom;
 
-public class UpdateRoomCommandHandler : IRequestHandler<UpdateRoomCommand, UpdateRoomResponse>
+public class UpdateRoomCommandHandler
+    : IRequestHandler<UpdateRoomCommand, UpdateRoomResponse>
 {
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
@@ -33,7 +34,8 @@ public class UpdateRoomCommandHandler : IRequestHandler<UpdateRoomCommand, Updat
         var response = new UpdateRoomResponse(request.CorrelationId);
         var roomToUpdate = _mapper.Map<Room>(request);
 
-        await _unitOfWork.Repository<Room>()
+        await _unitOfWork
+            .Repository<Room>()
             .UpdateAsync(roomToUpdate, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);

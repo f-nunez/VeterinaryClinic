@@ -9,6 +9,7 @@ public class ClientFullNamesSpecification : BaseSpecification<Client, string>
     {
         Query
             .AsNoTracking()
+            .Where(c => c.IsActive)
             .Where(c => c.FullName.Trim().ToLower().Contains(
                 fullNameFilterValue.Trim().ToString()))
             .OrderBy(c => c.FullName)

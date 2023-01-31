@@ -9,7 +9,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.Commands.UpdateClinic;
 
-public class UpdateClinicCommandHandler : IRequestHandler<UpdateClinicCommand, UpdateClinicResponse>
+public class UpdateClinicCommandHandler
+    : IRequestHandler<UpdateClinicCommand, UpdateClinicResponse>
 {
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;

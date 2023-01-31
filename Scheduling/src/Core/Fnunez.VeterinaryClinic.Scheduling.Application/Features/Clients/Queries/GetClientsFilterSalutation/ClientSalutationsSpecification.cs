@@ -9,6 +9,7 @@ public class ClientSalutationsSpecification : BaseSpecification<Client, string>
     {
         Query
             .AsNoTracking()
+            .Where(c => c.IsActive)
             .Where(c => c.Salutation.Trim().ToLower().Contains(
                 salutationFilterValue.Trim().ToLower()))
             .OrderBy(c => c.Salutation)

@@ -8,7 +8,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.Queries.GetDoctorById;
 
-public class GetDoctorByIdQueryHandler : IRequestHandler<GetDoctorByIdQuery, GetDoctorByIdResponse>
+public class GetDoctorByIdQueryHandler
+    : IRequestHandler<GetDoctorByIdQuery, GetDoctorByIdResponse>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;

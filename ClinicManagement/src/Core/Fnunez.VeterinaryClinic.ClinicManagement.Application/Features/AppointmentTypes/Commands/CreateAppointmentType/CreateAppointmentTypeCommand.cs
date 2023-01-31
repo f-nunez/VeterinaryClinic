@@ -3,4 +3,5 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Commands.CreateAppointmentType;
 
-public record CreateAppointmentTypeCommand(CreateAppointmentTypeRequest CreateAppointmentTypeRequest) : IRequest<CreateAppointmentTypeResponse>;
+public record CreateAppointmentTypeCommand(CreateAppointmentTypeRequest CreateAppointmentTypeRequest)
+    : IRequest<CreateAppointmentTypeResponse>;

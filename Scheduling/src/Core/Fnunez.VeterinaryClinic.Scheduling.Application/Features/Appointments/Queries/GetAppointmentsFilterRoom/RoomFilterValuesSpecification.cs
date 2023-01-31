@@ -13,7 +13,9 @@ public class RoomFilterValuesSpecification
     public RoomFilterValuesSpecification(
         GetAppointmentsFilterRoomRequest request)
     {
-        Query.AsNoTracking();
+        Query
+            .AsNoTracking()
+            .Where(r => r.IsActive);
 
         ApplyFilterSearch(request);
 

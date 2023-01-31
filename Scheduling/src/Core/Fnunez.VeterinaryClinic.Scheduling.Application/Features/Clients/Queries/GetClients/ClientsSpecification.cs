@@ -11,7 +11,9 @@ public class ClientsSpecification : BaseSpecification<Client>
 {
     public ClientsSpecification(GetClientsRequest request)
     {
-        Query.AsNoTracking();
+        Query
+            .AsNoTracking()
+            .Where(c => c.IsActive);
 
         ApplyFilterEmailAddress(request);
 

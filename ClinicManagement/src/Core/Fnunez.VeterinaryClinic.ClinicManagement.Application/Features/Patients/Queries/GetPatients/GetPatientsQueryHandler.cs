@@ -10,7 +10,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Queries.GetPatients;
 
-public class GetPatientsQueryHandler : IRequestHandler<GetPatientsQuery, GetPatientsResponse>
+public class GetPatientsQueryHandler
+    : IRequestHandler<GetPatientsQuery, GetPatientsResponse>
 {
     private readonly IClientStorageSetting _clientStorageSetting;
     private readonly IFileSystemReaderService _fileSystemReaderService;
@@ -60,7 +61,7 @@ public class GetPatientsQueryHandler : IRequestHandler<GetPatientsQuery, GetPati
     {
         var patientsDtos = new List<PatientsDto>();
 
-        foreach (Patient patient in patients)
+        foreach (Patient patient in patients.Where(p => p.IsActive))
         {
             string relativePhotoPath = Path.Combine(
                 patient.ClientId.ToString(), patient.Photo.StoredName);

@@ -8,7 +8,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Queries.GetRoomById;
 
-public class GetRoomByIdQueryHandler : IRequestHandler<GetRoomByIdQuery, GetRoomByIdResponse>
+public class GetRoomByIdQueryHandler
+    : IRequestHandler<GetRoomByIdQuery, GetRoomByIdResponse>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;

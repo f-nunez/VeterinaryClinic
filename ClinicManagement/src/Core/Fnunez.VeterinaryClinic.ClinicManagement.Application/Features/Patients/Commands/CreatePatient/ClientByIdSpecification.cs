@@ -3,11 +3,12 @@ using Fnunez.VeterinaryClinic.SharedKernel.Application.Specifications;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Commands.CreatePatient;
 
-public class ClientByIdIncludePatientsSpecification : BaseSpecification<Client>
+public class ClientByIdSpecification : BaseSpecification<Client>
 {
-    public ClientByIdIncludePatientsSpecification(int clientId)
+    public ClientByIdSpecification(int clientId)
     {
-        Query.Where(client => client.Id == clientId);
-        Query.Include(client => client.Patients);
+        Query
+            .Include(c => c.Patients)
+            .Where(c => c.Id == clientId);
     }
 }

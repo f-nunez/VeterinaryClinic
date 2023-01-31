@@ -13,7 +13,9 @@ public class DoctorFilterValuesSpecification
     public DoctorFilterValuesSpecification(
         GetAppointmentsFilterDoctorRequest request)
     {
-        Query.AsNoTracking();
+        Query
+            .AsNoTracking()
+            .Where(d => d.IsActive);
 
         ApplyFilterSearch(request);
 

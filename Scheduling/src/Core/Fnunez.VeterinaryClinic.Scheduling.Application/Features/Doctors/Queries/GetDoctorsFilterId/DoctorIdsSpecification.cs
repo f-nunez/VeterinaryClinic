@@ -9,6 +9,7 @@ public class DoctorIdsSpecification : BaseSpecification<Doctor, string>
     {
         Query
             .AsNoTracking()
+            .Where(d => d.IsActive)
             .Where(d => d.Id.ToString().Contains(idFilterValue.Trim()))
             .OrderBy(d => d.Id)
             .Take(10);

@@ -25,11 +25,13 @@ public class ClinicCreatedReceiveIntegrationEventHandler
         SET IDENTITY_INSERT [dbo].[Clinics] ON;
 
         INSERT [dbo].[Clinics] (
+            [IsActive],
             [Id],
             [Address],
             [EmailAddress],
             [Name])
         VALUES (
+            1,
             {contract.ClinicId},
             N'{contract.ClinicAddress}',
             N'{contract.ClinicEmailAddress}',

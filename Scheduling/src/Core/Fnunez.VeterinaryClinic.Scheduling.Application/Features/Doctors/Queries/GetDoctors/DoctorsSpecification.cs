@@ -11,7 +11,9 @@ public class DoctorsSpecification : BaseSpecification<Doctor>
 {
     public DoctorsSpecification(GetDoctorsRequest request)
     {
-        Query.AsNoTracking();
+        Query
+            .AsNoTracking()
+            .Where(d => d.IsActive);
 
         ApplyFilterFullName(request);
 

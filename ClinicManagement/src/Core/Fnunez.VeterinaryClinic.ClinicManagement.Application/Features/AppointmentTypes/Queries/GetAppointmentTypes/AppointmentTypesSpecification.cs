@@ -11,7 +11,9 @@ public class AppointmentTypesSpecification : BaseSpecification<AppointmentType>
 {
     public AppointmentTypesSpecification(GetAppointmentTypesRequest request)
     {
-        Query.AsNoTracking();
+        Query
+            .AsNoTracking()
+            .Where(at => at.IsActive);
 
         ApplyFilterCode(request);
 

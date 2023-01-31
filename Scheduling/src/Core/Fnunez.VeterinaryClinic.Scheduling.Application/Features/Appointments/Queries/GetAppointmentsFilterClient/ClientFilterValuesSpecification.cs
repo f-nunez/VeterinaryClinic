@@ -13,7 +13,9 @@ public class ClientFilterValuesSpecification
     public ClientFilterValuesSpecification(
         GetAppointmentsFilterClientRequest request)
     {
-        Query.AsNoTracking();
+        Query
+            .AsNoTracking()
+            .Where(c => c.IsActive);
 
         ApplyFilterSearch(request);
 

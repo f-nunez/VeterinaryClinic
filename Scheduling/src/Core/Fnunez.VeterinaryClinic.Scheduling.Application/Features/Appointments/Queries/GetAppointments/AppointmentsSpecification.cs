@@ -10,6 +10,7 @@ public class AppointmentsSpecification : BaseSpecification<Appointment>
     {
         Query
             .AsNoTracking()
+            .Where(a => a.IsActive)
             .Include(a => a.AppointmentType)
             .Include(a => a.Client)
             .Include(a => a.Clinic)

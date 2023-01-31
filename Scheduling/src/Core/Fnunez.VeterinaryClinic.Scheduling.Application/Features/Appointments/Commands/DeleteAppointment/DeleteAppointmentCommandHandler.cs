@@ -34,10 +34,8 @@ public class DeleteAppointmentCommandHandler
 
         if (appointmentToDelete is null)
             throw new NotFoundException(
-                nameof(appointmentToDelete),
-                request.AppointmentId
-            );
-        
+                nameof(appointmentToDelete), request.AppointmentId);
+
         await _unitOfWork
             .Repository<Appointment>()
             .DeleteAsync(appointmentToDelete, cancellationToken);

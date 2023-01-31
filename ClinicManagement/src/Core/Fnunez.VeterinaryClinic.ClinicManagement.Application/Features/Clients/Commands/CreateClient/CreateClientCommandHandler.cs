@@ -9,7 +9,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Commands.CreateClient;
 
-public class CreateClientCommandHandler : IRequestHandler<CreateClientCommand, CreateClientResponse>
+public class CreateClientCommandHandler
+    : IRequestHandler<CreateClientCommand, CreateClientResponse>
 {
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
@@ -33,7 +34,8 @@ public class CreateClientCommandHandler : IRequestHandler<CreateClientCommand, C
         var response = new CreateClientResponse(request.CorrelationId);
         var newClient = _mapper.Map<Client>(request);
 
-        newClient = await _unitOfWork.Repository<Client>()
+        newClient = await _unitOfWork
+            .Repository<Client>()
             .AddAsync(newClient, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);

@@ -123,7 +123,13 @@ public class Client : BaseEntity<int>, IAggregateRoot
         if (patient is null)
             throw new ArgumentNullException(nameof(patient));
 
-        _patients.Remove(patient);
+        Patient? foundPatient = _patients
+            .FirstOrDefault(p => p.Id == patient.Id);
+
+        if (foundPatient is null)
+            throw new ArgumentNullException(nameof(patient));
+
+        foundPatient.IsActive = false;
     }
 
     public override string ToString()

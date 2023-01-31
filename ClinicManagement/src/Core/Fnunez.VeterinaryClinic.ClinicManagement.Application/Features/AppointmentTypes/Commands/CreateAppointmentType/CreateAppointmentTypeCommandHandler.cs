@@ -9,7 +9,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Commands.CreateAppointmentType;
 
-public class CreateAppointmentTypeCommandHandler : IRequestHandler<CreateAppointmentTypeCommand, CreateAppointmentTypeResponse>
+public class CreateAppointmentTypeCommandHandler
+    : IRequestHandler<CreateAppointmentTypeCommand, CreateAppointmentTypeResponse>
 {
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
@@ -29,8 +30,12 @@ public class CreateAppointmentTypeCommandHandler : IRequestHandler<CreateAppoint
         CreateAppointmentTypeCommand command,
         CancellationToken cancellationToken)
     {
-        CreateAppointmentTypeRequest request = command.CreateAppointmentTypeRequest;
-        var response = new CreateAppointmentTypeResponse(request.CorrelationId);
+        CreateAppointmentTypeRequest request = command
+            .CreateAppointmentTypeRequest;
+
+        var response = new CreateAppointmentTypeResponse(
+            request.CorrelationId);
+
         var newAppointemntType = _mapper.Map<AppointmentType>(request);
 
         newAppointemntType = await _unitOfWork

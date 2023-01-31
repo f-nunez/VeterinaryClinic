@@ -1,5 +1,6 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.SendIntegrationEvents.DoctorDeleted;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.DeleteDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.DoctorAggregate;
@@ -8,7 +9,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.Commands.DeleteDoctor;
 
-public class DeleteDoctorCommandHandler : IRequestHandler<DeleteDoctorCommand, DeleteDoctorResponse>
+public class DeleteDoctorCommandHandler
+    : IRequestHandler<DeleteDoctorCommand, DeleteDoctorResponse>
 {
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
@@ -30,9 +32,16 @@ public class DeleteDoctorCommandHandler : IRequestHandler<DeleteDoctorCommand, D
     {
         DeleteDoctorRequest request = command.DeleteDoctorRequest;
         var response = new DeleteDoctorResponse(request.CorrelationId);
-        var doctorToDelete = _mapper.Map<Doctor>(request);
 
-        await _unitOfWork.Repository<Doctor>()
+        var doctorToDelete = await _unitOfWork
+            .Repository<Doctor>()
+            .GetByIdAsync(request.Id, cancellationToken);
+
+        if (doctorToDelete is null)
+            throw new NotFoundException(nameof(doctorToDelete), request.Id);
+
+        await _unitOfWork
+            .Repository<Doctor>()
             .DeleteAsync(doctorToDelete, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);

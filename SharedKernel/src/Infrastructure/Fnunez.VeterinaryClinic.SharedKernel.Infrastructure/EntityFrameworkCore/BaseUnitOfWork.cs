@@ -17,6 +17,7 @@ public abstract class BaseUnitOfWork : IUnitOfWork
         _repositories = new Dictionary<Type, object>();
     }
 
+    /// <inheritdoc/>
     public async Task<int> CommitAsync(
         CancellationToken cancellationToken = default)
     {
@@ -86,6 +87,7 @@ public abstract class BaseUnitOfWork : IUnitOfWork
             sql, parameters, cancellationToken);
     }
 
+    /// <inheritdoc/>
     IReadRepository<T> IUnitOfWork.ReadRepository<T>()
     {
         Type entityType = typeof(T);
@@ -95,6 +97,7 @@ public abstract class BaseUnitOfWork : IUnitOfWork
         return (IReadRepository<T>)_readRepositories[entityType];
     }
 
+    /// <inheritdoc/>
     IRepository<T> IUnitOfWork.Repository<T>()
     {
         Type entityType = typeof(T);
@@ -104,6 +107,7 @@ public abstract class BaseUnitOfWork : IUnitOfWork
         return (IRepository<T>)_repositories[entityType];
     }
 
+    /// <inheritdoc/>
     public async Task RollbackAsync()
     {
         _dbContext.ChangeTracker.Entries().ToList().ForEach(x => x.Reload());

@@ -9,6 +9,7 @@ public class ClientByIdIncludePatientsSpecification : BaseSpecification<Client>
     {
         Query
             .AsNoTracking()
+            .Where(c => c.IsActive)
             .Where(c => c.Id == clientId)
             .Include(c => c.Patients);
     }

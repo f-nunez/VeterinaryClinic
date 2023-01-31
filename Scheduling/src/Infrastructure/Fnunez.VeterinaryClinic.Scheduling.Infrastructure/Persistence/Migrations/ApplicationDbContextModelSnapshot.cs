@@ -47,6 +47,9 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Migratio
                     b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
 
@@ -91,6 +94,9 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Migratio
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -119,6 +125,9 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Migratio
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("PreferredDoctorId")
                         .HasColumnType("int");
 
@@ -133,6 +142,8 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Migratio
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PreferredDoctorId");
 
                     b.ToTable("Clients");
                 });
@@ -150,6 +161,9 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Migratio
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -184,6 +198,9 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Migratio
                         .HasMaxLength(320)
                         .HasColumnType("nvarchar(320)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -207,6 +224,9 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Migratio
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Doctors");
@@ -219,6 +239,9 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Migratio
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -303,6 +326,15 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Migratio
                     b.Navigation("Patient");
 
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClientAggregate.Client", b =>
+                {
+                    b.HasOne("Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.DoctorAggregate.Doctor", "PreferredDoctor")
+                        .WithMany()
+                        .HasForeignKey("PreferredDoctorId");
+
+                    b.Navigation("PreferredDoctor");
                 });
 
             modelBuilder.Entity("Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClientAggregate.Entities.Patient", b =>

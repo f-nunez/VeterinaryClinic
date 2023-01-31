@@ -13,7 +13,9 @@ public class ClinicFilterValuesSpecification
     public ClinicFilterValuesSpecification(
         GetAppointmentsFilterClinicRequest request)
     {
-        Query.AsNoTracking();
+        Query
+            .AsNoTracking()
+            .Where(c => c.IsActive);
 
         ApplyFilterSearch(request);
 

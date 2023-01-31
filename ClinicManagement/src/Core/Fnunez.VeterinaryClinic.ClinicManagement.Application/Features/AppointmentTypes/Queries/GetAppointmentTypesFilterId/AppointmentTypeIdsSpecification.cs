@@ -10,6 +10,7 @@ public class AppointmentTypeIdsSpecification
     {
         Query
             .AsNoTracking()
+            .Where(at => at.IsActive)
             .Where(at => at.Id.ToString().Contains(idFilterValue))
             .OrderBy(at => at.Id)
             .Take(10);

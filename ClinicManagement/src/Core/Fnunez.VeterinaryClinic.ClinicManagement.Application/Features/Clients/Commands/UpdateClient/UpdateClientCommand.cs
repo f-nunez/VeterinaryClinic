@@ -3,4 +3,5 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Commands.UpdateClient;
 
-public record UpdateClientCommand(UpdateClientRequest UpdateClientRequest) : IRequest<UpdateClientResponse>;
+public record UpdateClientCommand(UpdateClientRequest UpdateClientRequest)
+    : IRequest<UpdateClientResponse>;

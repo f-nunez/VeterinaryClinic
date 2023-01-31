@@ -2,7 +2,8 @@ using FluentValidation;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Commands.UpdateClient;
 
-public class UpdateClientCommandValidator : AbstractValidator<UpdateClientCommand>
+public class UpdateClientCommandValidator
+    : AbstractValidator<UpdateClientCommand>
 {
     public UpdateClientCommandValidator()
     {

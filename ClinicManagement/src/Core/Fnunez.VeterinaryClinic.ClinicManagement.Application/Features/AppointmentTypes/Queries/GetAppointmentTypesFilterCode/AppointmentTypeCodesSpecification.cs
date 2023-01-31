@@ -10,6 +10,7 @@ public class AppointmentTypeCodesSpecification
     {
         Query
             .AsNoTracking()
+            .Where(at => at.IsActive)
             .Where(at => at.Code.Trim().ToLower().Contains(
                 codeFilterValue.Trim().ToLower()))
             .OrderBy(at => at.Code)

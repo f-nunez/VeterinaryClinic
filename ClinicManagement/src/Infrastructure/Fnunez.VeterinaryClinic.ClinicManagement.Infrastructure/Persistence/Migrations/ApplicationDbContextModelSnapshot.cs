@@ -17,7 +17,7 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0")
+                .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -37,6 +37,9 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
 
                     b.Property<int>("Duration")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -65,6 +68,9 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("PreferredDoctorId")
                         .HasColumnType("int");
@@ -100,6 +106,9 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -133,6 +142,9 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
                         .HasMaxLength(320)
                         .HasColumnType("nvarchar(320)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -156,6 +168,9 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Doctors");
@@ -168,6 +183,9 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()

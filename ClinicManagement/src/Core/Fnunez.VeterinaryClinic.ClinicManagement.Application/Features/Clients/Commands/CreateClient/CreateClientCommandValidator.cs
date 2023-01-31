@@ -2,7 +2,8 @@ using FluentValidation;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Commands.CreateClient;
 
-public class CreateClientCommandValidator : AbstractValidator<CreateClientCommand>
+public class CreateClientCommandValidator
+    : AbstractValidator<CreateClientCommand>
 {
     public CreateClientCommandValidator()
     {

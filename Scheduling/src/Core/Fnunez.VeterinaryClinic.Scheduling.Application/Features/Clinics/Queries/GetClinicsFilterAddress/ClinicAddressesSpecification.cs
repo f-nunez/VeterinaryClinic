@@ -9,6 +9,7 @@ public class ClinicAddressesSpecification : BaseSpecification<Clinic, string>
     {
         Query
             .AsNoTracking()
+            .Where(c => c.IsActive)
             .Where(c => c.Address.Trim().ToLower().Contains(
                 addressFilterValue.Trim().ToLower()))
             .Take(10);

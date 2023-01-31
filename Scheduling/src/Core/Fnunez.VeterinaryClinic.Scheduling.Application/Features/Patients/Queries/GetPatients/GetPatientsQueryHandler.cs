@@ -49,9 +49,9 @@ public class GetPatientsQueryHandler
         if (client.Patients is null)
             return response;
 
-        response.Count = response.Patients.Count;
+        var patients = client.Patients.Where(p => p.IsActive).ToList();
 
-        response.Patients = await MapPatientsDtos(client.Patients);
+        response.Patients = await MapPatientsDtos(patients);
 
         response.Count = response.Patients.Count;
 

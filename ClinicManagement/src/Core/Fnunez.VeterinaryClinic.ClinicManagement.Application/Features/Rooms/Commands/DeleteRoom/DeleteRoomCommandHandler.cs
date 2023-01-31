@@ -1,5 +1,6 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.SendIntegrationEvents.RoomDeleted;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.DeleteRoom;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.RoomAggregate;
@@ -31,9 +32,16 @@ public class DeleteRoomCommandHandler
     {
         DeleteRoomRequest request = command.DeleteRoomRequest;
         var response = new DeleteRoomResponse(request.CorrelationId);
-        var roomToDelete = _mapper.Map<Room>(request);
 
-        await _unitOfWork.Repository<Room>()
+        var roomToDelete = await _unitOfWork
+            .Repository<Room>()
+            .GetByIdAsync(request.Id, cancellationToken);
+
+        if (roomToDelete is null)
+            throw new NotFoundException(nameof(roomToDelete), request.Id);
+
+        await _unitOfWork
+            .Repository<Room>()
             .DeleteAsync(roomToDelete, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);

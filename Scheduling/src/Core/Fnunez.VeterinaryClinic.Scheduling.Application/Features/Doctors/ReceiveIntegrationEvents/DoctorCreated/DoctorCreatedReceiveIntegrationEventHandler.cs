@@ -25,9 +25,11 @@ public class DoctorCreatedReceiveIntegrationEventHandler
         SET IDENTITY_INSERT [dbo].[Doctors] ON;
 
         INSERT [dbo].[Doctors] (
+            [IsActive],
             [Id],
             [FullName]
         ) VALUES (
+            1,
             {contract.DoctorId},
             N'{contract.DoctorFullName}'
         );

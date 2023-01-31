@@ -22,7 +22,8 @@ public class AppointmentTypeDeletedReceiveIntegrationEventHandler
             .AppointmentTypeDeletedIntegrationEventContract;
 
         string sql = @$"
-        DELETE FROM [dbo].[AppointmentTypes]
+        UPDATE [dbo].[AppointmentTypes]
+        SET [IsActive] = 0
         WHERE Id = {contract.AppointmentTypeId}";
 
         var result = await _unitOfWork

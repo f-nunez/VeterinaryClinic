@@ -1,6 +1,5 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Commands.CreatePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.GetPatientById;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
@@ -9,7 +8,8 @@ using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Queries.GetPatientById;
 
-public class GetPatientByIdQueryHandler : IRequestHandler<GetPatientByIdQuery, GetPatientByIdResponse>
+public class GetPatientByIdQueryHandler
+    : IRequestHandler<GetPatientByIdQuery, GetPatientByIdResponse>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
@@ -26,7 +26,7 @@ public class GetPatientByIdQueryHandler : IRequestHandler<GetPatientByIdQuery, G
     {
         GetPatientByIdRequest request = query.GetPatientByIdRequest;
         var response = new GetPatientByIdResponse(request.CorrelationId);
-        var specification = new ClientByIdIncludePatientsSpecification(request.ClientId);
+        var specification = new ClientByIdSpecification(request.ClientId);
 
         var client = await _unitOfWork.ReadRepository<Client>()
             .FirstOrDefaultAsync(specification, cancellationToken);
