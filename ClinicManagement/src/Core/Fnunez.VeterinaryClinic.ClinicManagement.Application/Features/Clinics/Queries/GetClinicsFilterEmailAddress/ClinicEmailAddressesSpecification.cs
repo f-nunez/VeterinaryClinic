@@ -10,6 +10,7 @@ public class ClinicEmailAddressesSpecification
     {
         Query
             .AsNoTracking()
+            .Where(c => c.IsActive)
             .Where(c => c.EmailAddress.Trim().ToLower().Contains(
                 emailAddressFilterValue.Trim().ToLower()))
             .Take(10);
