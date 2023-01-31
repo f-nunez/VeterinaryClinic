@@ -9,6 +9,7 @@ public class ClientPreferredNamesSpecification : BaseSpecification<Client, strin
     {
         Query
             .AsNoTracking()
+            .Where(c => c.IsActive)
             .Where(c => c.PreferredName.Trim().ToLower().Contains(
                 preferredNameFilterValue.Trim().ToLower()))
             .OrderBy(c => c.PreferredName)
