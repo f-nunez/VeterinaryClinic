@@ -9,6 +9,7 @@ public class ClientIdsSpecification : BaseSpecification<Client, string>
     {
         Query
             .AsNoTracking()
+            .Where(c => c.IsActive)
             .Where(c => c.Id.ToString().Contains(idFilterValue.Trim()));
 
         Query
