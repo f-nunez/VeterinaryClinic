@@ -1,5 +1,6 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.SendIntegrationEvents.ClinicDeleted;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.DeleteClinic;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClinicAggregate;
@@ -30,7 +31,13 @@ public class DeleteClinicCommandHandler : IRequestHandler<DeleteClinicCommand, D
     {
         DeleteClinicRequest request = command.DeleteClinicRequest;
         var response = new DeleteClinicResponse(request.CorrelationId);
-        var clinicToDelete = _mapper.Map<Clinic>(request);
+
+        var clinicToDelete = await _unitOfWork
+            .Repository<Clinic>()
+            .GetByIdAsync(request.Id, cancellationToken);
+
+        if (clinicToDelete is null)
+            throw new NotFoundException(nameof(clinicToDelete), request.Id);
 
         await _unitOfWork
             .Repository<Clinic>()
