@@ -16,6 +16,7 @@
     <PackageReference Include="Duende.IdentityServer.EntityFramework" Version="6.2.3" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.2" />
   </ItemGroup>
 
 </Project>
