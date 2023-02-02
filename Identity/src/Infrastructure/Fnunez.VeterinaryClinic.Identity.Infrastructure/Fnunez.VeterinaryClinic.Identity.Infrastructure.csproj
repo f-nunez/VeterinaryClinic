@@ -13,6 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Duende.IdentityServer" Version="6.2.3" />
     <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="6.2.3" />
+    <PackageReference Include="Duende.IdentityServer.EntityFramework" Version="6.2.3" />
   </ItemGroup>
 
 </Project>
