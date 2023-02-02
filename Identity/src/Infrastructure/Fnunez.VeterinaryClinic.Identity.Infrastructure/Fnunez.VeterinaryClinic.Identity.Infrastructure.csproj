@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\Core\Fnunez.VeterinaryClinic.Identity.Application\Fnunez.VeterinaryClinic.Identity.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Duende.IdentityServer" Version="6.2.3" />
+  </ItemGroup>
+
 </Project>
