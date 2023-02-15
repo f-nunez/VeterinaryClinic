@@ -18,7 +18,6 @@ public static class ConfigureServices
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // authentication state plumbing
         services.AddAuthorizationCore(options =>
         {
             options.AddPolicy("RequiredManager", policy =>
@@ -28,6 +27,20 @@ public static class ConfigureServices
             });
         });
 
+        // register Settings
+        services.AddSingleton<IBackendForFrontendSetting>(
+            configuration.GetSection(typeof(BackendForFrontendSetting).Name)
+            .Get<BackendForFrontendSetting>()!);
+
+        services.AddSingleton<ICookieSetting>(
+            configuration.GetSection(typeof(CookieSetting).Name)
+            .Get<CookieSetting>()!);
+
+        services.AddSingleton<IPhotoFileSetting>(
+            configuration.GetSection(typeof(PhotoFileSetting).Name)
+            .Get<PhotoFileSetting>()!);
+
+        // authentication state plumbing
         services.AddScoped<AuthenticationStateProvider, BffAuthenticationStateProvider>();
 
         services.AddTransient<AntiforgeryHandler>();
@@ -61,19 +74,6 @@ public static class ConfigureServices
         services.AddScoped<ISpinnerService, SpinnerService>();
 
         services.AddScoped<IUserSettingsService, UserSettingsService>();
-
-        // register Settings
-        services.AddSingleton<IBackendForFrontendSetting>(
-            configuration.GetSection(typeof(BackendForFrontendSetting).Name)
-            .Get<BackendForFrontendSetting>()!);
-
-        services.AddSingleton<ICookieSetting>(
-            configuration.GetSection(typeof(CookieSetting).Name)
-            .Get<CookieSetting>()!);
-
-        services.AddSingleton<IPhotoFileSetting>(
-            configuration.GetSection(typeof(PhotoFileSetting).Name)
-            .Get<PhotoFileSetting>()!);
 
         // register Language component
         services.AddSingleton<ILanguageComponentData>(
