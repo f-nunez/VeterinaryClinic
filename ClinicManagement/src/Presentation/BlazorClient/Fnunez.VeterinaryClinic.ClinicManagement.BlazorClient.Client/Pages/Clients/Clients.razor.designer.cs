@@ -29,7 +29,9 @@ public partial class ClientsComponent : ComponentBase
     private IStringLocalizer<ClientDetailComponent> _stringLocalizerForDetail { get; set; }
 
     [Inject]
-    protected IStringLocalizer<ClientsFilterComponent> _stringLocalizerForFilter { get; set; }
+    private IStringLocalizer<ClientsFilterComponent> _stringLocalizerForFilter { get; set; }
+
+    protected bool CanWrite { get; set; }
 
     protected RadzenDataGrid<ClientDto> ClientsGrid;
 
