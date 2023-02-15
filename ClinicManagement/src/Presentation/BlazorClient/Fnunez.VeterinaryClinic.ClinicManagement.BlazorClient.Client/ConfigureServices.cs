@@ -18,15 +18,6 @@ public static class ConfigureServices
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddAuthorizationCore(options =>
-        {
-            options.AddPolicy("RequiredManager", policy =>
-            {
-                policy.RequireAuthenticatedUser();
-                policy.RequireRole("Manager");
-            });
-        });
-
         // register Settings
         services.AddSingleton<IBackendForFrontendSetting>(
             configuration.GetSection(typeof(BackendForFrontendSetting).Name)
@@ -105,6 +96,15 @@ public static class ConfigureServices
 
         // register Language resources for Localizer
         services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
+
+        services.AddAuthorizationCore(options =>
+        {
+            options.AddPolicy("RequiredWriterPolicy", policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireRole("Manager");
+            });
+        });
 
         return services;
     }
