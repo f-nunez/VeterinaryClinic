@@ -35,7 +35,7 @@ public partial class MainLayoutComponent : LayoutComponentBase
     {
         await base.OnInitializedAsync();
 
-        await SecurityService.SetUserInfoAsync();
+        await SecurityService.SetApplicationUserAsync();
     }
 
     protected async Task SidebarToggleClick(dynamic args)
@@ -49,6 +49,6 @@ public partial class MainLayoutComponent : LayoutComponentBase
     protected async System.Threading.Tasks.Task ProfileMenuClick(dynamic args)
     {
         if (args.Value == "Logout")
-            await SecurityService.Logout();
+            await SecurityService.LogoutAsync();
     }
 }

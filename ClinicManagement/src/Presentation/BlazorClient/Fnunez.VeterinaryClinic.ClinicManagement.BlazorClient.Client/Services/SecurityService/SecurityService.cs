@@ -35,7 +35,7 @@ public class SecurityService : ISecurityService
         _navigationManager.NavigateTo("bff/login", true);
     }
 
-    public async Task Logout()
+    public async Task LogoutAsync()
     {
         var result = await _authenticationStateProvider
             .GetAuthenticationStateAsync();
@@ -45,7 +45,7 @@ public class SecurityService : ISecurityService
         _navigationManager.NavigateTo(logoutUrl, true);
     }
 
-    public async Task SetUserInfoAsync()
+    public async Task SetApplicationUserAsync()
     {
         var result = await _authenticationStateProvider
             .GetAuthenticationStateAsync();
@@ -53,7 +53,7 @@ public class SecurityService : ISecurityService
         if (result.User.Identity is null)
             return;
 
-        User = new User
+        User = new ApplicationUser
         {
             Email = result.User.FindFirst("email")?.Value!,
             Id = result.User.FindFirst("sub")?.Value!,
