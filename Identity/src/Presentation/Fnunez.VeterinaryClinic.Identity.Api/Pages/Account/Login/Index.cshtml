@@ -25,11 +25,11 @@
 
                             <div class="form-group">
                                 <label asp-for="Input.Username"></label>
-                                <input class="form-control" placeholder="Username" asp-for="Input.Username" autocomplete="off" autofocus>
+                                <input class="form-control" placeholder="Username" asp-for="Input.Username" autocomplete="off" autofocus id="inputUsername">
                             </div>
                             <div class="form-group">
                                 <label asp-for="Input.Password"></label>
-                                <input type="password" class="form-control" placeholder="Password" asp-for="Input.Password" autocomplete="off">
+                                <input type="password" class="form-control" placeholder="Password" asp-for="Input.Password" autocomplete="off" id="inputPassword">
                             </div>
                             
                             @if (Model.View.AllowRememberLogin)
@@ -44,7 +44,7 @@
                                 </div>
                             }
                             
-                            <button class="btn btn-primary" name="Input.Button" value="login">Login</button>
+                            <button class="btn btn-primary" name="Input.Button" value="login" id="buttonLogin">Login</button>
                             <button class="btn btn-secondary" name="Input.Button" value="cancel">Cancel</button>
                         </form>
                     </div>
@@ -86,4 +86,23 @@
             </div>
         }
     </div>
+
+    <br>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Demo Accounts</h2>
+                </div>
+
+                <div class="card-body">
+                    <button class="btn btn-light" id="buttonEnterAsStaff">Enter as Staff</button>
+                    <button class="btn btn-light" id="buttonEnterAsManager">Enter as Manager</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script src="~/js/login-helper.js"></script>
