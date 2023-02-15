@@ -7,6 +7,14 @@
 @using Radzen
 @using Radzen.Blazor
 
+<AuthorizeView Policy="RequiredWriterPolicy">
+    <Authorized>
+        @{
+            CanWrite = true;
+        }
+    </Authorized>
+</AuthorizeView>
+
 <RadzenHeading
     Size="H1"
     style="display: inline-block"
@@ -19,7 +27,8 @@
             <RadzenButton
                 Click=@OnClickAdd
                 Icon="add"
-                Text=@StringLocalizer["Rooms_Add_Button_Text"]>
+                Text=@StringLocalizer["Rooms_Add_Button_Text"]
+                Visible=@CanWrite>
             </RadzenButton>
         </div>
 
@@ -101,7 +110,8 @@
                                 Click="@((args) => OnClickEdit(room))"
                                 Icon="edit"
                                 Size="ButtonSize.Medium"
-                                Variant="Variant.Flat">
+                                Variant="Variant.Flat"
+                                Visible="@CanWrite">
                             </RadzenButton>
 
                             <RadzenButton
@@ -110,7 +120,8 @@
                                 Icon="delete"
                                 Shade="Shade.Lighter"
                                 Size="ButtonSize.Medium"
-                                Variant="Variant.Flat">
+                                Variant="Variant.Flat"
+                                Visible="@CanWrite">
                             </RadzenButton>
 
                         </Template>

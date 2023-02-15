@@ -30,6 +30,8 @@ public partial class RoomsComponent : ComponentBase
     [Inject]
     private IStringLocalizer<RoomsFilterComponent> _stringLocalizerForFilter { get; set; }
 
+    protected bool CanWrite { get; set; }
+
     protected RadzenDataGrid<RoomDto> RoomsGrid;
 
     protected List<RoomDto> Rooms;
