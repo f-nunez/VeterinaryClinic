@@ -7,6 +7,14 @@
 @using Radzen
 @using Radzen.Blazor
 
+<AuthorizeView Policy="RequiredWriterPolicy">
+    <Authorized>
+        @{
+            CanWrite = true;
+        }
+    </Authorized>
+</AuthorizeView>
+
 <RadzenHeading
     Size="H1"
     Text=@StringLocalizer["AppointmentTypes_Title"]>
@@ -18,7 +26,8 @@
             <RadzenButton
                 Click=@OnClickAdd
                 Icon="add"
-                Text=@StringLocalizer["AppointmentTypes_Add_Button_Text"]>
+                Text=@StringLocalizer["AppointmentTypes_Add_Button_Text"]
+                Visible=@CanWrite>
             </RadzenButton>
         </div>
 
@@ -118,7 +127,8 @@
                                 Click="@((args) => OnClickEdit(appointmentType))"
                                 Icon="edit"
                                 Size="ButtonSize.Medium"
-                                Variant="Variant.Flat">
+                                Variant="Variant.Flat"
+                                Visible="@CanWrite">
                             </RadzenButton>
 
                             <RadzenButton
@@ -127,7 +137,8 @@
                                 Icon="delete"
                                 Shade="Shade.Lighter"
                                 Size="ButtonSize.Medium"
-                                Variant="Variant.Flat">
+                                Variant="Variant.Flat"
+                                Visible="@CanWrite">
                             </RadzenButton>
 
                         </Template>
