@@ -30,6 +30,8 @@ public partial class ClinicsComponent : ComponentBase
     [Inject]
     private IStringLocalizer<ClinicsFilterComponent> _stringLocalizerForFilter { get; set; }
 
+    protected bool CanWrite { get; set; }
+
     protected RadzenDataGrid<ClinicDto> ClinicsGrid;
 
     protected List<ClinicDto> Clinics;
