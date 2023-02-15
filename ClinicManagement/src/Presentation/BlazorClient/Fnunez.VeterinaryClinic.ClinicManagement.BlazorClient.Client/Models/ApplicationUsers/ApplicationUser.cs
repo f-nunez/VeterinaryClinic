@@ -1,6 +1,6 @@
-namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Models.Users;
+namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Models.ApplicationUsers;
 
-public class User
+public class ApplicationUser
 {
     public string Email { get; set; } = default!;
     public string Id { get; set; } = default!;

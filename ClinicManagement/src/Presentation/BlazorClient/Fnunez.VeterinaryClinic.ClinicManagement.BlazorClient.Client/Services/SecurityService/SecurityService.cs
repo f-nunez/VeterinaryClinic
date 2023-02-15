@@ -1,4 +1,4 @@
-using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Models.Users;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Models.ApplicationUsers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
@@ -6,7 +6,7 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
 
 public class SecurityService : ISecurityService
 {
-    public User? User { get; set; }
+    public ApplicationUser? User { get; set; }
     private readonly NavigationManager _navigationManager;
     private readonly AuthenticationStateProvider _authenticationStateProvider;
 
