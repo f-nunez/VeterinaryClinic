@@ -46,6 +46,7 @@ public static class ConfigureServices
         })
         .AddOpenIdConnect(openIdConnectSetting.AuthenticationScheme, options =>
         {
+            options.AccessDeniedPath = openIdConnectSetting.AccessDeniedPath;
             options.Authority = openIdConnectSetting.Authority;
             options.ClientId = openIdConnectSetting.ClientId;
             options.UsePkce = openIdConnectSetting.EnabledUsePkce;

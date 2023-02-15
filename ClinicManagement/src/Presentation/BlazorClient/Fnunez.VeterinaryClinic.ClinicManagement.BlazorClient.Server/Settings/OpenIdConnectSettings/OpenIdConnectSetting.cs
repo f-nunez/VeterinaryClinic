@@ -2,6 +2,7 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Server.Settings;
 
 public class OpenIdConnectSetting : IOpenIdConnectSetting
 {
+    public string AccessDeniedPath { get; set; } = null!;
     public string AuthenticationScheme { get; set; } = null!;
     public string Authority { get; set; } = null!;
     public string[] ClaimActionsToMap { get; set; } = null!;
