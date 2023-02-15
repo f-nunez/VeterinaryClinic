@@ -3,11 +3,47 @@
 @layout Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.MainLayout
 @inherits Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Pages.Home.HomeComponent
 
-@using Radzen
-@using Radzen.Blazor
+<RadzenHeading
+    Size="H1"
+    Text="Home">
+</RadzenHeading>
 
-<RadzenContent Container="main">
-    <ChildContent>
-        <RadzenHeading Size="H1" style="display: inline-block" Text="Home"></RadzenHeading>
-    </ChildContent>
-</RadzenContent>
+<RadzenCard>
+    <div class="row mb-3">
+        <div class="col-12">
+            <h1>Hello, Blazor BFF!</h1>
+        </div>
+
+        <div class="col-12">
+            <AuthorizeView>
+                <Authorized>
+                    <dl>
+                        @foreach (var claim in @context.User.Claims)
+                        {
+                            <dt>@claim.Type</dt>
+                            <dd>@claim.Value</dd>
+                        }
+                    </dl>
+                </Authorized>
+                <NotAuthorized>
+                    <p>
+                        User no authorized!
+                    </p>
+                </NotAuthorized>
+            </AuthorizeView>
+
+            <AuthorizeView Policy="RequiredManager">
+                <Authorized>
+                    <p>
+                        The user has the RequiredManager policy.
+                    </p>
+                </Authorized>
+                <NotAuthorized>
+                    <p>
+                        The user does not have the RequiredManager policy.
+                    </p>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+    </div>
+</RadzenCard>
