@@ -6,6 +6,8 @@
 @using Radzen.Blazor
 @using ViewModels.Appointments
 
+@attribute [Authorize("RequiredWriterPolicy")]
+
 <RadzenHeading
     Size="H1"
     Text=@StringLocalizer["Appointments_Title"]>
