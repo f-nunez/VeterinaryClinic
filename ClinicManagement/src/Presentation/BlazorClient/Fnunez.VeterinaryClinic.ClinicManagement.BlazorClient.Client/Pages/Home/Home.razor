@@ -3,6 +3,8 @@
 @layout Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.MainLayout
 @inherits Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Pages.Home.HomeComponent
 
+@attribute [Authorize("RequiredReaderPolicy")]
+
 <RadzenHeading
     Size="H1"
     Text="Home">
@@ -11,7 +13,7 @@
 <RadzenCard>
     <div class="row mb-3">
         <div class="col-12">
-            <h1>Hello, Blazor BFF!</h1>
+            <h1>Hello, @(NameOfUser)!</h1>
         </div>
 
         <div class="col-12">
@@ -25,24 +27,6 @@
                         }
                     </dl>
                 </Authorized>
-                <NotAuthorized>
-                    <p>
-                        User no authorized!
-                    </p>
-                </NotAuthorized>
-            </AuthorizeView>
-
-            <AuthorizeView Policy="RequiredWriterPolicy">
-                <Authorized>
-                    <p>
-                        The user has the RequiredWriter policy.
-                    </p>
-                </Authorized>
-                <NotAuthorized>
-                    <p>
-                        The user does not have the RequiredWriter policy.
-                    </p>
-                </NotAuthorized>
             </AuthorizeView>
         </div>
     </div>
