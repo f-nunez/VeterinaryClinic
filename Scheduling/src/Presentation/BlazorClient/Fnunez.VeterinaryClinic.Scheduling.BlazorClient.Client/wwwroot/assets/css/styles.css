@@ -159,3 +159,27 @@
 .patient-photo-name {
   word-wrap: break-word;
 }
+
+/* Login */
+.login-card {
+  background: hsla(0, 0%, 100%, 0.8);
+  backdrop-filter: blur(30px);
+  border-radius: 10px;
+  height: 100%;
+  padding: 3rem;
+  text-align: center;
+}
+
+.login-card h2 {
+  margin-bottom: 3rem;
+}
+
+.login-card p {
+  margin-bottom: 3rem;
+}
+
+.login-container {
+  background-color: #3B467E;
+  height: 100%;
+  padding: 3rem;
+}
