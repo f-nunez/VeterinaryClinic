@@ -16,6 +16,7 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.Ge
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.GetClinicsFilterId;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.GetClinicsFilterName;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.UpdateClinic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Api.Controllers;
@@ -23,6 +24,7 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Api.Controllers;
 public class ClinicController : BaseApiController
 {
     [HttpPost("Create")]
+    [Authorize("RequiredWriterPolicy")]
     public async Task<ActionResult> Create(
         CreateClinicRequest request,
         CancellationToken cancellationToken)
@@ -36,6 +38,7 @@ public class ClinicController : BaseApiController
     }
 
     [HttpPost("DataGrid")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGrid(
         GetClinicsRequest request,
         CancellationToken cancellationToken)
@@ -49,6 +52,7 @@ public class ClinicController : BaseApiController
     }
 
     [HttpPost("DataGridFilterAddress")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterAddress(
         GetClinicsFilterAddressRequest request,
         CancellationToken cancellationToken)
@@ -62,6 +66,7 @@ public class ClinicController : BaseApiController
     }
 
     [HttpPost("DataGridFilterEmailAddress")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterEmailAddress(
         GetClinicsFilterEmailAddressRequest request,
         CancellationToken cancellationToken)
@@ -75,6 +80,7 @@ public class ClinicController : BaseApiController
     }
 
     [HttpPost("DataGridFilterId")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterId(
         GetClinicsFilterIdRequest request,
         CancellationToken cancellationToken)
@@ -88,6 +94,7 @@ public class ClinicController : BaseApiController
     }
 
     [HttpPost("DataGridFilterName")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterName(
         GetClinicsFilterNameRequest request,
         CancellationToken cancellationToken)
@@ -101,6 +108,7 @@ public class ClinicController : BaseApiController
     }
 
     [HttpDelete("Delete/{Id}")]
+    [Authorize("RequiredWriterPolicy")]
     public async Task<ActionResult> Delete(
         [FromRoute] DeleteClinicRequest request,
         CancellationToken cancellationToken)
@@ -114,6 +122,7 @@ public class ClinicController : BaseApiController
     }
 
     [HttpGet("GetById/{Id}")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> GetById(
         [FromRoute] GetClinicByIdRequest request,
         CancellationToken cancellationToken)
@@ -127,6 +136,7 @@ public class ClinicController : BaseApiController
     }
 
     [HttpPut("Update")]
+    [Authorize("RequiredWriterPolicy")]
     public async Task<ActionResult> Update(
         UpdateClinicRequest request,
         CancellationToken cancellationToken)
