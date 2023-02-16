@@ -24,10 +24,7 @@ public class SecurityService : ISecurityService
         var result = await _authenticationStateProvider
             .GetAuthenticationStateAsync();
 
-        if (result.User.Identity != null)
-            return result.User.Identity.IsAuthenticated;
-
-        return false;
+        return result.User.Identity?.IsAuthenticated == true;
     }
 
     public void Login()
@@ -50,16 +47,16 @@ public class SecurityService : ISecurityService
         var result = await _authenticationStateProvider
             .GetAuthenticationStateAsync();
 
-        if (result.User.Identity is null)
-            return;
-
-        User = new ApplicationUser
+        if (result.User.Identity?.IsAuthenticated == true)
         {
-            Email = result.User.FindFirst("email")?.Value!,
-            Id = result.User.FindFirst("sub")?.Value!,
-            Name = result.User.Identity.Name!,
-            Roles = result.User.FindFirst("role")?.Value!.Split(" ")!,
-            Username = result.User.FindFirst("preferred_username")?.Value!
-        };
+            User = new ApplicationUser
+            {
+                Email = result.User.FindFirst("email")?.Value!,
+                Id = result.User.FindFirst("sub")?.Value!,
+                Name = result.User.Identity.Name!,
+                Roles = result.User.FindFirst("role")?.Value!.Split(" ")!,
+                Username = result.User.FindFirst("preferred_username")?.Value!
+            };
+        }
     }
 }
