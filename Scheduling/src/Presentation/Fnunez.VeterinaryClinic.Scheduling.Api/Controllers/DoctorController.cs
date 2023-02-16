@@ -6,6 +6,7 @@ using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Doctor.GetDocto
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Doctor.GetDoctors;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Doctor.GetDoctorsFilterFullName;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Doctor.GetDoctorsFilterId;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Api.Controllers;
@@ -13,6 +14,7 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Api.Controllers;
 public class DoctorController : BaseApiController
 {
     [HttpPost("DataGrid")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGrid(
         GetDoctorsRequest request,
         CancellationToken cancellationToken)
@@ -26,6 +28,7 @@ public class DoctorController : BaseApiController
     }
 
     [HttpPost("DataGridFilterFullName")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterFullName(
         GetDoctorsFilterFullNameRequest request,
         CancellationToken cancellationToken)
@@ -39,6 +42,7 @@ public class DoctorController : BaseApiController
     }
 
     [HttpPost("DataGridFilterId")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterId(
         GetDoctorsFilterIdRequest request,
         CancellationToken cancellationToken)
@@ -52,6 +56,7 @@ public class DoctorController : BaseApiController
     }
 
     [HttpGet("GetById/{Id}")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> GetById(
         [FromRoute] GetDoctorByIdRequest request,
         CancellationToken cancellationToken)
