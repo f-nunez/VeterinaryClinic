@@ -1,0 +1,14 @@
+@inject NavigationManager _navigationManager
+
+@code {
+    [Parameter]
+    public bool IsAuthenticated { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (IsAuthenticated)
+            _navigationManager.NavigateTo("unauthorized", false);
+        else
+            _navigationManager.NavigateTo("login", false);
+    }
+}
