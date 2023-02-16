@@ -9,7 +9,8 @@ public class Policy
 {
     public string Name { get; set; } = null!;
     public bool RequireAuthenticatedUser { get; set; }
-    public RequiredClaim[] RequiredClaims { get; set; } = null!;
+    public RequiredClaim[]? RequiredClaims { get; set; }
+    public string[]? RequiredRoles { get; set; }
 }
 
 public class RequiredClaim
