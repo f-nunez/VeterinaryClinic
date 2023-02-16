@@ -12,6 +12,7 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.GetR
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.GetRoomsFilterId;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.GetRoomsFilterName;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.UpdateRoom;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Api.Controllers;
@@ -19,6 +20,7 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Api.Controllers;
 public class RoomController : BaseApiController
 {
     [HttpPost("Create")]
+    [Authorize("RequiredWriterPolicy")]
     public async Task<ActionResult> Create(
         CreateRoomRequest request,
         CancellationToken cancellationToken)
@@ -32,6 +34,7 @@ public class RoomController : BaseApiController
     }
 
     [HttpPost("DataGrid")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGrid(
         GetRoomsRequest request,
         CancellationToken cancellationToken)
@@ -45,6 +48,7 @@ public class RoomController : BaseApiController
     }
 
     [HttpPost("DataGridFilterId")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterId(
         GetRoomsFilterIdRequest request,
         CancellationToken cancellationToken)
@@ -58,6 +62,7 @@ public class RoomController : BaseApiController
     }
 
     [HttpPost("DataGridFilterName")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterName(
         GetRoomsFilterNameRequest request,
         CancellationToken cancellationToken)
@@ -71,6 +76,7 @@ public class RoomController : BaseApiController
     }
 
     [HttpDelete("Delete/{Id}")]
+    [Authorize("RequiredWriterPolicy")]
     public async Task<ActionResult> Delete(
         [FromRoute] DeleteRoomRequest request,
         CancellationToken cancellationToken)
@@ -84,6 +90,7 @@ public class RoomController : BaseApiController
     }
 
     [HttpGet("GetById/{Id}")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> GetById(
         [FromRoute] GetRoomByIdRequest request,
         CancellationToken cancellationToken)
@@ -97,6 +104,7 @@ public class RoomController : BaseApiController
     }
 
     [HttpPut("Update")]
+    [Authorize("RequiredWriterPolicy")]
     public async Task<ActionResult> Update(
         UpdateRoomRequest request,
         CancellationToken cancellationToken)
