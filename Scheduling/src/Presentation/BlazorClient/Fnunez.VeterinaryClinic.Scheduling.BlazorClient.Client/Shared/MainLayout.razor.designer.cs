@@ -1,3 +1,4 @@
+using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using Radzen;
@@ -18,6 +19,9 @@ public partial class MainLayoutComponent : LayoutComponentBase
     protected NotificationService NotificationService { get; set; }
 
     [Inject]
+    protected ISecurityService SecurityService { get; set; }
+
+    [Inject]
     protected IStringLocalizer<MainLayout> StringLocalizer { get; set; }
 
     protected RadzenBody RadzenBody;
@@ -34,5 +38,11 @@ public partial class MainLayoutComponent : LayoutComponentBase
         await InvokeAsync(() => { RadzenBody.Toggle(); });
         IsSidebarExpanded = !IsSidebarExpanded;
         IsBodyExpanded = !IsBodyExpanded;
+    }
+
+    protected async Task ProfileMenuClick(dynamic args)
+    {
+        if (args.Value == "Logout")
+            await SecurityService.LogoutAsync();
     }
 }
