@@ -50,7 +50,7 @@ public partial class MainLayoutComponent : LayoutComponentBase
         IsBodyExpanded = !IsBodyExpanded;
     }
 
-    protected async System.Threading.Tasks.Task ProfileMenuClick(dynamic args)
+    protected async Task ProfileMenuClick(dynamic args)
     {
         if (args.Value == "Logout")
             await SecurityService.LogoutAsync();
