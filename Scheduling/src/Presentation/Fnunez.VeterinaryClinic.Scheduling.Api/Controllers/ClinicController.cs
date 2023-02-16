@@ -10,6 +10,7 @@ using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic.GetClini
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic.GetClinicsFilterEmailAddress;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic.GetClinicsFilterId;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic.GetClinicsFilterName;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Api.Controllers;
@@ -17,6 +18,7 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Api.Controllers;
 public class ClinicController : BaseApiController
 {
     [HttpPost("DataGrid")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGrid(
         GetClinicsRequest request,
         CancellationToken cancellationToken)
@@ -30,6 +32,7 @@ public class ClinicController : BaseApiController
     }
 
     [HttpPost("DataGridFilterAddress")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterAddress(
         GetClinicsFilterAddressRequest request,
         CancellationToken cancellationToken)
@@ -43,6 +46,7 @@ public class ClinicController : BaseApiController
     }
 
     [HttpPost("DataGridFilterEmailAddress")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterEmailAddress(
         GetClinicsFilterEmailAddressRequest request,
         CancellationToken cancellationToken)
@@ -56,6 +60,7 @@ public class ClinicController : BaseApiController
     }
 
     [HttpPost("DataGridFilterId")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterId(
         GetClinicsFilterIdRequest request,
         CancellationToken cancellationToken)
@@ -69,6 +74,7 @@ public class ClinicController : BaseApiController
     }
 
     [HttpPost("DataGridFilterName")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterName(
         GetClinicsFilterNameRequest request,
         CancellationToken cancellationToken)
@@ -82,6 +88,7 @@ public class ClinicController : BaseApiController
     }
 
     [HttpGet("GetById/{Id}")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> GetById(
         [FromRoute] GetClinicByIdRequest request,
         CancellationToken cancellationToken)
