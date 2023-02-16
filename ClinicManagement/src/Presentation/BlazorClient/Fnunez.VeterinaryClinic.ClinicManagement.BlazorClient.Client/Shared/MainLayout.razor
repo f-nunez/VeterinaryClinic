@@ -3,6 +3,17 @@
 @using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.Spinner
 @using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.UserSettings
 
+@if(!IsAuthenticated)
+{
+    <div style="height: 100vh;">
+        @Body
+    </div>
+
+    <SpinnerComponent></SpinnerComponent>
+
+    return;
+}
+
 <RadzenDialog></RadzenDialog>
 <RadzenNotification></RadzenNotification>
 

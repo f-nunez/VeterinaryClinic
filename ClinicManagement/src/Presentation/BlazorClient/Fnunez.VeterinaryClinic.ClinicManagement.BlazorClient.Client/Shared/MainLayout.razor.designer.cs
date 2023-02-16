@@ -31,11 +31,15 @@ public partial class MainLayoutComponent : LayoutComponentBase
 
     protected bool IsSidebarExpanded = true;
 
+    protected bool IsAuthenticated = false;
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
         await SecurityService.SetApplicationUserAsync();
+
+        IsAuthenticated = await SecurityService.IsAuthenticatedAsync();
     }
 
     protected async Task SidebarToggleClick(dynamic args)
