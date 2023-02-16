@@ -10,6 +10,7 @@ using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypesFilterDuration;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypesFilterId;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypesFilterName;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Api.Controllers;
@@ -17,6 +18,7 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Api.Controllers;
 public class AppointmentTypeController : BaseApiController
 {
     [HttpPost("DataGrid")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGrid(
         GetAppointmentTypesRequest request,
         CancellationToken cancellationToken)
@@ -30,6 +32,7 @@ public class AppointmentTypeController : BaseApiController
     }
 
     [HttpPost("DataGridFilterCode")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterCode(
         GetAppointmentTypesFilterCodeRequest request,
         CancellationToken cancellationToken)
@@ -43,6 +46,7 @@ public class AppointmentTypeController : BaseApiController
     }
 
     [HttpPost("DataGridFilterDuration")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterDuration(
         GetAppointmentTypesFilterDurationRequest request,
         CancellationToken cancellationToken)
@@ -56,6 +60,7 @@ public class AppointmentTypeController : BaseApiController
     }
 
     [HttpPost("DataGridFilterId")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterId(
         GetAppointmentTypesFilterIdRequest request,
         CancellationToken cancellationToken)
@@ -69,6 +74,7 @@ public class AppointmentTypeController : BaseApiController
     }
 
     [HttpPost("DataGridFilterName")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterName(
         GetAppointmentTypesFilterNameRequest request,
         CancellationToken cancellationToken)
@@ -82,6 +88,7 @@ public class AppointmentTypeController : BaseApiController
     }
 
     [HttpGet("GetById/{Id}")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> GetById(
         [FromRoute] GetAppointmentTypeByIdRequest request,
         CancellationToken cancellationToken)
