@@ -112,7 +112,7 @@ public static class ConfigureServices
 
         app.UseHealthChecks("/api/health");
 
-        app.MapControllers();
+        app.MapControllers().RequireAuthorization("ApiScope");
 
         return app;
     }
