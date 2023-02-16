@@ -78,8 +78,12 @@ public static class ConfigureServices
                     if (policy.RequireAuthenticatedUser)
                         policyBuilder.RequireAuthenticatedUser();
 
-                    foreach (var requiredClaim in policy.RequiredClaims)
-                        policyBuilder.RequireClaim(requiredClaim.ClaimType, requiredClaim.Values);
+                    if (policy.RequiredClaims != null)
+                        foreach (var requiredClaim in policy.RequiredClaims)
+                            policyBuilder.RequireClaim(requiredClaim.ClaimType, requiredClaim.Values);
+
+                    if (policy.RequiredRoles != null)
+                        policyBuilder.RequireRole(policy.RequiredRoles);
                 });
         });
 
