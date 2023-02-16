@@ -24,6 +24,7 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.Ge
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterPreferredName;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterSalutation;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.UpdateClient;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Api.Controllers;
@@ -31,6 +32,7 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Api.Controllers;
 public class ClientController : BaseApiController
 {
     [HttpPost("Create")]
+    [Authorize("RequiredWriterPolicy")]
     public async Task<ActionResult> Create(
         CreateClientRequest request,
         CancellationToken cancellationToken)
@@ -44,6 +46,7 @@ public class ClientController : BaseApiController
     }
 
     [HttpPost("DataGrid")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGrid(
         GetClientsRequest request,
         CancellationToken cancellationToken)
@@ -83,6 +86,7 @@ public class ClientController : BaseApiController
     }
 
     [HttpPost("DataGridFilterId")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterId(
         GetClientsFilterIdRequest request,
         CancellationToken cancellationToken)
@@ -96,6 +100,7 @@ public class ClientController : BaseApiController
     }
 
     [HttpPost("DataGridFilterPreferredDoctor")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterPreferredDoctor(
         GetClientsFilterPreferredDoctorRequest request,
         CancellationToken cancellationToken)
@@ -109,6 +114,7 @@ public class ClientController : BaseApiController
     }
 
     [HttpPost("DataGridFilterPreferredName")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterPreferredName(
         GetClientsFilterPreferredNameRequest request,
         CancellationToken cancellationToken)
@@ -122,6 +128,7 @@ public class ClientController : BaseApiController
     }
 
     [HttpPost("DataGridFilterSalutation")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterSalutation(
         GetClientsFilterSalutationRequest request,
         CancellationToken cancellationToken)
@@ -135,6 +142,7 @@ public class ClientController : BaseApiController
     }
 
     [HttpDelete("Delete/{Id}")]
+    [Authorize("RequiredWriterPolicy")]
     public async Task<ActionResult> Delete(
         [FromRoute] DeleteClientRequest request,
         CancellationToken cancellationToken)
@@ -148,6 +156,7 @@ public class ClientController : BaseApiController
     }
 
     [HttpGet("GetById/{Id}")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> GetById(
         [FromRoute] GetClientByIdRequest request,
         CancellationToken cancellationToken)
@@ -161,6 +170,7 @@ public class ClientController : BaseApiController
     }
 
     [HttpPost("GetClientDetail")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> GetClientDetail(
         GetClientDetailRequest request,
         CancellationToken cancellationToken)
@@ -174,6 +184,7 @@ public class ClientController : BaseApiController
     }
 
     [HttpPost("GetClientEdit")]
+    [Authorize("RequiredWriterPolicy")]
     public async Task<ActionResult> GetClientEdit(
         GetClientEditRequest request,
         CancellationToken cancellationToken)
@@ -187,6 +198,7 @@ public class ClientController : BaseApiController
     }
 
     [HttpPut("Update")]
+    [Authorize("RequiredWriterPolicy")]
     public async Task<ActionResult> Update(
         UpdateClientRequest request,
         CancellationToken cancellationToken)
