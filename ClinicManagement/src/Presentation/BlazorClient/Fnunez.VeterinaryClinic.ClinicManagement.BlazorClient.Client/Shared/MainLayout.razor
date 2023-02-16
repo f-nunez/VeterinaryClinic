@@ -25,9 +25,9 @@
                             </RadzenImage>
                         </Template>
                         <ChildContent>
-                            <RadzenProfileMenuItem Text="@("Logged as " + SecurityService.User?.Username)">
+                            <RadzenProfileMenuItem Text=@(string.Format(StringLocalizer["MainLayout_ProfileMenu_Username"], SecurityService.User?.Username))>
                             </RadzenProfileMenuItem>
-                            <RadzenProfileMenuItem Text="Logout" Value="Logout" Icon="logout">
+                            <RadzenProfileMenuItem Text=@StringLocalizer["MainLayout_ProfileMenu_Logout"] Value="Logout" Icon="logout">
                             </RadzenProfileMenuItem>
                         </ChildContent>
                     </RadzenProfileMenu>
