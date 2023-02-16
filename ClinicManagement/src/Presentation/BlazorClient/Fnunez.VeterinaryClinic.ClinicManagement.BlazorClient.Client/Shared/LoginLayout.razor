@@ -2,14 +2,8 @@
 
 @using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.Spinner
 
-<RadzenLayout>
-    <RadzenBody @ref="RadzenBody" Expanded="true">
-        <childContent>
-            <RadzenContentContainer Name="main">
-                @Body
-            </RadzenContentContainer>
-        </childContent>
-    </RadzenBody>
-</RadzenLayout>
+<div style="height: 100vh;">
+    @Body
+</div>
 
 <SpinnerComponent></SpinnerComponent>

@@ -1,5 +1,6 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Pages.Login;
 
@@ -11,6 +12,12 @@ public partial class LoginComponent : ComponentBase
     [Inject]
     private ISecurityService _securityService { get; set; }
 
+    [Inject]
+    private ISpinnerService _spinnerService { get; set; }
+
+    [Inject]
+    protected IStringLocalizer<LoginComponent> StringLocalizer { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -21,6 +28,7 @@ public partial class LoginComponent : ComponentBase
 
     protected void OnClickLogin()
     {
+        _spinnerService.Show();
         _securityService.Login();
     }
 }

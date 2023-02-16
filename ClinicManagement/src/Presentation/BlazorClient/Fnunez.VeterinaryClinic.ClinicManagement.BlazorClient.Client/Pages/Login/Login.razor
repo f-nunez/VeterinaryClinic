@@ -2,6 +2,14 @@
 @layout Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.LoginLayout
 @inherits Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Pages.Login.LoginComponent
 
-<RadzenCard>
-    <RadzenButton Text="Login" ButtonStyle="ButtonStyle.Secondary" Click="OnClickLogin"></RadzenButton>
-</RadzenCard>
+<div class="login-container">
+    <div class="login-card">
+        <h2>Clinic Management</h2>
+        <p>@StringLocalizer["Login_Body_Text"]</p>
+        <RadzenButton
+            ButtonStyle="ButtonStyle.Secondary"
+            Click="OnClickLogin"
+            Text=@StringLocalizer["Login_Button_Text"]>
+        </RadzenButton>
+    </div>
+</div>
