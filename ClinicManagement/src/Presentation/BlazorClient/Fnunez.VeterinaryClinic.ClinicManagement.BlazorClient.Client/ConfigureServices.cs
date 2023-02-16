@@ -99,6 +99,12 @@ public static class ConfigureServices
 
         services.AddAuthorizationCore(options =>
         {
+            options.AddPolicy("RequiredReaderPolicy", policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireRole("Manager", "Staff");
+            });
+
             options.AddPolicy("RequiredWriterPolicy", policy =>
             {
                 policy.RequireAuthenticatedUser();
