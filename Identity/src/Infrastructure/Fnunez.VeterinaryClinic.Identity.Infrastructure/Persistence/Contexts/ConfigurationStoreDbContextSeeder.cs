@@ -171,7 +171,8 @@ public class ConfigurationStoreDbContextSeeder
                     RedirectUris = new List<string> { "https://localhost:7004/signin-oidc" },
                     BackChannelLogoutUri = "https://localhost:7004/bff/backchannel",
                     PostLogoutRedirectUris = new List<string> { "https://localhost:7004/signout-callback-oidc" },
-                    UpdateAccessTokenClaimsOnRefresh = true
+                    UpdateAccessTokenClaimsOnRefresh = true,
+                    RefreshTokenUsage = TokenUsage.ReUse
                 }.ToEntity(),
                 new Client
                 {
@@ -195,7 +196,8 @@ public class ConfigurationStoreDbContextSeeder
                     RedirectUris = new List<string> { "https://localhost:7154/signin-oidc" },
                     BackChannelLogoutUri = "https://localhost:7154/bff/backchannel",
                     PostLogoutRedirectUris = new List<string> { "https://localhost:7154/signout-callback-oidc" },
-                    UpdateAccessTokenClaimsOnRefresh = true
+                    UpdateAccessTokenClaimsOnRefresh = true,
+                    RefreshTokenUsage = TokenUsage.ReUse
                 }.ToEntity()
             );
 
