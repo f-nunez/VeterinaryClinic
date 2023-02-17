@@ -3,6 +3,17 @@
 @using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.Spinner
 @using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.UserSettings
 
+@if(!IsAuthenticated)
+{
+    <div style="height: 100vh;">
+        @Body
+    </div>
+
+    <SpinnerComponent></SpinnerComponent>
+
+    return;
+}
+
 <RadzenDialog></RadzenDialog>
 <RadzenNotification></RadzenNotification>
 
@@ -17,6 +28,20 @@
 
                 <div class="col-7 d-flex align-items-center justify-content-end">
                     <UserSettingsComponent></UserSettingsComponent>
+                    <RadzenProfileMenu Click="@ProfileMenuClick">
+                        <Template>
+                            <RadzenLabel Text="@($"{(SecurityService.User?.Name)}")">
+                            </RadzenLabel>
+                            <RadzenImage style="border-radius: 16px; height: 32px; width: 32px; background-color: gray;">
+                            </RadzenImage>
+                        </Template>
+                        <ChildContent>
+                            <RadzenProfileMenuItem Text=@(string.Format(StringLocalizer["MainLayout_ProfileMenu_Username"], SecurityService.User?.Username))>
+                            </RadzenProfileMenuItem>
+                            <RadzenProfileMenuItem Text=@StringLocalizer["MainLayout_ProfileMenu_Logout"] Value="Logout" Icon="logout">
+                            </RadzenProfileMenuItem>
+                        </ChildContent>
+                    </RadzenProfileMenu>
                 </div>
             </div>
         </ChildContent>

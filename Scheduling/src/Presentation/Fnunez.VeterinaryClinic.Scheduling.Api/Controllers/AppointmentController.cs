@@ -24,6 +24,7 @@ using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.Get
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterPatient;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.GetAppointmentsFilterRoom;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.UpdateAppointment;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Api.Controllers;
@@ -31,6 +32,7 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Api.Controllers;
 public class AppointmentController : BaseApiController
 {
     [HttpPost("Create")]
+    [Authorize("RequiredWriterPolicy")]
     public async Task<ActionResult> Create(
         CreateAppointmentRequest request,
         CancellationToken cancellationToken)
@@ -44,6 +46,7 @@ public class AppointmentController : BaseApiController
     }
 
     [HttpPost("DataGrid")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGrid(
         GetAppointmentsRequest request,
         CancellationToken cancellationToken)
@@ -57,6 +60,7 @@ public class AppointmentController : BaseApiController
     }
 
     [HttpPost("DataGridFilterAppointmentType")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterAppointmentType(
         GetAppointmentsFilterAppointmentTypeRequest request,
         CancellationToken cancellationToken)
@@ -70,6 +74,7 @@ public class AppointmentController : BaseApiController
     }
 
     [HttpPost("DataGridFilterClient")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterClient(
         GetAppointmentsFilterClientRequest request,
         CancellationToken cancellationToken)
@@ -83,6 +88,7 @@ public class AppointmentController : BaseApiController
     }
 
     [HttpPost("DataGridFilterClinic")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterClinic(
         GetAppointmentsFilterClinicRequest request,
         CancellationToken cancellationToken)
@@ -96,6 +102,7 @@ public class AppointmentController : BaseApiController
     }
 
     [HttpPost("DataGridFilterDoctor")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterDoctor(
         GetAppointmentsFilterDoctorRequest request,
         CancellationToken cancellationToken)
@@ -109,6 +116,7 @@ public class AppointmentController : BaseApiController
     }
 
     [HttpPost("DataGridFilterPatient")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterPatient(
         GetAppointmentsFilterPatientRequest request,
         CancellationToken cancellationToken)
@@ -122,6 +130,7 @@ public class AppointmentController : BaseApiController
     }
 
     [HttpPost("DataGridFilterRoom")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterRoom(
         GetAppointmentsFilterRoomRequest request,
         CancellationToken cancellationToken)
@@ -135,6 +144,7 @@ public class AppointmentController : BaseApiController
     }
 
     [HttpDelete("Delete/{AppointmentId}")]
+    [Authorize("RequiredWriterPolicy")]
     public async Task<ActionResult> Delete(
         [FromRoute] DeleteAppointmentRequest request,
         CancellationToken cancellationToken)
@@ -148,6 +158,7 @@ public class AppointmentController : BaseApiController
     }
 
     [HttpPost("GetAppointmentAdd")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> GetAppointmentAdd(
         GetAppointmentAddRequest request,
         CancellationToken cancellationToken)
@@ -161,6 +172,7 @@ public class AppointmentController : BaseApiController
     }
 
     [HttpPost("GetAppointmentDetail")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> GetAppointmentDetail(
         GetAppointmentDetailRequest request,
         CancellationToken cancellationToken)
@@ -174,6 +186,7 @@ public class AppointmentController : BaseApiController
     }
 
     [HttpPost("GetAppointmentEdit")]
+    [Authorize("RequiredWriterPolicy")]
     public async Task<ActionResult> GetAppointmentEdit(
         GetAppointmentEditRequest request,
         CancellationToken cancellationToken)
@@ -187,6 +200,7 @@ public class AppointmentController : BaseApiController
     }
 
     [HttpPut("Update")]
+    [Authorize("RequiredWriterPolicy")]
     public async Task<ActionResult> Update(
         UpdateAppointmentRequest request,
         CancellationToken cancellationToken)

@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BBA68A43-DE9D-407A-9459-A8643492774B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{D45EC661-03AB-4E6F-A626-01B60ECAD31B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Identity.Domain", "src\Core\Fnunez.VeterinaryClinic.Identity.Domain\Fnunez.VeterinaryClinic.Identity.Domain.csproj", "{E97F87BB-177F-42C6-A8C1-924C44683AF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Identity.Application", "src\Core\Fnunez.VeterinaryClinic.Identity.Application\Fnunez.VeterinaryClinic.Identity.Application.csproj", "{CA084DB5-149B-4DF3-918A-FDFB9E0E2EE5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{3A6A4355-F304-4B3E-8BEB-7BC604D67A70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Identity.Infrastructure", "src\Infrastructure\Fnunez.VeterinaryClinic.Identity.Infrastructure\Fnunez.VeterinaryClinic.Identity.Infrastructure.csproj", "{0D64095E-A81F-47B3-A0D5-A0F194B0C3DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{D910D56E-4CD3-44F1-A67C-05195D28AA68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Identity.Api", "src\Presentation\Fnunez.VeterinaryClinic.Identity.Api\Fnunez.VeterinaryClinic.Identity.Api.csproj", "{7DC714CE-1FCE-433C-91AF-EF3BC09FA7E8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E97F87BB-177F-42C6-A8C1-924C44683AF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E97F87BB-177F-42C6-A8C1-924C44683AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E97F87BB-177F-42C6-A8C1-924C44683AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E97F87BB-177F-42C6-A8C1-924C44683AF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA084DB5-149B-4DF3-918A-FDFB9E0E2EE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA084DB5-149B-4DF3-918A-FDFB9E0E2EE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA084DB5-149B-4DF3-918A-FDFB9E0E2EE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA084DB5-149B-4DF3-918A-FDFB9E0E2EE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D64095E-A81F-47B3-A0D5-A0F194B0C3DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D64095E-A81F-47B3-A0D5-A0F194B0C3DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D64095E-A81F-47B3-A0D5-A0F194B0C3DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D64095E-A81F-47B3-A0D5-A0F194B0C3DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DC714CE-1FCE-433C-91AF-EF3BC09FA7E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DC714CE-1FCE-433C-91AF-EF3BC09FA7E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DC714CE-1FCE-433C-91AF-EF3BC09FA7E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DC714CE-1FCE-433C-91AF-EF3BC09FA7E8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D45EC661-03AB-4E6F-A626-01B60ECAD31B} = {BBA68A43-DE9D-407A-9459-A8643492774B}
+		{E97F87BB-177F-42C6-A8C1-924C44683AF6} = {D45EC661-03AB-4E6F-A626-01B60ECAD31B}
+		{CA084DB5-149B-4DF3-918A-FDFB9E0E2EE5} = {D45EC661-03AB-4E6F-A626-01B60ECAD31B}
+		{3A6A4355-F304-4B3E-8BEB-7BC604D67A70} = {BBA68A43-DE9D-407A-9459-A8643492774B}
+		{0D64095E-A81F-47B3-A0D5-A0F194B0C3DC} = {3A6A4355-F304-4B3E-8BEB-7BC604D67A70}
+		{D910D56E-4CD3-44F1-A67C-05195D28AA68} = {BBA68A43-DE9D-407A-9459-A8643492774B}
+		{7DC714CE-1FCE-433C-91AF-EF3BC09FA7E8} = {D910D56E-4CD3-44F1-A67C-05195D28AA68}
+	EndGlobalSection
+EndGlobal

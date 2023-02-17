@@ -7,6 +7,16 @@
 @using Radzen.Blazor
 @using ViewModels.Patients
 
+@attribute [Authorize("RequiredReaderPolicy")]
+
+<AuthorizeView Policy="RequiredWriterPolicy">
+    <Authorized>
+        @{
+            CanWrite = true;
+        }
+    </Authorized>
+</AuthorizeView>
+
 <RadzenHeading
     Size="H1"
     Text=@StringLocalizer["Patients_Title"]>
@@ -62,7 +72,8 @@
                 Click=@OnClickAdd
                 Icon="add"
                 Disabled=@(!IsEnabledAddButton)
-                Text=@StringLocalizer["Patients_Add_Button_Text"]>
+                Text=@StringLocalizer["Patients_Add_Button_Text"]
+                Visible=@CanWrite>
             </RadzenButton>
         </div>
     </div>
@@ -122,7 +133,8 @@
                                 Class="mx-1"
                                 Icon="edit"
                                 Size="ButtonSize.Medium"
-                                Variant="Variant.Flat">
+                                Variant="Variant.Flat"
+                                Visible="@CanWrite">
                             </RadzenButton>
 
                             <RadzenButton
@@ -131,7 +143,8 @@
                                 Icon="delete"
                                 Shade="Shade.Lighter"
                                 Size="ButtonSize.Medium"
-                                Variant="Variant.Flat">
+                                Variant="Variant.Flat"
+                                Visible="@CanWrite">
                             </RadzenButton>
                         </div>
                     </RadzenCard>

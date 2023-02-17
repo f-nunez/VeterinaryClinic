@@ -34,6 +34,8 @@ public partial class AppointmentTypesComponent : ComponentBase
 
     protected List<AppointmentTypeDto> AppointmentTypes;
 
+    protected bool CanWrite { get; set; }
+
     protected int Count;
 
     [Inject]

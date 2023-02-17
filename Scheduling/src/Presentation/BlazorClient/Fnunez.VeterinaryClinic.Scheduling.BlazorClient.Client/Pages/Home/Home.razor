@@ -3,11 +3,31 @@
 @layout Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.MainLayout
 @inherits Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Home.HomeComponent
 
-@using Radzen
-@using Radzen.Blazor
+@attribute [Authorize("RequiredReaderPolicy")]
 
-<RadzenContent Container="main">
-    <ChildContent>
-        <RadzenHeading Size="H1" style="display: inline-block" Text="Home"></RadzenHeading>
-    </ChildContent>
-</RadzenContent>
+<RadzenHeading
+    Size="H1"
+    Text="Home">
+</RadzenHeading>
+
+<RadzenCard>
+    <div class="row mb-3">
+        <div class="col-12">
+            <h1>Hello, @(NameOfUser)!</h1>
+        </div>
+
+        <div class="col-12">
+            <AuthorizeView>
+                <Authorized>
+                    <dl>
+                        @foreach (var claim in @context.User.Claims)
+                        {
+                            <dt>@claim.Type</dt>
+                            <dd>@claim.Value</dd>
+                        }
+                    </dl>
+                </Authorized>
+            </AuthorizeView>
+        </div>
+    </div>
+</RadzenCard>

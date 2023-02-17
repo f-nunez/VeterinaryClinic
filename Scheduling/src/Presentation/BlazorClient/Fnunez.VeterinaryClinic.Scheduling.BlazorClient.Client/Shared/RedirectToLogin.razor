@@ -1,0 +1,20 @@
+@inject NavigationManager _navigationManager
+@inject Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services.ISecurityService _securityService
+
+@code {
+    [Parameter]
+    public bool IsAuthenticated { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (IsAuthenticated)
+        {
+            _navigationManager.NavigateTo("unauthorized");
+        }
+        else
+        {
+            bool isSessionForcedToLogout = _securityService.User != null;
+            _navigationManager.NavigateTo("login", isSessionForcedToLogout);
+        }
+    }
+}

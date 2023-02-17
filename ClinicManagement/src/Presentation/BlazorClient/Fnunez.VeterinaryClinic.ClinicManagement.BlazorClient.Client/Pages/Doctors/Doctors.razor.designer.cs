@@ -28,7 +28,9 @@ public partial class DoctorsComponent : ComponentBase
     private IStringLocalizer<DoctorDetailComponent> _stringLocalizerForDetail { get; set; }
 
     [Inject]
-    protected IStringLocalizer<DoctorsFilterComponent> _stringLocalizerForFilter { get; set; }
+    private IStringLocalizer<DoctorsFilterComponent> _stringLocalizerForFilter { get; set; }
+
+    protected bool CanWrite { get; set; }
 
     protected RadzenDataGrid<DoctorDto> DoctorsGrid;
 

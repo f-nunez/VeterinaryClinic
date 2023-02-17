@@ -1,14 +1,17 @@
 using System.Text;
 using System.Text.Json;
+using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Settings;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 
 public class HttpService : IHttpService
 {
-    private readonly string _apiUrl;
+    private readonly string _localEndpoint;
     private readonly HttpClient _httpClient;
 
-    public HttpService(HttpClient httpClient)
+    public HttpService(
+        IBackendForFrontendSetting bffSetting,
+        HttpClient httpClient)
     {
         if (httpClient is null)
             throw new ArgumentNullException(nameof(httpClient));
@@ -17,13 +20,13 @@ public class HttpService : IHttpService
             throw new ArgumentNullException(nameof(httpClient.BaseAddress));
 
         _httpClient = httpClient;
-        _apiUrl = _httpClient.BaseAddress.ToString();
+        _localEndpoint = bffSetting.LocalEndpointToRouteRemoteApiByReverseProxy;
     }
 
     public async Task<T?> HttpDeleteAsync<T>(string uri)
         where T : class
     {
-        var result = await _httpClient.DeleteAsync($"{_apiUrl}{uri}");
+        var result = await _httpClient.DeleteAsync($"{_localEndpoint}/{uri}");
 
         if (!result.IsSuccessStatusCode)
             return null;
@@ -34,7 +37,7 @@ public class HttpService : IHttpService
     public async Task<T?> HttpDeleteAsync<T>(string uri, object id)
         where T : class
     {
-        var result = await _httpClient.DeleteAsync($"{_apiUrl}{uri}/{id}");
+        var result = await _httpClient.DeleteAsync($"{_localEndpoint}/{uri}/{id}");
 
         if (!result.IsSuccessStatusCode)
             return null;
@@ -45,7 +48,7 @@ public class HttpService : IHttpService
     public async Task<T?> HttpGetAsync<T>(string uri)
         where T : class
     {
-        var result = await _httpClient.GetAsync($"{_apiUrl}{uri}");
+        var result = await _httpClient.GetAsync($"{_localEndpoint}/{uri}");
 
         if (!result.IsSuccessStatusCode)
             return null;
@@ -55,7 +58,7 @@ public class HttpService : IHttpService
 
     public async Task<string?> HttpGetAsync(string uri)
     {
-        var result = await _httpClient.GetAsync($"{_apiUrl}{uri}");
+        var result = await _httpClient.GetAsync($"{_localEndpoint}/{uri}");
 
         if (!result.IsSuccessStatusCode)
             return null;
@@ -67,7 +70,7 @@ public class HttpService : IHttpService
         where T : class
     {
         var content = ToJson(dataToSend);
-        var result = await _httpClient.PostAsync($"{_apiUrl}{uri}", content);
+        var result = await _httpClient.PostAsync($"{_localEndpoint}/{uri}", content);
 
         if (!result.IsSuccessStatusCode)
             return null;
@@ -79,7 +82,7 @@ public class HttpService : IHttpService
         where T : class
     {
         var content = ToJson(dataToSend);
-        var result = await _httpClient.PutAsync($"{_apiUrl}{uri}", content);
+        var result = await _httpClient.PutAsync($"{_localEndpoint}/{uri}", content);
 
         if (!result.IsSuccessStatusCode)
             return null;

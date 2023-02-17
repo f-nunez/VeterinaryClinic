@@ -27,6 +27,8 @@ public partial class PatientsComponent : ComponentBase
     [Inject]
     private IStringLocalizer<PatientDetailComponent> _stringLocalizerForDetail { get; set; }
 
+    protected bool CanWrite { get; set; }
+
     protected IEnumerable<int> PageSizeOptions = new int[] { 3, 6, 9, 18 };
 
     protected List<PatientsVm> Patients = new();

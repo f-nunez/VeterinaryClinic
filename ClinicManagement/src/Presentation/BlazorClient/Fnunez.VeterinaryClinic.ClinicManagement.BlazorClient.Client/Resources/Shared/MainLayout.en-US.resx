@@ -138,4 +138,10 @@
   <data name="MainLayout_Menu_Rooms" xml:space="preserve">
     <value>Rooms</value>
   </data>
+  <data name="MainLayout_ProfileMenu_Logout" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="MainLayout_ProfileMenu_Username" xml:space="preserve">
+    <value>Logged in as {0}</value>
+  </data>
 </root>

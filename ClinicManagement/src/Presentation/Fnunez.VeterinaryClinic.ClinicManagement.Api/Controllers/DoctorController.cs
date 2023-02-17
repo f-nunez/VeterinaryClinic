@@ -12,6 +12,7 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.Ge
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.GetDoctorsFilterFullName;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.GetDoctorsFilterId;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.UpdateDoctor;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Api.Controllers;
@@ -19,6 +20,7 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Api.Controllers;
 public class DoctorController : BaseApiController
 {
     [HttpPost("Create")]
+    [Authorize("RequiredWriterPolicy")]
     public async Task<ActionResult> Create(
         CreateDoctorRequest request,
         CancellationToken cancellationToken)
@@ -32,6 +34,7 @@ public class DoctorController : BaseApiController
     }
 
     [HttpPost("DataGrid")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGrid(
         GetDoctorsRequest request,
         CancellationToken cancellationToken)
@@ -45,6 +48,7 @@ public class DoctorController : BaseApiController
     }
 
     [HttpPost("DataGridFilterFullName")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterFullName(
         GetDoctorsFilterFullNameRequest request,
         CancellationToken cancellationToken)
@@ -58,6 +62,7 @@ public class DoctorController : BaseApiController
     }
 
     [HttpPost("DataGridFilterId")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterId(
         GetDoctorsFilterIdRequest request,
         CancellationToken cancellationToken)
@@ -71,6 +76,7 @@ public class DoctorController : BaseApiController
     }
 
     [HttpDelete("Delete/{Id}")]
+    [Authorize("RequiredWriterPolicy")]
     public async Task<ActionResult> Delete(
         [FromRoute] DeleteDoctorRequest request,
         CancellationToken cancellationToken)
@@ -84,6 +90,7 @@ public class DoctorController : BaseApiController
     }
 
     [HttpGet("GetById/{Id}")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> GetById(
         [FromRoute] GetDoctorByIdRequest request,
         CancellationToken cancellationToken)
@@ -97,6 +104,7 @@ public class DoctorController : BaseApiController
     }
 
     [HttpPut("Update")]
+    [Authorize("RequiredWriterPolicy")]
     public async Task<ActionResult> Update(
         UpdateDoctorRequest request,
         CancellationToken cancellationToken)
