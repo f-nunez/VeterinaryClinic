@@ -43,6 +43,7 @@ public static class ConfigureServices
             options.Cookie.Name = cookieSetting.Name;
             options.Cookie.SameSite = cookieSetting.SameSiteMode;
             options.ExpireTimeSpan = TimeSpan.FromMinutes(cookieSetting.ExpireTimeInMinutes);
+            options.SlidingExpiration = cookieSetting.EnabledSlidingExpiration;
         })
         .AddOpenIdConnect(openIdConnectSetting.AuthenticationScheme, options =>
         {
@@ -105,7 +106,7 @@ public static class ConfigureServices
 
         app.MapRazorPages();
 
-        app.MapBffReverseProxy();
+        app.MapBffReverseProxy().AsBffApiEndpoint();
 
         app.MapFallbackToFile("index.html");
 
