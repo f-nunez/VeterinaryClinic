@@ -4,6 +4,10 @@
     <ProjectReference Include="..\..\Core\Fnunez.VeterinaryClinic.ClinicManagementNotification.Application\Fnunez.VeterinaryClinic.ClinicManagementNotification.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Fnunez.VeterinaryClinic.SharedKernel.Infrastructure" Version="1.3.1" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
