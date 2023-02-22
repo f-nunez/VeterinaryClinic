@@ -1,5 +1,6 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.SendIntegrationEvents.RoomCreated;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.CreateRoom;
@@ -12,15 +13,18 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Co
 public class CreateRoomCommandHandler
     : IRequestHandler<CreateRoomCommand, CreateRoomResponse>
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateRoomCommandHandler(
+        ICurrentUserService currentUserService,
         IMapper mapper,
         IMediator mediator,
         IUnitOfWork unitOfWork)
     {
+        _currentUserService = currentUserService;
         _mapper = mapper;
         _mediator = mediator;
         _unitOfWork = unitOfWork;
@@ -33,6 +37,7 @@ public class CreateRoomCommandHandler
         CreateRoomRequest request = command.CreateRoomRequest;
         var response = new CreateRoomResponse(request.CorrelationId);
         var newRoom = _mapper.Map<Room>(request);
+        newRoom.SetCreatedBy(_currentUserService.UserId);
 
         newRoom = await _unitOfWork
             .Repository<Room>()
