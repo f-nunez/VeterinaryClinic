@@ -2,7 +2,7 @@ using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.RoomAggregate;
 
-public class Room : BaseEntity<int>, IAggregateRoot
+public class Room : BaseAuditableEntity<int>, IAggregateRoot
 {
     public string Name { get; private set; }
 
