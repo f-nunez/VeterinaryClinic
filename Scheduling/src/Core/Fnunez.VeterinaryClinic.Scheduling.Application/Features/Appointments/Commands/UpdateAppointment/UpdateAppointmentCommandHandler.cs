@@ -1,5 +1,6 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Exceptions;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.UpdateAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.AppointmentAggregate;
@@ -15,15 +16,18 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.C
 public class UpdateAppointmentCommandHandler
     : IRequestHandler<UpdateAppointmentCommand, UpdateAppointmentResponse>
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly ILogger<UpdateAppointmentCommandHandler> _logger;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
     public UpdateAppointmentCommandHandler(
+        ICurrentUserService currentUserService,
         ILogger<UpdateAppointmentCommandHandler> logger,
         IMapper mapper,
         IUnitOfWork unitOfWork)
     {
+        _currentUserService = currentUserService;
         _logger = logger;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
@@ -59,6 +63,8 @@ public class UpdateAppointmentCommandHandler
 
         AppointmentValidatorService.ValidateDuration(
             appointmentToUpdate, appointmentType);
+
+        appointmentToUpdate.SetUpdatedBy(_currentUserService.UserId);
 
         await _unitOfWork
             .Repository<Appointment>()
