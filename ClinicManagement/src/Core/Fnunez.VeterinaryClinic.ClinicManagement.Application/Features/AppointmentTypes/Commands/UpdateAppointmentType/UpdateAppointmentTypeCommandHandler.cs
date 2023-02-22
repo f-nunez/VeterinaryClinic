@@ -1,5 +1,7 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.SendIntegrationEvents.AppointmentTypeUpdated;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.UpdateAppointmentType;
@@ -11,15 +13,18 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Appointm
 
 public class UpdateAppointmentTypeCommandHandler : IRequestHandler<UpdateAppointmentTypeCommand, UpdateAppointmentTypeResponse>
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
     public UpdateAppointmentTypeCommandHandler(
+        ICurrentUserService currentUserService,
         IMapper mapper,
         IMediator mediator,
         IUnitOfWork unitOfWork)
     {
+        _currentUserService = currentUserService;
         _mapper = mapper;
         _mediator = mediator;
         _unitOfWork = unitOfWork;
@@ -29,9 +34,24 @@ public class UpdateAppointmentTypeCommandHandler : IRequestHandler<UpdateAppoint
         UpdateAppointmentTypeCommand command,
         CancellationToken cancellationToken)
     {
-        UpdateAppointmentTypeRequest request = command.UpdateAppointmentTypeRequest;
-        var response = new UpdateAppointmentTypeResponse(request.CorrelationId);
-        var appointmentTypeToUpdate = _mapper.Map<AppointmentType>(request);
+        UpdateAppointmentTypeRequest request = command
+            .UpdateAppointmentTypeRequest;
+
+        var response = new UpdateAppointmentTypeResponse(
+            request.CorrelationId);
+
+        var appointmentTypeToUpdate = await _unitOfWork
+            .Repository<AppointmentType>()
+            .GetByIdAsync(request.Id, cancellationToken);
+
+        if (appointmentTypeToUpdate is null)
+            throw new NotFoundException(
+                nameof(appointmentTypeToUpdate), request.Id);
+
+        appointmentTypeToUpdate.UpdateCode(request.Code);
+        appointmentTypeToUpdate.UpdateDuration(request.Duration);
+        appointmentTypeToUpdate.UpdateName(request.Name);
+        appointmentTypeToUpdate.SetUpdatedBy(_currentUserService.UserId);
 
         await _unitOfWork
             .Repository<AppointmentType>()
