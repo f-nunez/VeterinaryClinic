@@ -1,5 +1,6 @@
 using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Commands.CreatePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.SendIntegrationEvents.PatientDeleted;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
@@ -16,17 +17,20 @@ public class DeletePatientCommandHandler
     : IRequestHandler<DeletePatientCommand, DeletePatientResponse>
 {
     private readonly IClientStorageSetting _clientStorageSetting;
+    private readonly ICurrentUserService _currentUserService;
     private readonly IFileSystemDeleterService _fileSystemDeleterService;
     private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
     public DeletePatientCommandHandler(
         IClientStorageSetting clientStorageSetting,
+        ICurrentUserService currentUserService,
         IFileSystemDeleterService fileSystemDeleterService,
         IMediator mediator,
         IUnitOfWork unitOfWork)
     {
         _clientStorageSetting = clientStorageSetting;
+        _currentUserService = currentUserService;
         _fileSystemDeleterService = fileSystemDeleterService;
         _mediator = mediator;
         _unitOfWork = unitOfWork;
@@ -58,6 +62,8 @@ public class DeletePatientCommandHandler
                 nameof(patientToDelete), request.PatientId);
 
         DeletePhoto(patientToDelete);
+
+        patientToDelete.SetUpdatedBy(_currentUserService.UserId);
 
         client.RemovePatient(patientToDelete);
 
