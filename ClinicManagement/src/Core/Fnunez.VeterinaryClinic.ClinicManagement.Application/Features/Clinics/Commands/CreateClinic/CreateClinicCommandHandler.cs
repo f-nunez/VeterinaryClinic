@@ -1,5 +1,6 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.SendIntegrationEvents.ClinicCreated;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.CreateClinic;
@@ -12,15 +13,18 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.
 public class CreateClinicCommandHandler
     : IRequestHandler<CreateClinicCommand, CreateClinicResponse>
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateClinicCommandHandler(
+        ICurrentUserService currentUserService,
         IMapper mapper,
         IMediator mediator,
         IUnitOfWork unitOfWork)
     {
+        _currentUserService = currentUserService;
         _mapper = mapper;
         _mediator = mediator;
         _unitOfWork = unitOfWork;
@@ -33,6 +37,8 @@ public class CreateClinicCommandHandler
         CreateClinicRequest request = command.CreateClinicRequest;
         var response = new CreateClinicResponse(request.CorrelationId);
         var newClinic = _mapper.Map<Clinic>(request);
+
+        newClinic.SetCreatedBy(_currentUserService.UserId);
 
         newClinic = await _unitOfWork
             .Repository<Clinic>()
