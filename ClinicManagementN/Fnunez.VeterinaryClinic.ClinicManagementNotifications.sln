@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{57493FA8-2249-4156-BA9A-4542915338F4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{4859299A-93F8-42C1-A59D-3EDF3F8ADA4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.ClinicManagementNotifications.Domain", "src\Core\Fnunez.VeterinaryClinic.ClinicManagementNotifications.Domain\Fnunez.VeterinaryClinic.ClinicManagementNotifications.Domain.csproj", "{965C8621-9A5A-46BD-A982-C58F5F68D314}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application", "src\Core\Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application\Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.csproj", "{014BC296-7163-4873-9B69-7F8F52471F6E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{999A807E-BFE3-4E89-89C0-3BE3AE7C6D71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.ClinicManagementNotifications.Infrastructure", "src\Infrastructure\Fnunez.VeterinaryClinic.ClinicManagementNotifications.Infrastructure\Fnunez.VeterinaryClinic.ClinicManagementNotifications.Infrastructure.csproj", "{A9C49652-6833-4210-84CC-BA6964598DDE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{947B88D8-EE94-459A-9016-B525E7081223}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.ClinicManagementNotifications.Api", "src\Presentation\Fnunez.VeterinaryClinic.ClinicManagementNotifications.Api\Fnunez.VeterinaryClinic.ClinicManagementNotifications.Api.csproj", "{97BC806F-E9CD-4F03-B212-99E6F7CCB320}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{965C8621-9A5A-46BD-A982-C58F5F68D314}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{965C8621-9A5A-46BD-A982-C58F5F68D314}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{965C8621-9A5A-46BD-A982-C58F5F68D314}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{965C8621-9A5A-46BD-A982-C58F5F68D314}.Release|Any CPU.Build.0 = Release|Any CPU
+		{014BC296-7163-4873-9B69-7F8F52471F6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{014BC296-7163-4873-9B69-7F8F52471F6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{014BC296-7163-4873-9B69-7F8F52471F6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{014BC296-7163-4873-9B69-7F8F52471F6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9C49652-6833-4210-84CC-BA6964598DDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9C49652-6833-4210-84CC-BA6964598DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9C49652-6833-4210-84CC-BA6964598DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9C49652-6833-4210-84CC-BA6964598DDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97BC806F-E9CD-4F03-B212-99E6F7CCB320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97BC806F-E9CD-4F03-B212-99E6F7CCB320}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97BC806F-E9CD-4F03-B212-99E6F7CCB320}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97BC806F-E9CD-4F03-B212-99E6F7CCB320}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4859299A-93F8-42C1-A59D-3EDF3F8ADA4E} = {57493FA8-2249-4156-BA9A-4542915338F4}
+		{965C8621-9A5A-46BD-A982-C58F5F68D314} = {4859299A-93F8-42C1-A59D-3EDF3F8ADA4E}
+		{014BC296-7163-4873-9B69-7F8F52471F6E} = {4859299A-93F8-42C1-A59D-3EDF3F8ADA4E}
+		{999A807E-BFE3-4E89-89C0-3BE3AE7C6D71} = {57493FA8-2249-4156-BA9A-4542915338F4}
+		{A9C49652-6833-4210-84CC-BA6964598DDE} = {999A807E-BFE3-4E89-89C0-3BE3AE7C6D71}
+		{947B88D8-EE94-459A-9016-B525E7081223} = {57493FA8-2249-4156-BA9A-4542915338F4}
+		{97BC806F-E9CD-4F03-B212-99E6F7CCB320} = {947B88D8-EE94-459A-9016-B525E7081223}
+	EndGlobalSection
+EndGlobal
