@@ -2,7 +2,7 @@ using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClinicAggregate;
 
-public class Clinic : BaseEntity<int>, IAggregateRoot
+public class Clinic : BaseAuditableEntity<int>, IAggregateRoot
 {
     public string Address { get; set; }
     public string EmailAddress { get; set; }
