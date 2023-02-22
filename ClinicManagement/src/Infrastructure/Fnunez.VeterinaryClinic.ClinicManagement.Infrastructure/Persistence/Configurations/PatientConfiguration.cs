@@ -8,9 +8,15 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
 {
     public void Configure(EntityTypeBuilder<Patient> builder)
     {
+        builder.Property(p => p.CreatedBy)
+            .HasMaxLength(450);
+
         builder.Property(p => p.Name)
             .HasMaxLength(200)
             .IsRequired();
+
+        builder.Property(p => p.UpdatedBy)
+            .HasMaxLength(450);
 
         builder.OwnsOne(p => p.AnimalType, p =>
         {
