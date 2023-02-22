@@ -1,4 +1,5 @@
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.SendIntegrationEvents.PatientCreated;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Settings;
@@ -16,17 +17,20 @@ public class CreatePatientCommandHandler
     : IRequestHandler<CreatePatientCommand, CreatePatientResponse>
 {
     private readonly IClientStorageSetting _clientStorageSetting;
+    private readonly ICurrentUserService _currentUserService;
     private readonly IFileSystemWriterService _fileSystemWriterService;
     private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreatePatientCommandHandler(
         IClientStorageSetting clientStorageSetting,
+        ICurrentUserService currentUserService,
         IFileSystemWriterService fileSystemWriterService,
         IMediator mediator,
         IUnitOfWork unitOfWork)
     {
         _clientStorageSetting = clientStorageSetting;
+        _currentUserService = currentUserService;
         _fileSystemWriterService = fileSystemWriterService;
         _mediator = mediator;
         _unitOfWork = unitOfWork;
@@ -57,6 +61,8 @@ public class CreatePatientCommandHandler
             new Photo(request.PhotoName, savedPhotoName),
             preferredDoctorId: request.PreferredDoctorId
         );
+
+        newPatient.SetCreatedBy(_currentUserService.UserId);
 
         client.AddPatient(newPatient);
 
