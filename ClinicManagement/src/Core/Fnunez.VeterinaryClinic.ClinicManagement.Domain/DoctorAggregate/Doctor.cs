@@ -2,7 +2,7 @@ using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.DoctorAggregate;
 
-public class Doctor : BaseEntity<int>, IAggregateRoot
+public class Doctor : BaseAuditableEntity<int>, IAggregateRoot
 {
     public string FullName { get; private set; }
 
