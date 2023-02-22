@@ -53,46 +53,46 @@ public class ApplicationDbContextSeeder
 
     public async Task TrySeedAsync()
     {
-        if (!_context.AppointmentTypes.Any())
+        if (!await _context.AppointmentTypes.AnyAsync())
         {
-            _context.AppointmentTypes.AddRange(GetAppointmentTypes());
+            await _context.AppointmentTypes.AddRangeAsync(GetAppointmentTypes());
             await _context.SaveChangesAsync();
         }
 
-        if (!_context.Clinics.Any())
+        if (!await _context.Clinics.AnyAsync())
         {
-            _context.Clinics.AddRange(GetClinics());
+            await _context.Clinics.AddRangeAsync(GetClinics());
             await _context.SaveChangesAsync();
         }
 
-        if (!_context.Doctors.Any())
+        if (!await _context.Doctors.AnyAsync())
         {
-            _context.Doctors.AddRange(GetDoctors());
+            await _context.Doctors.AddRangeAsync(GetDoctors());
             await _context.SaveChangesAsync();
         }
 
-        if (!_context.Rooms.Any())
+        if (!await _context.Rooms.AnyAsync())
         {
-            _context.Rooms.AddRange(GetRooms());
+            await _context.Rooms.AddRangeAsync(GetRooms());
             await _context.SaveChangesAsync();
         }
 
-        if (!_context.Clients.Any())
+        if (!await _context.Clients.AnyAsync())
         {
-            _context.Clients.AddRange(GetClients());
+            await _context.Clients.AddRangeAsync(GetClients());
             await _context.SaveChangesAsync();
         }
 
-        if (!_context.Patients.Any())
+        if (!await _context.Patients.AnyAsync())
         {
-            _context.Patients.AddRange(GetPatients());
+            await _context.Patients.AddRangeAsync(GetPatients());
             await _context.SaveChangesAsync();
         }
     }
 
     private List<AppointmentType> GetAppointmentTypes()
     {
-        return new List<AppointmentType>
+        var appointmentTypes = new List<AppointmentType>
         {
             new AppointmentType("Wellness Exam", "WE", 60),
             new AppointmentType("Diagnostic Exam", "DE", 60),
@@ -107,11 +107,15 @@ public class ApplicationDbContextSeeder
             new AppointmentType("Surgery C", "SC", 180),
             new AppointmentType("Surgery D", "SD", 240)
         };
+
+        appointmentTypes.ForEach(x => x.SetCreatedBy("9f79b45e-1ebe-4bb2-9d6f-e00da51b0848"));
+
+        return appointmentTypes;
     }
 
     private List<Clinic> GetClinics()
     {
-        return new List<Clinic>
+        var clinics = new List<Clinic>
         {
             new Clinic("Flores Magon #8665 Tijuana", "floresmagon@vc.com", "Clinic Flores Magon"),
             new Clinic("Lagos #311 Tijuana", "lagos@vc.com", "Clinic Lagos"),
@@ -125,11 +129,15 @@ public class ApplicationDbContextSeeder
             new Clinic("Ing. Aguayo #1415 Guadalajara", "aguayo@vc.com", "Clinic Aguayo"),
             new Clinic("Ing. Plutarco Elias Calles #99", "happypet@vc.com", "Clinic Happy Pet"),
         };
+
+        clinics.ForEach(x => x.SetCreatedBy("9f79b45e-1ebe-4bb2-9d6f-e00da51b0848"));
+
+        return clinics;
     }
 
     private List<Doctor> GetDoctors()
     {
-        return new List<Doctor>
+        var doctors = new List<Doctor>
         {
             new Doctor("Francisco Nuñez"),
             new Doctor("Sherpard D. Monkey"),
@@ -144,11 +152,15 @@ public class ApplicationDbContextSeeder
             new Doctor("Elizabeth Gonzalez"),
             new Doctor("Muhammed Baha"),
         };
+
+        doctors.ForEach(x => x.SetCreatedBy("9f79b45e-1ebe-4bb2-9d6f-e00da51b0848"));
+
+        return doctors;
     }
 
     private List<Room> GetRooms()
     {
-        return new List<Room>
+        var rooms = new List<Room>
         {
             new Room("A-1"),
             new Room("B-1"),
@@ -165,58 +177,62 @@ public class ApplicationDbContextSeeder
             new Room("M-1"),
             new Room("N-1")
         };
+
+        rooms.ForEach(x => x.SetCreatedBy("9f79b45e-1ebe-4bb2-9d6f-e00da51b0848"));
+
+        return rooms;
     }
 
     private List<Client> GetClients()
     {
-        var client1 = new Client(
-            "Christian Nuñez",
-            "Chris",
-            "Mister",
-            "christian.demo@hotmail.com",
-            null
-        );
-
-        return new List<Client>
+        var clients = new List<Client>
         {
-            client1
+            new Client(
+                "Christian Nuñez",
+                "Chris",
+                "Mister",
+                "christian.demo@hotmail.com",
+                null
+            )
         };
+
+        clients.ForEach(x => x.SetCreatedBy("9f79b45e-1ebe-4bb2-9d6f-e00da51b0848"));
+
+        return clients;
     }
 
     private List<Patient> GetPatients()
     {
-        var pet1 = new Patient(
-            1,
-            "Booster",
-            AnimalSex.Male,
-            new AnimalType("Dobermann", "Dog"),
-            new Photo("booster.png", "F8F90EB9-E0B4-44C6-9E33-18606796E537.png"),
-            null
-        );
-
-        var pet2 = new Patient(
-            1,
-            "Vina",
-            AnimalSex.Female,
-            new AnimalType("Albino", "Ferret"),
-            new Photo("vina.jpg", "34D6B187-A8A3-4704-9B7E-945CBC553591.jpg"),
-            null
-        );
-
-        var pet3 = new Patient(
-            1,
-            "Mata",
-            AnimalSex.Male,
-            new AnimalType("Domestic Shorthair", "Cat"),
-            new Photo("mata.jpg", "C1AC842C-3DBE-4C9E-96EA-426D21F29689.jpg"),
-            null
-        );
-
-        return new List<Patient>
+        var patients = new List<Patient>
         {
-            pet1,
-            pet2,
-            pet3
+            new Patient(
+                1,
+                "Booster",
+                AnimalSex.Male,
+                new AnimalType("Dobermann", "Dog"),
+                new Photo("booster.png", "F8F90EB9-E0B4-44C6-9E33-18606796E537.png"),
+                null
+            ),
+            new Patient(
+                1,
+                "Vina",
+                AnimalSex.Female,
+                new AnimalType("Albino", "Ferret"),
+                new Photo("vina.jpg", "34D6B187-A8A3-4704-9B7E-945CBC553591.jpg"),
+                null
+            ),
+            new Patient(
+                1,
+                "Mata",
+                AnimalSex.Male,
+                new AnimalType("Domestic Shorthair", "Cat"),
+                new Photo("mata.jpg", "C1AC842C-3DBE-4C9E-96EA-426D21F29689.jpg"),
+                null
+            )
         };
+
+        patients.ForEach(x => x.SetCreatedBy("9f79b45e-1ebe-4bb2-9d6f-e00da51b0848"));
+
+        return patients;
     }
 }
