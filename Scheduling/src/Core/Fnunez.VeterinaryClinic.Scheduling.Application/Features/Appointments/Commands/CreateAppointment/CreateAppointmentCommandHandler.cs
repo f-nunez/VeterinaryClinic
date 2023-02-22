@@ -1,5 +1,6 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Exceptions;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.CreateAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.AppointmentAggregate;
@@ -15,15 +16,18 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.C
 public class CreateAppointmentCommandHandler
     : IRequestHandler<CreateAppointmentCommand, CreateAppointmentResponse>
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly ILogger<CreateAppointmentCommandHandler> _logger;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateAppointmentCommandHandler(
+        ICurrentUserService currentUserService,
         ILogger<CreateAppointmentCommandHandler> logger,
         IMapper mapper,
         IUnitOfWork unitOfWork)
     {
+        _currentUserService = currentUserService;
         _logger = logger;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
@@ -41,7 +45,7 @@ public class CreateAppointmentCommandHandler
         var scheduledAppointment = await _unitOfWork
             .Repository<Appointment>()
             .FirstOrDefaultAsync(specification, cancellationToken);
-        
+
         if (scheduledAppointment != null)
             throw new ArgumentException($"An appointment with id: {scheduledAppointment.Id} is already scheduled for patient: {request.PatientId}");
 
@@ -54,6 +58,8 @@ public class CreateAppointmentCommandHandler
             newAppointment,
             appointmentType
         );
+
+        newAppointment.SetCreatedBy(_currentUserService.UserId);
 
         await _unitOfWork
             .Repository<Appointment>()
