@@ -71,6 +71,36 @@ public class AppointmentType : BaseAuditableEntity<int>, IAggregateRoot
         Duration = duration;
     }
 
+    public void UpdateCode(string code)
+    {
+        if (string.IsNullOrEmpty(code))
+            throw new ArgumentException(
+                $"Required input {nameof(code)} was empty.",
+                nameof(code));
+
+        Code = code;
+    }
+
+    public void UpdateDuration(int duration)
+    {
+        if (duration <= 0)
+            throw new ArgumentException(
+                $"Required input {nameof(duration)} cannot be zero or negative.",
+                nameof(duration));
+
+        Duration = duration;
+    }
+
+    public void UpdateName(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+            throw new ArgumentException(
+                $"Required input {nameof(name)} was empty.",
+                nameof(name));
+
+        Name = name;
+    }
+
     public override string ToString()
     {
         return Name;
