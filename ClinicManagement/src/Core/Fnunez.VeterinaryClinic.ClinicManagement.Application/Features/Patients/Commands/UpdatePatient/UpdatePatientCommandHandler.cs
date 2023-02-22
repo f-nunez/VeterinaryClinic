@@ -1,5 +1,6 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.SendIntegrationEvents.PatientUpdated;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Settings;
@@ -17,6 +18,7 @@ public class UpdatePatientCommandHandler
     : IRequestHandler<UpdatePatientCommand, UpdatePatientResponse>
 {
     private readonly IClientStorageSetting _clientStorageSetting;
+    private readonly ICurrentUserService _currentUserService;
     private readonly IFileSystemDeleterService _fileSystemDeleterService;
     private readonly IFileSystemWriterService _fileSystemWriterService;
     private readonly IMediator _mediator;
@@ -24,6 +26,7 @@ public class UpdatePatientCommandHandler
 
     public UpdatePatientCommandHandler(
         IClientStorageSetting clientStorageSetting,
+        ICurrentUserService currentUserService,
         IFileSystemDeleterService fileSystemDeleterService,
         IFileSystemWriterService fileSystemWriterService,
         IMapper mapper,
@@ -31,6 +34,7 @@ public class UpdatePatientCommandHandler
         IUnitOfWork unitOfWork)
     {
         _clientStorageSetting = clientStorageSetting;
+        _currentUserService = currentUserService;
         _fileSystemDeleterService = fileSystemDeleterService;
         _fileSystemWriterService = fileSystemWriterService;
         _mediator = mediator;
@@ -69,6 +73,8 @@ public class UpdatePatientCommandHandler
         await UpdateNewPhotoAsync(request, patientToUpdate);
 
         patientToUpdate.UpdatePreferredDoctorId(request.PreferredDoctorId);
+        
+        patientToUpdate.SetUpdatedBy(_currentUserService.UserId);
 
         await _unitOfWork
             .Repository<Client>()
