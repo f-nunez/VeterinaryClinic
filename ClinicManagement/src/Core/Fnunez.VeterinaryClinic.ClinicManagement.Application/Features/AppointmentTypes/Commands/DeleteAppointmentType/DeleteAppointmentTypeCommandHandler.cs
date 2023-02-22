@@ -1,6 +1,7 @@
 using AutoMapper;
 using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.SendIntegrationEvents.AppointmentTypeDeleted;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.DeleteAppointmentType;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.AppointmentTypeAggregate;
@@ -12,15 +13,18 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Appointm
 public class DeleteAppointmentTypeCommandHandler
     : IRequestHandler<DeleteAppointmentTypeCommand, DeleteAppointmentTypeResponse>
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
     public DeleteAppointmentTypeCommandHandler(
+        ICurrentUserService currentUserService,
         IMapper mapper,
         IMediator mediator,
         IUnitOfWork unitOfWork)
     {
+        _currentUserService = currentUserService;
         _mapper = mapper;
         _mediator = mediator;
         _unitOfWork = unitOfWork;
@@ -43,6 +47,8 @@ public class DeleteAppointmentTypeCommandHandler
         if (appointmentTypeToDelete is null)
             throw new NotFoundException(
                 nameof(appointmentTypeToDelete), request.Id);
+        
+        appointmentTypeToDelete.SetCreatedBy(_currentUserService.UserId);
 
         await _unitOfWork
             .Repository<AppointmentType>()
