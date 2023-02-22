@@ -12,6 +12,9 @@ public class ClinicConfiguration : IEntityTypeConfiguration<Clinic>
             .HasMaxLength(1000)
             .IsRequired();
 
+        builder.Property(c => c.CreatedBy)
+            .HasMaxLength(450);
+
         builder.Property(c => c.EmailAddress)
             .HasMaxLength(320)
             .IsRequired();
@@ -19,5 +22,8 @@ public class ClinicConfiguration : IEntityTypeConfiguration<Clinic>
         builder.Property(c => c.Name)
             .HasMaxLength(200)
             .IsRequired();
+
+        builder.Property(c => c.UpdatedBy)
+            .HasMaxLength(450);
     }
 }
