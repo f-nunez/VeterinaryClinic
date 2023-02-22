@@ -2,7 +2,7 @@ using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.AppointmentTypeAggregate;
 
-public class AppointmentType : BaseEntity<int>, IAggregateRoot
+public class AppointmentType : BaseAuditableEntity<int>, IAggregateRoot
 {
     public string Name { get; private set; }
     public string Code { get; private set; }
