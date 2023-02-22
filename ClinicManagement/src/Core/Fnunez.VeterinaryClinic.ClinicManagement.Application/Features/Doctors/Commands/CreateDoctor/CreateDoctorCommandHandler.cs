@@ -1,5 +1,6 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.SendIntegrationEvents.DoctorCreated;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.CreateDoctor;
@@ -12,15 +13,18 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.
 public class CreateDoctorCommandHandler
     : IRequestHandler<CreateDoctorCommand, CreateDoctorResponse>
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateDoctorCommandHandler(
+        ICurrentUserService currentUserService,
         IMapper mapper,
         IMediator mediator,
         IUnitOfWork unitOfWork)
     {
+        _currentUserService = currentUserService;
         _mapper = mapper;
         _mediator = mediator;
         _unitOfWork = unitOfWork;
@@ -33,6 +37,7 @@ public class CreateDoctorCommandHandler
         CreateDoctorRequest request = command.CreateDoctorRequest;
         var response = new CreateDoctorResponse(request.CorrelationId);
         var newDoctor = _mapper.Map<Doctor>(request);
+        newDoctor.SetCreatedBy(_currentUserService.UserId);
 
         newDoctor = await _unitOfWork
             .Repository<Doctor>()
