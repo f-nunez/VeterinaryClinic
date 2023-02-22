@@ -9,7 +9,7 @@ using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Domain.AppointmentAggregate;
 
-public class Appointment : BaseEntity<Guid>, IAggregateRoot
+public class Appointment : BaseAuditableEntity<Guid>, IAggregateRoot
 {
     public DateTimeOffset? ConfirmOn { get; private set; }
     public DateTimeOffsetRange DateRange { get; private set; } = null!;
