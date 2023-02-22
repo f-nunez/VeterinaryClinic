@@ -53,39 +53,39 @@ public class ApplicationDbContextSeeder
 
     public async Task TrySeedAsync()
     {
-        if (!_context.AppointmentTypes.Any())
+        if (!await _context.AppointmentTypes.AnyAsync())
         {
-            _context.AppointmentTypes.AddRange(GetAppointmentTypes());
+            await _context.AppointmentTypes.AddRangeAsync(GetAppointmentTypes());
             await _context.SaveChangesAsync();
         }
 
-        if (!_context.Clinics.Any())
+        if (!await _context.Clinics.AnyAsync())
         {
-            _context.Clinics.AddRange(GetClinics());
+            await _context.Clinics.AddRangeAsync(GetClinics());
             await _context.SaveChangesAsync();
         }
 
-        if (!_context.Doctors.Any())
+        if (!await _context.Doctors.AnyAsync())
         {
-            _context.Doctors.AddRange(GetDoctors());
+            await _context.Doctors.AddRangeAsync(GetDoctors());
             await _context.SaveChangesAsync();
         }
 
-        if (!_context.Rooms.Any())
+        if (!await _context.Rooms.AnyAsync())
         {
-            _context.Rooms.AddRange(GetRooms());
+            await _context.Rooms.AddRangeAsync(GetRooms());
             await _context.SaveChangesAsync();
         }
 
-        if (!_context.Clients.Any())
+        if (!await _context.Clients.AnyAsync())
         {
-            _context.Clients.AddRange(GetClients());
+            await _context.Clients.AddRangeAsync(GetClients());
             await _context.SaveChangesAsync();
         }
 
-        if (!_context.Patients.Any())
+        if (!await _context.Patients.AnyAsync())
         {
-            _context.Patients.AddRange(GetPatients());
+            await _context.Patients.AddRangeAsync(GetPatients());
             await _context.SaveChangesAsync();
         }
     }
@@ -169,54 +169,46 @@ public class ApplicationDbContextSeeder
 
     private List<Client> GetClients()
     {
-        var client1 = new Client(
-            "Christian Nuñez",
-            "Chris",
-            "Mister",
-            "christian.demo@hotmail.com",
-            null
-        );
-
         return new List<Client>
         {
-            client1
+            new Client(
+                "Christian Nuñez",
+                "Chris",
+                "Mister",
+                "christian.demo@hotmail.com",
+                null
+            )
         };
     }
 
     private List<Patient> GetPatients()
     {
-        var pet1 = new Patient(
-            1,
-            "Booster",
-            AnimalSex.Male,
-            new AnimalType("Dobermann", "Dog"),
-            new Photo("booster.png", "F8F90EB9-E0B4-44C6-9E33-18606796E537.png"),
-            null
-        );
-
-        var pet2 = new Patient(
-            1,
-            "Vina",
-            AnimalSex.Female,
-            new AnimalType("Albino", "Ferret"),
-            new Photo("vina.jpg", "34D6B187-A8A3-4704-9B7E-945CBC553591.jpg"),
-            null
-        );
-
-        var pet3 = new Patient(
-            1,
-            "Mata",
-            AnimalSex.Male,
-            new AnimalType("Domestic Shorthair", "Cat"),
-            new Photo("mata.jpg", "C1AC842C-3DBE-4C9E-96EA-426D21F29689.jpg"),
-            null
-        );
-
         return new List<Patient>
         {
-            pet1,
-            pet2,
-            pet3
+            new Patient(
+                1,
+                "Booster",
+                AnimalSex.Male,
+                new AnimalType("Dobermann", "Dog"),
+                new Photo("booster.png", "F8F90EB9-E0B4-44C6-9E33-18606796E537.png"),
+                null
+            ),
+            new Patient(
+                1,
+                "Vina",
+                AnimalSex.Female,
+                new AnimalType("Albino", "Ferret"),
+                new Photo("vina.jpg", "34D6B187-A8A3-4704-9B7E-945CBC553591.jpg"),
+                null
+            ),
+            new Patient(
+                1,
+                "Mata",
+                AnimalSex.Male,
+                new AnimalType("Domestic Shorthair", "Cat"),
+                new Photo("mata.jpg", "C1AC842C-3DBE-4C9E-96EA-426D21F29689.jpg"),
+                null
+            )
         };
     }
 }
