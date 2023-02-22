@@ -1,6 +1,7 @@
 using AutoMapper;
 using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.SendIntegrationEvents.RoomDeleted;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.DeleteRoom;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.RoomAggregate;
@@ -12,15 +13,18 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Co
 public class DeleteRoomCommandHandler
     : IRequestHandler<DeleteRoomCommand, DeleteRoomResponse>
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
     public DeleteRoomCommandHandler(
+        ICurrentUserService currentUserService,
         IMapper mapper,
         IMediator mediator,
         IUnitOfWork unitOfWork)
     {
+        _currentUserService = currentUserService;
         _mapper = mapper;
         _mediator = mediator;
         _unitOfWork = unitOfWork;
@@ -39,6 +43,8 @@ public class DeleteRoomCommandHandler
 
         if (roomToDelete is null)
             throw new NotFoundException(nameof(roomToDelete), request.Id);
+
+        roomToDelete.SetUpdatedBy(_currentUserService.UserId);
 
         await _unitOfWork
             .Repository<Room>()
