@@ -1,5 +1,7 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.SendIntegrationEvents.RoomUpdated;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.UpdateRoom;
@@ -12,15 +14,18 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.Co
 public class UpdateRoomCommandHandler
     : IRequestHandler<UpdateRoomCommand, UpdateRoomResponse>
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
     public UpdateRoomCommandHandler(
+        ICurrentUserService currentUserService,
         IMapper mapper,
         IMediator mediator,
         IUnitOfWork unitOfWork)
     {
+        _currentUserService = currentUserService;
         _mapper = mapper;
         _mediator = mediator;
         _unitOfWork = unitOfWork;
@@ -32,7 +37,16 @@ public class UpdateRoomCommandHandler
     {
         UpdateRoomRequest request = command.UpdateRoomRequest;
         var response = new UpdateRoomResponse(request.CorrelationId);
-        var roomToUpdate = _mapper.Map<Room>(request);
+
+        var roomToUpdate = await _unitOfWork
+            .Repository<Room>()
+            .GetByIdAsync(request.Id, cancellationToken);
+
+        if (roomToUpdate is null)
+            throw new NotFoundException(nameof(roomToUpdate), request.Id);
+        
+        roomToUpdate.UpdateName(request.Name);
+        roomToUpdate.SetUpdatedBy(_currentUserService.UserId);
 
         await _unitOfWork
             .Repository<Room>()
