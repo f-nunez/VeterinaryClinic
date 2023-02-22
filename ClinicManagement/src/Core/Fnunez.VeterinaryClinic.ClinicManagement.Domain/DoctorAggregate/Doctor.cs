@@ -37,6 +37,16 @@ public class Doctor : BaseAuditableEntity<int>, IAggregateRoot
         FullName = fullName;
     }
 
+    public void UpdateFullName(string fullName)
+    {
+        if (string.IsNullOrEmpty(fullName))
+            throw new ArgumentException(
+                $"Required input {nameof(fullName)} was empty.",
+                nameof(fullName));
+
+        FullName = fullName;
+    }
+
     public override string ToString()
     {
         return FullName.ToString();
