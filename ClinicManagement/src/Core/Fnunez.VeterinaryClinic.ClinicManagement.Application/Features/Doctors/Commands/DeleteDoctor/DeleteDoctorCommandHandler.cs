@@ -1,6 +1,7 @@
 using AutoMapper;
 using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.SendIntegrationEvents.DoctorDeleted;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.DeleteDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.DoctorAggregate;
@@ -12,15 +13,18 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.
 public class DeleteDoctorCommandHandler
     : IRequestHandler<DeleteDoctorCommand, DeleteDoctorResponse>
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
 
     public DeleteDoctorCommandHandler(
+        ICurrentUserService currentUserService,
         IMapper mapper,
         IMediator mediator,
         IUnitOfWork unitOfWork)
     {
+        _currentUserService = currentUserService;
         _mapper = mapper;
         _mediator = mediator;
         _unitOfWork = unitOfWork;
@@ -39,6 +43,8 @@ public class DeleteDoctorCommandHandler
 
         if (doctorToDelete is null)
             throw new NotFoundException(nameof(doctorToDelete), request.Id);
+
+        doctorToDelete.SetUpdatedBy(_currentUserService.UserId);
 
         await _unitOfWork
             .Repository<Doctor>()
