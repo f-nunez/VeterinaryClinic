@@ -4,7 +4,7 @@ using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
 
-public class Client : BaseEntity<int>, IAggregateRoot
+public class Client : BaseAuditableEntity<int>, IAggregateRoot
 {
     private IList<Patient> _patients = new List<Patient>();
     public string FullName { get; private set; }
