@@ -1,5 +1,6 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Exceptions;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.DeleteAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.AppointmentAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
@@ -10,13 +11,16 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.C
 public class DeleteAppointmentCommandHandler
     : IRequestHandler<DeleteAppointmentCommand, DeleteAppointmentResponse>
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
     public DeleteAppointmentCommandHandler(
+        ICurrentUserService currentUserService,
         IMapper mapper,
         IUnitOfWork unitOfWork)
     {
+        _currentUserService = currentUserService;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
     }
@@ -35,6 +39,8 @@ public class DeleteAppointmentCommandHandler
         if (appointmentToDelete is null)
             throw new NotFoundException(
                 nameof(appointmentToDelete), request.AppointmentId);
+
+        appointmentToDelete.SetUpdatedBy(_currentUserService.UserId);
 
         await _unitOfWork
             .Repository<Appointment>()
