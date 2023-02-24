@@ -1,4 +1,4 @@
-namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.ServiceBus;
+namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 
 public interface IServiceBus
 {

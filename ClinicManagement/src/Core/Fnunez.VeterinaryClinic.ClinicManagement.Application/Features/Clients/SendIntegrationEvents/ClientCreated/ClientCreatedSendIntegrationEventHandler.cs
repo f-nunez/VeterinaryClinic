@@ -1,4 +1,4 @@
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.ServiceBus;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.SendIntegrationEvents.ClientCreated;

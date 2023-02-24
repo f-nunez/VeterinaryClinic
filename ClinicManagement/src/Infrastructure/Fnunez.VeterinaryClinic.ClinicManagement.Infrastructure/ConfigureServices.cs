@@ -1,4 +1,4 @@
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.ServiceBus;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Contexts;
