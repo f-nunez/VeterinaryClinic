@@ -1,4 +1,4 @@
-namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
+namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Services;
 
 public interface IFileSystemWriterService
 {
