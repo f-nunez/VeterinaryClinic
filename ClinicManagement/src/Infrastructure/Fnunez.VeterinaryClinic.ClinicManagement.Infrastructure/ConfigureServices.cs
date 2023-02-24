@@ -1,5 +1,5 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Contexts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Repositories;
