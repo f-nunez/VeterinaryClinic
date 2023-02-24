@@ -1,7 +1,7 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Settings;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.GetPatients;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Entities;
