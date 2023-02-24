@@ -2,7 +2,7 @@ using AutoMapper;
 using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.SendIntegrationEvents.PatientUpdated;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.UpdatePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
