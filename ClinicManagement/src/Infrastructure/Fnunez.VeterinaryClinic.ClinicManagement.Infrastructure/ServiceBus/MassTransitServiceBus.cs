@@ -12,15 +12,13 @@ public class MassTransitServiceBus : IServiceBus
         _publishEndpoint = publishEndpoint;
     }
 
-    public Task PublishAsync<TMessage>(
+    public async Task PublishAsync<TMessage>(
         TMessage message,
         CancellationToken cancellationToken)
     {
         if (message is null)
             throw new ArgumentNullException(nameof(message));
 
-        return Task.WhenAll(
-            _publishEndpoint.Publish(message, cancellationToken)
-        );
+        await _publishEndpoint.Publish(message, cancellationToken);
     }
 }
