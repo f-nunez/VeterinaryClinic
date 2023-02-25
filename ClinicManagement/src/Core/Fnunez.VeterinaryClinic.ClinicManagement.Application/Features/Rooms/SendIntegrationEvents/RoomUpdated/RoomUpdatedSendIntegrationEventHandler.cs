@@ -13,12 +13,12 @@ public class RoomUpdatedSendIntegrationEventHandler
         _serviceBus = serviceBus;
     }
 
-    public Task Handle(
+    public async Task Handle(
         RoomUpdatedSendIntegrationEvent integrationEvent,
         CancellationToken cancellationToken)
     {
         var message = integrationEvent.RoomUpdatedIntegrationEventContract;
 
-        return _serviceBus.PublishAsync(message, cancellationToken);
+        await _serviceBus.PublishAsync(message, cancellationToken);
     }
 }

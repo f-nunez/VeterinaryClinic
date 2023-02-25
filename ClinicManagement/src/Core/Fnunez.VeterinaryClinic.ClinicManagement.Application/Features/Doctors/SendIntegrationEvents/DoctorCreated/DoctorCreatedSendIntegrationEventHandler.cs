@@ -13,12 +13,12 @@ public class DoctorCreatedSendIntegrationEventHandler
         _serviceBus = serviceBus;
     }
 
-    public Task Handle(
+    public async Task Handle(
         DoctorCreatedSendIntegrationEvent integrationEvent,
         CancellationToken cancellationToken)
     {
         var message = integrationEvent.DoctorCreatedIntegrationEventContract;
 
-        return _serviceBus.PublishAsync(message, cancellationToken);
+        await _serviceBus.PublishAsync(message, cancellationToken);
     }
 }

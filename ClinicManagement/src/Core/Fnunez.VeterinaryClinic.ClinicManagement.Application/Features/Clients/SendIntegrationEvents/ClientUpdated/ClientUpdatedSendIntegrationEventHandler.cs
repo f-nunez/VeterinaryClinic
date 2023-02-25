@@ -13,12 +13,12 @@ public class ClientUpdatedSendIntegrationEventHandler
         _serviceBus = serviceBus;
     }
 
-    public Task Handle(
+    public async Task Handle(
         ClientUpdatedSendIntegrationEvent integrationEvent,
         CancellationToken cancellationToken)
     {
         var message = integrationEvent.ClientUpdatedIntegrationEventContract;
 
-        return _serviceBus.PublishAsync(message, cancellationToken);
+        await _serviceBus.PublishAsync(message, cancellationToken);
     }
 }

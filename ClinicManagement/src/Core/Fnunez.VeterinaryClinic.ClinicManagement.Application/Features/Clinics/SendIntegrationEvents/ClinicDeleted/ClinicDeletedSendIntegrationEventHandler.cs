@@ -13,12 +13,12 @@ public class ClinicDeletedSendIntegrationEventHandler
         _serviceBus = serviceBus;
     }
 
-    public Task Handle(
+    public async Task Handle(
         ClinicDeletedSendIntegrationEvent integrationEvent,
         CancellationToken cancellationToken)
     {
         var message = integrationEvent.ClinicDeletedIntegrationEventContract;
 
-        return _serviceBus.PublishAsync(message, cancellationToken);
+        await _serviceBus.PublishAsync(message, cancellationToken);
     }
 }

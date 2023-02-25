@@ -13,12 +13,12 @@ public class RoomDeletedSendIntegrationEventHandler
         _serviceBus = serviceBus;
     }
 
-    public Task Handle(
+    public async Task Handle(
         RoomDeletedSendIntegrationEvent integrationEvent,
         CancellationToken cancellationToken)
     {
         var message = integrationEvent.RoomDeletedIntegrationEventContract;
 
-        return _serviceBus.PublishAsync(message, cancellationToken);
+        await _serviceBus.PublishAsync(message, cancellationToken);
     }
 }

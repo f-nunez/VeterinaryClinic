@@ -14,11 +14,13 @@ public class AppointmentTypeUpdatedSendIntegrationEventHandler
         _serviceBus = serviceBus;
     }
 
-    public Task Handle(AppointmentTypeUpdatedSendIntegrationEvent integrationEvent, CancellationToken cancellationToken)
+    public async Task Handle(
+        AppointmentTypeUpdatedSendIntegrationEvent integrationEvent,
+        CancellationToken cancellationToken)
     {
         var message = integrationEvent
             .AppointmentTypeUpdatedIntegrationEventContract;
 
-        return _serviceBus.PublishAsync(message, cancellationToken);
+        await _serviceBus.PublishAsync(message, cancellationToken);
     }
 }
