@@ -1,4 +1,4 @@
-using Fnunez.VeterinaryClinic.Scheduling.Application.Interfaces.Services;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Services;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Services;
 

@@ -1,4 +1,4 @@
-using Fnunez.VeterinaryClinic.Scheduling.Application.Interfaces.ServiceBus;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Interfaces;
 using MassTransit;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Infrastructure.ServiceBus;
