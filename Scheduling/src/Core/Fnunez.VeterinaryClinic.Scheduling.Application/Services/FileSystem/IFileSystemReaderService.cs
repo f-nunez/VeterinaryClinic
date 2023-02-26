@@ -1,4 +1,4 @@
-namespace Fnunez.VeterinaryClinic.Scheduling.Application.Interfaces.Services;
+namespace Fnunez.VeterinaryClinic.Scheduling.Application.Services;
 
 public interface IFileSystemReaderService
 {
