@@ -1,4 +1,4 @@
-namespace Fnunez.VeterinaryClinic.Scheduling.Application.Interfaces.Settings;
+namespace Fnunez.VeterinaryClinic.Scheduling.Application.Settings;
 
 public interface IClientStorageSetting
 {
