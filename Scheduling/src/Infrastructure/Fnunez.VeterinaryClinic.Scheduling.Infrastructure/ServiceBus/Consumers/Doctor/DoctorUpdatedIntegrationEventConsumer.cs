@@ -15,12 +15,12 @@ public class DoctorUpdatedIntegrationEventConsumer
         _mediator = mediator;
     }
 
-    public Task Consume(
+    public async Task Consume(
         ConsumeContext<DoctorUpdatedIntegrationEventContract> context)
     {
         var integrationEvent = new DoctorUpdatedReceiveIntegrationEvent(
             context.Message);
 
-        return _mediator.Publish(integrationEvent);
+        await _mediator.Publish(integrationEvent);
     }
 }

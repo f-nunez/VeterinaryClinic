@@ -15,12 +15,12 @@ public class AppointmentTypeDeletedIntegrationEventConsumer
         _mediator = mediator;
     }
 
-    public Task Consume(
+    public async Task Consume(
         ConsumeContext<AppointmentTypeDeletedIntegrationEventContract> context)
     {
         var integrationEvent = new AppointmentTypeDeletedReceiveIntegrationEvent(
             context.Message);
 
-        return _mediator.Publish(integrationEvent);
+        await _mediator.Publish(integrationEvent);
     }
 }
