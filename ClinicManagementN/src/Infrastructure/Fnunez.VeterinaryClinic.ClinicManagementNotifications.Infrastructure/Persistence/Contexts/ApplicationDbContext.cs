@@ -1,4 +1,9 @@
 using System.Reflection;
+using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Domain.ApplicationRoleAggregate;
+using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Domain.ApplicationUserAggregate;
+using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Domain.ApplicationUserRoleAggregate;
+using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Domain.AppNotificationAggregate;
+using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Domain.NotificationAggregate;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +20,12 @@ public class ApplicationDbContext : DbContext
     {
         _mediator = mediator;
     }
+
+    public DbSet<ApplicationRole> ApplicationRoles => Set<ApplicationRole>();
+    public DbSet<ApplicationUserRole> ApplicationUserRoles => Set<ApplicationUserRole>();
+    public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
+    public DbSet<AppNotification> AppNotifications => Set<AppNotification>();
+    public DbSet<Notification> Notifications => Set<Notification>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
