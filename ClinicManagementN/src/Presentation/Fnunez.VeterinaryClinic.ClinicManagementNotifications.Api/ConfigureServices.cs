@@ -4,6 +4,7 @@ using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Api.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +14,10 @@ public static class ConfigureServices
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        var authenticationSetting = configuration
+            .GetSection(typeof(AuthenticationSetting).Name)
+            .Get<AuthenticationSetting>()!;
+
         var corsPolicySetting = configuration
             .GetSection(typeof(CorsPolicySetting).Name)
             .Get<CorsPolicySetting>()!;
@@ -47,6 +52,19 @@ public static class ConfigureServices
         services.AddEndpointsApiExplorer();
 
         services.AddSwaggerGen();
+
+        services.AddAuthentication(authenticationSetting.DefaultScheme)
+            .AddJwtBearer(options =>
+            {
+                options.Authority = authenticationSetting.Authority;
+
+                options.Audience = authenticationSetting.Audience;
+
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateAudience = authenticationSetting.ValidateAudience
+                };
+            });
 
         services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
 
