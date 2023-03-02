@@ -2,6 +2,8 @@ using AutoMapper;
 using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.SendIntegrationEvents.RoomCreated;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.CreateRoom;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.RoomAggregate;
@@ -16,17 +18,20 @@ public class CreateRoomCommandHandler
     private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
+    private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateRoomCommandHandler(
         ICurrentUserService currentUserService,
         IMapper mapper,
         IMediator mediator,
+        INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
         _currentUserService = currentUserService;
         _mapper = mapper;
         _mediator = mediator;
+        _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
     }
 
@@ -54,6 +59,12 @@ public class CreateRoomCommandHandler
             cancellationToken
         );
 
+        await SendNotificationRequestAsync(
+            newRoom,
+            request.CorrelationId,
+            cancellationToken
+        );
+
         return response;
     }
 
@@ -76,5 +87,20 @@ public class CreateRoomCommandHandler
             new RoomCreatedSendIntegrationEvent(message),
             cancellationToken
         );
+    }
+
+    private async Task SendNotificationRequestAsync(
+        Room room,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var factory = new RoomCreatedNotificationRequestFactory(
+            room,
+            correlationId,
+            _currentUserService.UserId
+        );
+
+        await _notificationRequestService.CreateAndSendAsync(
+            factory, cancellationToken);
     }
 }
