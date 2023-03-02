@@ -3,6 +3,8 @@ using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.SendIntegrationEvents.ClientUpdated;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.UpdateClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
@@ -17,17 +19,20 @@ public class UpdateClientCommandHandler
     private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
+    private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
 
     public UpdateClientCommandHandler(
         ICurrentUserService currentUserService,
         IMapper mapper,
         IMediator mediator,
+        INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
         _currentUserService = currentUserService;
         _mapper = mapper;
         _mediator = mediator;
+        _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
     }
 
@@ -67,6 +72,12 @@ public class UpdateClientCommandHandler
             cancellationToken
         );
 
+        await SendNotificationRequestAsync(
+            clientToUpdate,
+            request.CorrelationId,
+            cancellationToken
+        );
+
         return response;
     }
 
@@ -93,5 +104,20 @@ public class UpdateClientCommandHandler
             new ClientUpdatedSendIntegrationEvent(message),
             cancellationToken
         );
+    }
+
+    private async Task SendNotificationRequestAsync(
+        Client client,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var factory = new ClientUpdatedNotificationRequestFactory(
+            client,
+            correlationId,
+            _currentUserService.UserId
+        );
+
+        await _notificationRequestService.CreateAndSendAsync(
+            factory, cancellationToken);
     }
 }
