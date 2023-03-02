@@ -92,6 +92,17 @@ public class ConfigurationStoreDbContextSeeder
                 }.ToEntity(),
                 new ApiResource
                 {
+                    Name = "09cb5cff-f1fa-4f5f-aa26-d39f9b63b0d6",
+                    DisplayName = "ClinicManagementNotifications Api",
+                    Scopes = new List<string> { "clinic_management_notifications_api" },
+                    UserClaims = new List<string>
+                    {
+                        JwtClaimTypes.ClientId,
+                        JwtClaimTypes.SessionId
+                    }
+                }.ToEntity(),
+                new ApiResource
+                {
                     Name = "87fd9858-661d-409e-810b-86055039bcce",
                     DisplayName = "Scheduling Api",
                     Scopes = new List<string> { "scheduling_api" },
@@ -124,6 +135,16 @@ public class ConfigurationStoreDbContextSeeder
                         JwtClaimTypes.Name,
                         JwtClaimTypes.PreferredUserName,
                         JwtClaimTypes.Role,
+                        JwtClaimTypes.SessionId
+                    }
+                }.ToEntity(),
+                new ApiScope
+                {
+                    Name = "clinic_management_notifications_api",
+                    DisplayName = "ClinicManagementNotifications Api",
+                    UserClaims = new[]
+                    {
+                        JwtClaimTypes.ClientId,
                         JwtClaimTypes.SessionId
                     }
                 }.ToEntity(),
@@ -165,7 +186,8 @@ public class ConfigurationStoreDbContextSeeder
                         IdentityServerConstants.StandardScopes.Email,
                         "preferred_username",
                         "roles",
-                        "clinic_management_api"
+                        "clinic_management_api",
+                        "clinic_management_notifications_api"
                     },
                     AllowedCorsOrigins = new List<string> { "https://localhost:7004" },
                     RedirectUris = new List<string> { "https://localhost:7004/signin-oidc" },
