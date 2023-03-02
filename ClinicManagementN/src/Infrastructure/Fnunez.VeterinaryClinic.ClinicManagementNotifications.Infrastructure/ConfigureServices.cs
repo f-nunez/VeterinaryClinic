@@ -32,6 +32,8 @@ public static class ConfigureServices
                 )
             );
 
+        services.AddScoped<ApplicationDbContextSeeder>();
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddSingleton<IRabbitMqSetting>(configuration
