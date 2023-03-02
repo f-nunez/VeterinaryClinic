@@ -2,6 +2,7 @@ using System.Reflection;
 using FluentValidation;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Common.Behaviors;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Services;
+using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Services.NotificationEngine.Payloads;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Services.NotificationEngine.Requests;
 using MediatR;
 
@@ -27,6 +28,8 @@ public static class ConfigureServices
         services.AddScoped<INotificationEngineService, NotificationEngineService>();
 
         services.AddScoped<INotificationRequestFactory, NotificationRequestFactory>();
+
+        services.AddScoped<IPayloadFactory, PayloadFactory>();
 
         return services;
     }
