@@ -3,6 +3,8 @@ using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.SendIntegrationEvents.ClinicDeleted;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.DeleteClinic;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClinicAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
@@ -16,17 +18,20 @@ public class DeleteClinicCommandHandler
     private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
+    private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
 
     public DeleteClinicCommandHandler(
         ICurrentUserService currentUserService,
         IMapper mapper,
         IMediator mediator,
+        INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
         _currentUserService = currentUserService;
         _mapper = mapper;
         _mediator = mediator;
+        _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
     }
 
@@ -53,7 +58,13 @@ public class DeleteClinicCommandHandler
         await _unitOfWork.CommitAsync(cancellationToken);
 
         await SendIntegrationEventAsync(
-            request.Id,
+            clinicToDelete,
+            request.CorrelationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
+            clinicToDelete,
             request.CorrelationId,
             cancellationToken
         );
@@ -62,7 +73,7 @@ public class DeleteClinicCommandHandler
     }
 
     private async Task SendIntegrationEventAsync(
-        int clinicId,
+        Clinic clinic,
         Guid correlationId,
         CancellationToken cancellationToken)
     {
@@ -72,12 +83,27 @@ public class DeleteClinicCommandHandler
             CorrelationId = correlationId,
             Id = Guid.NewGuid(),
             OccurredOn = DateTimeOffset.UtcNow,
-            ClinicId = clinicId
+            ClinicId = clinic.Id
         };
 
         await _mediator.Publish(
             new ClinicDeletedSendIntegrationEvent(message),
             cancellationToken
         );
+    }
+
+    private async Task SendNotificationRequestAsync(
+        Clinic clinic,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var factory = new ClinicDeletedNotificationRequestFactory(
+            clinic,
+            correlationId,
+            _currentUserService.UserId
+        );
+
+        await _notificationRequestService.CreateAndSendAsync(
+            factory, cancellationToken);
     }
 }
