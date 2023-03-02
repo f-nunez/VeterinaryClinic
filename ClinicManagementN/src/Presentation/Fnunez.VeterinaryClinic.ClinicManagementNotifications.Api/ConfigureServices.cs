@@ -18,6 +18,10 @@ public static class ConfigureServices
             .GetSection(typeof(AuthenticationSetting).Name)
             .Get<AuthenticationSetting>()!;
 
+        var authorizationSetting = configuration
+            .GetSection(typeof(AuthorizationSetting).Name)
+            .Get<AuthorizationSetting>()!;
+
         var corsPolicySetting = configuration
             .GetSection(typeof(CorsPolicySetting).Name)
             .Get<CorsPolicySetting>()!;
@@ -66,6 +70,23 @@ public static class ConfigureServices
                 };
             });
 
+        services.AddAuthorization(options =>
+        {
+            foreach (var policy in authorizationSetting.Policies)
+                options.AddPolicy(policy.Name, policyBuilder =>
+                {
+                    if (policy.RequireAuthenticatedUser)
+                        policyBuilder.RequireAuthenticatedUser();
+
+                    if (policy.RequiredClaims != null)
+                        foreach (var requiredClaim in policy.RequiredClaims)
+                            policyBuilder.RequireClaim(requiredClaim.ClaimType, requiredClaim.Values);
+
+                    if (policy.RequiredRoles != null)
+                        policyBuilder.RequireRole(policy.RequiredRoles);
+                });
+        });
+
         services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
 
         return services;
@@ -93,7 +114,7 @@ public static class ConfigureServices
 
         app.UseHealthChecks("/api/health");
 
-        app.MapControllers();
+        app.MapControllers().RequireAuthorization("ApiScope");
 
         return app;
     }
