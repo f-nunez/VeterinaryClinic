@@ -1,0 +1,6 @@
+using MediatR;
+
+namespace Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Commands.DeleteAllAppNotifications;
+
+public record DeleteAllAppNotificationsCommand(DeleteAllAppNotificationsRequest DeleteAllAppNotificationsRequest)
+    : IRequest<DeleteAllAppNotificationsResponse>;
