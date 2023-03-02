@@ -2,6 +2,8 @@ using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.SendIntegrationEvents.PatientCreated;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.CreatePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
@@ -20,6 +22,7 @@ public class CreatePatientCommandHandler
     private readonly ICurrentUserService _currentUserService;
     private readonly IFileSystemWriterService _fileSystemWriterService;
     private readonly IMediator _mediator;
+    private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreatePatientCommandHandler(
@@ -27,12 +30,14 @@ public class CreatePatientCommandHandler
         ICurrentUserService currentUserService,
         IFileSystemWriterService fileSystemWriterService,
         IMediator mediator,
+        INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
         _clientStorageSetting = clientStorageSetting;
         _currentUserService = currentUserService;
         _fileSystemWriterService = fileSystemWriterService;
         _mediator = mediator;
+        _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
     }
 
@@ -73,6 +78,12 @@ public class CreatePatientCommandHandler
         await _unitOfWork.CommitAsync(cancellationToken);
 
         await SendIntegrationEventAsync(
+            newPatient,
+            request.CorrelationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
             newPatient,
             request.CorrelationId,
             cancellationToken
@@ -124,5 +135,20 @@ public class CreatePatientCommandHandler
             new PatientCreatedSendIntegrationEvent(message),
             cancellationToken
         );
+    }
+
+    private async Task SendNotificationRequestAsync(
+        Patient patient,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var factory = new PatientCreatedNotificationRequestFactory(
+            patient,
+            correlationId,
+            _currentUserService.UserId
+        );
+
+        await _notificationRequestService.CreateAndSendAsync(
+            factory, cancellationToken);
     }
 }
