@@ -4,5 +4,5 @@ namespace Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Serv
 
 public interface INotificationEngineService
 {
-    public Task<List<AppNotification>> CreateAndNotifyAsync(string notificationEventString, string serializedNotificationRequest);
+    public Task<List<AppNotification>> CreateAndNotifyAsync(string notificationEventString, string serializedNotificationRequest, CancellationToken cancellationToken);
 }

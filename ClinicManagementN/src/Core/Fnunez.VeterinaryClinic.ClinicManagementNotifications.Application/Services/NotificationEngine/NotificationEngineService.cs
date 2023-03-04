@@ -28,7 +28,8 @@ public class NotificationEngineService : INotificationEngineService
 
     public async Task<List<AppNotification>> CreateAndNotifyAsync(
         string notificationEventString,
-        string serializedNotificationRequest)
+        string serializedNotificationRequest,
+        CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(notificationEventString))
             throw new ArgumentNullException(nameof(notificationEventString));
@@ -47,13 +48,13 @@ public class NotificationEngineService : INotificationEngineService
             .GetPayload(notificationEvent, notificationRequest);
 
         var notification = await CreateNotificationAsync(
-            notificationEvent, notificationRequest, payload);
+            notificationEvent, notificationRequest, payload, cancellationToken);
 
-        var appNotifications = await CreateAppNotificationsAsync(notification);
+        var appNotifications = await CreateAppNotificationsAsync(notification, cancellationToken);
 
         var userIdsToNotify = appNotifications.Select(x => x.UserId).ToArray();
 
-        //send asyncronous without awaiter appNotifications to message queue to be consumed by SignalR Hub
+        //TODO: send userIds to message broker to be consumed by SignalR Hub
 
         return appNotifications;
     }
@@ -61,7 +62,8 @@ public class NotificationEngineService : INotificationEngineService
     private async Task<Notification> CreateNotificationAsync(
         NotificationEvent notificationEvent,
         BaseNotificationRequest notificationRequest,
-        BasePayload payload)
+        BasePayload payload,
+        CancellationToken cancellationToken)
     {
         var notification = new Notification(
             notificationRequest.CorrelationId,
@@ -73,21 +75,23 @@ public class NotificationEngineService : INotificationEngineService
 
         await _unitOfWork
             .Repository<Notification>()
-            .AddAsync(notification);
+            .AddAsync(notification, cancellationToken);
 
-        await _unitOfWork.CommitAsync();
+        await _unitOfWork.CommitAsync(cancellationToken);
 
         return notification;
     }
 
-    private async Task<List<AppNotification>> CreateAppNotificationsAsync(Notification notification)
+    private async Task<List<AppNotification>> CreateAppNotificationsAsync(
+        Notification notification,
+        CancellationToken cancellationToken)
     {
         var specification = new UsersExceptWhoTriggerTheEventSpecification(
             notification.TriggeredByUserId);
 
         var users = await _unitOfWork
             .Repository<ApplicationUser>()
-            .ListAsync(specification);
+            .ListAsync(specification, cancellationToken);
 
         var appNotifications = new List<AppNotification>();
 
@@ -105,9 +109,9 @@ public class NotificationEngineService : INotificationEngineService
 
         await _unitOfWork
             .Repository<AppNotification>()
-            .AddRangeAsync(appNotifications);
+            .AddRangeAsync(appNotifications, cancellationToken);
 
-        await _unitOfWork.CommitAsync();
+        await _unitOfWork.CommitAsync(cancellationToken);
 
         return appNotifications;
     }
