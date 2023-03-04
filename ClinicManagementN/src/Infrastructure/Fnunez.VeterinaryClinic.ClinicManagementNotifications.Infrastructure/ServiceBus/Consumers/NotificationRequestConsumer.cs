@@ -20,7 +20,8 @@ public class NotificationRequestConsumer
     {
         await _notificationEngineService.CreateAndNotifyAsync(
             context.Message.NotificationEvent,
-            context.Message.SerializedNotificationRequest
+            context.Message.SerializedNotificationRequest,
+            context.CancellationToken
         );
     }
 }
