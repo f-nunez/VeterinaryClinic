@@ -89,8 +89,8 @@ public class ApplicationDbContextSeeder
     {
         return new List<ApplicationUser>
         {
-            new ApplicationUser("9f79b45e-1ebe-4bb2-9d6f-e00da51b0848", "francisco"),
-            new ApplicationUser("ca59b781-77c7-4b66-a05c-2910c2cb5d1f", "ramon")
+            new ApplicationUser("9f79b45e-1ebe-4bb2-9d6f-e00da51b0848", "Francisco Nuñez"),
+            new ApplicationUser("ca59b781-77c7-4b66-a05c-2910c2cb5d1f", "Ramon Nuñez")
         };
     }
 }
