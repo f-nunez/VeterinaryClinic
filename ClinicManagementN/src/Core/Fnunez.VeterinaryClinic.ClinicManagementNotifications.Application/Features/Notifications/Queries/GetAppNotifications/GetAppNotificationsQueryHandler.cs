@@ -33,6 +33,10 @@ public class GetAppNotificationsQueryHandler
             .ReadRepository<AppNotification>()
             .ListAsync(specification, cancellationToken);
 
+        var appNotificationsCount = await _unitOfWork
+            .ReadRepository<AppNotification>()
+            .CountAsync(specification, cancellationToken);
+
         var appNotificationDtos = new List<AppNotificationDto>();
 
         foreach (var appNotification in appNotifications)
@@ -51,6 +55,7 @@ public class GetAppNotificationsQueryHandler
         }
 
         response.AppNotifications = appNotificationDtos;
+        response.Count = appNotificationsCount;
 
         return response;
     }
