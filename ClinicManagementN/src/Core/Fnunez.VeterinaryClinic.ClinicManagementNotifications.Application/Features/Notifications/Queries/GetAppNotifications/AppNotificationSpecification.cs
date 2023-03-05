@@ -5,13 +5,15 @@ namespace Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Feat
 
 public class AppNotificationSpecification : BaseSpecification<AppNotification>
 {
-    public AppNotificationSpecification(GetAppNotificationsRequest request, string? userId)
+    public AppNotificationSpecification(
+        GetAppNotificationsRequest request,
+        string? userId)
     {
         Query
             .AsNoTracking()
             .Include(an => an.Notification)
             .ThenInclude(n => n.TriggeredByUser)
-            .OrderBy(an => an.CreatedOn)
+            .OrderByDescending(an => an.CreatedOn)
             .Skip(request.Skip)
             .Take(request.Take)
             .Where(an => an.UserId == userId && an.IsActive);
