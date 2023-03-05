@@ -2,25 +2,13 @@ using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Commands.DeleteAppNotification;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Commands.MarkAppNotificationAsRead;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Queries.GetAppNotifications;
+using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Queries.GetUnreadAppNotificationsCount;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagementNotifications.Api.Controllers;
 
 public class NotificationController : BaseApiController
 {
-    [HttpPost("GetAppNotifications")]
-    public async Task<ActionResult> GetAppNotifications(
-        GetAppNotificationsRequest request,
-        CancellationToken cancellationToken)
-    {
-        var query = new GetAppNotificationsQuery(request);
-
-        GetAppNotificationsResponse response = await Mediator
-            .Send(query, cancellationToken);
-
-        return Ok(response);
-    }
-
     [HttpDelete("DeleteAllAppNotifications")]
     public async Task<ActionResult> DeleteAllAppNotifications(
         [FromRoute] DeleteAllAppNotificationsRequest request,
@@ -43,6 +31,32 @@ public class NotificationController : BaseApiController
 
         DeleteAppNotificationResponse response = await Mediator
             .Send(command, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("GetAppNotifications")]
+    public async Task<ActionResult> GetAppNotifications(
+        GetAppNotificationsRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetAppNotificationsQuery(request);
+
+        GetAppNotificationsResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("GetUnreadAppNotificationsCount")]
+    public async Task<ActionResult> GetUnreadAppNotificationsCount(
+        GetUnreadAppNotificationsCountRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetUnreadAppNotificationsCountQuery(request);
+
+        GetUnreadAppNotificationsCountResponse response = await Mediator
+            .Send(query, cancellationToken);
 
         return Ok(response);
     }
