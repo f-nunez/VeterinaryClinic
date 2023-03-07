@@ -1,5 +1,4 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Requests;
-using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Entities;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.RoomAggregate;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
