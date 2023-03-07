@@ -45,7 +45,9 @@ public static class ConfigureServices
             sp.GetRequiredService<IHttpClientFactory>()
                 .CreateClient("backendForFrontend"));
 
-        services.AddScoped<IHttpService, HttpService>();
+        services.AddScoped<IClinicManagementApiHttpService, ClinicManagementApiHttpService>();
+
+        services.AddScoped<IClinicManagementNotificationsApiHttpService, ClinicManagementNotificationsApiHttpService>();
 
         // register Feature services
         services.AddScoped<IAppointmentTypeService, AppointmentTypeService>();
