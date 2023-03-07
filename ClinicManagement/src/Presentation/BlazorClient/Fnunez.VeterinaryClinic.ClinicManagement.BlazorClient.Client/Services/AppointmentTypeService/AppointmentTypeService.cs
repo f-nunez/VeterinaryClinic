@@ -14,11 +14,11 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
 
 public class AppointmentTypeService : IAppointmentTypeService
 {
-    private readonly IHttpService _httpService;
+    private readonly IClinicManagementApiHttpService _httpService;
     private readonly ILogger<AppointmentTypeService> _logger;
 
     public AppointmentTypeService(
-        IHttpService httpService,
+        IClinicManagementApiHttpService httpService,
         ILogger<AppointmentTypeService> logger)
     {
         _httpService = httpService;
