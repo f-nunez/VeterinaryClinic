@@ -50,6 +50,8 @@ public static class ConfigureServices
         services.AddScoped<IClinicManagementNotificationsApiHttpService, ClinicManagementNotificationsApiHttpService>();
 
         // register Feature services
+        services.AddScoped<IAppNotificationService, AppNotificationService>();
+
         services.AddScoped<IAppointmentTypeService, AppointmentTypeService>();
 
         services.AddScoped<IClientService, ClientService>();
