@@ -1,0 +1,24 @@
+<button class="appnotification-badge rz-sidebar-toggle @(IsVisibleContainer ? "active" : string.Empty)" @onclick="ShowContainer">
+    <RadzenIcon class="rzi d-flex align-items-center" Icon="notifications" />
+</button>
+
+@if(IsVisibleContainer)
+{
+    <div class="appnotification-container-overlay" @onclick="HideContainer"></div>
+
+    <div class="appnotification-container" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+        <div class="appnotification-header">
+            @StringLocalizer["AppNotification_Header"]
+        </div>
+
+        <AppNotificationListComponent
+            AppNotifications="AppNotifications"
+            OnScroll="GetAppNotifications"
+            TotalAppNotifications="TotalAppNotifications">
+        </AppNotificationListComponent>
+
+        <div class="appnotification-footer">
+            @StringLocalizer["AppNotification_Footer"]
+        </div>
+    </div>
+}

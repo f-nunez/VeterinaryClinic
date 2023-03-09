@@ -1,0 +1,137 @@
+.appnotification-badge {
+    margin: 0;
+}
+
+.appnotification-badge.active {
+    color: var(--rz-sidebar-toggle-hover-color);
+    background: var(--rz-sidebar-toggle-hover-background-color);
+    border-radius: var(--rz-sidebar-toggle-hover-border-radius);
+}
+
+.appnotification-container {
+    border-radius: var(--rz-profile-menu-border-radius);
+    background-color: var(--rz-profile-menu-background-color);
+    box-shadow: var(--rz-context-menu-box-shadow);
+    height: 400px;
+    margin-bottom: 0;
+    overflow: hidden;
+    padding: var(--rz-context-menu-padding);
+    position: absolute;
+    right: 0;
+    text-align: left;
+    top: calc(100% - 2px);
+    width: 400px;
+    z-index: 10;
+    /* white-space: nowrap; */
+
+    /* low resolution */
+    /* position: fixed;
+    top: 48px;
+    left: 0;
+    right: 0; */
+}
+
+.appnotification-container-overlay {
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 9;
+}
+
+.appnotification-header {
+    color: var(--rz-text-title-color);
+    font-size: 1rem;
+    font-weight: 500;
+    height: 30px;
+    letter-spacing: -0.02em;
+    line-height: 1.25em;
+    position: relative;
+    text-align: center;
+}
+
+.appnotification-footer {
+    color: var(--rz-text-title-color);
+    height: 30px;
+    position: relative;
+    text-align: center;
+}
+
+.appnotification-list {
+    height: calc(100% - 60px);
+    border-bottom: var(--rz-panel-menu-item-border);
+    border-top: var(--rz-panel-menu-item-border);
+    overflow: overlay;
+    overflow-anchor: none;
+}
+
+.appnotification-list-item {
+    height: 104px;
+    margin: 0;
+    padding: var(--rz-datalist-padding);
+}
+
+.appnotification-list-item-body {
+    background-color: var(--rz-datalist-item-background-color);
+    border-radius: var(--rz-datalist-border-radius);
+    border: var(--rz-datalist-item-border);
+    cursor: pointer;
+    margin: 0 0.5rem;
+    padding: 0 1rem;
+    position: relative;
+}
+
+.appnotification-list-item-body.unread {
+    background-color: var(--rz-primary-lighter);
+}
+
+.appnotification-list-item-delete {
+    color: var(--rz-primary-light);
+    cursor: pointer;
+    font-size: 1rem;
+    position: absolute;
+    right: 0.25rem;
+    top: 0.25rem;
+}
+
+.appnotification-list-item-delete:hover {
+    font-weight: 700;
+}
+
+.appnotification-list-item-module {
+    flex-shrink: 0 !important;
+}
+
+.appnotification-list-item-module i {
+    color: var(--rz-primary-light);
+}
+
+.appnotification-list-item-information {
+    flex-grow: 1 !important;
+    margin-left: 1rem;
+    padding: 1rem 0;
+    overflow: hidden;
+    overflow-anchor: none;
+    overflow-x: overlay;
+    white-space: nowrap;
+}
+
+.appnotification-list-item-information-date {
+    color: var(--rz-primary-light);
+    font-size: var(--rz-text-overline-font-size);
+    letter-spacing: var(--rz-text-overline-letter-spacing);
+    line-height: var(--rz-text-overline-line-height);
+}
+
+.appnotification-list-item-information-message {
+    margin: 0;
+}
+
+.appnotification-list-item-information-title {
+    color: var(--rz-text-title-color);
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.25em;
+}
