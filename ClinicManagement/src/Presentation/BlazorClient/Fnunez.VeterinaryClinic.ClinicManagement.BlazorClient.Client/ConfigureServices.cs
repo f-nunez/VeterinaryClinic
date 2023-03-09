@@ -3,6 +3,7 @@ using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.BackendForFro
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Handlers;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Settings;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.AppNotification;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.AppNotification.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.Language;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.Spinner;
@@ -73,6 +74,8 @@ public static class ConfigureServices
 
         // register AppNotification component
         services.AddScoped<IAppNotificationBuilder, AppNotificationBuilder>();
+        services.AddScoped<IAppNotificationComponentService, AppNotificationComponentService>();
+
         // register Language component
         services.AddSingleton<ILanguageComponentData>(
             configuration.GetSection(typeof(LanguageComponentData).Name)
