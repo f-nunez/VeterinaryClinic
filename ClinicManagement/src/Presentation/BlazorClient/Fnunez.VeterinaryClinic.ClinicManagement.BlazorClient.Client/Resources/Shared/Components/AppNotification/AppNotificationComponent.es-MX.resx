@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppNotification_Empty" xml:space="preserve">
+    <value>No hay notificaciones</value>
+  </data>
   <data name="AppNotification_Footer" xml:space="preserve">
     <value>CENTRO DE NOTIFICACIONES</value>
   </data>
