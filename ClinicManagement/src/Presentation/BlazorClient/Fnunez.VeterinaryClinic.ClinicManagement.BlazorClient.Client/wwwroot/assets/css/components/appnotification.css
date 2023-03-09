@@ -12,23 +12,36 @@
     border-radius: var(--rz-profile-menu-border-radius);
     background-color: var(--rz-profile-menu-background-color);
     box-shadow: var(--rz-context-menu-box-shadow);
-    height: 400px;
+    height: 476px;
     margin-bottom: 0;
     overflow: hidden;
-    padding: var(--rz-context-menu-padding);
     position: absolute;
     right: 0;
     text-align: left;
     top: calc(100% - 2px);
     width: 400px;
     z-index: 10;
-    /* white-space: nowrap; */
+}
 
-    /* low resolution */
-    /* position: fixed;
-    top: 48px;
-    left: 0;
-    right: 0; */
+@media only screen and (max-height: 536px) {
+    .appnotification-container {
+        height: calc(100vh - 60px);
+    }
+}
+
+@media only screen and (max-width: 888px) {
+    .appnotification-container {
+        position: fixed;
+        left: 50%;
+        top: 48px;
+        transform: translateX(-50%);
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .appnotification-container {
+        width: 100%;
+    }
 }
 
 .appnotification-container-overlay {
