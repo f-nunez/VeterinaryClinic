@@ -1,5 +1,6 @@
 ﻿@inherits Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.MainLayoutComponent
 
+@using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.AppNotification
 @using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.Spinner
 @using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.UserSettings
 
@@ -27,21 +28,35 @@
                 </div>
 
                 <div class="col-7 d-flex align-items-center justify-content-end">
-                    <UserSettingsComponent></UserSettingsComponent>
-                    <RadzenProfileMenu Click="@ProfileMenuClick">
-                        <Template>
-                            <RadzenLabel Text="@($"{(SecurityService.User?.Name)}")">
-                            </RadzenLabel>
-                            <RadzenImage style="border-radius: 16px; height: 32px; width: 32px; background-color: gray;">
-                            </RadzenImage>
-                        </Template>
-                        <ChildContent>
-                            <RadzenProfileMenuItem Text=@(string.Format(StringLocalizer["MainLayout_ProfileMenu_Username"], SecurityService.User?.Username))>
-                            </RadzenProfileMenuItem>
-                            <RadzenProfileMenuItem Text=@StringLocalizer["MainLayout_ProfileMenu_Logout"] Value="Logout" Icon="logout">
-                            </RadzenProfileMenuItem>
-                        </ChildContent>
-                    </RadzenProfileMenu>
+                    <ul class="topbar-container float-end mb-0">
+                        <!-- App Notifications -->
+                        <li class="topbar-menu">
+                            <AppNotificationComponent></AppNotificationComponent>
+                        </li>
+
+                        <!-- User Settings -->
+                        <li class="topbar-menu">
+                            <UserSettingsComponent></UserSettingsComponent>
+                        </li>
+
+                        <!-- User Profile -->
+                        <li class="topbar-menu">
+                            <RadzenProfileMenu Click="@ProfileMenuClick">
+                                <Template>
+                                    <RadzenLabel Text="@($"{(SecurityService.User?.Name)}")">
+                                    </RadzenLabel>
+                                    <RadzenImage style="border-radius: 16px; height: 32px; width: 32px; background-color: gray;">
+                                    </RadzenImage>
+                                </Template>
+                                <ChildContent>
+                                    <RadzenProfileMenuItem Text=@(string.Format(StringLocalizer["MainLayout_ProfileMenu_Username"], SecurityService.User?.Username))>
+                                    </RadzenProfileMenuItem>
+                                    <RadzenProfileMenuItem Text=@StringLocalizer["MainLayout_ProfileMenu_Logout"] Value="Logout" Icon="logout">
+                                    </RadzenProfileMenuItem>
+                                </ChildContent>
+                            </RadzenProfileMenu>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </ChildContent>
