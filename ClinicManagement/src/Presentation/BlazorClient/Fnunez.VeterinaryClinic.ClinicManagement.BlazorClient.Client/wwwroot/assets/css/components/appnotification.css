@@ -44,6 +44,10 @@
     }
 }
 
+.appnotification-container.loading {
+    height: auto;
+}
+
 .appnotification-container-overlay {
     bottom: 0;
     left: 0;
@@ -53,7 +57,21 @@
     z-index: 9;
 }
 
+.appnotification-empty {
+    color: var(--rz-primary-light);
+    text-align: center;
+}
+
+.appnotification-footer {
+    border-top: var(--rz-panel-menu-item-border);
+    color: var(--rz-text-title-color);
+    height: 30px;
+    position: relative;
+    text-align: center;
+}
+
 .appnotification-header {
+    border-bottom: var(--rz-panel-menu-item-border);
     color: var(--rz-text-title-color);
     font-size: 1rem;
     font-weight: 500;
@@ -63,17 +81,8 @@
     text-align: center;
 }
 
-.appnotification-footer {
-    color: var(--rz-text-title-color);
-    height: 30px;
-    position: relative;
-    text-align: center;
-}
-
 .appnotification-list {
     height: calc(100% - 60px);
-    border-bottom: var(--rz-panel-menu-item-border);
-    border-top: var(--rz-panel-menu-item-border);
     overflow: overlay;
     overflow-anchor: none;
 }
@@ -146,4 +155,39 @@
     font-weight: 400;
     letter-spacing: -0.02em;
     line-height: 1.25em;
+}
+
+.appnotification-sync-problem {
+    color: var(--rz-danger-light);
+    height: 24px;
+    text-align: center;
+}
+
+.appnotification-spinner {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    vertical-align: -0.125em;
+    border: 0.25em solid var(--rz-primary-light);
+    border-right-color: transparent;
+    border-radius: 50%;
+    position: relative;
+    left: calc(50% - 12px);
+    top: 2px;
+    -webkit-animation: 0.75s linear infinite spinner-border;
+    animation: 0.75s linear infinite spinner-border;
+}
+
+@-webkit-keyframes appnotification-spinner-border {
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes appnotification-spinner-border {
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }

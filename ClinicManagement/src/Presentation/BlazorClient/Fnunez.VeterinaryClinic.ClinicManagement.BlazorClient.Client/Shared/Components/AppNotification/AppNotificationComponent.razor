@@ -6,16 +6,38 @@
 {
     <div class="appnotification-container-overlay" @onclick="HideContainer"></div>
 
-    <div class="appnotification-container" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+    <div class="appnotification-container @(IsLoading || IsEmptyList || IsFailedConnection ? "loading" : string.Empty)" @onclick:stopPropagation="true" @onclick:preventDefault="true">
         <div class="appnotification-header">
             @StringLocalizer["AppNotification_Header"]
         </div>
 
-        <AppNotificationListComponent
-            AppNotifications="AppNotifications"
-            OnScroll="GetAppNotifications"
-            TotalAppNotifications="TotalAppNotifications">
-        </AppNotificationListComponent>
+        @if(IsLoading)
+        {
+            <div class="appnotification-spinner"></div>
+        }
+
+        @if(IsVisibleList)
+        {
+            <AppNotificationListComponent
+                AppNotifications="AppNotifications"
+                OnScroll="GetAppNotifications"
+                TotalAppNotifications="TotalAppNotifications">
+            </AppNotificationListComponent>
+        }
+
+        @if(IsEmptyList)
+        {
+            <div class="appnotification-empty">
+                @StringLocalizer["AppNotification_Empty"]
+            </div>
+        }
+
+        @if(IsFailedConnection)
+        {
+            <div class="appnotification-sync-problem">
+                <i class="rzi">sync_problem</i>
+            </div>
+        }
 
         <div class="appnotification-footer">
             @StringLocalizer["AppNotification_Footer"]

@@ -17,9 +17,20 @@ public partial class AppNotificationComponent : ComponentBase
     [Inject]
     private IAppNotificationService _appNotificationService { get; set; }
 
+    [Inject]
+    private ILogger<AppNotificationComponent> _logger { get; set; }
+
     protected List<AppNotificationListItem> AppNotifications { get; set; } = new();
 
+    protected bool IsEmptyList { get; set; }
+
+    protected bool IsFailedConnection { get; set; }
+
+    protected bool IsLoading { get; set; }
+
     protected bool IsVisibleContainer { get; set; }
+
+    protected bool IsVisibleList { get; set; }
 
     [Inject]
     protected IStringLocalizer<AppNotificationComponent> StringLocalizer { get; set; }
@@ -34,17 +45,32 @@ public partial class AppNotificationComponent : ComponentBase
 
     protected async Task GetAppNotifications(GetAppNotificationsRequest request)
     {
-        var response = await _appNotificationService
-            .GetAppNotificationsAsync(request);
+        GetAppNotificationsResponse response = null;
+        try
+        {
+            response = await _appNotificationService.GetAppNotificationsAsync(request);
 
-        var listItems = new List<AppNotificationListItem>();
+            var listItems = new List<AppNotificationListItem>();
 
-        foreach (var appNotification in response.AppNotifications)
-            listItems.Add(await _appNotificationBuilder.BuildAppNotificationListItemAsync(appNotification));
+            foreach (var appNotification in response.AppNotifications)
+                listItems.Add(await _appNotificationBuilder.BuildAppNotificationListItemAsync(appNotification));
 
-        AppNotifications = listItems;
+            AppNotifications = listItems;
 
-        TotalAppNotifications = response.Count;
+            TotalAppNotifications = response.Count;
+
+            IsEmptyList = TotalAppNotifications == 0;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            IsVisibleList = false;
+            IsFailedConnection = true;
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     protected void HideContainer()
@@ -54,6 +80,10 @@ public partial class AppNotificationComponent : ComponentBase
 
     protected void ShowContainer()
     {
+        IsEmptyList = false;
+        IsFailedConnection = false;
+        IsLoading = true;
         IsVisibleContainer = true;
+        IsVisibleList = true;
     }
 }
