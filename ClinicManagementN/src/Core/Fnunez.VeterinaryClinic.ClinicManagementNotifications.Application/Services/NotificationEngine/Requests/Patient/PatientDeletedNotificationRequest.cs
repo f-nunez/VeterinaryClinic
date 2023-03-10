@@ -2,6 +2,7 @@ namespace Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Serv
 
 public class PatientDeletedNotificationRequest : BaseNotificationRequest
 {
-    public int Id { get; set; }
+    public int ClientId { get; set; }
+    public int PatientId { get; set; }
     public string? Name { get; set; }
 }
