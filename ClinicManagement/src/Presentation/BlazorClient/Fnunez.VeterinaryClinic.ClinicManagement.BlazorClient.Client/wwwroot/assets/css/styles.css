@@ -7,6 +7,7 @@
 @import './styles-generated.css';
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 @import url('components/appnotification.css');
+@import url('components/customcard.css');
 @import url('components/language.css');
 @import url('components/radzen-text-box-search.css');
 @import url('components/spinner.css');
