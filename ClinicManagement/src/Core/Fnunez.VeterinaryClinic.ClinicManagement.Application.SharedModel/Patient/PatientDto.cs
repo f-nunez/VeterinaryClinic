@@ -2,6 +2,7 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patie
 
 public class PatientDto
 {
+    public bool IsActive { get; set; }
     public int PatientId { get; set; }
     public int ClientId { get; set; }
     public string PatientName { get; set; } = string.Empty;
