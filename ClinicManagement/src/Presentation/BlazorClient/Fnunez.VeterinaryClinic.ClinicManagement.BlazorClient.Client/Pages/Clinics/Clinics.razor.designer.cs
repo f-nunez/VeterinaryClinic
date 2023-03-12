@@ -101,11 +101,11 @@ public partial class ClinicsComponent : ComponentBase
         await ClinicsGrid.Reload();
     }
 
-    protected async Task OnClickDelete(ClinicDto doctor)
+    protected async Task OnClickDelete(ClinicDto clinic)
     {
         string message = string.Format(
             StringLocalizer["Clinics_DeleteClinic_Alert_Message"],
-            doctor.Name);
+            clinic.Name);
 
         bool? proceedToDelete = await _dialogService.Confirm(
             message,
@@ -122,29 +122,29 @@ public partial class ClinicsComponent : ComponentBase
 
         var request = new DeleteClinicRequest
         {
-            Id = doctor.Id
+            Id = clinic.Id
         };
 
         await _clinicService.DeleteAsync(request);
 
         await ShowAlertAsync(
-            string.Format(StringLocalizer["Clinics_DeletedClinic_Alert_Message"], doctor.Name),
+            string.Format(StringLocalizer["Clinics_DeletedClinic_Alert_Message"], clinic.Name),
             StringLocalizer["Clinics_DeletedClinic_Alert_Title"],
             StringLocalizer["Clinics_DeletedClinic_Alert_Button_Ok"]);
 
         await ClinicsGrid.Reload();
     }
 
-    protected async Task OnClickDetail(ClinicDto doctor)
+    protected async Task OnClickDetail(ClinicDto clinic)
     {
         var request = new GetClinicByIdRequest
         {
-            Id = doctor.Id
+            Id = clinic.Id
         };
 
         var currentClinic = await _clinicService.GetByIdAsync(request);
 
-        var clinicForDetail = ClinicHelper.MapClinicViewModel(doctor);
+        var clinicForDetail = ClinicHelper.MapClinicViewModel(clinic);
 
         await _dialogService.OpenAsync<ClinicDetail>(
             _stringLocalizerForDetail["ClinicDetail_Label_ClinicDetail"],
@@ -155,16 +155,16 @@ public partial class ClinicsComponent : ComponentBase
         );
     }
 
-    protected async Task OnClickEdit(ClinicDto doctor)
+    protected async Task OnClickEdit(ClinicDto clinic)
     {
         var request = new GetClinicByIdRequest
         {
-            Id = doctor.Id
+            Id = clinic.Id
         };
 
         var currentClinic = await _clinicService.GetByIdAsync(request);
 
-        var clinicToEdit = ClinicHelper.MapClinicViewModel(doctor);
+        var clinicToEdit = ClinicHelper.MapClinicViewModel(clinic);
 
         var response = await _dialogService.OpenAsync<AddEditClinic>(
             _stringLocalizerForAdd["AddEditClinic_Label_Edit"],
