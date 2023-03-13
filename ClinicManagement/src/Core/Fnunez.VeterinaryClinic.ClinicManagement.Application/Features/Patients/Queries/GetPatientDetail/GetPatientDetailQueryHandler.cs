@@ -89,6 +89,7 @@ public class GetPatientDetailQueryHandler
         {
             Breed = patient.AnimalType.Breed,
             ClientId = patient.ClientId,
+            IsActive = patient.IsActive,
             Name = patient.Name,
             PatientId = patient.Id,
             PhotoData = await _fileSystemReaderService.ReadAsync(photoPath),
