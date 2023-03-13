@@ -49,6 +49,7 @@ public static class PatientHelper
         return new PatientDetailVm
         {
             Breed = patientDetailDto.Breed,
+            IsActive = patientDetailDto.IsActive,
             Name = patientDetailDto.Name,
             PhotoBase64Encoded = ConvertPhotoToBase64String(patientDetailDto.PhotoData),
             PhotoName = patientDetailDto.PhotoName,
