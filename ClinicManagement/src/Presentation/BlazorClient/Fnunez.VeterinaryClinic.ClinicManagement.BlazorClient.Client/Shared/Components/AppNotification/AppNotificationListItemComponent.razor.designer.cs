@@ -7,6 +7,9 @@ public partial class AppNotificationListItemComponent : ComponentBase
     [Inject]
     private IAppNotificationComponentService _appNotificationComponentService { get; set; }
 
+    [Inject]
+    private NavigationManager _navigationManager { get; set; }
+
     [Parameter]
     public AppNotificationListItem AppNotification { get; set; } = new();
 
@@ -20,14 +23,17 @@ public partial class AppNotificationListItemComponent : ComponentBase
 
     protected async void OnClickItem()
     {
-        if (AppNotification.IsRead)
-            return;
+        if (!AppNotification.IsRead)
+        {
+            await _appNotificationComponentService
+                .MarkAppNotificationAsReadAsync(AppNotification.Id);
 
-        await _appNotificationComponentService
-            .MarkAppNotificationAsReadAsync(AppNotification.Id);
+            AppNotification.IsRead = true;
 
-        AppNotification.IsRead = true;
+            await InvokeAsync(StateHasChanged);
+        }
 
-        await InvokeAsync(StateHasChanged);
+        if (!string.IsNullOrEmpty(AppNotification.Url))
+            _navigationManager.NavigateTo(AppNotification.Url);
     }
 }

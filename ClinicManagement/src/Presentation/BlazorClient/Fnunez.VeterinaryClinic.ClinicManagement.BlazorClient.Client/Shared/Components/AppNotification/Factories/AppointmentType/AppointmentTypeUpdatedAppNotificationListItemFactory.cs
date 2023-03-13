@@ -7,29 +7,39 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Co
 public class AppointmentTypeUpdatedAppNotificationListItemFactory
     : BaseAppNotificationListItemFactory, IAppNotificationListItemFactory
 {
+    private AppointmentTypeUpdatedPayload? _payload;
+
     public AppointmentTypeUpdatedAppNotificationListItemFactory(
         AppNotificationDto appNotification,
         IStringLocalizer<AppNotificationComponent> stringLocalizer)
         : base(appNotification)
     {
+        _payload = GetPayload<AppointmentTypeUpdatedPayload>();
         SetMessage(GetMessageFromPayload(appNotification, stringLocalizer));
         SetModuleIcon("widgets");
         SetTitle(stringLocalizer["Event_AppointmentTypeUpdated_Title"]);
+        SetUrl(GetUrlFromPayload());
     }
 
     private string GetMessageFromPayload(
         AppNotificationDto appNotification,
         IStringLocalizer<AppNotificationComponent> stringLocalizer)
     {
-        var payload = GetPayload<AppointmentTypeUpdatedPayload>();
-
-        if (payload is null)
+        if (_payload is null)
             return string.Empty;
 
         return string.Format(
             stringLocalizer["Event_AppointmentTypeUpdated_Message"],
-            payload.Name,
+            _payload.Name,
             appNotification.TriggeredBy
         );
+    }
+
+    private string GetUrlFromPayload()
+    {
+        if (_payload is null)
+            return string.Empty;
+
+        return $"appointments/detail/{_payload.Id}";
     }
 }

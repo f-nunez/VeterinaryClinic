@@ -7,29 +7,39 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Co
 public class DoctorDeletedAppNotificationListItemFactory
     : BaseAppNotificationListItemFactory, IAppNotificationListItemFactory
 {
+    private DoctorDeletedPayload? _payload;
+
     public DoctorDeletedAppNotificationListItemFactory(
         AppNotificationDto appNotification,
         IStringLocalizer<AppNotificationComponent> stringLocalizer)
         : base(appNotification)
     {
+        _payload = GetPayload<DoctorDeletedPayload>();
         SetMessage(GetMessageFromPayload(appNotification, stringLocalizer));
         SetModuleIcon("face");
         SetTitle(stringLocalizer["Event_DoctorDeleted_Title"]);
+        SetUrl(GetUrlFromPayload());
     }
 
     private string GetMessageFromPayload(
         AppNotificationDto appNotification,
         IStringLocalizer<AppNotificationComponent> stringLocalizer)
     {
-        var payload = GetPayload<DoctorDeletedPayload>();
-
-        if (payload is null)
+        if (_payload is null)
             return string.Empty;
 
         return string.Format(
             stringLocalizer["Event_DoctorDeleted_Message"],
-            payload.FullName,
+            _payload.FullName,
             appNotification.TriggeredBy
         );
+    }
+
+    private string GetUrlFromPayload()
+    {
+        if (_payload is null)
+            return string.Empty;
+
+        return $"doctors/detail/{_payload.Id}";
     }
 }

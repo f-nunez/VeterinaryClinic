@@ -9,6 +9,7 @@ public abstract class BaseAppNotificationListItemFactory
     private string? _message { get; set; }
     private string? _moduleIcon { get; set; }
     private string? _title { get; set; }
+    public string? _url { get; set; }
 
     public BaseAppNotificationListItemFactory(
         AppNotificationDto appNotification)
@@ -29,7 +30,8 @@ public abstract class BaseAppNotificationListItemFactory
             IsRead = _appNotification.IsRead,
             Message = _message,
             ModuleIcon = _moduleIcon,
-            Title = _title
+            Title = _title,
+            Url = _url
         };
     }
 
@@ -42,4 +44,6 @@ public abstract class BaseAppNotificationListItemFactory
     protected void SetModuleIcon(string? moduleIcon) => _moduleIcon = moduleIcon;
 
     protected void SetTitle(string? title) => _title = title;
+
+    protected void SetUrl(string? url) => _url = url;
 }

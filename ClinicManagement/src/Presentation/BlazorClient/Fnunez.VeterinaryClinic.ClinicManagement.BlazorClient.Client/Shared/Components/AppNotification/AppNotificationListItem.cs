@@ -8,4 +8,5 @@ public class AppNotificationListItem
     public string? Message { get; set; }
     public string? ModuleIcon { get; set; }
     public string? Title { get; set; }
+    public string? Url { get; set; }
 }
