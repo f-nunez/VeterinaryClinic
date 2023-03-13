@@ -4,6 +4,7 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.ViewModel
 
 public class PatientDetailVm
 {
+    public bool IsActive { get; set; }
     public string Breed { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string PhotoBase64Encoded { get; set; } = string.Empty;
