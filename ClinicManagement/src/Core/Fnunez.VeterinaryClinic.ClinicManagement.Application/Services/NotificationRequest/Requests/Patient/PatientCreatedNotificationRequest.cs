@@ -2,6 +2,7 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.Notifica
 
 public class PatientCreatedNotificationRequest : BaseNotificationRequest
 {
-    public int Id { get; set; }
+    public int ClientId { get; set; }
+    public int PatientId { get; set; }
     public string? Name { get; set; }
 }
