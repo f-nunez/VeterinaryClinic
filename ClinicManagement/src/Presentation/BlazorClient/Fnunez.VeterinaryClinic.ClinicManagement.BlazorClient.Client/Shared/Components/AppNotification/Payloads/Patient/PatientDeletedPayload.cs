@@ -2,6 +2,7 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Co
 
 public class PatientDeletedPayload
 {
-    public int Id { get; set; }
+    public int ClientId { get; set; }
+    public int PatientId { get; set; }
     public string? Name { get; set; }
 }
