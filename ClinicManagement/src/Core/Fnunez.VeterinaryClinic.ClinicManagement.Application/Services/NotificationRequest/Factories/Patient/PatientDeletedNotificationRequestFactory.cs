@@ -24,8 +24,9 @@ public class PatientDeletedNotificationRequestFactory
     {
         return new PatientDeletedNotificationRequest
         {
+            ClientId = _patient.ClientId,
             CorrelationId = _correlationId,
-            Id = _patient.Id,
+            PatientId = _patient.Id,
             Name = _patient.Name,
             TriggeredByUserId = _userId
         };
