@@ -2,7 +2,7 @@ using ClinicManagementContracts;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Services;
 using MassTransit;
 
-namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.ServiceBus.Consumers;
+namespace Fnunez.VeterinaryClinic.ClinicManagementNotifications.Infrastructure.ServiceBus.Consumers;
 
 public class NotificationRequestConsumer
     : IConsumer<NotificationRequestContract>
