@@ -120,9 +120,9 @@ public class GetPatientDetailQueryHandler
         {
             _logger.LogError(ex.Message, ex);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            throw ex;
+            throw;
         }
 
         return photoData;
