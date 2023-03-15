@@ -8,39 +8,19 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared;
 
 public partial class MainLayoutComponent : LayoutComponentBase
 {
-    [Inject]
-    protected DialogService DialogService { get; set; }
+    protected bool IsBodyExpanded = false;
 
-    [Inject]
-    protected NavigationManager NavigationManager { get; set; }
+    protected bool IsSidebarExpanded = true;
 
-    [Inject]
-    protected NotificationService NotificationService { get; set; }
+    protected RadzenBody RadzenBody;
+
+    protected RadzenSidebar RadzenSidebar;
 
     [Inject]
     protected ISecurityService SecurityService { get; set; }
 
     [Inject]
     protected IStringLocalizer<MainLayout> StringLocalizer { get; set; }
-
-    protected RadzenBody RadzenBody;
-
-    protected RadzenSidebar RadzenSidebar;
-
-    protected bool IsBodyExpanded = false;
-
-    protected bool IsSidebarExpanded = true;
-
-    protected bool IsAuthenticated = false;
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        await SecurityService.SetApplicationUserAsync();
-
-        IsAuthenticated = await SecurityService.IsAuthenticatedAsync();
-    }
 
     protected async Task SidebarToggleClick(dynamic args)
     {
@@ -50,9 +30,9 @@ public partial class MainLayoutComponent : LayoutComponentBase
         IsBodyExpanded = !IsBodyExpanded;
     }
 
-    protected async Task ProfileMenuClick(dynamic args)
+    protected void ProfileMenuClick(dynamic args)
     {
         if (args.Value == "Logout")
-            await SecurityService.LogoutAsync();
+            SecurityService.Logout();
     }
 }

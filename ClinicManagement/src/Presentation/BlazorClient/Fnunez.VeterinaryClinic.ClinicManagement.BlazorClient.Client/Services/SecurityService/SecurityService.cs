@@ -8,23 +8,17 @@ public class SecurityService : ISecurityService
 {
     public ApplicationUser? User { get; set; }
     private readonly NavigationManager _navigationManager;
-    private readonly AuthenticationStateProvider _authenticationStateProvider;
 
     public SecurityService(
         NavigationManager navigationManager,
-        AuthenticationStateProvider authenticationStateProvider,
         HttpClient httpClient)
     {
         _navigationManager = navigationManager;
-        _authenticationStateProvider = authenticationStateProvider;
     }
 
-    public async Task<bool> IsAuthenticatedAsync()
+    public bool IsAuthenticated()
     {
-        var result = await _authenticationStateProvider
-            .GetAuthenticationStateAsync();
-
-        return result.User.Identity?.IsAuthenticated == true;
+        return User is not null;
     }
 
     public void Login()
@@ -32,31 +26,29 @@ public class SecurityService : ISecurityService
         _navigationManager.NavigateTo("bff/login", true);
     }
 
-    public async Task LogoutAsync()
+    public void Logout()
     {
-        var result = await _authenticationStateProvider
-            .GetAuthenticationStateAsync();
-
-        string logoutUrl = result.User.FindFirst("bff:logout_url")?.Value!;
-
-        _navigationManager.NavigateTo(logoutUrl, true);
+        if (User is not null)
+            _navigationManager.NavigateTo(User.LogoutUrl, true);
     }
 
-    public async Task SetApplicationUserAsync()
+    public void SetApplicationUser(AuthenticationState authenticationState)
     {
-        var result = await _authenticationStateProvider
-            .GetAuthenticationStateAsync();
-
-        if (result.User.Identity?.IsAuthenticated == true)
+        if (authenticationState.User.Identity?.IsAuthenticated == true)
         {
             User = new ApplicationUser
             {
-                Email = result.User.FindFirst("email")?.Value!,
-                Id = result.User.FindFirst("sub")?.Value!,
-                Name = result.User.Identity.Name!,
-                Roles = result.User.FindFirst("role")?.Value!.Split(" ")!,
-                Username = result.User.FindFirst("preferred_username")?.Value!
+                Email = authenticationState.User.FindFirst("email")?.Value!,
+                Id = authenticationState.User.FindFirst("sub")?.Value!,
+                LogoutUrl = authenticationState.User.FindFirst("bff:logout_url")?.Value!,
+                Name = authenticationState.User.Identity.Name!,
+                Roles = authenticationState.User.FindFirst("role")?.Value!.Split(" ")!,
+                Username = authenticationState.User.FindFirst("preferred_username")?.Value!
             };
+        }
+        else
+        {
+            User = null;
         }
     }
 }

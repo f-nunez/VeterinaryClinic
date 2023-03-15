@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Security.Claims;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Settings;
 using Microsoft.AspNetCore.Components.Authorization;
 
@@ -13,18 +14,21 @@ public class BffAuthenticationStateProvider : AuthenticationStateProvider
     private ClaimsPrincipal _cachedUser;
     private readonly HttpClient _client;
     private readonly ILogger<BffAuthenticationStateProvider> _logger;
+    private readonly ISecurityService _securityService;
     private readonly TimeSpan _userCacheRefreshInterval;
     private DateTimeOffset _userLastCheck;
 
     public BffAuthenticationStateProvider(
         IBackendForFrontendSetting bffSetting,
         HttpClient httpClient,
-        ILogger<BffAuthenticationStateProvider> logger)
+        ILogger<BffAuthenticationStateProvider> logger,
+        ISecurityService securityService)
     {
         _bffSetting = bffSetting;
         _cachedUser = new(new ClaimsIdentity());
         _client = httpClient;
         _logger = logger;
+        _securityService = securityService;
 
         _userCacheRefreshInterval = TimeSpan
             .FromSeconds(_bffSetting.SecondsToRefreshUserCache);
@@ -42,6 +46,7 @@ public class BffAuthenticationStateProvider : AuthenticationStateProvider
         // adjust the period accordingly if that feature is needed
         if (user.Identity!.IsAuthenticated!)
         {
+            _securityService.SetApplicationUser(state);
             _logger.LogInformation("starting background check..");
 
             Timer? timer = null;
@@ -53,8 +58,12 @@ public class BffAuthenticationStateProvider : AuthenticationStateProvider
                 {
                     _logger.LogInformation("user logged out");
 
+                    var nextState = new AuthenticationState(currentUser);
+
+                    _securityService.SetApplicationUser(nextState);
+
                     NotifyAuthenticationStateChanged(
-                        Task.FromResult(new AuthenticationState(currentUser)));
+                        Task.FromResult(nextState));
 
                     await timer!.DisposeAsync();
                 }
