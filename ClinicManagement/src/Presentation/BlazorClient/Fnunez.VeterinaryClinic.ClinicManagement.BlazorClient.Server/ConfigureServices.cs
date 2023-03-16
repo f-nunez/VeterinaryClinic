@@ -131,6 +131,8 @@ public static class ConfigureServices
 
         app.MapReverseProxy();
 
+        app.MapControllers();
+
         app.MapFallbackToFile("index.html");
 
         return app;
