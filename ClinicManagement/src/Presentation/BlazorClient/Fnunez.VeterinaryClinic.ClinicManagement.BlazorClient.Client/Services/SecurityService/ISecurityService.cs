@@ -6,6 +6,7 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
 public interface ISecurityService
 {
     ApplicationUser? User { get; }
+    Task<string> GetAccessTokenAsync();
     bool IsAuthenticated();
     void Login();
     void Logout();

@@ -1,4 +1,5 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Models.ApplicationUsers;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Settings;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
@@ -6,14 +7,29 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
 
 public class SecurityService : ISecurityService
 {
-    public ApplicationUser? User { get; set; }
+    private readonly string _reverseProxyRoute;
+    private readonly HttpClient _httpClient;
     private readonly NavigationManager _navigationManager;
+    public ApplicationUser? User { get; set; }
 
     public SecurityService(
-        NavigationManager navigationManager,
-        HttpClient httpClient)
+        IBackendForFrontendSetting bffSetting,
+        HttpClient httpClient,
+        NavigationManager navigationManager)
     {
+        _reverseProxyRoute = bffSetting.SuffixRouteForAccessToken;
+        _httpClient = httpClient;
         _navigationManager = navigationManager;
+    }
+
+    public async Task<string> GetAccessTokenAsync()
+    {
+        var result = await _httpClient.GetAsync($"{_reverseProxyRoute}/User/GetAccessToken");
+
+        if (!result.IsSuccessStatusCode)
+            return string.Empty;
+        
+        return await result.Content.ReadAsStringAsync();
     }
 
     public bool IsAuthenticated()
