@@ -116,6 +116,8 @@ public static class ConfigureServices
 
         app.UseCors(typeof(CorsPolicySetting).Name);
 
+        app.UseAuthentication();
+
         app.UseAuthorization();
 
         app.UseHealthChecks("/api/health");
