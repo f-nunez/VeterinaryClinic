@@ -1,3 +1,5 @@
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared.GetAppNotifications;
+
 namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.AppNotification;
 
 public interface IAppNotificationComponentService
@@ -9,5 +11,8 @@ public interface IAppNotificationComponentService
     void ShowContainer();
     void RefreshAppNotificationList();
     Task DeleteAppNotificationAsync(Guid appNotificationId);
+    Task<string> GetAccessTokenAsync();
+    Task<GetAppNotificationsResponse> GetAppNotificationsAsync(GetAppNotificationsRequest request);
+    Task<int> GetUnreadAppNotificationsCountAsync();
     Task MarkAppNotificationAsReadAsync(Guid appNotificationId);
 }

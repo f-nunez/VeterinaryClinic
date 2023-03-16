@@ -1,5 +1,7 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared.DeleteAppNotification;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared.GetAppNotifications;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared.GetUnreadAppNotificationsCount;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared.MarkAppNotificationAsRead;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.AppNotification;
@@ -7,14 +9,17 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Co
 public class AppNotificationComponentService : IAppNotificationComponentService
 {
     private readonly IAppNotificationService _appNotificationService;
+    private readonly ISecurityService _securityService;
     public event Action? OnHideContainer;
     public event Action? OnShowContainer;
     public event Action? OnRefreshAppNotificationList;
 
     public AppNotificationComponentService(
-        IAppNotificationService appNotificationService)
+        IAppNotificationService appNotificationService,
+        ISecurityService securityService)
     {
         _appNotificationService = appNotificationService;
+        _securityService = securityService;
     }
 
     public void HideContainer()
@@ -32,6 +37,11 @@ public class AppNotificationComponentService : IAppNotificationComponentService
         OnRefreshAppNotificationList?.Invoke();
     }
 
+    public async Task<string> GetAccessTokenAsync()
+    {
+        return await _securityService.GetAccessTokenAsync();
+    }
+
     public async Task DeleteAppNotificationAsync(Guid appNotificationId)
     {
         var request = new DeleteAppNotificationRequest
@@ -40,6 +50,22 @@ public class AppNotificationComponentService : IAppNotificationComponentService
         };
 
         await _appNotificationService.DeleteAppNotificationAsync(request);
+    }
+
+    public async Task<GetAppNotificationsResponse> GetAppNotificationsAsync(
+        GetAppNotificationsRequest request)
+    {
+        return await _appNotificationService.GetAppNotificationsAsync(request);
+    }
+
+    public async Task<int> GetUnreadAppNotificationsCountAsync()
+    {
+        var request = new GetUnreadAppNotificationsCountRequest();
+
+        var count = await _appNotificationService
+            .GetUnreadAppNotificationsCountAsync(request);
+
+        return count;
     }
 
     public async Task MarkAppNotificationAsReadAsync(Guid appNotificationId)
