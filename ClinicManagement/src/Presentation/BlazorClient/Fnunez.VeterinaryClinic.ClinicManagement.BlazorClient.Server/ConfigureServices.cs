@@ -15,6 +15,7 @@ public static class ConfigureServices
         services.AddRazorPages();
 
         services.AddReverseProxy()
+            .LoadFromConfig(configuration.GetSection("ReverseProxyForNotificationHubSignalr"))
             .AddTransforms<AccessTokenTransformProvider>()
             .LoadFromConfig(configuration.GetSection("ReverseProxy"));
 
