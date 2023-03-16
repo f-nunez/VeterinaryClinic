@@ -22,7 +22,7 @@ public partial class DoctorDetailNotificationComponent : ComponentBase
 
     protected bool IsNotFound { get; set; }
 
-    protected DoctorVm Model { get; set; }
+    protected DoctorVm Model { get; set; } = new();
 
     [Inject]
     protected IStringLocalizer<DoctorDetailNotificationComponent> StringLocalizer { get; set; }
