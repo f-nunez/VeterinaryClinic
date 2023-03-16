@@ -40,6 +40,6 @@ public class AppointmentTypeDeletedAppNotificationListItemFactory
         if (_payload is null)
             return string.Empty;
 
-        return $"appointments/detail/{_payload.Id}";
+        return $"appointment-types/detail/{_payload.Id}";
     }
 }
