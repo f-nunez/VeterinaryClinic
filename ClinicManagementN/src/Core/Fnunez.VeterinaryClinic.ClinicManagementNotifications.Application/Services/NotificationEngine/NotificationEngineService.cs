@@ -2,6 +2,7 @@ using System.Text.Json;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Services.NotificationEngine.Payloads;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Services.NotificationEngine.Requests;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Services.NotificationEngine.Specifications;
+using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Services.NotificationHub;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Domain.ApplicationUserAggregate;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Domain.AppNotificationAggregate;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Domain.NotificationAggregate;
@@ -12,15 +13,18 @@ namespace Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Serv
 
 public class NotificationEngineService : INotificationEngineService
 {
+    private readonly INotificationHubService _notificationHubService;
     private readonly INotificationRequestFactory _notificationRequestFactory;
     private readonly IPayloadFactory _payloadFactory;
     private readonly IUnitOfWork _unitOfWork;
 
     public NotificationEngineService(
+        INotificationHubService notificationHubService,
         INotificationRequestFactory notificationRequestFactory,
         IPayloadFactory payloadFactory,
         IUnitOfWork unitOfWork)
     {
+        _notificationHubService = notificationHubService;
         _notificationRequestFactory = notificationRequestFactory;
         _payloadFactory = payloadFactory;
         _unitOfWork = unitOfWork;
@@ -50,11 +54,12 @@ public class NotificationEngineService : INotificationEngineService
         var notification = await CreateNotificationAsync(
             notificationEvent, notificationRequest, payload, cancellationToken);
 
-        var appNotifications = await CreateAppNotificationsAsync(notification, cancellationToken);
+        var appNotifications = await CreateAppNotificationsAsync(
+            notification, cancellationToken);
 
-        var userIdsToNotify = appNotifications.Select(x => x.UserId).ToArray();
-
-        //TODO: send userIds to message broker to be consumed by SignalR Hub
+        foreach (var appNotification in appNotifications)
+            await _notificationHubService.SendAppNotificationAsync(
+                appNotification.UserId, $"{appNotification.Id}");
 
         return appNotifications;
     }
