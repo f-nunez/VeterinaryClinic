@@ -3,6 +3,7 @@ using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Api.Hubs;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Api.Services;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Api.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Common.Interfaces;
+using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Services.NotificationHub;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -91,6 +92,8 @@ public static class ConfigureServices
         services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
 
         services.AddSignalR();
+
+        services.AddScoped<INotificationHubService, NotificationHubService>();
 
         return services;
     }
