@@ -2,9 +2,11 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Settings;
 
 public interface IBackendForFrontendSetting
 {
-    public int SecondsToCheckAuthenticationStateDuetime { get; }
-    public int SecondsToCheckAuthenticationStatePeriod { get; }
-    public int SecondsToRefreshUserCache { get; }
-    public string SuffixRouteForClinicManagementApi { get; }
-    public string SuffixRouteForClinicManagementNotificationsApi { get; }
+    int SecondsToCheckAuthenticationStateDuetime { get; }
+    int SecondsToCheckAuthenticationStatePeriod { get; }
+    int SecondsToRefreshUserCache { get; }
+    string SuffixRouteForAccessToken { get; }
+    string SuffixRouteForClinicManagementApi { get; }
+    string SuffixRouteForClinicManagementNotificationsApi { get; }
+    string SuffixRouteForClinicManagementNotificationsHub { get; }
 }
