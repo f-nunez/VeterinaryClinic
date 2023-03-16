@@ -115,11 +115,11 @@ public static class ConfigureServices
 
         app.UseStaticFiles();
 
-        app.UseAuthentication();
-
         app.UseRouting();
 
         app.UseCors(typeof(CorsPolicySetting).Name);
+
+        app.UseAuthentication();
 
         app.UseBff();
 
