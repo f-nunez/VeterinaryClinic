@@ -1,4 +1,5 @@
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Api.Filters;
+using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Api.Hubs;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Api.Services;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Api.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Common.Interfaces;
@@ -117,6 +118,8 @@ public static class ConfigureServices
         app.UseHealthChecks("/api/health");
 
         app.MapControllers().RequireAuthorization("ApiScope");
+
+        app.MapHub<NotificationHub>("/notificationHub");
 
         return app;
     }
