@@ -29,7 +29,7 @@ public class ClinicCreatedAppNotificationListItemFactory
             return string.Empty;
 
         return string.Format(
-            stringLocalizer["Event_ClientUpdated_Message"],
+            stringLocalizer["Event_ClinicCreated_Message"],
             _payload.Name,
             appNotification.TriggeredBy
         );
