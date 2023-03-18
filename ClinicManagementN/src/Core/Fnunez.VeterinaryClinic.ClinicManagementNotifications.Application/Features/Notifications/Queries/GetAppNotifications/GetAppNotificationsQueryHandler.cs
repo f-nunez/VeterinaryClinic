@@ -1,3 +1,4 @@
+using AutoMapper;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Domain.AppNotificationAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
@@ -9,13 +10,16 @@ public class GetAppNotificationsQueryHandler
     : IRequestHandler<GetAppNotificationsQuery, GetAppNotificationsResponse>
 {
     private readonly ICurrentUserService _currentUserService;
+    private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
     public GetAppNotificationsQueryHandler(
         ICurrentUserService currentUserService,
+        IMapper mapper,
         IUnitOfWork unitOfWork)
     {
         _currentUserService = currentUserService;
+        _mapper = mapper;
         _unitOfWork = unitOfWork;
     }
 
@@ -37,22 +41,11 @@ public class GetAppNotificationsQueryHandler
             .ReadRepository<AppNotification>()
             .CountAsync(specification, cancellationToken);
 
-        var appNotificationDtos = new List<AppNotificationDto>();
+        if (appNotifications is null)
+            return response;
 
-        foreach (var appNotification in appNotifications)
-        {
-            appNotificationDtos.Add(
-                new AppNotificationDto
-                {
-                    CreatedOn = appNotification.CreatedOn,
-                    Event = appNotification.Notification.NotificationEvent.ToString(),
-                    Id = appNotification.Id,
-                    IsRead = appNotification.ReadOn.HasValue,
-                    Payload = appNotification.Notification.Payload,
-                    TriggeredBy = appNotification.Notification.TriggeredByUser.Name
-                }
-            );
-        }
+        var appNotificationDtos = _mapper
+            .Map<List<AppNotificationDto>>(appNotifications);
 
         response.AppNotifications = appNotificationDtos;
         response.Count = appNotificationsCount;
