@@ -4,9 +4,12 @@
 @using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.Spinner
 @using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.UserSettings
 
+<RadzenDialog></RadzenDialog>
+<RadzenNotification></RadzenNotification>
+<SpinnerComponent></SpinnerComponent>
+
 <AuthorizeView>
     <Authorized>
-
         <RadzenLayout>
             <RadzenHeader>
                 <ChildContent>
@@ -89,7 +92,3 @@
         </div>
     </NotAuthorized>
 </AuthorizeView>
-
-<RadzenDialog></RadzenDialog>
-<RadzenNotification></RadzenNotification>
-<SpinnerComponent></SpinnerComponent>
