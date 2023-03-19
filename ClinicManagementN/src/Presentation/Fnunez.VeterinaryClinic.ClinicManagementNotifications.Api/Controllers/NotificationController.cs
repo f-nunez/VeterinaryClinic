@@ -1,5 +1,6 @@
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Commands.DeleteAllAppNotifications;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Commands.DeleteAppNotification;
+using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Commands.DeleteAppNotifications;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Commands.MarkAppNotificationAsRead;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Queries.GetAppNotifications;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Queries.GetAppNotificationsDataGrid;
@@ -31,6 +32,19 @@ public class NotificationController : BaseApiController
         var command = new DeleteAppNotificationCommand(request);
 
         DeleteAppNotificationResponse response = await Mediator
+            .Send(command, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("DeleteAppNotifications")]
+    public async Task<ActionResult> DeleteAppNotifications(
+        DeleteAppNotificationsRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = new DeleteAppNotificationsCommand(request);
+
+        DeleteAppNotificationsResponse response = await Mediator
             .Send(command, cancellationToken);
 
         return Ok(response);
