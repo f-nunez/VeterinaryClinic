@@ -2,6 +2,7 @@ using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Commands.DeleteAppNotification;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Commands.MarkAppNotificationAsRead;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Queries.GetAppNotifications;
+using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Queries.GetAppNotificationsDataGrid;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Queries.GetUnreadAppNotificationsCount;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +44,19 @@ public class NotificationController : BaseApiController
         var query = new GetAppNotificationsQuery(request);
 
         GetAppNotificationsResponse response = await Mediator
+            .Send(query, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("GetAppNotificationsDataGrid")]
+    public async Task<ActionResult> GetAppNotificationsDataGrid(
+        GetAppNotificationsDataGridRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetAppNotificationsDataGridQuery(request);
+
+        GetAppNotificationsDataGridResponse response = await Mediator
             .Send(query, cancellationToken);
 
         return Ok(response);
