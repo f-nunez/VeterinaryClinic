@@ -1,0 +1,6 @@
+using MediatR;
+
+namespace Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Queries.GetAppNotificationsDataGrid;
+
+public record GetAppNotificationsDataGridQuery(GetAppNotificationsDataGridRequest GetAppNotificationsDataGridRequest)
+    : IRequest<GetAppNotificationsDataGridResponse>;
