@@ -141,7 +141,7 @@ public static class ConfigureServices
 
         app.UseHealthChecks("/api/health");
 
-        app.MapControllers();
+        app.MapControllers().RequireAuthorization("ApiScope");
 
         app.MapHub<NotificationHub>("/notificationHub");
 
