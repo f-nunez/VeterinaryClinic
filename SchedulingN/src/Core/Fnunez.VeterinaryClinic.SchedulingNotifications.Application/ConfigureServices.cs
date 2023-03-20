@@ -1,6 +1,9 @@
 using System.Reflection;
 using FluentValidation;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Common.Behaviors;
+using Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Services;
+using Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Services.NotificationEngine.Payloads;
+using Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Services.NotificationEngine.Requests;
 using MediatR;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -21,6 +24,12 @@ public static class ConfigureServices
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehavior<,>));
 
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+        services.AddScoped<INotificationEngineService, NotificationEngineService>();
+
+        services.AddScoped<INotificationRequestFactory, NotificationRequestFactory>();
+
+        services.AddScoped<IPayloadFactory, PayloadFactory>();
 
         return services;
     }
