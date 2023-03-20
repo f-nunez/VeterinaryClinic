@@ -1,3 +1,4 @@
+using System.Reflection;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Settings;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.Persistence.Contexts;
@@ -48,6 +49,21 @@ public static class ConfigureServices
         services.AddReceiveObserver<LoggingReceiveObserver>();
 
         services.AddSendObserver<LoggingSendObserver>();
+
+        services.AddMassTransit(mt =>
+        {
+            mt.AddConsumers(Assembly.GetExecutingAssembly());
+
+            mt.UsingRabbitMq((context, cfg) =>
+            {
+                var rabbitMqSetting = context
+                    .GetRequiredService<IRabbitMqSetting>();
+
+                cfg.Host(rabbitMqSetting.HostAddress);
+
+                cfg.ConfigureEndpoints(context);
+            });
+        });
 
         return services;
     }
