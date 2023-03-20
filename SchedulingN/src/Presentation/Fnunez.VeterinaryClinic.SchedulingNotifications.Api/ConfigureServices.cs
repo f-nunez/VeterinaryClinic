@@ -1,3 +1,6 @@
+using Fnunez.VeterinaryClinic.SchedulingNotifications.Api.Filters;
+using Microsoft.AspNetCore.Mvc;
+
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ConfigureServices
@@ -6,7 +9,12 @@ public static class ConfigureServices
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddControllers();
+        services.AddControllers(options =>
+            options.Filters.Add<ApiExceptionFilterAttribute>());
+
+        // Customise default API behaviour
+        services.Configure<ApiBehaviorOptions>(options =>
+            options.SuppressModelStateInvalidFilter = true);
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
