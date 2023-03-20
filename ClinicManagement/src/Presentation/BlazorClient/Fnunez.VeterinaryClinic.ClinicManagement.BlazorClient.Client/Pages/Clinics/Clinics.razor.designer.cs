@@ -132,7 +132,7 @@ public partial class ClinicsComponent : ComponentBase
             StringLocalizer["Clinics_DeletedClinic_Alert_Title"],
             StringLocalizer["Clinics_DeletedClinic_Alert_Button_Ok"]);
 
-        await ClinicsGrid.Reload();
+        await ClinicsGrid.ReloadAfterDeleteItemAsync();
     }
 
     protected async Task OnClickDetail(ClinicDto clinic)

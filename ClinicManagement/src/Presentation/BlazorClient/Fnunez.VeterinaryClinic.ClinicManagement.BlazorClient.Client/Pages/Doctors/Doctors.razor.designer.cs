@@ -126,7 +126,7 @@ public partial class DoctorsComponent : ComponentBase
             StringLocalizer["Doctors_DeletedDoctor_Alert_Title"],
             StringLocalizer["Doctors_DeletedDoctor_Alert_Button_Ok"]);
 
-        await DoctorsGrid.Reload();
+        await DoctorsGrid.ReloadAfterDeleteItemAsync();
     }
 
     protected async Task OnClickDetail(DoctorDto doctor)

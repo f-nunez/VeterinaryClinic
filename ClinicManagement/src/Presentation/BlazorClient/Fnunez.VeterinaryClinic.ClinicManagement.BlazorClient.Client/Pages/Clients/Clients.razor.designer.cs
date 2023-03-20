@@ -136,7 +136,7 @@ public partial class ClientsComponent : ComponentBase
             StringLocalizer["Clients_DeletedClient_Alert_Title"],
             StringLocalizer["Clients_DeletedClient_Alert_Button_Ok"]);
 
-        await ClientsGrid.Reload();
+        await ClientsGrid.ReloadAfterDeleteItemAsync();
     }
 
     protected async Task OnClickDetail(ClientDto client)

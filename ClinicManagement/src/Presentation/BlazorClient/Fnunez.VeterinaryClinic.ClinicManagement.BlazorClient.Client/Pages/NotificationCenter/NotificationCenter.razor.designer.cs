@@ -113,7 +113,7 @@ public partial class NotificationCenterComponent : ComponentBase
             StringLocalizer["NotificationCenter_DeletedNotification_Alert_Title"],
             StringLocalizer["NotificationCenter_DeletedNotification_Alert_Button_Ok"]);
 
-        await NotificationCenterDataGrid.Reload();
+        await NotificationCenterDataGrid.ReloadAfterDeleteItemAsync();
     }
 
     protected async Task OnClickDeleteAll()
@@ -147,7 +147,7 @@ public partial class NotificationCenterComponent : ComponentBase
             StringLocalizer["NotificationCenter_DeletedAllNotification_Alert_Title"],
             StringLocalizer["NotificationCenter_DeletedAllNotification_Alert_Button_Ok"]);
 
-        await NotificationCenterDataGrid.Reload();
+        await NotificationCenterDataGrid.ReloadAfterDeletePageAsync();
     }
 
     private async Task<bool?> ShowAlertAsync(

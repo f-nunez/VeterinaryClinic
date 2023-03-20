@@ -130,7 +130,7 @@ public partial class RoomsComponent : ComponentBase
             StringLocalizer["Rooms_DeletedRoom_Alert_Title"],
             StringLocalizer["Rooms_DeletedRoom_Alert_Button_Ok"]);
 
-        await RoomsGrid.Reload();
+        await RoomsGrid.ReloadAfterDeleteItemAsync();
     }
 
     protected async Task OnClickDetail(RoomDto room)
