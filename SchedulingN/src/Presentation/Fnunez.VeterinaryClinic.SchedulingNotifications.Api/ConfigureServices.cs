@@ -1,8 +1,10 @@
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Api.Filters;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Api.Services;
+using Fnunez.VeterinaryClinic.SchedulingNotifications.Api.Settings;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +14,10 @@ public static class ConfigureServices
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        var authenticationSetting = configuration
+            .GetSection(typeof(AuthenticationSetting).Name)
+            .Get<AuthenticationSetting>()!;
+
         services.AddHttpContextAccessor();
 
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
@@ -27,6 +33,19 @@ public static class ConfigureServices
         services.AddEndpointsApiExplorer();
 
         services.AddSwaggerGen();
+
+        services.AddAuthentication(authenticationSetting.DefaultScheme)
+            .AddJwtBearer(options =>
+            {
+                options.Authority = authenticationSetting.Authority;
+
+                options.Audience = authenticationSetting.Audience;
+
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateAudience = authenticationSetting.ValidateAudience
+                };
+            });
 
         services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
 
@@ -46,6 +65,8 @@ public static class ConfigureServices
         }
 
         app.UseHttpsRedirection();
+
+        app.UseAuthentication();
 
         app.UseAuthorization();
 
