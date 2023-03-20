@@ -1,3 +1,4 @@
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Notifications.Commands.DeleteAppNotifications;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Common;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared.DeleteAllAppNotifications;
@@ -39,6 +40,17 @@ public class AppNotificationService : IAppNotificationService
 
         await _httpService.HttpDeleteAsync<DeleteAppNotificationRequest>(
             "Notification/DeleteAppNotification", request.AppNotificationId
+        );
+    }
+
+    public async Task DeleteAppNotificationsAsync(
+        DeleteAppNotificationsRequest request)
+    {
+        _logger.LogInformation($"DeleteAppNotification: {request}");
+
+        await _httpService.HttpPostAsync<DeleteAppNotificationsRequest>(
+            "Notification/DeleteAppNotifications",
+            request
         );
     }
 
