@@ -1,4 +1,6 @@
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Api.Filters;
+using Fnunez.VeterinaryClinic.SchedulingNotifications.Api.Services;
+using Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +12,10 @@ public static class ConfigureServices
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddHttpContextAccessor();
+
+        services.AddSingleton<ICurrentUserService, CurrentUserService>();
+
         services.AddControllers(options =>
             options.Filters.Add<ApiExceptionFilterAttribute>());
 
