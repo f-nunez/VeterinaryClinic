@@ -1,4 +1,5 @@
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Api.Filters;
+using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,8 @@ public static class ConfigureServices
 
         services.AddSwaggerGen();
 
+        services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
+
         return services;
     }
 
@@ -39,6 +42,8 @@ public static class ConfigureServices
         app.UseAuthorization();
 
         app.MapControllers();
+
+        app.UseHealthChecks("/api/health");
 
         return app;
     }
