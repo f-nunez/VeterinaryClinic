@@ -101,6 +101,12 @@ public partial class AppNotificationComponent : ComponentBase
         StateHasChanged();
     }
 
+    protected void OnClickFooter()
+    {
+        HideContainer();
+        _navigationManager.NavigateTo("notification-center");
+    }
+
     private async Task InitializeHubConnectionAsync()
     {
         string reverseProxyRoute = bffSetting

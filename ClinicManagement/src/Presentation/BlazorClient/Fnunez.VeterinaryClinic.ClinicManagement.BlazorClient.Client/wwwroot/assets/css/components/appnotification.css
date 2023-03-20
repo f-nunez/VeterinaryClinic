@@ -65,6 +65,7 @@
 .appnotification-footer {
     border-top: var(--rz-panel-menu-item-border);
     color: var(--rz-text-title-color);
+    cursor: pointer;
     height: 30px;
     position: relative;
     text-align: center;
