@@ -91,6 +91,8 @@ public static class ConfigureServices
 
         services.AddSignalR();
 
+        services.AddScoped<INotificationHubService, NotificationHubService>();
+
         return services;
     }
 
