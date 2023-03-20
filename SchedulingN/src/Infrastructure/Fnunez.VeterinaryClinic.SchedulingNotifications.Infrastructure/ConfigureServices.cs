@@ -1,5 +1,7 @@
+using Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Settings;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.Persistence.Contexts;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.Persistence.Repositories;
+using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.Settings;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +30,10 @@ public static class ConfigureServices
         services.AddScoped<ApplicationDbContextSeeder>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.AddSingleton<IRabbitMqSetting>(configuration
+            .GetSection(typeof(RabbitMqSetting).Name)
+            .Get<RabbitMqSetting>()!);
 
         return services;
     }
