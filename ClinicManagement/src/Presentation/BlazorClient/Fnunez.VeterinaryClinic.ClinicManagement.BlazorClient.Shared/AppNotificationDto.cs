@@ -1,4 +1,4 @@
-namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared.GetAppNotifications;
+namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared;
 
 public class AppNotificationDto
 {

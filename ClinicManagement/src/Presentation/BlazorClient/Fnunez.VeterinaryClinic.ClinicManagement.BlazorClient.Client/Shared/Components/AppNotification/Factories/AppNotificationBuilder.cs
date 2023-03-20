@@ -1,4 +1,5 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared.GetAppNotifications;
 using Microsoft.Extensions.Localization;
 

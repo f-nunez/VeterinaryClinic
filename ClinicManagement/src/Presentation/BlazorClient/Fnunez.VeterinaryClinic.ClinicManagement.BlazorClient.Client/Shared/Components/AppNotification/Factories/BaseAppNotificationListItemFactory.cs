@@ -1,5 +1,5 @@
 using System.Text.Json;
-using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared.GetAppNotifications;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.AppNotification.Factories;
 
