@@ -22,9 +22,28 @@ public static class ConfigureServices
             .GetSection(typeof(AuthorizationSetting).Name)
             .Get<AuthorizationSetting>()!;
 
+        var corsPolicySetting = configuration
+            .GetSection(typeof(CorsPolicySetting).Name)
+            .Get<CorsPolicySetting>()!;
+
         services.AddHttpContextAccessor();
 
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
+
+        services.AddCors(corsOptions =>
+        {
+            corsOptions.AddPolicy(typeof(CorsPolicySetting).Name, corsPolicyBuilder =>
+            {
+                corsPolicyBuilder.AllowAnyHeader();
+
+                corsPolicyBuilder.AllowAnyMethod();
+
+                corsPolicyBuilder.WithOrigins(
+                    corsPolicySetting.BlazorServerUrl,
+                    corsPolicySetting.IdentityServerUrl
+                );
+            });
+        });
 
         services.AddControllers(options =>
             options.Filters.Add<ApiExceptionFilterAttribute>());
@@ -89,13 +108,15 @@ public static class ConfigureServices
 
         app.UseRouting();
 
+        app.UseCors(typeof(CorsPolicySetting).Name);
+
         app.UseAuthentication();
 
         app.UseAuthorization();
 
-        app.MapControllers();
-
         app.UseHealthChecks("/api/health");
+
+        app.MapControllers();
 
         return app;
     }
