@@ -116,13 +116,9 @@ public class GetPatientDetailQueryHandler
         {
             photoData = await _fileSystemReaderService.ReadAsync(photoPath);
         }
-        catch (ArgumentException ex)
+        catch (Exception ex)
         {
             _logger.LogError(ex.Message, ex);
-        }
-        catch (Exception)
-        {
-            throw;
         }
 
         return photoData;
