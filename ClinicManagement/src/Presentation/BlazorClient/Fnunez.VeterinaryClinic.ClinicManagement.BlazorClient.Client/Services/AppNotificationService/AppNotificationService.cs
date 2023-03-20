@@ -1,6 +1,9 @@
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Common;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared.DeleteAllAppNotifications;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared.DeleteAppNotification;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared.GetAppNotifications;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared.GetAppNotificationsDataGrid;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared.GetUnreadAppNotificationsCount;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared.MarkAppNotificationAsRead;
 
@@ -54,6 +57,26 @@ public class AppNotificationService : IAppNotificationService
             throw new ArgumentNullException(nameof(response));
 
         return response;
+    }
+
+    public async Task<DataGridResponse<AppNotificationDto>> GetAppNotificationsDataGridAsync(
+        GetAppNotificationsDataGridRequest request)
+    {
+        _logger.LogInformation($"GetAppNotificationsDataGrid: {request}");
+
+        var response = await _httpService
+            .HttpPostAsync<GetAppNotificationsDataGridResponse>(
+                "Notification/GetAppNotificationsDataGrid",
+                request
+            );
+
+        if (response is null)
+            throw new ArgumentNullException(nameof(response));
+
+        if (response.DataGridResponse is null)
+            throw new ArgumentNullException(nameof(response.DataGridResponse));
+
+        return response.DataGridResponse;
     }
 
     public async Task<int> GetUnreadAppNotificationsCountAsync(
