@@ -115,6 +115,21 @@ public class ConfigurationStoreDbContextSeeder
                         JwtClaimTypes.Role,
                         JwtClaimTypes.SessionId
                     }
+                }.ToEntity(),
+                new ApiResource
+                {
+                    Name = "407acbe0-3063-427a-8501-770640d9913f",
+                    DisplayName = "SchedulingNotifications Api",
+                    Scopes = new List<string> { "scheduling_notifications_api" },
+                    UserClaims = new List<string>
+                    {
+                        JwtClaimTypes.ClientId,
+                        JwtClaimTypes.Email,
+                        JwtClaimTypes.Name,
+                        JwtClaimTypes.PreferredUserName,
+                        JwtClaimTypes.Role,
+                        JwtClaimTypes.SessionId
+                    }
                 }.ToEntity()
             );
 
@@ -152,6 +167,20 @@ public class ConfigurationStoreDbContextSeeder
                 {
                     Name = "scheduling_api",
                     DisplayName = "Scheduling Api",
+                    UserClaims = new[]
+                    {
+                        JwtClaimTypes.ClientId,
+                        JwtClaimTypes.Email,
+                        JwtClaimTypes.Name,
+                        JwtClaimTypes.PreferredUserName,
+                        JwtClaimTypes.Role,
+                        JwtClaimTypes.SessionId
+                    }
+                }.ToEntity(),
+                new ApiScope
+                {
+                    Name = "scheduling_notifications_api",
+                    DisplayName = "SchedulingNotifications Api",
                     UserClaims = new[]
                     {
                         JwtClaimTypes.ClientId,
