@@ -5,6 +5,7 @@ using Fnunez.VeterinaryClinic.SchedulingNotifications.Api.Settings;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Services.NotificationHub;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.Persistence.Contexts;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -69,6 +70,24 @@ public static class ConfigureServices
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateAudience = authenticationSetting.ValidateAudience
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+
+                        var path = context.HttpContext.Request.Path;
+
+                        if (!string.IsNullOrEmpty(accessToken) &&
+                            (path.StartsWithSegments("/notificationhub")))
+                        {
+                            context.Token = accessToken;
+                        }
+
+                        return Task.CompletedTask;
+                    }
                 };
             });
 
