@@ -1,6 +1,8 @@
+using Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Settings;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.Persistence.Contexts;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.Persistence.Repositories;
+using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.ServiceBus;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.Settings;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +36,8 @@ public static class ConfigureServices
         services.AddSingleton<IRabbitMqSetting>(configuration
             .GetSection(typeof(RabbitMqSetting).Name)
             .Get<RabbitMqSetting>()!);
+
+        services.AddScoped<IServiceBus, MassTransitServiceBus>();
 
         return services;
     }
