@@ -3,8 +3,10 @@ using Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Settings;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.Persistence.Contexts;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.Persistence.Repositories;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.ServiceBus;
+using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.ServiceBus.Observers;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.Settings;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -38,6 +40,14 @@ public static class ConfigureServices
             .Get<RabbitMqSetting>()!);
 
         services.AddScoped<IServiceBus, MassTransitServiceBus>();
+
+        services.AddConsumeObserver<LoggingConsumeObserver>();
+
+        services.AddPublishObserver<LoggingPublishObserver>();
+
+        services.AddReceiveObserver<LoggingReceiveObserver>();
+
+        services.AddSendObserver<LoggingSendObserver>();
 
         return services;
     }
