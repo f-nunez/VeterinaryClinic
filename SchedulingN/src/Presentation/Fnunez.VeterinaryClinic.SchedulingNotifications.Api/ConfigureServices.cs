@@ -89,6 +89,8 @@ public static class ConfigureServices
 
         services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
 
+        services.AddSignalR();
+
         return services;
     }
 
