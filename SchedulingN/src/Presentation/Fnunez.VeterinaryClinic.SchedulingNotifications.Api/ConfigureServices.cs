@@ -1,7 +1,9 @@
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Api.Filters;
+using Fnunez.VeterinaryClinic.SchedulingNotifications.Api.Hubs;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Api.Services;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Api.Settings;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Common.Interfaces;
+using Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Services.NotificationHub;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -121,6 +123,8 @@ public static class ConfigureServices
         app.UseHealthChecks("/api/health");
 
         app.MapControllers();
+
+        app.MapHub<NotificationHub>("/notificationHub");
 
         return app;
     }
