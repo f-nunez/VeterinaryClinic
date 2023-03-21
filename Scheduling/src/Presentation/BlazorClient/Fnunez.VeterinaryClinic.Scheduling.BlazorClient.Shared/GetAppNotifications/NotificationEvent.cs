@@ -2,22 +2,7 @@ namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Shared.GetAppNotificat
 
 public enum NotificationEvent
 {
-    AppointmentTypeCreated,
-    AppointmentTypeDeleted,
-    AppointmentTypeUpdated,
-    ClientCreated,
-    ClientDeleted,
-    ClientUpdated,
-    ClinicCreated,
-    ClinicDeleted,
-    ClinicUpdated,
-    DoctorCreated,
-    DoctorDeleted,
-    DoctorUpdated,
-    PatientCreated,
-    PatientDeleted,
-    PatientUpdated,
-    RoomCreated,
-    RoomDeleted,
-    RoomUpdated
+    AppointmentCreated,
+    AppointmentDeleted,
+    AppointmentUpdated
 }
