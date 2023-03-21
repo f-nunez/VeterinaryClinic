@@ -46,6 +46,8 @@ public static class ConfigureServices
         services.AddScoped<ISchedulingNotificationsApiHttpService, SchedulingNotificationsApiHttpService>();
 
         // register Feature services
+        services.AddScoped<IAppNotificationService, AppNotificationService>();
+
         services.AddScoped<IAppointmentService, AppointmentService>();
 
         services.AddScoped<IAppointmentTypeService, AppointmentTypeService>();
