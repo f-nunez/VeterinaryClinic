@@ -1,0 +1,17 @@
+<div class="appnotification-list">
+    <Virtualize @ref="AppNotificationList"
+        Context="appNotification"
+        ItemSize="104"
+        ItemsProvider="LoadAppNotifications"
+        OverscanCount="10">
+
+        <ItemContent>
+            <AppNotificationListItemComponent AppNotification="appNotification" />
+        </ItemContent>
+
+        <Placeholder>
+            <h5>@StringLocalizer["AppNotification_List_Loading"]</h5>
+        </Placeholder>
+
+    </Virtualize>
+</div>
