@@ -129,22 +129,22 @@
   <data name="AppNotification_List_Loading" xml:space="preserve">
     <value>Cargando...</value>
   </data>
-  <data name="Event_AppointmentTypeCreated_Message" xml:space="preserve">
+  <data name="Event_AppointmentCreated_Message" xml:space="preserve">
     <value>La consulta ({0}) ha sido creada por {1}</value>
   </data>
-  <data name="Event_AppointmentTypeCreated_Title" xml:space="preserve">
+  <data name="Event_AppointmentCreated_Title" xml:space="preserve">
     <value>Consulta Creada</value>
   </data>
-  <data name="Event_AppointmentTypeDeleted_Message" xml:space="preserve">
+  <data name="Event_AppointmentDeleted_Message" xml:space="preserve">
     <value>La consulta ({0}) ha sido eliminada por {1}</value>
   </data>
-  <data name="Event_AppointmentTypeDeleted_Title" xml:space="preserve">
+  <data name="Event_AppointmentDeleted_Title" xml:space="preserve">
     <value>Consulta Eliminada</value>
   </data>
-  <data name="Event_AppointmentTypeUpdated_Message" xml:space="preserve">
+  <data name="Event_AppointmentUpdated_Message" xml:space="preserve">
     <value>La consulta ({0}) ha sido actualizada por {1}</value>
   </data>
-  <data name="Event_AppointmentTypeUpdated_Title" xml:space="preserve">
+  <data name="Event_AppointmentUpdated_Title" xml:space="preserve">
     <value>Consulta Actualizada</value>
   </data>
 </root>
