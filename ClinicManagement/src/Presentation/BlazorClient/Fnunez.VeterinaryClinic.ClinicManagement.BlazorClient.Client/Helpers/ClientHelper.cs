@@ -14,6 +14,7 @@ public static class ClientHelper
             ClientId = clientDetailDto.ClientId,
             EmailAddress = clientDetailDto.EmailAddress,
             FullName = clientDetailDto.FullName,
+            IsActive = clientDetailDto.IsActive,
             PreferredDoctorFullName = clientDetailDto.PreferredDoctorFullName,
             PreferredName = clientDetailDto.PreferredName,
             Salutation = clientDetailDto.Salutation

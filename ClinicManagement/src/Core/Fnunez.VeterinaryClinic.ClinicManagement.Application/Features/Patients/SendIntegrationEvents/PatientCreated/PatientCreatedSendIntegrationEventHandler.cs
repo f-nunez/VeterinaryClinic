@@ -1,4 +1,4 @@
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.ServiceBus;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using MediatR;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.SendIntegrationEvents.PatientCreated;
@@ -13,12 +13,12 @@ public class PatientCreatedSendIntegrationEventHandler
         _serviceBus = serviceBus;
     }
 
-    public Task Handle(
+    public async Task Handle(
         PatientCreatedSendIntegrationEvent integrationEvent,
         CancellationToken cancellationToken)
     {
         var message = integrationEvent.PatientCreatedIntegrationEventContract;
 
-        return _serviceBus.PublishAsync(message, cancellationToken);
+        await _serviceBus.PublishAsync(message, cancellationToken);
     }
 }

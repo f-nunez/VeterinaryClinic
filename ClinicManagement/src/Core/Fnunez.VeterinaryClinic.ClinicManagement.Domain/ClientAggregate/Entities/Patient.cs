@@ -4,7 +4,7 @@ using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Entities;
 
-public class Patient : BaseEntity<int>
+public class Patient : BaseAuditableEntity<int>
 {
     public int ClientId { get; private set; }
     public string Name { get; private set; }

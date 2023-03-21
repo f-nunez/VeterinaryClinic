@@ -3,6 +3,8 @@ using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.BackendForFro
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Handlers;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Settings;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.AppNotification;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.AppNotification.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.Language;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.Spinner;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.TimeZone;
@@ -45,9 +47,13 @@ public static class ConfigureServices
             sp.GetRequiredService<IHttpClientFactory>()
                 .CreateClient("backendForFrontend"));
 
-        services.AddScoped<IHttpService, HttpService>();
+        services.AddScoped<IClinicManagementApiHttpService, ClinicManagementApiHttpService>();
+
+        services.AddScoped<IClinicManagementNotificationsApiHttpService, ClinicManagementNotificationsApiHttpService>();
 
         // register Feature services
+        services.AddScoped<IAppNotificationService, AppNotificationService>();
+
         services.AddScoped<IAppointmentTypeService, AppointmentTypeService>();
 
         services.AddScoped<IClientService, ClientService>();
@@ -65,6 +71,10 @@ public static class ConfigureServices
         services.AddScoped<ISpinnerService, SpinnerService>();
 
         services.AddScoped<IUserSettingsService, UserSettingsService>();
+
+        // register AppNotification component
+        services.AddScoped<IAppNotificationBuilder, AppNotificationBuilder>();
+        services.AddScoped<IAppNotificationComponentService, AppNotificationComponentService>();
 
         // register Language component
         services.AddSingleton<ILanguageComponentData>(

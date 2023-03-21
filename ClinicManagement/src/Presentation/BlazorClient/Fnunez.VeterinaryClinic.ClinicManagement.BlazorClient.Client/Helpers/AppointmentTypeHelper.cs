@@ -13,6 +13,7 @@ public static class AppointmentTypeHelper
             Code = appointmentTypeDto.Code,
             Duration = appointmentTypeDto.Duration,
             Id = appointmentTypeDto.Id,
+            IsActive = appointmentTypeDto.IsActive,
             Name = appointmentTypeDto.Name
         };
     }

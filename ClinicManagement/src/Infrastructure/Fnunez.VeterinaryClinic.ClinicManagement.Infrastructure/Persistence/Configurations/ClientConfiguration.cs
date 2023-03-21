@@ -8,6 +8,9 @@ public class ClientConfiguration : IEntityTypeConfiguration<Client>
 {
     public void Configure(EntityTypeBuilder<Client> builder)
     {
+        builder.Property(c => c.CreatedBy)
+            .HasMaxLength(450);
+
         builder.Property(c => c.EmailAddress)
             .HasMaxLength(320)
             .IsRequired();
@@ -23,6 +26,9 @@ public class ClientConfiguration : IEntityTypeConfiguration<Client>
         builder.Property(c => c.Salutation)
             .HasMaxLength(200)
             .IsRequired();
+
+        builder.Property(c => c.UpdatedBy)
+            .HasMaxLength(450);
 
         builder.HasMany(c => c.Patients)
             .WithOne()

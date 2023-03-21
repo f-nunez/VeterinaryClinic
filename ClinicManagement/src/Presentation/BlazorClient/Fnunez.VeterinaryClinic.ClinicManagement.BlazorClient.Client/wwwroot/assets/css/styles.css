@@ -6,6 +6,8 @@
 /* Import the Radzen CSS files */
 @import './styles-generated.css';
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url('components/appnotification.css');
+@import url('components/customcard.css');
 @import url('components/language.css');
 @import url('components/radzen-text-box-search.css');
 @import url('components/spinner.css');
@@ -159,4 +161,30 @@
   background-color: #3B467E;
   height: 100%;
   padding: 3rem;
+}
+
+/* Topbar */
+.topbar-container {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  z-index: 1;
+}
+
+.topbar-menu {
+  float: left;
+  position: relative;
+}
+
+/* Notification Center */
+.notificationcenter-filter {
+  display: flex;
+}
+
+.notificationcenter-filter div {
+  display: inline-flex;
+}
+
+.notificationcenter-filter div>* {
+  cursor: pointer;
 }

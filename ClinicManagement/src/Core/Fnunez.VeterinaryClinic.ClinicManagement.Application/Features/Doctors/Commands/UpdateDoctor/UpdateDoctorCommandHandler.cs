@@ -1,6 +1,10 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.SendIntegrationEvents.DoctorUpdated;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.UpdateDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.DoctorAggregate;
@@ -12,17 +16,23 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.
 public class UpdateDoctorCommandHandler
     : IRequestHandler<UpdateDoctorCommand, UpdateDoctorResponse>
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
+    private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
 
     public UpdateDoctorCommandHandler(
+        ICurrentUserService currentUserService,
         IMapper mapper,
         IMediator mediator,
+        INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
+        _currentUserService = currentUserService;
         _mapper = mapper;
         _mediator = mediator;
+        _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
     }
 
@@ -32,7 +42,16 @@ public class UpdateDoctorCommandHandler
     {
         UpdateDoctorRequest request = command.UpdateDoctorRequest;
         var response = new UpdateDoctorResponse(request.CorrelationId);
-        var doctorToUpdate = _mapper.Map<Doctor>(request);
+
+        var doctorToUpdate = await _unitOfWork
+            .Repository<Doctor>()
+            .GetByIdAsync(request.Id, cancellationToken);
+
+        if (doctorToUpdate is null)
+            throw new NotFoundException(nameof(doctorToUpdate), request.Id);
+
+        doctorToUpdate.UpdateFullName(request.FullName);
+        doctorToUpdate.SetUpdatedBy(_currentUserService.UserId);
 
         await _unitOfWork
             .Repository<Doctor>()
@@ -44,6 +63,12 @@ public class UpdateDoctorCommandHandler
         response.Doctor = doctorDto;
 
         await SendIntegrationEventAsync(
+            doctorToUpdate,
+            request.CorrelationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
             doctorToUpdate,
             request.CorrelationId,
             cancellationToken
@@ -71,5 +96,20 @@ public class UpdateDoctorCommandHandler
             new DoctorUpdatedSendIntegrationEvent(message),
             cancellationToken
         );
+    }
+
+    private async Task SendNotificationRequestAsync(
+        Doctor doctor,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var factory = new DoctorUpdatedNotificationRequestFactory(
+            doctor,
+            correlationId,
+            _currentUserService.UserId
+        );
+
+        await _notificationRequestService.CreateAndSendAsync(
+            factory, cancellationToken);
     }
 }

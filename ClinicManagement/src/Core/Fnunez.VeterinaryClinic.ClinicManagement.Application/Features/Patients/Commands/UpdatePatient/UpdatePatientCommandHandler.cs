@@ -1,8 +1,11 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.SendIntegrationEvents.PatientUpdated;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Settings;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.UpdatePatient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Entities;
@@ -17,23 +20,29 @@ public class UpdatePatientCommandHandler
     : IRequestHandler<UpdatePatientCommand, UpdatePatientResponse>
 {
     private readonly IClientStorageSetting _clientStorageSetting;
+    private readonly ICurrentUserService _currentUserService;
     private readonly IFileSystemDeleterService _fileSystemDeleterService;
     private readonly IFileSystemWriterService _fileSystemWriterService;
     private readonly IMediator _mediator;
+    private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
 
     public UpdatePatientCommandHandler(
         IClientStorageSetting clientStorageSetting,
+        ICurrentUserService currentUserService,
         IFileSystemDeleterService fileSystemDeleterService,
         IFileSystemWriterService fileSystemWriterService,
         IMapper mapper,
         IMediator mediator,
+        INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
         _clientStorageSetting = clientStorageSetting;
+        _currentUserService = currentUserService;
         _fileSystemDeleterService = fileSystemDeleterService;
         _fileSystemWriterService = fileSystemWriterService;
         _mediator = mediator;
+        _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
     }
 
@@ -70,6 +79,8 @@ public class UpdatePatientCommandHandler
 
         patientToUpdate.UpdatePreferredDoctorId(request.PreferredDoctorId);
 
+        patientToUpdate.SetUpdatedBy(_currentUserService.UserId);
+
         await _unitOfWork
             .Repository<Client>()
             .UpdateAsync(client, cancellationToken);
@@ -77,6 +88,12 @@ public class UpdatePatientCommandHandler
         await _unitOfWork.CommitAsync(cancellationToken);
 
         await SendIntegrationEventAsync(
+            patientToUpdate,
+            request.CorrelationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
             patientToUpdate,
             request.CorrelationId,
             cancellationToken
@@ -154,5 +171,20 @@ public class UpdatePatientCommandHandler
             new PatientUpdatedSendIntegrationEvent(message),
             cancellationToken
         );
+    }
+
+    private async Task SendNotificationRequestAsync(
+        Patient patient,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var factory = new PatientUpdatedNotificationRequestFactory(
+            patient,
+            correlationId,
+            _currentUserService.UserId
+        );
+
+        await _notificationRequestService.CreateAndSendAsync(
+            factory, cancellationToken);
     }
 }

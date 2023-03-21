@@ -8,11 +8,6 @@ public class ClinicConfiguration : IEntityTypeConfiguration<Clinic>
 {
     public void Configure(EntityTypeBuilder<Clinic> builder)
     {
-        builder.HasKey(c => c.Id);
-
-        builder.Property(c => c.Id)
-            .ValueGeneratedOnAdd();
-
         builder.Property(c => c.Address)
             .HasMaxLength(1000)
             .IsRequired();

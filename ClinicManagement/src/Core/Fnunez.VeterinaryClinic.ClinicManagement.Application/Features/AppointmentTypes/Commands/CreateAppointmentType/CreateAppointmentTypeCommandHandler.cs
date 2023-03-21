@@ -1,6 +1,9 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.SendIntegrationEvents.AppointmentTypeCreated;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.CreateAppointmentType;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.AppointmentTypeAggregate;
@@ -12,17 +15,23 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Appointm
 public class CreateAppointmentTypeCommandHandler
     : IRequestHandler<CreateAppointmentTypeCommand, CreateAppointmentTypeResponse>
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
+    private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateAppointmentTypeCommandHandler(
+        ICurrentUserService currentUserService,
         IMapper mapper,
         IMediator mediator,
+        INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
+        _currentUserService = currentUserService;
         _mapper = mapper;
         _mediator = mediator;
+        _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
     }
 
@@ -38,6 +47,8 @@ public class CreateAppointmentTypeCommandHandler
 
         var newAppointemntType = _mapper.Map<AppointmentType>(request);
 
+        newAppointemntType.SetCreatedBy(_currentUserService.UserId);
+
         newAppointemntType = await _unitOfWork
             .Repository<AppointmentType>()
             .AddAsync(newAppointemntType, cancellationToken);
@@ -48,6 +59,12 @@ public class CreateAppointmentTypeCommandHandler
             .Map<AppointmentTypeDto>(newAppointemntType);
 
         await SendIntegrationEventAsync(
+            newAppointemntType,
+            request.CorrelationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
             newAppointemntType,
             request.CorrelationId,
             cancellationToken
@@ -77,5 +94,20 @@ public class CreateAppointmentTypeCommandHandler
             new AppointmentTypeCreatedSendIntegrationEvent(message),
             cancellationToken
         );
+    }
+
+    private async Task SendNotificationRequestAsync(
+        AppointmentType appointmentType,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var factory = new AppointmentTypeCreatedNotificationRequestFactory(
+            appointmentType,
+            correlationId,
+            _currentUserService.UserId
+        );
+
+        await _notificationRequestService.CreateAndSendAsync(
+            factory, cancellationToken);
     }
 }

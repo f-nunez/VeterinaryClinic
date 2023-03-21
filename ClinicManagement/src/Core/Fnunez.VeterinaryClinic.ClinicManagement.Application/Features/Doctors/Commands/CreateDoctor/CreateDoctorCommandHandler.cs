@@ -1,6 +1,9 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.SendIntegrationEvents.DoctorCreated;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.CreateDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.DoctorAggregate;
@@ -12,17 +15,23 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.
 public class CreateDoctorCommandHandler
     : IRequestHandler<CreateDoctorCommand, CreateDoctorResponse>
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
+    private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateDoctorCommandHandler(
+        ICurrentUserService currentUserService,
         IMapper mapper,
         IMediator mediator,
+        INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
+        _currentUserService = currentUserService;
         _mapper = mapper;
         _mediator = mediator;
+        _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
     }
 
@@ -33,6 +42,7 @@ public class CreateDoctorCommandHandler
         CreateDoctorRequest request = command.CreateDoctorRequest;
         var response = new CreateDoctorResponse(request.CorrelationId);
         var newDoctor = _mapper.Map<Doctor>(request);
+        newDoctor.SetCreatedBy(_currentUserService.UserId);
 
         newDoctor = await _unitOfWork
             .Repository<Doctor>()
@@ -44,6 +54,12 @@ public class CreateDoctorCommandHandler
         response.Doctor = doctorDto;
 
         await SendIntegrationEventAsync(
+            newDoctor,
+            request.CorrelationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
             newDoctor,
             request.CorrelationId,
             cancellationToken
@@ -71,5 +87,20 @@ public class CreateDoctorCommandHandler
             new DoctorCreatedSendIntegrationEvent(message),
             cancellationToken
         );
+    }
+
+    private async Task SendNotificationRequestAsync(
+        Doctor doctor,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var factory = new DoctorCreatedNotificationRequestFactory(
+            doctor,
+            correlationId,
+            _currentUserService.UserId
+        );
+
+        await _notificationRequestService.CreateAndSendAsync(
+            factory, cancellationToken);
     }
 }

@@ -10,7 +10,8 @@ public static class DoctorHelper
         return new DoctorVm
         {
             FullName = doctorDto.FullName,
-            Id = doctorDto.Id
+            Id = doctorDto.Id,
+            IsActive = doctorDto.IsActive
         };
     }
 }

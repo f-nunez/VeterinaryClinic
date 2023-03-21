@@ -1,0 +1,53 @@
+<button class="appnotification-badge rz-sidebar-toggle @(IsVisibleContainer ? "active" : string.Empty)" @onclick="ShowContainer">
+    @if (HasUnreadAppNotifications)
+    {
+        <RadzenIcon class="rzi d-flex align-items-center rz-color-warning-light" Icon="notifications_active" />
+    }
+    else
+    {
+        <RadzenIcon class="rzi d-flex align-items-center" Icon="notifications" />
+    }
+</button>
+
+@if (IsVisibleContainer)
+{
+    <div class="appnotification-container-overlay" @onclick="HideContainer"></div>
+
+    <div class="appnotification-container @(IsLoading || IsEmptyList || IsFailedConnection ? "loading" : string.Empty)" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+        <div class="appnotification-header">
+            @StringLocalizer["AppNotification_Header"]
+        </div>
+
+        @if (IsLoading)
+        {
+            <div class="appnotification-spinner"></div>
+        }
+
+        @if (IsVisibleList)
+        {
+            <AppNotificationListComponent
+                AppNotifications="AppNotifications"
+                OnScroll="GetAppNotifications"
+                TotalAppNotifications="TotalAppNotifications">
+            </AppNotificationListComponent>
+        }
+
+        @if (IsEmptyList)
+        {
+            <div class="appnotification-empty">
+                @StringLocalizer["AppNotification_Empty"]
+            </div>
+        }
+
+        @if (IsFailedConnection)
+        {
+            <div class="appnotification-sync-problem">
+                <i class="rzi">sync_problem</i>
+            </div>
+        }
+
+        <div class="appnotification-footer" @onclick="OnClickFooter">
+            @StringLocalizer["AppNotification_Footer"]
+        </div>
+    </div>
+}

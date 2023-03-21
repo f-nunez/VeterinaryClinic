@@ -57,7 +57,7 @@ public class ApplicationDbContextSeeder
             var francisco = new ApplicationUser
             {
                 Id = "9f79b45e-1ebe-4bb2-9d6f-e00da51b0848",
-                Name = "francisco",
+                Name = "Francisco Nuñez",
                 Email = "francisco@nunez.ninja",
                 UserName = "francisco"
             };
@@ -67,7 +67,7 @@ public class ApplicationDbContextSeeder
             var ramon = new ApplicationUser
             {
                 Id = "ca59b781-77c7-4b66-a05c-2910c2cb5d1f",
-                Name = "ramon",
+                Name = "Ramon Nuñez",
                 Email = "ramon@nunez.ninja",
                 UserName = "ramon"
             };

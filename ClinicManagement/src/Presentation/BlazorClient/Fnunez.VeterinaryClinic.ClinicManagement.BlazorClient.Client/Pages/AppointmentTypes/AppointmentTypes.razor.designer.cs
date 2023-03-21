@@ -132,7 +132,7 @@ public partial class AppointmentTypesComponent : ComponentBase
             StringLocalizer["AppointmentTypes_DeletedAppointmentType_Alert_Title"],
             StringLocalizer["AppointmentTypes_DeletedAppointmentType_Alert_Button_Ok"]);
 
-        await AppointmentTypesGrid.Reload();
+        await AppointmentTypesGrid.ReloadAfterDeleteItemAsync();
     }
 
     protected async Task OnClickDetail(AppointmentTypeDto appointmentType)

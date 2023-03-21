@@ -15,10 +15,11 @@ public static class ConfigureServices
         services.AddRazorPages();
 
         services.AddReverseProxy()
+            .LoadFromConfig(configuration.GetSection("ReverseProxyForNotificationHubSignalr"))
             .AddTransforms<AccessTokenTransformProvider>()
             .LoadFromConfig(configuration.GetSection("ReverseProxy"));
 
-        services.AddBff();
+        services.AddBff().AddRemoteApis();
 
         var authenticationSetting = configuration
             .GetSection(typeof(AuthenticationSetting).Name)
@@ -27,6 +28,10 @@ public static class ConfigureServices
         var cookieSetting = configuration
             .GetSection(typeof(CookieSetting).Name)
             .Get<CookieSetting>()!;
+
+        var corsPolicySetting = configuration
+            .GetSection(typeof(CorsPolicySetting).Name)
+            .Get<CorsPolicySetting>()!;
 
         var openIdConnectSetting = configuration
             .GetSection(typeof(OpenIdConnectSetting).Name)
@@ -68,6 +73,22 @@ public static class ConfigureServices
             options.SaveTokens = openIdConnectSetting.EnabledSaveTokens;
         });
 
+        services.AddCors(corsOptions =>
+        {
+            corsOptions.AddPolicy(typeof(CorsPolicySetting).Name, corsPolicyBuilder =>
+            {
+                corsPolicyBuilder.AllowAnyHeader();
+
+                corsPolicyBuilder.AllowAnyMethod();
+
+                corsPolicyBuilder.WithOrigins(
+                    corsPolicySetting.ClinicManagementApiUrl,
+                    corsPolicySetting.ClinicManagementNotificationsApiUrl,
+                    corsPolicySetting.IdentityServerUrl
+                );
+            });
+        });
+
         return services;
     }
 
@@ -94,9 +115,11 @@ public static class ConfigureServices
 
         app.UseStaticFiles();
 
-        app.UseAuthentication();
-
         app.UseRouting();
+
+        app.UseCors(typeof(CorsPolicySetting).Name);
+
+        app.UseAuthentication();
 
         app.UseBff();
 
@@ -106,7 +129,9 @@ public static class ConfigureServices
 
         app.MapRazorPages();
 
-        app.MapBffReverseProxy();
+        app.MapReverseProxy();
+
+        app.MapControllers();
 
         app.MapFallbackToFile("index.html");
 

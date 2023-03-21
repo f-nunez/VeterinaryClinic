@@ -2,7 +2,7 @@ using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.AppointmentTypeAggregate;
 
-public class AppointmentType : BaseEntity<int>, IAggregateRoot
+public class AppointmentType : BaseAuditableEntity<int>, IAggregateRoot
 {
     public string Name { get; private set; }
     public string Code { get; private set; }
@@ -69,6 +69,36 @@ public class AppointmentType : BaseEntity<int>, IAggregateRoot
         Name = name;
         Code = code;
         Duration = duration;
+    }
+
+    public void UpdateCode(string code)
+    {
+        if (string.IsNullOrEmpty(code))
+            throw new ArgumentException(
+                $"Required input {nameof(code)} was empty.",
+                nameof(code));
+
+        Code = code;
+    }
+
+    public void UpdateDuration(int duration)
+    {
+        if (duration <= 0)
+            throw new ArgumentException(
+                $"Required input {nameof(duration)} cannot be zero or negative.",
+                nameof(duration));
+
+        Duration = duration;
+    }
+
+    public void UpdateName(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+            throw new ArgumentException(
+                $"Required input {nameof(name)} was empty.",
+                nameof(name));
+
+        Name = name;
     }
 
     public override string ToString()

@@ -12,11 +12,11 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
 
 public class DoctorService : IDoctorService
 {
-    private readonly IHttpService _httpService;
+    private readonly IClinicManagementApiHttpService _httpService;
     private readonly ILogger<DoctorService> _logger;
 
     public DoctorService(
-        IHttpService httpService,
+        IClinicManagementApiHttpService httpService,
         ILogger<DoctorService> logger)
     {
         _httpService = httpService;

@@ -1,4 +1,4 @@
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Services;
 

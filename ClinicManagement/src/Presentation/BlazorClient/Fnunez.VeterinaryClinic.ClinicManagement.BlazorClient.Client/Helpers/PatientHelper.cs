@@ -49,6 +49,7 @@ public static class PatientHelper
         return new PatientDetailVm
         {
             Breed = patientDetailDto.Breed,
+            IsActive = patientDetailDto.IsActive,
             Name = patientDetailDto.Name,
             PhotoBase64Encoded = ConvertPhotoToBase64String(patientDetailDto.PhotoData),
             PhotoName = patientDetailDto.PhotoName,
@@ -100,8 +101,11 @@ public static class PatientHelper
         };
     }
 
-    private static string ConvertPhotoToBase64String(byte[] photoData)
+    private static string ConvertPhotoToBase64String(byte[]? photoData)
     {
+        if (photoData is null)
+            return GetPatientThumbnail();
+
         try
         {
             return Convert.ToBase64String(photoData);

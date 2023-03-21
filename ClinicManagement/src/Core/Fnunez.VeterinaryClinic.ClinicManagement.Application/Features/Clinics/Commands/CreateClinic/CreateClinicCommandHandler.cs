@@ -1,6 +1,9 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.SendIntegrationEvents.ClinicCreated;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.CreateClinic;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClinicAggregate;
@@ -12,17 +15,23 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.
 public class CreateClinicCommandHandler
     : IRequestHandler<CreateClinicCommand, CreateClinicResponse>
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
+    private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateClinicCommandHandler(
+        ICurrentUserService currentUserService,
         IMapper mapper,
         IMediator mediator,
+        INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
+        _currentUserService = currentUserService;
         _mapper = mapper;
         _mediator = mediator;
+        _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
     }
 
@@ -34,6 +43,8 @@ public class CreateClinicCommandHandler
         var response = new CreateClinicResponse(request.CorrelationId);
         var newClinic = _mapper.Map<Clinic>(request);
 
+        newClinic.SetCreatedBy(_currentUserService.UserId);
+
         newClinic = await _unitOfWork
             .Repository<Clinic>()
             .AddAsync(newClinic, cancellationToken);
@@ -43,6 +54,12 @@ public class CreateClinicCommandHandler
         response.Clinic = _mapper.Map<ClinicDto>(newClinic);
 
         await SendIntegrationEventAsync(
+            newClinic,
+            request.CorrelationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
             newClinic,
             request.CorrelationId,
             cancellationToken
@@ -72,5 +89,20 @@ public class CreateClinicCommandHandler
             new ClinicCreatedSendIntegrationEvent(message),
             cancellationToken
         );
+    }
+
+    private async Task SendNotificationRequestAsync(
+        Clinic clinic,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var factory = new ClinicCreatedNotificationRequestFactory(
+            clinic,
+            correlationId,
+            _currentUserService.UserId
+        );
+
+        await _notificationRequestService.CreateAndSendAsync(
+            factory, cancellationToken);
     }
 }

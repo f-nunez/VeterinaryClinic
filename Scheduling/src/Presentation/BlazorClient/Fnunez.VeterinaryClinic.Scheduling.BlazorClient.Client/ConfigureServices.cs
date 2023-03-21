@@ -3,6 +3,8 @@ using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.BackendForFrontend;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Handlers;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Settings;
+using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.AppNotification;
+using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.AppNotification.Factories;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.Language;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.Spinner;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.TimeZone;
@@ -41,11 +43,15 @@ public static class ConfigureServices
             sp.GetRequiredService<IHttpClientFactory>()
                 .CreateClient("backendForFrontend"));
 
-        services.AddScoped<IHttpService, HttpService>();
+        services.AddScoped<ISchedulingApiHttpService, SchedulingApiHttpService>();
+
+        services.AddScoped<ISchedulingNotificationsApiHttpService, SchedulingNotificationsApiHttpService>();
 
         // register Feature services
+        services.AddScoped<IAppNotificationService, AppNotificationService>();
+
         services.AddScoped<IAppointmentService, AppointmentService>();
-        
+
         services.AddScoped<IAppointmentTypeService, AppointmentTypeService>();
 
         services.AddScoped<IClientService, ClientService>();
@@ -63,6 +69,10 @@ public static class ConfigureServices
         services.AddScoped<ISpinnerService, SpinnerService>();
 
         services.AddScoped<IUserSettingsService, UserSettingsService>();
+
+        // register AppNotification component
+        services.AddScoped<IAppNotificationBuilder, AppNotificationBuilder>();
+        services.AddScoped<IAppNotificationComponentService, AppNotificationComponentService>();
 
         // register Language component
         services.AddSingleton<ILanguageComponentData>(

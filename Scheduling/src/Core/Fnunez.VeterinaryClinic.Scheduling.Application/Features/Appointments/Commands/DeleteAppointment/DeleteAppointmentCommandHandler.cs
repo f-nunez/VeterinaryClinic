@@ -1,5 +1,8 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Exceptions;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Interfaces;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Services.NotificationRequest;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.DeleteAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.AppointmentAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
@@ -10,14 +13,20 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.C
 public class DeleteAppointmentCommandHandler
     : IRequestHandler<DeleteAppointmentCommand, DeleteAppointmentResponse>
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
+    private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
 
     public DeleteAppointmentCommandHandler(
+        ICurrentUserService currentUserService,
         IMapper mapper,
+        INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
+        _currentUserService = currentUserService;
         _mapper = mapper;
+        _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
     }
 
@@ -36,12 +45,35 @@ public class DeleteAppointmentCommandHandler
             throw new NotFoundException(
                 nameof(appointmentToDelete), request.AppointmentId);
 
+        appointmentToDelete.SetUpdatedBy(_currentUserService.UserId);
+
         await _unitOfWork
             .Repository<Appointment>()
             .DeleteAsync(appointmentToDelete, cancellationToken);
 
         await _unitOfWork.CommitAsync();
 
+        await SendNotificationRequestAsync(
+            appointmentToDelete,
+            request.CorrelationId,
+            cancellationToken
+        );
+
         return response;
+    }
+
+    private async Task SendNotificationRequestAsync(
+        Appointment appointment,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var factory = new AppointmentDeletedNotificationRequestFactory(
+            appointment,
+            correlationId,
+            _currentUserService.UserId
+        );
+
+        await _notificationRequestService.CreateAndSendAsync(
+            factory, cancellationToken);
     }
 }

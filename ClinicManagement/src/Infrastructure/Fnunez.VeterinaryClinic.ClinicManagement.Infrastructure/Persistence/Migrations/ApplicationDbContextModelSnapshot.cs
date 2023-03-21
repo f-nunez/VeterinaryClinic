@@ -17,7 +17,7 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.2")
+                .HasAnnotation("ProductVersion", "7.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -35,6 +35,13 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
@@ -45,6 +52,13 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset?>("UpdatedOn")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
@@ -58,6 +72,13 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
@@ -85,6 +106,13 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset?>("UpdatedOn")
+                        .HasColumnType("datetimeoffset");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PreferredDoctorId");
@@ -106,6 +134,13 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -116,6 +151,13 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
 
                     b.Property<int?>("PreferredDoctorId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset?>("UpdatedOn")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
@@ -137,6 +179,13 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<string>("EmailAddress")
                         .IsRequired()
                         .HasMaxLength(320)
@@ -149,6 +198,13 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset?>("UpdatedOn")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
@@ -163,6 +219,13 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -170,6 +233,13 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset?>("UpdatedOn")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
@@ -184,6 +254,13 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -191,6 +268,13 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset?>("UpdatedOn")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 

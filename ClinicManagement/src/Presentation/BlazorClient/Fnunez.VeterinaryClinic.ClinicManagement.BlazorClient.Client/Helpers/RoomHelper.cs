@@ -10,6 +10,7 @@ public static class RoomHelper
         return new RoomVm
         {
             Id = roomDto.Id,
+            IsActive = roomDto.IsActive,
             Name = roomDto.Name
         };
     }

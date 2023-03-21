@@ -1,12 +1,13 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Services;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Interfaces.Settings;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Patient.GetPatientDetail;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Entities;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.DoctorAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Queries.GetPatientDetail;
 
@@ -15,15 +16,18 @@ public class GetPatientDetailQueryHandler
 {
     private readonly IClientStorageSetting _clientStorageSetting;
     private readonly IFileSystemReaderService _fileSystemReaderService;
+    private readonly ILogger<GetPatientDetailQueryHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
 
     public GetPatientDetailQueryHandler(
         IClientStorageSetting clientStorageSetting,
         IFileSystemReaderService fileSystemReaderService,
+        ILogger<GetPatientDetailQueryHandler> logger,
         IUnitOfWork unitOfWork)
     {
         _clientStorageSetting = clientStorageSetting;
         _fileSystemReaderService = fileSystemReaderService;
+        _logger = logger;
         _unitOfWork = unitOfWork;
     }
 
@@ -79,23 +83,44 @@ public class GetPatientDetailQueryHandler
         Patient patient,
         string doctorFullName)
     {
+        byte[]? photoData = patient.IsActive
+            ? await GetPhotoDataAsync(patient)
+            : null;
+
+        return new PatientDetailDto
+        {
+            Breed = patient.AnimalType.Breed,
+            ClientId = patient.ClientId,
+            IsActive = patient.IsActive,
+            Name = patient.Name,
+            PatientId = patient.Id,
+            PhotoData = photoData,
+            PhotoName = patient.Photo.Name,
+            PreferredDoctorFullName = doctorFullName,
+            Sex = (int)patient.AnimalSex,
+            Species = patient.AnimalType.Species
+        };
+    }
+
+    private async Task<byte[]?> GetPhotoDataAsync(Patient patient)
+    {
         string relativePhotoPath = Path.Combine(
             patient.ClientId.ToString(), patient.Photo.StoredName);
 
         string photoPath = Path.Combine(
             _clientStorageSetting.BasePath, relativePhotoPath);
 
-        return new PatientDetailDto
+        byte[]? photoData = null;
+
+        try
         {
-            Breed = patient.AnimalType.Breed,
-            ClientId = patient.ClientId,
-            Name = patient.Name,
-            PatientId = patient.Id,
-            PhotoData = await _fileSystemReaderService.ReadAsync(photoPath),
-            PhotoName = patient.Photo.Name,
-            PreferredDoctorFullName = doctorFullName,
-            Sex = (int)patient.AnimalSex,
-            Species = patient.AnimalType.Species
-        };
+            photoData = await _fileSystemReaderService.ReadAsync(photoPath);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
+
+        return photoData;
     }
 }

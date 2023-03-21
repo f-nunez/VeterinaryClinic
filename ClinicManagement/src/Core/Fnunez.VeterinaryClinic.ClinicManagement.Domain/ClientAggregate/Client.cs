@@ -4,7 +4,7 @@ using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
 
-public class Client : BaseEntity<int>, IAggregateRoot
+public class Client : BaseAuditableEntity<int>, IAggregateRoot
 {
     private IList<Patient> _patients = new List<Patient>();
     public string FullName { get; private set; }
@@ -130,6 +130,56 @@ public class Client : BaseEntity<int>, IAggregateRoot
             throw new ArgumentNullException(nameof(patient));
 
         foundPatient.IsActive = false;
+    }
+
+    public void UpdateEmailAddress(string emailAddress)
+    {
+        if (string.IsNullOrEmpty(emailAddress))
+            throw new ArgumentException(
+                $"Required input {nameof(emailAddress)} was empty.",
+                nameof(emailAddress));
+
+        EmailAddress = emailAddress;
+    }
+
+    public void UpdateFullName(string fullName)
+    {
+        if (string.IsNullOrEmpty(fullName))
+            throw new ArgumentException(
+                $"Required input {nameof(fullName)} was empty.",
+                nameof(fullName));
+
+        FullName = fullName;
+    }
+
+    public void UpdatePreferredDoctorId(int? preferredDoctorId)
+    {
+        if (preferredDoctorId != null && preferredDoctorId <= 0)
+            throw new ArgumentException(
+                $"Required input {nameof(preferredDoctorId)} cannot be zero or negative.",
+                nameof(preferredDoctorId));
+
+        PreferredDoctorId = preferredDoctorId;
+    }
+
+    public void UpdatePreferredName(string preferredName)
+    {
+        if (string.IsNullOrEmpty(preferredName))
+            throw new ArgumentException(
+                $"Required input {nameof(preferredName)} was empty.",
+                nameof(preferredName));
+
+        PreferredName = preferredName;
+    }
+
+    public void UpdateSalutation(string salutation)
+    {
+        if (string.IsNullOrEmpty(salutation))
+            throw new ArgumentException(
+                $"Required input {nameof(salutation)} was empty.",
+                nameof(salutation));
+
+        Salutation = salutation;
     }
 
     public override string ToString()

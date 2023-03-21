@@ -1,6 +1,10 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.SendIntegrationEvents.ClinicUpdated;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.UpdateClinic;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClinicAggregate;
@@ -12,17 +16,23 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.
 public class UpdateClinicCommandHandler
     : IRequestHandler<UpdateClinicCommand, UpdateClinicResponse>
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
+    private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
 
     public UpdateClinicCommandHandler(
+        ICurrentUserService currentUserService,
         IMapper mapper,
         IMediator mediator,
+        INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
+        _currentUserService = currentUserService;
         _mapper = mapper;
         _mediator = mediator;
+        _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
     }
 
@@ -32,7 +42,18 @@ public class UpdateClinicCommandHandler
     {
         UpdateClinicRequest request = command.UpdateClinicRequest;
         var response = new UpdateClinicResponse(request.CorrelationId);
-        var clinicToUpdate = _mapper.Map<Clinic>(request);
+
+        var clinicToUpdate = await _unitOfWork
+            .Repository<Clinic>()
+            .GetByIdAsync(request.Id, cancellationToken);
+
+        if (clinicToUpdate is null)
+            throw new NotFoundException(nameof(clinicToUpdate), request.Id);
+
+        clinicToUpdate.UpdateAddress(request.Address);
+        clinicToUpdate.UpdateEmailAddress(request.EmailAddress);
+        clinicToUpdate.UpdateName(request.Name);
+        clinicToUpdate.SetUpdatedBy(_currentUserService.UserId);
 
         await _unitOfWork
             .Repository<Clinic>()
@@ -43,6 +64,12 @@ public class UpdateClinicCommandHandler
         response.Clinic = _mapper.Map<ClinicDto>(clinicToUpdate);
 
         await SendIntegrationEventAsync(
+            clinicToUpdate,
+            request.CorrelationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
             clinicToUpdate,
             request.CorrelationId,
             cancellationToken
@@ -72,5 +99,20 @@ public class UpdateClinicCommandHandler
             new ClinicUpdatedSendIntegrationEvent(message),
             cancellationToken
         );
+    }
+
+    private async Task SendNotificationRequestAsync(
+        Clinic clinic,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var factory = new ClinicUpdatedNotificationRequestFactory(
+            clinic,
+            correlationId,
+            _currentUserService.UserId
+        );
+
+        await _notificationRequestService.CreateAndSendAsync(
+            factory, cancellationToken);
     }
 }

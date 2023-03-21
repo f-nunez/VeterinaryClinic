@@ -8,14 +8,12 @@ public class ClinicConfiguration : IEntityTypeConfiguration<Clinic>
 {
     public void Configure(EntityTypeBuilder<Clinic> builder)
     {
-        builder.HasKey(c => c.Id);
-
-        builder.Property(c => c.Id)
-            .ValueGeneratedOnAdd();
-
         builder.Property(c => c.Address)
             .HasMaxLength(1000)
             .IsRequired();
+
+        builder.Property(c => c.CreatedBy)
+            .HasMaxLength(450);
 
         builder.Property(c => c.EmailAddress)
             .HasMaxLength(320)
@@ -24,5 +22,8 @@ public class ClinicConfiguration : IEntityTypeConfiguration<Clinic>
         builder.Property(c => c.Name)
             .HasMaxLength(200)
             .IsRequired();
+
+        builder.Property(c => c.UpdatedBy)
+            .HasMaxLength(450);
     }
 }

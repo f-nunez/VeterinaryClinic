@@ -99,11 +99,11 @@ public partial class RoomsComponent : ComponentBase
         await RoomsGrid.Reload();
     }
 
-    protected async Task OnClickDelete(RoomDto doctor)
+    protected async Task OnClickDelete(RoomDto room)
     {
         string message = string.Format(
             StringLocalizer["Rooms_DeleteRoom_Alert_Message"],
-            doctor.Name);
+            room.Name);
 
         bool? proceedToDelete = await _dialogService.Confirm(
             message,
@@ -120,29 +120,29 @@ public partial class RoomsComponent : ComponentBase
 
         var request = new DeleteRoomRequest
         {
-            Id = doctor.Id
+            Id = room.Id
         };
 
         await _roomService.DeleteAsync(request);
 
         await ShowAlertAsync(
-            string.Format(StringLocalizer["Rooms_DeletedRoom_Alert_Message"], doctor.Name),
+            string.Format(StringLocalizer["Rooms_DeletedRoom_Alert_Message"], room.Name),
             StringLocalizer["Rooms_DeletedRoom_Alert_Title"],
             StringLocalizer["Rooms_DeletedRoom_Alert_Button_Ok"]);
 
-        await RoomsGrid.Reload();
+        await RoomsGrid.ReloadAfterDeleteItemAsync();
     }
 
-    protected async Task OnClickDetail(RoomDto doctor)
+    protected async Task OnClickDetail(RoomDto room)
     {
         var request = new GetRoomByIdRequest
         {
-            Id = doctor.Id
+            Id = room.Id
         };
 
         var currentRoom = await _roomService.GetByIdAsync(request);
 
-        var roomForDetail = RoomHelper.MapRoomViewModel(doctor);
+        var roomForDetail = RoomHelper.MapRoomViewModel(room);
 
         await _dialogService.OpenAsync<RoomDetail>(
             _stringLocalizerForDetail["RoomDetail_Label_RoomDetail"],
@@ -153,16 +153,16 @@ public partial class RoomsComponent : ComponentBase
         );
     }
 
-    protected async Task OnClickEdit(RoomDto doctor)
+    protected async Task OnClickEdit(RoomDto room)
     {
         var request = new GetRoomByIdRequest
         {
-            Id = doctor.Id
+            Id = room.Id
         };
 
         var currentRoom = await _roomService.GetByIdAsync(request);
 
-        var roomToEdit = RoomHelper.MapRoomViewModel(doctor);
+        var roomToEdit = RoomHelper.MapRoomViewModel(room);
 
         var response = await _dialogService.OpenAsync<AddEditRoom>(
             _stringLocalizerForAdd["AddEditRoom_Label_Edit"],

@@ -15,12 +15,12 @@ public class RoomUpdatedIntegrationEventConsumer
         _mediator = mediator;
     }
 
-    public Task Consume(
+    public async Task Consume(
         ConsumeContext<RoomUpdatedIntegrationEventContract> context)
     {
         var integrationEvent = new RoomUpdatedReceiveIntegrationEvent(
             context.Message);
 
-        return _mediator.Publish(integrationEvent);
+        await _mediator.Publish(integrationEvent, context.CancellationToken);
     }
 }

@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B217C98B-18AD-4EEE-8B89-04D04526D98A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{10884C49-1DC0-496F-9E91-9DA2BE1FA33B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.SchedulingNotifications.Domain", "src\Core\Fnunez.VeterinaryClinic.SchedulingNotifications.Domain\Fnunez.VeterinaryClinic.SchedulingNotifications.Domain.csproj", "{5A93EA7E-F2FE-41F6-863F-E79C5C0C58FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.SchedulingNotifications.Application", "src\Core\Fnunez.VeterinaryClinic.SchedulingNotifications.Application\Fnunez.VeterinaryClinic.SchedulingNotifications.Application.csproj", "{8E7A92B4-C4B3-47E2-B575-97086BE86B3E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{D5D18F8A-6A7E-4880-AE94-639E1838EDD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure", "src\Infrastructure\Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure\Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.csproj", "{121864C7-A786-490F-9C4E-2790705E405C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{79A8D3D9-3A29-40BF-9868-A321FB088E0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.SchedulingNotifications.Api", "src\Presentation\Fnunez.VeterinaryClinic.SchedulingNotifications.Api\Fnunez.VeterinaryClinic.SchedulingNotifications.Api.csproj", "{ADFDD626-3411-437C-95CB-0A436CED044D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5A93EA7E-F2FE-41F6-863F-E79C5C0C58FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A93EA7E-F2FE-41F6-863F-E79C5C0C58FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A93EA7E-F2FE-41F6-863F-E79C5C0C58FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A93EA7E-F2FE-41F6-863F-E79C5C0C58FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E7A92B4-C4B3-47E2-B575-97086BE86B3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E7A92B4-C4B3-47E2-B575-97086BE86B3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E7A92B4-C4B3-47E2-B575-97086BE86B3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E7A92B4-C4B3-47E2-B575-97086BE86B3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{121864C7-A786-490F-9C4E-2790705E405C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{121864C7-A786-490F-9C4E-2790705E405C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{121864C7-A786-490F-9C4E-2790705E405C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{121864C7-A786-490F-9C4E-2790705E405C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADFDD626-3411-437C-95CB-0A436CED044D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADFDD626-3411-437C-95CB-0A436CED044D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADFDD626-3411-437C-95CB-0A436CED044D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADFDD626-3411-437C-95CB-0A436CED044D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{10884C49-1DC0-496F-9E91-9DA2BE1FA33B} = {B217C98B-18AD-4EEE-8B89-04D04526D98A}
+		{5A93EA7E-F2FE-41F6-863F-E79C5C0C58FE} = {10884C49-1DC0-496F-9E91-9DA2BE1FA33B}
+		{8E7A92B4-C4B3-47E2-B575-97086BE86B3E} = {10884C49-1DC0-496F-9E91-9DA2BE1FA33B}
+		{D5D18F8A-6A7E-4880-AE94-639E1838EDD2} = {B217C98B-18AD-4EEE-8B89-04D04526D98A}
+		{121864C7-A786-490F-9C4E-2790705E405C} = {D5D18F8A-6A7E-4880-AE94-639E1838EDD2}
+		{79A8D3D9-3A29-40BF-9868-A321FB088E0A} = {B217C98B-18AD-4EEE-8B89-04D04526D98A}
+		{ADFDD626-3411-437C-95CB-0A436CED044D} = {79A8D3D9-3A29-40BF-9868-A321FB088E0A}
+	EndGlobalSection
+EndGlobal

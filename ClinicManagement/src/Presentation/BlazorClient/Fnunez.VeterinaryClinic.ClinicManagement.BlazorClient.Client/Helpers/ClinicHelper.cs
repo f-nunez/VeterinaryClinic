@@ -12,6 +12,7 @@ public static class ClinicHelper
             Address = clinicDto.Address,
             EmailAddress = clinicDto.EmailAddress,
             Id = clinicDto.Id,
+            IsActive = clinicDto.IsActive,
             Name = clinicDto.Name
         };
     }

@@ -5,5 +5,5 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.
 public class UpdateRoomRequest : BaseRequest
 {
     public int Id { get; set; }
-    public string? Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 }

@@ -2,7 +2,7 @@ using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagement.Domain.RoomAggregate;
 
-public class Room : BaseEntity<int>, IAggregateRoot
+public class Room : BaseAuditableEntity<int>, IAggregateRoot
 {
     public string Name { get; private set; }
 
@@ -34,6 +34,16 @@ public class Room : BaseEntity<int>, IAggregateRoot
                 nameof(name));
 
         Id = id;
+        Name = name;
+    }
+
+    public void UpdateName(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+            throw new ArgumentException(
+                $"Required input {nameof(name)} was empty.",
+                nameof(name));
+
         Name = name;
     }
 
