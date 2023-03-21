@@ -30,6 +30,6 @@ public class NotificationRequestService : INotificationRequestService
             SerializedNotificationRequest = JsonSerializer.Serialize((object)notificationRequest)
         };
 
-        await _serviceBus.PublishAsync(message);
+        await _serviceBus.PublishAsync(message, cancellationToken);
     }
 }
