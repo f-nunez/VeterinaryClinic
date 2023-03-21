@@ -41,11 +41,13 @@ public static class ConfigureServices
             sp.GetRequiredService<IHttpClientFactory>()
                 .CreateClient("backendForFrontend"));
 
-        services.AddScoped<IHttpService, HttpService>();
+        services.AddScoped<ISchedulingApiHttpService, SchedulingApiHttpService>();
+
+        services.AddScoped<ISchedulingNotificationsApiHttpService, SchedulingNotificationsApiHttpService>();
 
         // register Feature services
         services.AddScoped<IAppointmentService, AppointmentService>();
-        
+
         services.AddScoped<IAppointmentTypeService, AppointmentTypeService>();
 
         services.AddScoped<IClientService, ClientService>();
