@@ -198,3 +198,16 @@
   float: left;
   position: relative;
 }
+
+/* Notification Center */
+.notificationcenter-filter {
+  display: flex;
+}
+
+.notificationcenter-filter div {
+  display: inline-flex;
+}
+
+.notificationcenter-filter div>* {
+  cursor: pointer;
+}
