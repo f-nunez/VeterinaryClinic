@@ -1,6 +1,8 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Interfaces;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Services.NotificationRequest;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.CreateAppointment;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.AppointmentAggregate;
@@ -19,17 +21,20 @@ public class CreateAppointmentCommandHandler
     private readonly ICurrentUserService _currentUserService;
     private readonly ILogger<CreateAppointmentCommandHandler> _logger;
     private readonly IMapper _mapper;
+    private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateAppointmentCommandHandler(
         ICurrentUserService currentUserService,
         ILogger<CreateAppointmentCommandHandler> logger,
         IMapper mapper,
+        INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
         _currentUserService = currentUserService;
         _logger = logger;
         _mapper = mapper;
+        _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
     }
 
@@ -67,9 +72,15 @@ public class CreateAppointmentCommandHandler
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var appointmentDto = _mapper.Map<AppointmentDto>(newAppointment);
-        response.Appointment = appointmentDto;
-        _logger.LogInformation(appointmentDto.ToString());
+        response.Appointment = _mapper.Map<AppointmentDto>(newAppointment);
+
+        _logger.LogInformation(response.Appointment.ToString());
+
+        await SendNotificationRequestAsync(
+            newAppointment,
+            request.CorrelationId,
+            cancellationToken
+        );
 
         return response;
     }
@@ -109,5 +120,20 @@ public class CreateAppointmentCommandHandler
         );
 
         return newAppointment;
+    }
+
+    private async Task SendNotificationRequestAsync(
+        Appointment appointment,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var factory = new AppointmentCreatedNotificationRequestFactory(
+            appointment,
+            correlationId,
+            _currentUserService.UserId
+        );
+
+        await _notificationRequestService.CreateAndSendAsync(
+            factory, cancellationToken);
     }
 }
