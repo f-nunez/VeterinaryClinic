@@ -21,6 +21,6 @@ public class ClinicDeletedIntegrationEventConsumer
         var integrationEvent = new ClinicDeletedReceiveIntegrationEvent(
             context.Message);
 
-        await _mediator.Publish(integrationEvent);
+        await _mediator.Publish(integrationEvent, context.CancellationToken);
     }
 }

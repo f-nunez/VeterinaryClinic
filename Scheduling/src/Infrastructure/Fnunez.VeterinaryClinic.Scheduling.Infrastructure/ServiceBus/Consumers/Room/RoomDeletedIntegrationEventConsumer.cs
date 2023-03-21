@@ -21,6 +21,6 @@ public class RoomDeletedIntegrationEventConsumer
         var integrationEvent = new RoomDeletedReceiveIntegrationEvent(
             context.Message);
 
-        await _mediator.Publish(integrationEvent);
+        await _mediator.Publish(integrationEvent, context.CancellationToken);
     }
 }

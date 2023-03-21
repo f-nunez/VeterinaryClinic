@@ -21,6 +21,6 @@ public class DoctorDeletedIntegrationEventConsumer
         var integrationEvent = new DoctorDeletedReceiveIntegrationEvent(
             context.Message);
 
-        await _mediator.Publish(integrationEvent);
+        await _mediator.Publish(integrationEvent, context.CancellationToken);
     }
 }

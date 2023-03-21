@@ -21,6 +21,6 @@ public class PatientCreatedIntegrationEventConsumer
         var integrationEvent = new PatientCreatedReceiveIntegrationEvent(
             context.Message);
 
-        await _mediator.Publish(integrationEvent);
+        await _mediator.Publish(integrationEvent, context.CancellationToken);
     }
 }

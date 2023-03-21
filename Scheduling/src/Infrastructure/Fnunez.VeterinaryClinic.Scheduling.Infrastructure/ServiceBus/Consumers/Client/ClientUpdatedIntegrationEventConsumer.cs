@@ -21,6 +21,6 @@ public class ClientUpdatedIntegrationEventConsumer
         var integrationEvent = new ClientUpdatedReceiveIntegrationEvent(
             context.Message);
 
-        await _mediator.Publish(integrationEvent);
+        await _mediator.Publish(integrationEvent, context.CancellationToken);
     }
 }

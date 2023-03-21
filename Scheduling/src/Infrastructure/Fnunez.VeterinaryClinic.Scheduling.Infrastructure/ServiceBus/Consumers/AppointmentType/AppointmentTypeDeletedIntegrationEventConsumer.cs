@@ -21,6 +21,6 @@ public class AppointmentTypeDeletedIntegrationEventConsumer
         var integrationEvent = new AppointmentTypeDeletedReceiveIntegrationEvent(
             context.Message);
 
-        await _mediator.Publish(integrationEvent);
+        await _mediator.Publish(integrationEvent, context.CancellationToken);
     }
 }
