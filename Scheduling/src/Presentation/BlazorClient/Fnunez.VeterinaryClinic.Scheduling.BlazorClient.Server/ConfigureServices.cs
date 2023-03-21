@@ -15,10 +15,11 @@ public static class ConfigureServices
         services.AddRazorPages();
 
         services.AddReverseProxy()
+            .LoadFromConfig(configuration.GetSection("ReverseProxyForNotificationHubSignalr"))
             .AddTransforms<AccessTokenTransformProvider>()
             .LoadFromConfig(configuration.GetSection("ReverseProxy"));
 
-        services.AddBff();
+        services.AddBff().AddRemoteApis();
 
         var authenticationSetting = configuration
             .GetSection(typeof(AuthenticationSetting).Name)
@@ -128,7 +129,9 @@ public static class ConfigureServices
 
         app.MapRazorPages();
 
-        app.MapBffReverseProxy().AsBffApiEndpoint();
+        app.MapReverseProxy();
+
+        app.MapControllers();
 
         app.MapFallbackToFile("index.html");
 
