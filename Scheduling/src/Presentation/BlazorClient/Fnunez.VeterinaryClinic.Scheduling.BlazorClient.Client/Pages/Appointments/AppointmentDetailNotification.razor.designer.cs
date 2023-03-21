@@ -35,10 +35,15 @@ public partial class AppointmentDetailNotificationComponent : ComponentBase
     [Parameter]
     public Guid AppointmentId { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         DoctorPhotoBase64Encoded = DoctorHelper.GetDoctorThumbnail();
 
+        Model.PatientPhotoBase64Encoded = PatientHelper.GetPatientThumbnail();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
         var request = new GetAppointmentDetailRequest
         {
             AppointmentId = AppointmentId
