@@ -12,11 +12,11 @@ namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 
 public class ClientService : IClientService
 {
-    private readonly IHttpService _httpService;
+    private readonly ISchedulingApiHttpService _httpService;
     private readonly ILogger<ClientService> _logger;
 
     public ClientService(
-        IHttpService httpService,
+        ISchedulingApiHttpService httpService,
         ILogger<ClientService> logger)
     {
         _httpService = httpService;

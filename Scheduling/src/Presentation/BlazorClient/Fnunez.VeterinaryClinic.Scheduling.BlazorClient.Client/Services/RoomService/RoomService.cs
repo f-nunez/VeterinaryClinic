@@ -9,11 +9,11 @@ namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Services;
 
 public class RoomService : IRoomService
 {
-    private readonly IHttpService _httpService;
+    private readonly ISchedulingApiHttpService _httpService;
     private readonly ILogger<RoomService> _logger;
 
     public RoomService(
-        IHttpService httpService,
+        ISchedulingApiHttpService httpService,
         ILogger<RoomService> logger)
     {
         _httpService = httpService;
