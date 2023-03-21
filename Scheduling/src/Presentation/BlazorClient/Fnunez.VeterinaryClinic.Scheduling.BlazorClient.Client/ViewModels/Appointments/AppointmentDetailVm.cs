@@ -9,6 +9,7 @@ public class AppointmentDetailVm
     public string Description { get; set; } = string.Empty;
     public string DoctorFullName { get; set; } = string.Empty;
     public DateTime EndOn { get; set; }
+    public bool IsActive { get; set; }
     public bool IsConfirmed { get; set; }
     public string PatientName { get; set; } = string.Empty;
     public string PatientPhotoBase64Encoded { get; set; } = string.Empty;
