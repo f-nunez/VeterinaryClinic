@@ -28,6 +28,10 @@ public static class ConfigureServices
             .GetSection(typeof(CookieSetting).Name)
             .Get<CookieSetting>()!;
 
+        var corsPolicySetting = configuration
+            .GetSection(typeof(CorsPolicySetting).Name)
+            .Get<CorsPolicySetting>()!;
+
         var openIdConnectSetting = configuration
             .GetSection(typeof(OpenIdConnectSetting).Name)
             .Get<OpenIdConnectSetting>()!;
@@ -68,6 +72,22 @@ public static class ConfigureServices
             options.SaveTokens = openIdConnectSetting.EnabledSaveTokens;
         });
 
+        services.AddCors(corsOptions =>
+        {
+            corsOptions.AddPolicy(typeof(CorsPolicySetting).Name, corsPolicyBuilder =>
+            {
+                corsPolicyBuilder.AllowAnyHeader();
+
+                corsPolicyBuilder.AllowAnyMethod();
+
+                corsPolicyBuilder.WithOrigins(
+                    corsPolicySetting.IdentityServerUrl,
+                    corsPolicySetting.SchedulingApiUrl,
+                    corsPolicySetting.SchedulingNotificationsApiUrl
+                );
+            });
+        });
+
         return services;
     }
 
@@ -94,9 +114,11 @@ public static class ConfigureServices
 
         app.UseStaticFiles();
 
-        app.UseAuthentication();
-
         app.UseRouting();
+
+        app.UseCors(typeof(CorsPolicySetting).Name);
+
+        app.UseAuthentication();
 
         app.UseBff();
 
