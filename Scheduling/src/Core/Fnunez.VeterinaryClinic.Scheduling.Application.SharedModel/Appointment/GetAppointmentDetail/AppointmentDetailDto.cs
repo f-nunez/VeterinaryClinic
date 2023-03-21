@@ -9,6 +9,7 @@ public class AppointmentDetailDto
     public string Description { get; set; } = string.Empty;
     public string DoctorFullName { get; set; } = string.Empty;
     public DateTimeOffset EndOn { get; set; }
+    public bool IsActive { get; set; }
     public bool IsConfirmed { get; set; }
     public string PatientName { get; set; } = string.Empty;
     public byte[] PatientPhotoData { get; set; } = null!;
