@@ -104,6 +104,7 @@ public partial class AppNotificationComponent : ComponentBase
     protected void OnClickFooter()
     {
         HideContainer();
+        _navigationManager.NavigateTo("notification-center");
     }
 
     private async Task InitializeHubConnectionAsync()
