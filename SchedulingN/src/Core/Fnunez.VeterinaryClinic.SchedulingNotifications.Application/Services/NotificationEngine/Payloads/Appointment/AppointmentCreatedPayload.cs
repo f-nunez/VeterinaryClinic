@@ -2,6 +2,6 @@ namespace Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Services.N
 
 public class AppointmentCreatedPayload : BasePayload
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? Title { get; set; }
 }
