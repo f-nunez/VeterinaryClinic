@@ -30,7 +30,7 @@ public partial class AppointmentTypeDetailNotificationComponent : ComponentBase
     [Parameter]
     public int AppointmentTypeId { get; set; }
 
-    protected async override Task OnInitializedAsync()
+    protected async override Task OnParametersSetAsync()
     {
         var request = new GetAppointmentTypeByIdRequest
         {

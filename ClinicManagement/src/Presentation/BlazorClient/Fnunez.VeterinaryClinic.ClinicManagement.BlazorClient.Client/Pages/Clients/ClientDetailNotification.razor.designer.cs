@@ -30,7 +30,7 @@ public partial class ClientDetailNotificationComponent : ComponentBase
     [Parameter]
     public int ClientId { get; set; }
 
-    protected async override Task OnInitializedAsync()
+    protected async override Task OnParametersSetAsync()
     {
         var request = new GetClientDetailRequest
         {

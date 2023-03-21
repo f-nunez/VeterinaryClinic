@@ -33,7 +33,12 @@ public partial class PatientDetailNotificationComponent : ComponentBase
     [Parameter]
     public int PatientId { get; set; }
 
-    protected async override Task OnInitializedAsync()
+    protected override void OnInitialized()
+    {
+        Model.PhotoBase64Encoded = PatientHelper.GetPatientThumbnail();
+    }
+
+    protected async override Task OnParametersSetAsync()
     {
         var request = new GetPatientDetailRequest
         {

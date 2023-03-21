@@ -30,7 +30,7 @@ public partial class RoomDetailNotificationComponent : ComponentBase
     [Parameter]
     public int RoomId { get; set; }
 
-    protected async override Task OnInitializedAsync()
+    protected async override Task OnParametersSetAsync()
     {
         var request = new GetRoomByIdRequest
         {

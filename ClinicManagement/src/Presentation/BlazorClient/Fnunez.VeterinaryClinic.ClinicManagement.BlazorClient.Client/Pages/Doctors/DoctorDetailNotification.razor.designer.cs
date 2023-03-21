@@ -30,7 +30,7 @@ public partial class DoctorDetailNotificationComponent : ComponentBase
     [Parameter]
     public int DoctorId { get; set; }
 
-    protected async override Task OnInitializedAsync()
+    protected async override Task OnParametersSetAsync()
     {
         var request = new GetDoctorByIdRequest
         {
