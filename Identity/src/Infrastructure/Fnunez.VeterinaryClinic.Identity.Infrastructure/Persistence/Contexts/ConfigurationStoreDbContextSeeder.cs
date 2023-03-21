@@ -124,10 +124,6 @@ public class ConfigurationStoreDbContextSeeder
                     UserClaims = new List<string>
                     {
                         JwtClaimTypes.ClientId,
-                        JwtClaimTypes.Email,
-                        JwtClaimTypes.Name,
-                        JwtClaimTypes.PreferredUserName,
-                        JwtClaimTypes.Role,
                         JwtClaimTypes.SessionId
                     }
                 }.ToEntity()
@@ -184,10 +180,6 @@ public class ConfigurationStoreDbContextSeeder
                     UserClaims = new[]
                     {
                         JwtClaimTypes.ClientId,
-                        JwtClaimTypes.Email,
-                        JwtClaimTypes.Name,
-                        JwtClaimTypes.PreferredUserName,
-                        JwtClaimTypes.Role,
                         JwtClaimTypes.SessionId
                     }
                 }.ToEntity()
@@ -241,7 +233,8 @@ public class ConfigurationStoreDbContextSeeder
                         IdentityServerConstants.StandardScopes.Email,
                         "preferred_username",
                         "roles",
-                        "scheduling_api"
+                        "scheduling_api",
+                        "scheduling_notifications_api"
                     },
                     AllowedCorsOrigins = new List<string> { "https://localhost:7154" },
                     RedirectUris = new List<string> { "https://localhost:7154/signin-oidc" },
