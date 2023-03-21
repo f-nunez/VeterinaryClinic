@@ -6,6 +6,7 @@
 /* Import the Radzen CSS files */
 @import './styles-generated.css';
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url('components/customcard.css');
 @import url('components/language.css');
 @import url('components/search-input-text.css');
 @import url('components/spinner.css');
