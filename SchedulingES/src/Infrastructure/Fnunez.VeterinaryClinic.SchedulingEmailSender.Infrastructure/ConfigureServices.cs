@@ -23,6 +23,8 @@ public static class ConfigureServices
                 )
             );
 
+        services.AddScoped<ApplicationDbContextSeeder>();
+
         return services;
     }
 }
