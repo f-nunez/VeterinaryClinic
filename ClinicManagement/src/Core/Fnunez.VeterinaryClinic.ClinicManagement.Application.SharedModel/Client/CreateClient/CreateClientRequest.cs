@@ -9,4 +9,5 @@ public class CreateClientRequest : BaseRequest
     public string Salutation { get; set; } = string.Empty;
     public string EmailAddress { get; set; } = string.Empty;
     public int? PreferredDoctorId { get; set; }
+    public int PreferredLanguage { get; set; }
 }
