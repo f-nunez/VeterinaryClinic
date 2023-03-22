@@ -1,4 +1,5 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Entities;
+using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Enums;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.DoctorAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
@@ -11,6 +12,7 @@ public class Client : BaseAuditableEntity<int>, IAggregateRoot
     public string PreferredName { get; private set; }
     public string Salutation { get; private set; }
     public string EmailAddress { get; private set; }
+    public PreferredLanguage PreferredLanguage { get; private set; }
     public int? PreferredDoctorId { get; private set; }
     public IReadOnlyList<Patient> Patients => _patients.AsReadOnly();
 
@@ -31,6 +33,7 @@ public class Client : BaseAuditableEntity<int>, IAggregateRoot
         string preferredName,
         string salutation,
         string emailAddress,
+        PreferredLanguage preferredLanguage,
         int? preferredDoctorId)
     {
         if (string.IsNullOrEmpty(fullName))
@@ -63,6 +66,7 @@ public class Client : BaseAuditableEntity<int>, IAggregateRoot
         Salutation = salutation;
         EmailAddress = emailAddress;
         PreferredDoctorId = preferredDoctorId;
+        PreferredLanguage = preferredLanguage;
     }
 
     public Client(
@@ -71,6 +75,7 @@ public class Client : BaseAuditableEntity<int>, IAggregateRoot
         string preferredName,
         string salutation,
         string emailAddress,
+        PreferredLanguage preferredLanguage,
         int? preferredDoctorId)
     {
         if (id <= 0)
@@ -108,6 +113,7 @@ public class Client : BaseAuditableEntity<int>, IAggregateRoot
         Salutation = salutation;
         EmailAddress = emailAddress;
         PreferredDoctorId = preferredDoctorId;
+        PreferredLanguage = preferredLanguage;
     }
 
     public void AddPatient(Patient patient)
@@ -160,6 +166,11 @@ public class Client : BaseAuditableEntity<int>, IAggregateRoot
                 nameof(preferredDoctorId));
 
         PreferredDoctorId = preferredDoctorId;
+    }
+
+    public void UpdatePreferredLanguage(PreferredLanguage preferredLanguage)
+    {
+        PreferredLanguage = preferredLanguage;
     }
 
     public void UpdatePreferredName(string preferredName)
