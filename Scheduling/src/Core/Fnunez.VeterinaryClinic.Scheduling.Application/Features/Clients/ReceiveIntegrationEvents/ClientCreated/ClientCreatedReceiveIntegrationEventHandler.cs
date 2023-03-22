@@ -35,7 +35,8 @@ public class ClientCreatedReceiveIntegrationEventHandler
             [PreferredName],
             [Salutation],
             [EmailAddress],
-            [PreferredDoctorId]
+            [PreferredDoctorId],
+            [PreferredLanguage]
         ) VALUES (
             1,
             {contract.ClientId},
@@ -43,7 +44,8 @@ public class ClientCreatedReceiveIntegrationEventHandler
             N'{contract.ClientPreferredName}',
             N'{contract.ClientSalutation}',
             N'{contract.ClientEmailAddress}',
-            {preferredDoctorId}
+            {preferredDoctorId},
+            {contract.ClientPreferredLanguage}
         );
         
         SET IDENTITY_INSERT [dbo].[Clients] OFF;";
