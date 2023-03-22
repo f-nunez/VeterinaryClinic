@@ -83,6 +83,7 @@ public class CreateClientCommandHandler
             ClientFullName = client.FullName,
             ClientId = client.Id,
             ClientPreferredDoctorId = client.PreferredDoctorId,
+            ClientPreferredLanguage = (int)client.PreferredLanguage,
             ClientPreferredName = client.PreferredName,
             ClientSalutation = client.Salutation
         };
