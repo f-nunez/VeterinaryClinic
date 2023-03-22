@@ -6,6 +6,21 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Helpers;
 
 public static class ClientHelper
 {
+    public static AddEditClientVm MapAddEditClientViewModel(
+        ClientDto clientDto)
+    {
+        return new AddEditClientVm
+        {
+            ClientId = clientDto.ClientId,
+            EmailAddress = clientDto.EmailAddress,
+            FullName = clientDto.FullName,
+            PreferredDoctorId = clientDto.PreferredDoctorId,
+            PreferredLanguage = clientDto.PreferredLanguage,
+            PreferredName = clientDto.PreferredName,
+            Salutation = clientDto.Salutation
+        };
+    }
+
     public static ClientDetailVm MapClientDetailViewModel(
         ClientDetailDto clientDetailDto)
     {
