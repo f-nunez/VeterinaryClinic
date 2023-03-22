@@ -8,6 +8,7 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.Notification
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.UpdateClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
+using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate.Enums;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
@@ -54,6 +55,8 @@ public class UpdateClientCommandHandler
         clientToUpdate.UpdateEmailAddress(request.EmailAddress);
         clientToUpdate.UpdateFullName(request.FullName);
         clientToUpdate.UpdatePreferredDoctorId(request.PreferredDoctorId);
+        var preferredLanguage = (PreferredLanguage)request.PreferredLanguage;
+        clientToUpdate.UpdatePreferredLanguage(preferredLanguage);
         clientToUpdate.UpdatePreferredName(request.PreferredName);
         clientToUpdate.UpdateSalutation(request.Salutation);
         clientToUpdate.SetUpdatedBy(_currentUserService.UserId);
@@ -96,6 +99,7 @@ public class UpdateClientCommandHandler
             ClientFullName = client.FullName,
             ClientId = client.Id,
             ClientPreferredDoctorId = client.PreferredDoctorId,
+            ClientPreferredLanguage = (int)client.PreferredLanguage,
             ClientPreferredName = client.PreferredName,
             ClientSalutation = client.Salutation
         };
