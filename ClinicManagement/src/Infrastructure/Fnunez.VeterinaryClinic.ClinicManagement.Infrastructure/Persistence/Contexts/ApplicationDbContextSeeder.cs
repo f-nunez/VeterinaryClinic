@@ -192,6 +192,7 @@ public class ApplicationDbContextSeeder
                 "Chris",
                 "Mister",
                 "christian.demo@hotmail.com",
+                PreferredLanguage.English,
                 null
             )
         };
