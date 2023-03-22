@@ -15,6 +15,8 @@ public static class ConfigureServices
 
         services.AddSwaggerGen();
 
+        services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
+
         return services;
     }
 
@@ -35,6 +37,8 @@ public static class ConfigureServices
         app.UseRouting();
 
         app.UseAuthorization();
+
+        app.UseHealthChecks("/api/health");
 
         app.MapControllers();
 
