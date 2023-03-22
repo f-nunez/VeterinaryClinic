@@ -132,10 +132,19 @@
   <data name="ClientDetail_Label_PreferredDoctor" xml:space="preserve">
     <value>Preferred Doctor</value>
   </data>
+  <data name="ClientDetail_Label_PreferredLanguage" xml:space="preserve">
+    <value>Preferred Language</value>
+  </data>
   <data name="ClientDetail_Label_PreferredName" xml:space="preserve">
     <value>Preferred Name</value>
   </data>
   <data name="ClientDetail_Label_Salutation" xml:space="preserve">
     <value>Salutation</value>
+  </data>
+  <data name="ClientDetail_PreferredLanguage_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="ClientDetail_PreferredLanguage_Spanish" xml:space="preserve">
+    <value>Spanish</value>
   </data>
 </root>
