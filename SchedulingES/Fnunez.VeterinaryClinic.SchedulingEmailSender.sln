@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{65555678-3C93-481D-893A-2BEAED3A0B76}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{0BF8B459-3FA5-4EA2-B9A1-1453FE62E064}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.SchedulingEmailSender.Domain", "src\Core\Fnunez.VeterinaryClinic.SchedulingEmailSender.Domain\Fnunez.VeterinaryClinic.SchedulingEmailSender.Domain.csproj", "{1836BC3B-FF68-458B-BBAF-6A4E1872B13A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.SchedulingEmailSender.Application", "src\Core\Fnunez.VeterinaryClinic.SchedulingEmailSender.Application\Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.csproj", "{5B573705-4E26-4466-BC8A-A2D8A51A344A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{961DE947-0719-4D71-A6B6-B1CC5AF34099}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure", "src\Infrastructure\Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure\Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure.csproj", "{CFEB7A24-607C-4EE6-9C97-16506D1CAF02}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{15F67479-7142-40B0-803F-F21A4D5E5AD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.SchedulingEmailSender.Api", "src\Presentation\Fnunez.VeterinaryClinic.SchedulingEmailSender.Api\Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.csproj", "{29924416-8F6B-4D66-A6BB-2B8C5143778F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1836BC3B-FF68-458B-BBAF-6A4E1872B13A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1836BC3B-FF68-458B-BBAF-6A4E1872B13A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1836BC3B-FF68-458B-BBAF-6A4E1872B13A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1836BC3B-FF68-458B-BBAF-6A4E1872B13A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B573705-4E26-4466-BC8A-A2D8A51A344A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B573705-4E26-4466-BC8A-A2D8A51A344A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B573705-4E26-4466-BC8A-A2D8A51A344A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B573705-4E26-4466-BC8A-A2D8A51A344A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFEB7A24-607C-4EE6-9C97-16506D1CAF02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFEB7A24-607C-4EE6-9C97-16506D1CAF02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFEB7A24-607C-4EE6-9C97-16506D1CAF02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFEB7A24-607C-4EE6-9C97-16506D1CAF02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29924416-8F6B-4D66-A6BB-2B8C5143778F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29924416-8F6B-4D66-A6BB-2B8C5143778F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29924416-8F6B-4D66-A6BB-2B8C5143778F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29924416-8F6B-4D66-A6BB-2B8C5143778F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0BF8B459-3FA5-4EA2-B9A1-1453FE62E064} = {65555678-3C93-481D-893A-2BEAED3A0B76}
+		{1836BC3B-FF68-458B-BBAF-6A4E1872B13A} = {0BF8B459-3FA5-4EA2-B9A1-1453FE62E064}
+		{5B573705-4E26-4466-BC8A-A2D8A51A344A} = {0BF8B459-3FA5-4EA2-B9A1-1453FE62E064}
+		{961DE947-0719-4D71-A6B6-B1CC5AF34099} = {65555678-3C93-481D-893A-2BEAED3A0B76}
+		{CFEB7A24-607C-4EE6-9C97-16506D1CAF02} = {961DE947-0719-4D71-A6B6-B1CC5AF34099}
+		{15F67479-7142-40B0-803F-F21A4D5E5AD6} = {65555678-3C93-481D-893A-2BEAED3A0B76}
+		{29924416-8F6B-4D66-A6BB-2B8C5143778F} = {15F67479-7142-40B0-803F-F21A4D5E5AD6}
+	EndGlobalSection
+EndGlobal
