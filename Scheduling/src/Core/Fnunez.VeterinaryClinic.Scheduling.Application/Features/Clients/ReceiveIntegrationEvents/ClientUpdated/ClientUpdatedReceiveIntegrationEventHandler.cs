@@ -32,6 +32,7 @@ public class ClientUpdatedReceiveIntegrationEventHandler
             ,[Salutation] = N'{contract.ClientSalutation}'
             ,[EmailAddress] = N'{contract.ClientEmailAddress}'
             ,[PreferredDoctorId] = {preferredDoctorId}
+            ,[PreferredLanguage] = {contract.ClientPreferredLanguage}
         WHERE Id = {contract.ClientId}";
 
         var result = await _unitOfWork
