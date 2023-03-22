@@ -1,4 +1,6 @@
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure.Persistence.Contexts;
+using Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure.Persistence.Repositories;
+using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -24,6 +26,8 @@ public static class ConfigureServices
             );
 
         services.AddScoped<ApplicationDbContextSeeder>();
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }
