@@ -1,7 +1,9 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.CreateClient;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterPreferredDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.UpdateClient;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Models.Clients;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.ViewModels;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.ViewModels.Clients;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -23,6 +25,10 @@ public partial class AddEditClientComponent : ComponentBase
 
     protected bool IsSaving { get; set; }
 
+    protected int? PreferredLanguageValue { get; set; }
+
+    protected List<DropDownValue> PreferredLanguageDropDownValues { get; set; }
+
     [Inject]
     protected IStringLocalizer<AddEditClientComponent> StringLocalizer { get; set; }
 
@@ -30,7 +36,7 @@ public partial class AddEditClientComponent : ComponentBase
     public bool IsClientToAdd { get; set; }
 
     [Parameter]
-    public ClientVm Model { get; set; } = new();
+    public AddEditClientVm Model { get; set; } = new();
 
     #region PreferredDoctor properties
     protected RadzenDropDownDataGrid<int?> PreferredDoctorDropDownDataGrid;
@@ -43,10 +49,30 @@ public partial class AddEditClientComponent : ComponentBase
     public List<PreferredDoctorFilterValueDto> PreselectedPreferredDoctorFilterValues { get; set; }
     #endregion
 
+    protected override void OnInitialized()
+    {
+        PreferredLanguageDropDownValues = new List<DropDownValue>
+        {
+            new DropDownValue
+            {
+                Text = StringLocalizer["AddEditClient_PreferredLanguage_English"],
+                Value = (int)PreferredLanguage.English
+            },
+            new DropDownValue
+            {
+                Text = StringLocalizer["AddEditClient_PreferredLanguage_Spanish"],
+                Value = (int)PreferredLanguage.Spanish
+            }
+        };
+    }
+
     protected override void OnParametersSet()
     {
         if (!IsClientToAdd)
+        {
             PreferredDoctorFilterValues = PreselectedPreferredDoctorFilterValues;
+            PreferredLanguageValue = Model.PreferredLanguage;
+        }
     }
 
     protected async void OnSubmit()
@@ -74,6 +100,7 @@ public partial class AddEditClientComponent : ComponentBase
             EmailAddress = Model.EmailAddress,
             FullName = Model.FullName,
             PreferredDoctorId = Model.PreferredDoctorId,
+            PreferredLanguage = Model.PreferredLanguage,
             PreferredName = Model.PreferredName,
             Salutation = Model.Salutation
         };
@@ -89,6 +116,7 @@ public partial class AddEditClientComponent : ComponentBase
             EmailAddress = Model.EmailAddress,
             FullName = Model.FullName,
             PreferredDoctorId = Model.PreferredDoctorId,
+            PreferredLanguage = Model.PreferredLanguage,
             PreferredName = Model.PreferredName,
             Salutation = Model.Salutation
         };
@@ -124,6 +152,15 @@ public partial class AddEditClientComponent : ComponentBase
         {
             Model.PreferredDoctorId = null;
         }
+    }
+    #endregion
+
+    #region PreferredLanguage dropdown methods
+    protected void OnChangePreferredLanguageDropDown(object value)
+    {
+        var convertedValue = value as Nullable<int>;
+
+        Model.PreferredLanguage = convertedValue ?? 0;
     }
     #endregion
 }

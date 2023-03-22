@@ -153,6 +153,21 @@
   <data name="AddEditClient_PreferredDoctor_DropDown_PlaceHolder" xml:space="preserve">
     <value>Search preferred doctor...</value>
   </data>
+  <data name="AddEditClient_PreferredLanguage_DropDown_Label" xml:space="preserve">
+    <value>Preferred Language</value>
+  </data>
+  <data name="AddEditClient_PreferredLanguage_DropDown_PlaceHolder" xml:space="preserve">
+    <value>Search preferred language...</value>
+  </data>
+  <data name="AddEditClient_PreferredLanguage_DropDown_RequiredMessage" xml:space="preserve">
+    <value>Preferred language is required</value>
+  </data>
+  <data name="AddEditClient_PreferredLanguage_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="AddEditClient_PreferredLanguage_Spanish" xml:space="preserve">
+    <value>Spanish</value>
+  </data>
   <data name="AddEditClient_PreferredName_TextBox_Label" xml:space="preserve">
     <value>Preferred Name</value>
   </data>

@@ -6,7 +6,7 @@
 <RadzenTemplateForm
     Data="@Model"
     Submit=@OnSubmit
-    TItem="ClientVm">
+    TItem="AddEditClientVm">
 
     <div class="row mb-3">
         <div class="col-12">
@@ -107,6 +107,35 @@
                         Component="EmailAddress"
                         Text=@StringLocalizer["AddEditClient_EmailAddress_TextBox_RequiredValidEmailAddressMessage"]>
                     </RadzenEmailValidator>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditClient_PreferredLanguage_DropDown_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenDropDown 
+                        @bind-Value="PreferredLanguageValue"
+                        AllowClear="false"
+                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                        AllowFiltering="true"
+                        Class="w-100 d-block"
+                        Change="@(args => OnChangePreferredLanguageDropDown(args))"
+                        Data=@PreferredLanguageDropDownValues
+                        Name="PreferredLanguage"
+                        Placeholder=@StringLocalizer["AddEditClient_PreferredLanguage_DropDown_PlaceHolder"]
+                        TextProperty="Text"
+                        TValue="int?"
+                        ValueProperty="Value">
+                    </RadzenDropDown>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="PreferredLanguage"
+                        Text=@StringLocalizer["AddEditClient_PreferredLanguage_DropDown_RequiredMessage"]>
+                    </RadzenRequiredValidator>
                 </div>
 
                 <div class="col-12 mb-3">
