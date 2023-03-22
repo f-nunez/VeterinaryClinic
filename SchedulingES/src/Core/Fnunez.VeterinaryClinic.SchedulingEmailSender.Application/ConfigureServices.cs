@@ -1,4 +1,5 @@
 using System.Reflection;
+using MediatR;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -8,6 +9,8 @@ public static class ConfigureServices
         this IServiceCollection services)
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+        services.AddMediatR(Assembly.GetExecutingAssembly());
 
         return services;
     }
