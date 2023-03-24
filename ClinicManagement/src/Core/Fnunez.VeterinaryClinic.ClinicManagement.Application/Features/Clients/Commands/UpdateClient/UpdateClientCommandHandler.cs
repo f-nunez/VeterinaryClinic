@@ -52,36 +52,57 @@ public class UpdateClientCommandHandler
             throw new NotFoundException(
                 nameof(clientToUpdate), request.ClientId);
 
-        clientToUpdate.UpdateEmailAddress(request.EmailAddress);
-        clientToUpdate.UpdateFullName(request.FullName);
-        clientToUpdate.UpdatePreferredDoctorId(request.PreferredDoctorId);
-        var preferredLanguage = (PreferredLanguage)request.PreferredLanguage;
-        clientToUpdate.UpdatePreferredLanguage(preferredLanguage);
-        clientToUpdate.UpdatePreferredName(request.PreferredName);
-        clientToUpdate.UpdateSalutation(request.Salutation);
-        clientToUpdate.SetUpdatedBy(_currentUserService.UserId);
-
-        await _unitOfWork
-            .Repository<Client>()
-            .UpdateAsync(clientToUpdate, cancellationToken);
-
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await UpdateClientAsync(request, clientToUpdate, cancellationToken);
 
         response.Client = _mapper.Map<ClientDto>(clientToUpdate);
 
-        await SendIntegrationEventAsync(
-            clientToUpdate,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        await SendNotificationRequestAsync(
+        await SendContractsToServiceBusAsync(
             clientToUpdate,
             request.CorrelationId,
             cancellationToken
         );
 
         return response;
+    }
+
+    private async Task UpdateClientAsync(
+        UpdateClientRequest request,
+        Client client,
+        CancellationToken cancellationToken)
+    {
+        var preferredLanguage = (PreferredLanguage)request.PreferredLanguage;
+
+        client.UpdateEmailAddress(request.EmailAddress);
+        client.UpdateFullName(request.FullName);
+        client.UpdatePreferredDoctorId(request.PreferredDoctorId);
+        client.UpdatePreferredLanguage(preferredLanguage);
+        client.UpdatePreferredName(request.PreferredName);
+        client.UpdateSalutation(request.Salutation);
+        client.SetUpdatedBy(_currentUserService.UserId);
+
+        await _unitOfWork
+            .Repository<Client>()
+            .UpdateAsync(client, cancellationToken);
+
+        await _unitOfWork.CommitAsync(cancellationToken);
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        Client client,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        await SendIntegrationEventAsync(
+            client,
+            correlationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
+            client,
+            correlationId,
+            cancellationToken
+        );
     }
 
     private async Task SendIntegrationEventAsync(
