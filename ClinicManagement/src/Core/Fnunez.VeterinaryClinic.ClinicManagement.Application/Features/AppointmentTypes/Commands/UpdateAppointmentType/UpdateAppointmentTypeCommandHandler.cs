@@ -53,33 +53,54 @@ public class UpdateAppointmentTypeCommandHandler : IRequestHandler<UpdateAppoint
             throw new NotFoundException(
                 nameof(appointmentTypeToUpdate), request.Id);
 
-        appointmentTypeToUpdate.UpdateCode(request.Code);
-        appointmentTypeToUpdate.UpdateDuration(request.Duration);
-        appointmentTypeToUpdate.UpdateName(request.Name);
-        appointmentTypeToUpdate.SetUpdatedBy(_currentUserService.UserId);
-
-        await _unitOfWork
-            .Repository<AppointmentType>()
-            .UpdateAsync(appointmentTypeToUpdate, cancellationToken);
-
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await UpdateAppointmentTypeAsync(
+            request, appointmentTypeToUpdate, cancellationToken);
 
         response.AppointmentType = _mapper
             .Map<AppointmentTypeDto>(appointmentTypeToUpdate);
 
-        await SendIntegrationEventAsync(
-            appointmentTypeToUpdate,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        await SendNotificationRequestAsync(
+        await SendContractsToServiceBusAsync(
             appointmentTypeToUpdate,
             request.CorrelationId,
             cancellationToken
         );
 
         return response;
+    }
+
+    private async Task UpdateAppointmentTypeAsync(
+        UpdateAppointmentTypeRequest request,
+        AppointmentType appointmentType,
+        CancellationToken cancellationToken)
+    {
+        appointmentType.UpdateCode(request.Code);
+        appointmentType.UpdateDuration(request.Duration);
+        appointmentType.UpdateName(request.Name);
+        appointmentType.SetUpdatedBy(_currentUserService.UserId);
+
+        await _unitOfWork
+            .Repository<AppointmentType>()
+            .UpdateAsync(appointmentType, cancellationToken);
+
+        await _unitOfWork.CommitAsync(cancellationToken);
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        AppointmentType appointmentType,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        await SendIntegrationEventAsync(
+            appointmentType,
+            correlationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
+            appointmentType,
+            correlationId,
+            cancellationToken
+        );
     }
 
     private async Task SendIntegrationEventAsync(
