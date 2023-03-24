@@ -57,19 +57,31 @@ public class DeleteClientCommandHandler
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        await SendIntegrationEventAsync(
-            clientToDelete,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        await SendNotificationRequestAsync(
+        await SendContractsToServiceBusAsync(
             clientToDelete,
             request.CorrelationId,
             cancellationToken
         );
 
         return response;
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        Client client,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        await SendIntegrationEventAsync(
+            client,
+            correlationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
+            client,
+            correlationId,
+            cancellationToken
+        );
     }
 
     private async Task SendIntegrationEventAsync(
