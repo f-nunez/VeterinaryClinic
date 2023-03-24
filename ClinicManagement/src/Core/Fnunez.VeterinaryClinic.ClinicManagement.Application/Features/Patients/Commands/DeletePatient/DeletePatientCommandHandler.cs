@@ -59,6 +59,20 @@ public class DeletePatientCommandHandler
             throw new NotFoundException(
                 nameof(client), request.ClientId);
 
+        var patientToDelete = await DeletePatientAsync(
+            request, client, cancellationToken);
+
+        await SendContractsToServiceBusAsync(
+            patientToDelete, request.CorrelationId, cancellationToken);
+
+        return response;
+    }
+
+    private async Task<Patient> DeletePatientAsync(
+        DeletePatientRequest request,
+        Client client,
+        CancellationToken cancellationToken)
+    {
         var patientToDelete = client.Patients
             .FirstOrDefault(p => p.Id == request.PatientId);
 
@@ -78,19 +92,7 @@ public class DeletePatientCommandHandler
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        await SendIntegrationEventAsync(
-            patientToDelete,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        await SendNotificationRequestAsync(
-            patientToDelete,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        return response;
+        return patientToDelete;
     }
 
     private void DeletePhoto(Patient patient)
@@ -102,6 +104,24 @@ public class DeletePatientCommandHandler
             _clientStorageSetting.BasePath, relativePhotoPath);
 
         _fileSystemDeleterService.Delete(photoPath);
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        Patient patient,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        await SendIntegrationEventAsync(
+            patient,
+            correlationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
+            patient,
+            correlationId,
+            cancellationToken
+        );
     }
 
     private async Task SendIntegrationEventAsync(
