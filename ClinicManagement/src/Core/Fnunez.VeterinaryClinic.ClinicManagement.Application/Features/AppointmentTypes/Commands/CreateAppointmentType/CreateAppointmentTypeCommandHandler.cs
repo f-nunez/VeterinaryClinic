@@ -58,19 +58,31 @@ public class CreateAppointmentTypeCommandHandler
         response.AppointmentType = _mapper
             .Map<AppointmentTypeDto>(newAppointemntType);
 
-        await SendIntegrationEventAsync(
-            newAppointemntType,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        await SendNotificationRequestAsync(
+        await SendContractsToServiceBusAsync(
             newAppointemntType,
             request.CorrelationId,
             cancellationToken
         );
 
         return response;
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        AppointmentType appointmentType,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        await SendIntegrationEventAsync(
+            appointmentType,
+            correlationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
+            appointmentType,
+            correlationId,
+            cancellationToken
+        );
     }
 
     private async Task SendIntegrationEventAsync(
