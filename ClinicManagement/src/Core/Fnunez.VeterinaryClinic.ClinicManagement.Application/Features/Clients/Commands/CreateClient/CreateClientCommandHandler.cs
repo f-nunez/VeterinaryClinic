@@ -53,19 +53,31 @@ public class CreateClientCommandHandler
 
         response.Client = _mapper.Map<ClientDto>(newClient);
 
-        await SendIntegrationEventAsync(
-            newClient,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        await SendNotificationRequestAsync(
+        await SendContractsToServiceBusAsync(
             newClient,
             request.CorrelationId,
             cancellationToken
         );
 
         return response;
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        Client client,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        await SendIntegrationEventAsync(
+            client,
+            correlationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
+            client,
+            correlationId,
+            cancellationToken
+        );
     }
 
     private async Task SendIntegrationEventAsync(
