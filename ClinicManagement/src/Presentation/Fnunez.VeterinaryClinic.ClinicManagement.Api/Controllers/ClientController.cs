@@ -60,6 +60,7 @@ public class ClientController : BaseApiController
     }
 
     [HttpPost("DataGridFilterEmailAddress")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterEmailAddress(
         GetClientsFilterEmailAddressRequest request,
         CancellationToken cancellationToken)
@@ -73,6 +74,7 @@ public class ClientController : BaseApiController
     }
 
     [HttpPost("DataGridFilterFullName")]
+    [Authorize("RequiredReaderPolicy")]
     public async Task<ActionResult> DataGridFilterFullName(
         GetClientsFilterFullNameRequest request,
         CancellationToken cancellationToken)
