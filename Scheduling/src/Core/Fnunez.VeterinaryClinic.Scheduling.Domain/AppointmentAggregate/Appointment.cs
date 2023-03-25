@@ -110,6 +110,11 @@ public class Appointment : BaseAuditableEntity<Guid>, IAggregateRoot
         ConfirmOn = confirmOn;
     }
 
+    public void ResetConfirmOn()
+    {
+        ConfirmOn = null;
+    }
+
     public void UpdateAppointmentType(int appointmentTypeId)
     {
         if (appointmentTypeId <= 0)
