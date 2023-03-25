@@ -6,8 +6,8 @@ namespace Fnunez.VeterinaryClinic.ClinicManagementNotifications.Domain.Applicati
 
 public class ApplicationUserRole : BaseEntity<Guid>, IAggregateRoot
 {
-    public string? RoleId { get; set; }
-    public string? UserId { get; set; }
+    public string? RoleId { get; private set; }
+    public string? UserId { get; private set; }
 
     #region Navigations
     public ApplicationRole Role { get; set; } = null!;
