@@ -120,7 +120,7 @@ public class Appointment : BaseAuditableEntity<Guid>, IAggregateRoot
         AppointmentTypeId = appointmentTypeId;
     }
 
-    public void UpdateConfirm(DateTimeOffset confirmOn)
+    public void UpdateConfirmOn(DateTimeOffset confirmOn)
     {
         if (ConfirmOn.HasValue)
             return;
