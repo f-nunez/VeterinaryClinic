@@ -2,6 +2,7 @@ namespace Fnunez.VeterinaryClinic.SchedulingEmailSender.Domain.EmailAggregate.En
 
 public enum EmailEvent
 {
+    AppointmentConfirmed,
     AppointmentCreated,
     AppointmentDeleted,
     AppointmentUpdated,
