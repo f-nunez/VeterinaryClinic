@@ -9,8 +9,9 @@ public class Email : BaseEntity<int>, IAggregateRoot
     public DateTimeOffset CreatedOn { get; private set; }
     public EmailEvent EmailEvent { get; private set; }
     public string? Payload { get; private set; }
+    public int RetryCount { get; private set; }
     public DateTimeOffset? SentOn { get; private set; }
-    public string? TriggeredByUserId { get; set; }
+    public string? TriggeredByUserId { get; private set; }
 
     public Email()
     {
@@ -79,6 +80,11 @@ public class Email : BaseEntity<int>, IAggregateRoot
         EmailEvent = emailEvent;
         Payload = payload;
         TriggeredByUserId = triggeredByUserId;
+    }
+
+    public void IncreaseRetryCount()
+    {
+        RetryCount++;
     }
 
     public void UpdateSentOn(DateTimeOffset sentOn)
