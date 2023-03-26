@@ -8,11 +8,15 @@ public class EmailConfiguration : IEntityTypeConfiguration<Email>
 {
     public void Configure(EntityTypeBuilder<Email> builder)
     {
-        builder.Property(n => n.Payload)
+        builder.Property(e => e.Address)
+            .HasMaxLength(320)
+            .IsRequired();
+
+        builder.Property(e => e.Payload)
             .HasMaxLength(2048)
             .IsRequired();
 
-        builder.Property(n => n.TriggeredByUserId)
+        builder.Property(e => e.TriggeredByUserId)
             .HasMaxLength(450)
             .IsRequired();
     }
