@@ -4,6 +4,7 @@ using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Settings;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure.Persistence.Contexts;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure.Persistence.Repositories;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure.ServiceBus;
+using Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure.ServiceBus.Observers;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure.Settings;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MassTransit;
@@ -40,6 +41,14 @@ public static class ConfigureServices
             .Get<RabbitMqSetting>()!);
 
         services.AddScoped<IServiceBus, MassTransitServiceBus>();
+
+        services.AddConsumeObserver<LoggingConsumeObserver>();
+
+        services.AddPublishObserver<LoggingPublishObserver>();
+
+        services.AddReceiveObserver<LoggingReceiveObserver>();
+
+        services.AddSendObserver<LoggingSendObserver>();
 
         services.AddMassTransit(mt =>
         {
