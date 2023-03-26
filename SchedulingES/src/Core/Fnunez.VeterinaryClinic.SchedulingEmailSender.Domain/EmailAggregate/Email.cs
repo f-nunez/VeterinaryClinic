@@ -6,6 +6,7 @@ namespace Fnunez.VeterinaryClinic.SchedulingEmailSender.Domain.EmailAggregate;
 public class Email : BaseEntity<int>, IAggregateRoot
 {
     public Guid CorrelationId { get; private set; }
+    public string? Address { get; set; }
     public DateTimeOffset CreatedOn { get; private set; }
     public EmailEvent EmailEvent { get; private set; }
     public string? Payload { get; private set; }
@@ -19,6 +20,7 @@ public class Email : BaseEntity<int>, IAggregateRoot
 
     public Email(
         Guid correlationId,
+        string? address,
         DateTimeOffset createdOn,
         EmailEvent emailEvent,
         string? payload,
@@ -28,6 +30,11 @@ public class Email : BaseEntity<int>, IAggregateRoot
             throw new ArgumentException(
                 $"Required input {nameof(correlationId)} was empty.",
                 nameof(correlationId));
+
+        if (string.IsNullOrEmpty(address))
+            throw new ArgumentException(
+                $"Required input {nameof(address)} was empty.",
+                nameof(address));
 
         if (string.IsNullOrEmpty(payload))
             throw new ArgumentException(
@@ -40,6 +47,7 @@ public class Email : BaseEntity<int>, IAggregateRoot
                 nameof(triggeredByUserId));
 
         CorrelationId = correlationId;
+        Address = address;
         CreatedOn = createdOn;
         EmailEvent = emailEvent;
         Payload = payload;
@@ -49,6 +57,7 @@ public class Email : BaseEntity<int>, IAggregateRoot
     public Email(
         int id,
         Guid correlationId,
+        string? address,
         DateTimeOffset createdOn,
         EmailEvent emailEvent,
         string? payload,
@@ -64,6 +73,11 @@ public class Email : BaseEntity<int>, IAggregateRoot
                 $"Required input {nameof(correlationId)} was empty.",
                 nameof(correlationId));
 
+        if (string.IsNullOrEmpty(address))
+            throw new ArgumentException(
+                $"Required input {nameof(address)} was empty.",
+                nameof(address));
+
         if (string.IsNullOrEmpty(payload))
             throw new ArgumentException(
                 $"Required input {nameof(payload)} was empty.",
@@ -76,6 +90,7 @@ public class Email : BaseEntity<int>, IAggregateRoot
 
         Id = id;
         CorrelationId = correlationId;
+        Address = address;
         CreatedOn = createdOn;
         EmailEvent = emailEvent;
         Payload = payload;
