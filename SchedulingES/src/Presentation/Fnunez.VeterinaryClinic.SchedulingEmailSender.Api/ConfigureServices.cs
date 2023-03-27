@@ -1,4 +1,5 @@
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.Helpers.SymmetricEncryption;
+using Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.Services.EmailTemplate;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.Services.Language;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.Services.StringRazorRender;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.Settings;
@@ -32,6 +33,8 @@ public static class ConfigureServices
         services.AddSingleton<IEmailTemplateSetting>(configuration
             .GetSection(typeof(EmailTemplateSetting).Name)
             .Get<EmailTemplateSetting>()!);
+
+        services.AddSingleton<IEmailTemplateService, EmailTemplateService>();
 
         services.AddSingleton<ISymmetricEncryptionSetting>(configuration
             .GetSection(typeof(SymmetricEncryptionSetting).Name)
