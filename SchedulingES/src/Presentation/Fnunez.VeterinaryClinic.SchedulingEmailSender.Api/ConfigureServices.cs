@@ -29,6 +29,10 @@ public static class ConfigureServices
 
         services.AddScoped<IStringRazorRenderService, StringRazorRenderService>();
 
+        services.AddSingleton<IEmailTemplateSetting>(configuration
+            .GetSection(typeof(EmailTemplateSetting).Name)
+            .Get<EmailTemplateSetting>()!);
+
         services.AddSingleton<ISymmetricEncryptionSetting>(configuration
             .GetSection(typeof(SymmetricEncryptionSetting).Name)
             .Get<SymmetricEncryptionSetting>()!);
