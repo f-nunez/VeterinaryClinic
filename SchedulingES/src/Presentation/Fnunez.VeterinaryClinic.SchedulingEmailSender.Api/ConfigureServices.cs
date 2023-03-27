@@ -1,6 +1,8 @@
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.Helpers.SymmetricEncryption;
+using Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.Services.Language;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.Services.StringRazorRender;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.Settings;
+using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.Language;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.StringRazorRender;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure.Persistence.Contexts;
 
@@ -22,6 +24,8 @@ public static class ConfigureServices
         services.AddSwaggerGen();
 
         services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
+
+        services.AddScoped<ILanguageService, LanguageService>();
 
         services.AddScoped<IStringRazorRenderService, StringRazorRenderService>();
 
