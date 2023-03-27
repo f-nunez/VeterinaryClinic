@@ -1,3 +1,4 @@
+using Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.Settings;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure.Persistence.Contexts;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,10 @@ public static class ConfigureServices
         services.AddSwaggerGen();
 
         services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
+
+        services.AddSingleton<ISymmetricEncryptionSetting>(configuration
+            .GetSection(typeof(SymmetricEncryptionSetting).Name)
+            .Get<SymmetricEncryptionSetting>()!);
 
         return services;
     }
