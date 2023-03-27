@@ -1,3 +1,4 @@
+using Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.Helpers.SymmetricEncryption;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.Settings;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure.Persistence.Contexts;
 
@@ -23,6 +24,8 @@ public static class ConfigureServices
         services.AddSingleton<ISymmetricEncryptionSetting>(configuration
             .GetSection(typeof(SymmetricEncryptionSetting).Name)
             .Get<SymmetricEncryptionSetting>()!);
+
+        services.AddSingleton<ISymmetricEncryptionHelper, SymmetricEncryptionHelper>();
 
         return services;
     }
