@@ -1,0 +1,89 @@
+@using Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.Services.EmailTemplate
+@using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.EmailEngine.Payloads
+@using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.Language
+@inject IEmailTemplateService emailTemplateService
+@inject ILanguageService languageService
+@model AppointmentCreatedPayload
+
+@{
+    Layout = "~/Views/Shared/_EmailLayout.cshtml";
+
+    string confirmationUrl = await emailTemplateService.GetConfirmationUrlAsync(Model.AppointmentId, Model.Language);
+}
+
+<table cellpadding="10px" cellspacing="0">
+    <tr>
+        <td align="center" valign="top">
+            <h1 class="title">
+                Veterinary Clinic
+            </h1>
+            <img class="logo" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/256/external-veterinary-veterinary-flaticons-lineal-color-flat-icons-5.png" />
+        </td>
+    </tr>
+    <tr>
+        <td align="left">
+            <p>
+                @languageService.GetStringLocalizer("AppointmentCreated_Message", Model.Language)
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <table cellpadding="10px" cellspacing="0">
+            <tr>
+                <td align="right">
+                    <p>
+                        @languageService.GetStringLocalizer("AppointmentCreated_Label_Patient", Model.Language)
+                    </p>
+                </td>
+                <td align="left">
+                    <p>
+                        @Model.PatientName
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
+                    <p>
+                        @languageService.GetStringLocalizer("AppointmentCreated_Label_Owner", Model.Language)
+                    </p>
+                </td>
+                <td align="left">
+                    <p>
+                        @Model.ClientFullName
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
+                    <p>
+                        @languageService.GetStringLocalizer("AppointmentCreated_Label_Doctor", Model.Language)
+                    </p>
+                </td>
+                <td align="left">
+                    <p>
+                        @Model.DoctorFullName
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
+                    <p>
+                        @languageService.GetStringLocalizer("AppointmentCreated_Label_Date", Model.Language)
+                    </p>
+                </td>
+                <td align="left">
+                    <p>
+                        @($"{Model.AppointmentStartOn.ToString("g", languageService.GetCultureInfo(Model.Language))} UTC({Model.AppointmentStartOn.ToString("zzz", languageService.GetCultureInfo(Model.Language))})")
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <a class="button" href="@confirmationUrl" target="_blank">
+                        @languageService.GetStringLocalizer("AppointmentCreated_Button_Confirm", Model.Language)
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </tr>
+</table>
