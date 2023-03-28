@@ -1,0 +1,78 @@
+@using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.EmailEngine.Payloads
+@using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.Language
+@inject ILanguageService languageService
+@model AppointmentDeletedPayload
+
+@{
+    Layout = "~/Views/Shared/_EmailLayout.cshtml";
+}
+
+<table cellpadding="10px" cellspacing="0">
+    <tr>
+        <td align="center" valign="top">
+            <h1 class="title">
+                Veterinary Clinic
+            </h1>
+            <img class="logo" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/256/external-veterinary-veterinary-flaticons-lineal-color-flat-icons-5.png" />
+        </td>
+    </tr>
+    <tr>
+        <td align="left">
+            <p>
+                @languageService.GetStringLocalizer("AppointmentDeleted_Message", Model.Language)
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <table cellpadding="10px" cellspacing="0">
+            <tr>
+                <td align="right">
+                    <p>
+                        @languageService.GetStringLocalizer("AppointmentDeleted_Label_Patient", Model.Language)
+                    </p>
+                </td>
+                <td align="left">
+                    <p>
+                        @Model.PatientName
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
+                    <p>
+                        @languageService.GetStringLocalizer("AppointmentDeleted_Label_Owner", Model.Language)
+                    </p>
+                </td>
+                <td align="left">
+                    <p>
+                        @Model.ClientFullName
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
+                    <p>
+                        @languageService.GetStringLocalizer("AppointmentDeleted_Label_Doctor", Model.Language)
+                    </p>
+                </td>
+                <td align="left">
+                    <p>
+                        @Model.DoctorFullName
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
+                    <p>
+                        @languageService.GetStringLocalizer("AppointmentDeleted_Label_Date", Model.Language)
+                    </p>
+                </td>
+                <td align="left">
+                    <p>
+                        @($"{Model.AppointmentStartOn.ToString("g", languageService.GetCultureInfo(Model.Language))} UTC({Model.AppointmentStartOn.ToString("zzz", languageService.GetCultureInfo(Model.Language))})")
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </tr>
+</table>
