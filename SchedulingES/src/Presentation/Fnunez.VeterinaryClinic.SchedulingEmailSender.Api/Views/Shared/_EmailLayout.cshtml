@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <style type="text/css">
+        @@media screen {
+            @@font-face {
+                font-family: 'Lato';
+                font-style: normal;
+                font-weight: 400;
+                src: local('Lato Regular'), local('Lato-Regular'), url(https://fonts.gstatic.com/s/lato/v11/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format('woff');
+            }
+
+            @@font-face {
+                font-family: 'Lato';
+                font-style: normal;
+                font-weight: 700;
+                src: local('Lato Bold'), local('Lato-Bold'), url(https://fonts.gstatic.com/s/lato/v11/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+            }
+
+            @@font-face {
+                font-family: 'Lato';
+                font-style: italic;
+                font-weight: 400;
+                src: local('Lato Italic'), local('Lato-Italic'), url(https://fonts.gstatic.com/s/lato/v11/RYyZNoeFgb0l7W3Vu1aSWOvvDin1pK8aKteLpeZ5c0A.woff) format('woff');
+            }
+
+            @@font-face {
+                font-family: 'Lato';
+                font-style: italic;
+                font-weight: 700;
+                src: local('Lato Bold Italic'), local('Lato-BoldItalic'), url(https://fonts.gstatic.com/s/lato/v11/HkF_qI1x_noxlxhrhMQYELO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+            }
+        }
+
+        /* Fix iOS blue links */
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+
+        body {
+            background-color: #aad4f3;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        body,
+        table,
+        td,
+        a {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+        }
+
+        p {
+            color: #666666;
+            font-family: 'Lato', Helvetica, Arial, sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 25px;
+            margin: 0;
+        }
+
+        table {
+            border: 0;
+            width: 100%;
+        }
+
+        .button {
+            background-color: #86b9df;
+            border: 1px solid #86b9df;
+            border-radius: 4px;
+            color: #ffffff;
+            display: inline-block;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 20px;
+            padding: 15px 25px;
+            text-decoration: none;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 4px;
+            padding: 20px;
+            max-width: 600px;
+        }
+
+        .container {
+            display: table;
+            margin: 0 auto;
+            padding: 50px;
+        }
+
+        @@media screen and (max-width:768px) {
+            .container {
+                padding: 25px;
+            }
+        }
+
+        @@media screen and (max-width:576px) {
+            .container {
+                padding: 0;
+            }
+        }
+
+        .icon-credits {
+            color: #666666;
+            font-family: 'Lato', Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 18px;
+            padding-left: 20px;
+        }
+
+        .icon-credits a {
+            color: #111111;
+            font-weight: 700;
+        }
+
+        .logo {
+            border: 0px;
+            display: block;
+            height: 120px;
+            margin-top: 10px;
+            width: 125px;
+        }
+
+        .title {
+            color: #111111;
+            font-family: 'Lato', Helvetica, Arial, sans-serif;
+            font-size: 48px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            line-height: 48px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            @RenderBody()
+        </div>
+        <div>
+            <br>
+            <p class="icon-credits">App icons by <a href="https://icons8.com" target="_blank">icons8.com</a></p>
+        </div>
+    </div>
+</body>
+
+</html>
