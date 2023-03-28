@@ -117,4 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppointmentConfirmed_Label_Date" xml:space="preserve">
+    <value>Date:</value>
+  </data>
+  <data name="AppointmentConfirmed_Label_Doctor" xml:space="preserve">
+    <value>Doctor:</value>
+  </data>
+  <data name="AppointmentConfirmed_Label_Owner" xml:space="preserve">
+    <value>Owner:</value>
+  </data>
+  <data name="AppointmentConfirmed_Label_Patient" xml:space="preserve">
+    <value>Patient:</value>
+  </data>
+  <data name="AppointmentConfirmed_Message" xml:space="preserve">
+    <value>Your appointment is confirmed. We will be glad to see you soon!.</value>
+  </data>
+  <data name="AppointmentConfirmed_Subject" xml:space="preserve">
+    <value>Appointment Confirmed</value>
+  </data>
+  <data name="AppointmentCreated_Button_Confirm" xml:space="preserve">
+    <value>Confirm Appointment</value>
+  </data>
+  <data name="AppointmentCreated_Label_Date" xml:space="preserve">
+    <value>Date:</value>
+  </data>
+  <data name="AppointmentCreated_Label_Doctor" xml:space="preserve">
+    <value>Doctor:</value>
+  </data>
+  <data name="AppointmentCreated_Label_Owner" xml:space="preserve">
+    <value>Owner:</value>
+  </data>
+  <data name="AppointmentCreated_Label_Patient" xml:space="preserve">
+    <value>Patient:</value>
+  </data>
+  <data name="AppointmentCreated_Message" xml:space="preserve">
+    <value>Your appointment has been booked. Please check and confirm the following information.</value>
+  </data>
+  <data name="AppointmentCreated_Subject" xml:space="preserve">
+    <value>Appointment Booked</value>
+  </data>
+  <data name="AppointmentDeleted_Label_Date" xml:space="preserve">
+    <value>Date:</value>
+  </data>
+  <data name="AppointmentDeleted_Label_Doctor" xml:space="preserve">
+    <value>Doctor:</value>
+  </data>
+  <data name="AppointmentDeleted_Label_Owner" xml:space="preserve">
+    <value>Owner:</value>
+  </data>
+  <data name="AppointmentDeleted_Label_Patient" xml:space="preserve">
+    <value>Patient:</value>
+  </data>
+  <data name="AppointmentDeleted_Message" xml:space="preserve">
+    <value>Your appointment has been cancelled.</value>
+  </data>
+  <data name="AppointmentDeleted_Subject" xml:space="preserve">
+    <value>Appointment Cancelled</value>
+  </data>
+  <data name="AppointmentUpdated_Button_Confirm" xml:space="preserve">
+    <value>Confirm Appointment</value>
+  </data>
+  <data name="AppointmentUpdated_Label_Date" xml:space="preserve">
+    <value>Date:</value>
+  </data>
+  <data name="AppointmentUpdated_Label_Doctor" xml:space="preserve">
+    <value>Doctor:</value>
+  </data>
+  <data name="AppointmentUpdated_Label_Owner" xml:space="preserve">
+    <value>Owner:</value>
+  </data>
+  <data name="AppointmentUpdated_Label_Patient" xml:space="preserve">
+    <value>Patient:</value>
+  </data>
+  <data name="AppointmentUpdated_Message" xml:space="preserve">
+    <value>Your appointment has been updated. Please check and confirm the following information.</value>
+  </data>
+  <data name="AppointmentUpdated_Subject" xml:space="preserve">
+    <value>Appointment Updated</value>
+  </data>
 </root>
