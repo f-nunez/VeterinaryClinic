@@ -19,6 +19,8 @@ public class PayloadFactory : IPayloadFactory
     {
         switch (notificationEvent)
         {
+            case NotificationEvent.AppointmentConfirmed:
+                return _mapper.Map<AppointmentConfirmedPayload>(notificationRequest);
             case NotificationEvent.AppointmentCreated:
                 return _mapper.Map<AppointmentCreatedPayload>(notificationRequest);
             case NotificationEvent.AppointmentDeleted:
