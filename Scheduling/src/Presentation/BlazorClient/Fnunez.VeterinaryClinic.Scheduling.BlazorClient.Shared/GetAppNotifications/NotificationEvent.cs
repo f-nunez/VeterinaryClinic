@@ -2,6 +2,7 @@ namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Shared.GetAppNotificat
 
 public enum NotificationEvent
 {
+    AppointmentConfirmed,
     AppointmentCreated,
     AppointmentDeleted,
     AppointmentUpdated
