@@ -1,6 +1,7 @@
 using System.Reflection;
 using Fnunez.VeterinaryClinic.EmailService.Api.ServiceBus;
 using Fnunez.VeterinaryClinic.EmailService.Api.ServiceBus.Observers;
+using Fnunez.VeterinaryClinic.EmailService.Api.Services.Email;
 using Fnunez.VeterinaryClinic.EmailService.Api.Settings;
 using MassTransit;
 
@@ -47,6 +48,8 @@ public static class ConfigureServices
                 cfg.ConfigureEndpoints(context);
             });
         });
+
+        services.AddScoped<IEmailService, EmailService>();
 
         services.AddSingleton<IEmailSetting>(configuration
             .GetSection(typeof(EmailSetting).Name)
