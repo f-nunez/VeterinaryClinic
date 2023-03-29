@@ -44,13 +44,14 @@ public class AAppointmentConfirmedReceiveIntegrationEventHandler
 
         appointment.UpdateConfirmOn(DateTimeOffset.UtcNow);
 
+        await _unitOfwork
+            .Repository<Appointment>()
+            .UpdateAsync(appointment, cancellationToken);
+
         await _unitOfwork.CommitAsync(cancellationToken);
 
         await SendEmailRequestAsync(
-            appointment,
-            contract.CorrelationId,
-            cancellationToken
-        );
+            appointment, contract.CorrelationId, cancellationToken);
     }
 
     private async Task SendEmailRequestAsync(
