@@ -129,6 +129,12 @@
   <data name="AppNotification_List_Loading" xml:space="preserve">
     <value>Loading...</value>
   </data>
+  <data name="Event_AppointmentConfirmed_Message" xml:space="preserve">
+    <value>The appointment ({0}) has been confirmed</value>
+  </data>
+  <data name="Event_AppointmentConfirmed_Title" xml:space="preserve">
+    <value>Confirmed Appointment</value>
+  </data>
   <data name="Event_AppointmentCreated_Message" xml:space="preserve">
     <value>The appointment ({0}) has been created by {1}</value>
   </data>

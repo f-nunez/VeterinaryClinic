@@ -30,6 +30,9 @@ public class AppNotificationBuilder : IAppNotificationBuilder
 
         switch (GetNotificationEvent(appNotification.Event))
         {
+            case NotificationEvent.AppointmentConfirmed:
+                factory = new AppointmentConfirmedAppNotificationListItemFactory(appNotification, _stringLocalizer);
+                break;
             case NotificationEvent.AppointmentCreated:
                 factory = new AppointmentCreatedAppNotificationListItemFactory(appNotification, _stringLocalizer);
                 break;
