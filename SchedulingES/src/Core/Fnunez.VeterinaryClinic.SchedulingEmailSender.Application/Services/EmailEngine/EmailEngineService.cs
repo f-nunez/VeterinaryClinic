@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.EmailEngine.EmailCompositions;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.EmailEngine.Payloads;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.EmailEngine.Requests;
@@ -6,6 +7,7 @@ using Fnunez.VeterinaryClinic.SchedulingEmailSender.Domain.EmailAggregate;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Domain.EmailAggregate.Enums;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using Microsoft.Extensions.Logging;
+using SchedulingEmailSenderContracts;
 
 namespace Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.EmailEngine;
 
@@ -15,6 +17,7 @@ public class EmailEngineService : IEmailEngineService
     private readonly IEmailRequestFactory _emailRequestFactory;
     private readonly ILogger<EmailEngineService> _logger;
     private readonly IPayloadFactory _payloadFactory;
+    private readonly IServiceBus _serviceBus;
     private readonly IUnitOfWork _unitOfWork;
 
     public EmailEngineService(
@@ -22,12 +25,14 @@ public class EmailEngineService : IEmailEngineService
         IEmailRequestFactory emailRequestFactory,
         ILogger<EmailEngineService> logger,
         IPayloadFactory payloadFactory,
+        IServiceBus serviceBus,
         IUnitOfWork unitOfWork)
     {
         _emailCompositionFactory = emailCompositionFactory;
         _emailRequestFactory = emailRequestFactory;
         _logger = logger;
         _payloadFactory = payloadFactory;
+        _serviceBus = serviceBus;
         _unitOfWork = unitOfWork;
     }
 
@@ -59,7 +64,18 @@ public class EmailEngineService : IEmailEngineService
 
         try
         {
-            //TODO: send email composition to EmailService queue
+            var correlationId = Guid.NewGuid();
+
+            var emailContract = new EmailCompositionContract
+            {
+                CausationId = correlationId,
+                CorrelationId = correlationId,
+                Id = correlationId,
+                OccurredOn = DateTimeOffset.UtcNow,
+                SerializedEmailComposition = JsonSerializer.Serialize(emailComposition)
+            };
+
+            await _serviceBus.PublishAsync(emailContract, cancellationToken);
         }
         catch (Exception ex)
         {
