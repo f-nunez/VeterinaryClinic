@@ -1,3 +1,5 @@
+using Fnunez.VeterinaryClinic.EmailService.Api.Settings;
+
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ConfigureServices
@@ -12,6 +14,10 @@ public static class ConfigureServices
         services.AddEndpointsApiExplorer();
 
         services.AddSwaggerGen();
+
+        services.AddSingleton<IEmailSetting>(configuration
+            .GetSection(typeof(EmailSetting).Name)
+            .Get<EmailSetting>()!);
 
         return services;
     }
