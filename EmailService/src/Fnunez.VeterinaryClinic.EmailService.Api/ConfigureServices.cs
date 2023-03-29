@@ -15,6 +15,10 @@ public static class ConfigureServices
 
         services.AddSwaggerGen();
 
+        services.AddSingleton<IRabbitMqSetting>(configuration
+            .GetSection(typeof(RabbitMqSetting).Name)
+            .Get<RabbitMqSetting>()!);
+
         services.AddSingleton<IEmailSetting>(configuration
             .GetSection(typeof(EmailSetting).Name)
             .Get<EmailSetting>()!);
