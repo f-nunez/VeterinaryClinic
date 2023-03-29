@@ -95,7 +95,7 @@ public partial class ClientsComponent : ComponentBase
         if (response is null)
             return;
 
-        var savedClient = response as ClientVm;
+        var savedClient = response as AddEditClientVm;
 
         await ShowAlertAsync(
             string.Format(StringLocalizer["Clients_AddedClient_Alert_Message"], savedClient.FullName),
@@ -172,7 +172,7 @@ public partial class ClientsComponent : ComponentBase
             .GetClientEditAsync(request);
 
         var clientToEdit = ClientHelper
-            .MapClientViewModel(currentClientData.Client);
+            .MapAddEditClientViewModel(currentClientData.Client);
 
         var response = await _dialogService.OpenAsync<AddEditClient>(
             _stringLocalizerForAdd["AddEditClient_Label_Edit"],
@@ -190,7 +190,7 @@ public partial class ClientsComponent : ComponentBase
         if (response is null)
             return;
 
-        var savedClient = response as ClientVm;
+        var savedClient = response as AddEditClientVm;
 
         await ShowAlertAsync(
             string.Format(StringLocalizer["Clients_EditedClient_Alert_Message"], savedClient.FullName),

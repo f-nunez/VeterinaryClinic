@@ -1,5 +1,6 @@
 using AutoMapper;
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.SendIntegrationEvents.PatientUpdated;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services;
@@ -61,11 +62,28 @@ public class UpdatePatientCommandHandler
         if (client is null)
             return response;
 
+        var patientToUpdate = await UpdatePatientAsync(request, client, cancellationToken);
+
+        await SendContractsToServiceBusAsync(
+            patientToUpdate,
+            request.CorrelationId,
+            cancellationToken
+        );
+
+        return response;
+    }
+
+    private async Task<Patient> UpdatePatientAsync(
+        UpdatePatientRequest request,
+        Client client,
+        CancellationToken cancellationToken)
+    {
         var patientToUpdate = client.Patients
             .FirstOrDefault(p => p.Id == request.PatientId);
 
         if (patientToUpdate is null)
-            return response;
+            throw new NotFoundException(
+                nameof(request.PatientId), request.PatientId);
 
         patientToUpdate.UpdateAnimalSex(
             (AnimalSex)Enum.ToObject(typeof(AnimalSex), request.Sex));
@@ -87,19 +105,7 @@ public class UpdatePatientCommandHandler
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        await SendIntegrationEventAsync(
-            patientToUpdate,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        await SendNotificationRequestAsync(
-            patientToUpdate,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        return response;
+        return patientToUpdate;
     }
 
     private async Task UpdateNewPhotoAsync(
@@ -143,6 +149,24 @@ public class UpdatePatientCommandHandler
         await _fileSystemWriterService.WriteAsync(request.PhotoData, photoPath);
 
         return photoNameToSave;
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        Patient patient,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        await SendIntegrationEventAsync(
+            patient,
+            correlationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
+            patient,
+            correlationId,
+            cancellationToken
+        );
     }
 
     private async Task SendIntegrationEventAsync(

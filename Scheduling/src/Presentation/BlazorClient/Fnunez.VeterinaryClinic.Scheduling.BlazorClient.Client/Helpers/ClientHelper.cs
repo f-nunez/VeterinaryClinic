@@ -15,6 +15,7 @@ public static class ClientHelper
             EmailAddress = clientDetailDto.EmailAddress,
             FullName = clientDetailDto.FullName,
             PreferredDoctorFullName = clientDetailDto.PreferredDoctorFullName,
+            PreferredLanguage = clientDetailDto.PreferredLanguage,
             PreferredName = clientDetailDto.PreferredName,
             Salutation = clientDetailDto.Salutation
         };
@@ -28,6 +29,7 @@ public static class ClientHelper
             EmailAddress = clientDto.EmailAddress,
             FullName = clientDto.FullName,
             PreferredDoctorId = clientDto.PreferredDoctorId,
+            PreferredLanguage = clientDto.PreferredLanguage,
             PreferredName = clientDto.PreferredName,
             Salutation = clientDto.Salutation
         };

@@ -50,31 +50,50 @@ public class UpdateDoctorCommandHandler
         if (doctorToUpdate is null)
             throw new NotFoundException(nameof(doctorToUpdate), request.Id);
 
-        doctorToUpdate.UpdateFullName(request.FullName);
-        doctorToUpdate.SetUpdatedBy(_currentUserService.UserId);
+        await UpdateDoctorAsync(request, doctorToUpdate, cancellationToken);
 
-        await _unitOfWork
-            .Repository<Doctor>()
-            .UpdateAsync(doctorToUpdate, cancellationToken);
+        response.Doctor = _mapper.Map<DoctorDto>(doctorToUpdate);
 
-        await _unitOfWork.CommitAsync(cancellationToken);
-
-        var doctorDto = _mapper.Map<DoctorDto>(doctorToUpdate);
-        response.Doctor = doctorDto;
-
-        await SendIntegrationEventAsync(
-            doctorToUpdate,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        await SendNotificationRequestAsync(
+        await SendContractsToServiceBusAsync(
             doctorToUpdate,
             request.CorrelationId,
             cancellationToken
         );
 
         return response;
+    }
+
+    private async Task UpdateDoctorAsync(
+        UpdateDoctorRequest request,
+        Doctor doctor,
+        CancellationToken cancellationToken)
+    {
+        doctor.UpdateFullName(request.FullName);
+        doctor.SetUpdatedBy(_currentUserService.UserId);
+
+        await _unitOfWork
+            .Repository<Doctor>()
+            .UpdateAsync(doctor, cancellationToken);
+
+        await _unitOfWork.CommitAsync(cancellationToken);
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        Doctor doctor,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        await SendIntegrationEventAsync(
+            doctor,
+            correlationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
+            doctor,
+            correlationId,
+            cancellationToken
+        );
     }
 
     private async Task SendIntegrationEventAsync(

@@ -2,6 +2,7 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Application.Services.NotificationRe
 
 public enum NotificationEvent
 {
+    AppointmentConfirmed,
     AppointmentCreated,
     AppointmentDeleted,
     AppointmentUpdated

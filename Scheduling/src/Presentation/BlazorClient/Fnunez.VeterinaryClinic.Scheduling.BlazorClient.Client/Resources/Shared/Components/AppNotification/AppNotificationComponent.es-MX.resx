@@ -129,6 +129,12 @@
   <data name="AppNotification_List_Loading" xml:space="preserve">
     <value>Cargando...</value>
   </data>
+  <data name="Event_AppointmentConfirmed_Message" xml:space="preserve">
+    <value>La consulta ({0}) ha sido confirmada</value>
+  </data>
+  <data name="Event_AppointmentConfirmed_Title" xml:space="preserve">
+    <value>Consulta Confirmada</value>
+  </data>
   <data name="Event_AppointmentCreated_Message" xml:space="preserve">
     <value>La consulta ({0}) ha sido creada por {1}</value>
   </data>

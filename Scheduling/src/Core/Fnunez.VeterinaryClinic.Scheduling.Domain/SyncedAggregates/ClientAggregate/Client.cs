@@ -1,4 +1,5 @@
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClientAggregate.Entities;
+using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClientAggregate.Enums;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.DoctorAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Domain.Common;
 
@@ -11,6 +12,7 @@ public class Client : BaseEntity<int>, IAggregateRoot
     public string PreferredName { get; private set; }
     public string Salutation { get; private set; }
     public string EmailAddress { get; private set; }
+    public PreferredLanguage PreferredLanguage { get; private set; }
     public int? PreferredDoctorId { get; private set; }
     public IReadOnlyList<Patient> Patients => _patients.AsReadOnly();
 
@@ -31,6 +33,7 @@ public class Client : BaseEntity<int>, IAggregateRoot
         string preferredName,
         string salutation,
         string emailAddress,
+        PreferredLanguage preferredLanguage,
         int? preferredDoctorId)
     {
         FullName = fullName;
@@ -38,6 +41,7 @@ public class Client : BaseEntity<int>, IAggregateRoot
         Salutation = salutation;
         EmailAddress = emailAddress;
         PreferredDoctorId = preferredDoctorId;
+        PreferredLanguage = preferredLanguage;
     }
 
     public override string ToString()

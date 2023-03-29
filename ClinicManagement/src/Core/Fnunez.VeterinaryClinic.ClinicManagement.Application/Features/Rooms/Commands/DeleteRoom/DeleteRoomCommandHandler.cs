@@ -57,19 +57,31 @@ public class DeleteRoomCommandHandler
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        await SendIntegrationEventAsync(
-            roomToDelete,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        await SendNotificationRequestAsync(
+        await SendContractsToServiceBusAsync(
             roomToDelete,
             request.CorrelationId,
             cancellationToken
         );
 
         return response;
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        Room room,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        await SendIntegrationEventAsync(
+            room,
+            correlationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
+            room,
+            correlationId,
+            cancellationToken
+        );
     }
 
     private async Task SendIntegrationEventAsync(

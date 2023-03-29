@@ -1,6 +1,8 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Interfaces;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Services.EmailRequest;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Services.EmailRequest.Factories;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Services.NotificationRequest;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment.DeleteAppointment;
@@ -14,17 +16,20 @@ public class DeleteAppointmentCommandHandler
     : IRequestHandler<DeleteAppointmentCommand, DeleteAppointmentResponse>
 {
     private readonly ICurrentUserService _currentUserService;
+    private readonly IEmailRequestService _emailRequestService;
     private readonly IMapper _mapper;
     private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
 
     public DeleteAppointmentCommandHandler(
         ICurrentUserService currentUserService,
+        IEmailRequestService emailRequestService,
         IMapper mapper,
         INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
         _currentUserService = currentUserService;
+        _emailRequestService = emailRequestService;
         _mapper = mapper;
         _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
@@ -37,9 +42,12 @@ public class DeleteAppointmentCommandHandler
         DeleteAppointmentRequest request = command.DeleteAppointmentRequest;
         var response = new DeleteAppointmentResponse(request.CorrelationId);
 
+        var specification = new AppointmentSpecification(
+            request.AppointmentId);
+
         var appointmentToDelete = await _unitOfWork
             .Repository<Appointment>()
-            .GetByIdAsync(request.AppointmentId, cancellationToken);
+            .FirstOrDefaultAsync(specification, cancellationToken);
 
         if (appointmentToDelete is null)
             throw new NotFoundException(
@@ -53,13 +61,43 @@ public class DeleteAppointmentCommandHandler
 
         await _unitOfWork.CommitAsync();
 
+        await SendContractsToServiceBusAsync(
+            appointmentToDelete, request.CorrelationId, cancellationToken);
+
+        return response;
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        Appointment appointment,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
         await SendNotificationRequestAsync(
-            appointmentToDelete,
-            request.CorrelationId,
+            appointment,
+            correlationId,
             cancellationToken
         );
 
-        return response;
+        await SendEmailRequestAsync(
+            appointment,
+            correlationId,
+            cancellationToken
+        );
+    }
+
+    private async Task SendEmailRequestAsync(
+        Appointment appointment,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var factory = new AppointmentDeletedEmailRequestFactory(
+            appointment,
+            correlationId,
+            _currentUserService.UserId
+        );
+
+        await _emailRequestService.CreateAndSendAsync(
+            factory, cancellationToken);
     }
 
     private async Task SendNotificationRequestAsync(

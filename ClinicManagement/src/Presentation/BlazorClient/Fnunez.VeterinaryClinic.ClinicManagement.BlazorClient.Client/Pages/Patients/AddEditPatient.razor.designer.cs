@@ -3,6 +3,7 @@ using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Helpers;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Models.Patients;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Services;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Settings;
+using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.ViewModels;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.ViewModels.Patients;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -23,7 +24,7 @@ public partial class AddEditPatientComponent : ComponentBase
     [Inject]
     private ISpinnerService _spinnerService { get; set; }
 
-    protected List<AnimalSexDropDownValue> AnimalSexDropDownValues { get; set; }
+    protected List<DropDownValue> AnimalSexDropDownValues { get; set; }
 
     protected bool IsSaving { get; set; }
 
@@ -62,14 +63,14 @@ public partial class AddEditPatientComponent : ComponentBase
             ? PatientHelper.GetPatientThumbnail()
             : Convert.ToBase64String(Model.PhotoData);
 
-        AnimalSexDropDownValues = new List<AnimalSexDropDownValue>
+        AnimalSexDropDownValues = new List<DropDownValue>
         {
-            new AnimalSexDropDownValue
+            new DropDownValue
             {
                 Text = StringLocalizer["AddEditPatient_AnimalSex_Female"],
                 Value = (int)AnimalSex.Female
             },
-            new AnimalSexDropDownValue
+            new DropDownValue
             {
                 Text = StringLocalizer["AddEditPatient_AnimalSex_Male"],
                 Value = (int)AnimalSex.Male

@@ -132,11 +132,20 @@
   <data name="ClientDetailNotification_Label_PreferredDoctor" xml:space="preserve">
     <value>Doctor Preferido</value>
   </data>
+  <data name="ClientDetailNotification_Label_PreferredLanguage" xml:space="preserve">
+    <value>Lenguaje Preferido</value>
+  </data>
   <data name="ClientDetailNotification_Label_PreferredName" xml:space="preserve">
     <value>Nombre Preferido</value>
   </data>
   <data name="ClientDetailNotification_Label_Salutation" xml:space="preserve">
     <value>Saludo</value>
+  </data>
+  <data name="ClientDetailNotification_PreferredLanguage_English" xml:space="preserve">
+    <value>Inglés</value>
+  </data>
+  <data name="ClientDetailNotification_PreferredLanguage_Spanish" xml:space="preserve">
+    <value>Español</value>
   </data>
   <data name="ClientDetailNotification_RecordNotActive" xml:space="preserve">
     <value>El registro está actualmente eliminado</value>

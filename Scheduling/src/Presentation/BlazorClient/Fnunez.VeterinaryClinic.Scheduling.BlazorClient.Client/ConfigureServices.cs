@@ -72,6 +72,7 @@ public static class ConfigureServices
 
         // register AppNotification component
         services.AddScoped<IAppNotificationBuilder, AppNotificationBuilder>();
+
         services.AddScoped<IAppNotificationComponentService, AppNotificationComponentService>();
 
         // register Language component

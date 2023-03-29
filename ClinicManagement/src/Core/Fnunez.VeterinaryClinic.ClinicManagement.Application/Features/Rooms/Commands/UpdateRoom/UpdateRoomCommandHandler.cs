@@ -50,31 +50,51 @@ public class UpdateRoomCommandHandler
         if (roomToUpdate is null)
             throw new NotFoundException(nameof(roomToUpdate), request.Id);
 
-        roomToUpdate.UpdateName(request.Name);
-        roomToUpdate.SetUpdatedBy(_currentUserService.UserId);
-
-        await _unitOfWork
-            .Repository<Room>()
-            .UpdateAsync(roomToUpdate, cancellationToken);
-
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await UpdateRoomAsync(request, roomToUpdate, cancellationToken);
 
         var roomDto = _mapper.Map<RoomDto>(roomToUpdate);
         response.Room = roomDto;
 
-        await SendIntegrationEventAsync(
-            roomToUpdate,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        await SendNotificationRequestAsync(
+        await SendContractsToServiceBusAsync(
             roomToUpdate,
             request.CorrelationId,
             cancellationToken
         );
 
         return response;
+    }
+
+    private async Task UpdateRoomAsync(
+        UpdateRoomRequest request,
+        Room room,
+        CancellationToken cancellationToken)
+    {
+        room.UpdateName(request.Name);
+        room.SetUpdatedBy(_currentUserService.UserId);
+
+        await _unitOfWork
+            .Repository<Room>()
+            .UpdateAsync(room, cancellationToken);
+
+        await _unitOfWork.CommitAsync(cancellationToken);
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        Room room,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        await SendIntegrationEventAsync(
+            room,
+            correlationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
+            room,
+            correlationId,
+            cancellationToken
+        );
     }
 
     private async Task SendIntegrationEventAsync(

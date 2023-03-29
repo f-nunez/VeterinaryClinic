@@ -1,4 +1,5 @@
 using Contracts;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.SendIntegrationEvents.PatientCreated;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services;
@@ -54,8 +55,23 @@ public class CreatePatientCommandHandler
             .FirstOrDefaultAsync(specification, cancellationToken);
 
         if (client is null)
-            return response;
+            throw new NotFoundException(
+                nameof(request.ClientId), request.ClientId);
 
+        var newPatient = await CreatePatientAsync(
+            request, client, cancellationToken);
+
+        await SendContractsToServiceBusAsync(
+            newPatient, request.CorrelationId, cancellationToken);
+
+        return response;
+    }
+
+    private async Task<Patient> CreatePatientAsync(
+        CreatePatientRequest request,
+        Client client,
+        CancellationToken cancellationToken)
+    {
         string savedPhotoName = await SavePhotoAsync(request);
 
         var newPatient = new Patient(
@@ -71,25 +87,20 @@ public class CreatePatientCommandHandler
 
         client.AddPatient(newPatient);
 
+        await SaveClientAsync(client, cancellationToken);
+
+        return newPatient;
+    }
+
+    private async Task SaveClientAsync(
+        Client client,
+        CancellationToken cancellationToken)
+    {
         await _unitOfWork
             .Repository<Client>()
             .UpdateAsync(client, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
-
-        await SendIntegrationEventAsync(
-            newPatient,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        await SendNotificationRequestAsync(
-            newPatient,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        return response;
     }
 
     private async Task<string> SavePhotoAsync(CreatePatientRequest request)
@@ -107,6 +118,24 @@ public class CreatePatientCommandHandler
         await _fileSystemWriterService.WriteAsync(request.PhotoData, photoPath);
 
         return photoNameToSave;
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        Patient patient,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        await SendIntegrationEventAsync(
+            patient,
+            correlationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
+            patient,
+            correlationId,
+            cancellationToken
+        );
     }
 
     private async Task SendIntegrationEventAsync(

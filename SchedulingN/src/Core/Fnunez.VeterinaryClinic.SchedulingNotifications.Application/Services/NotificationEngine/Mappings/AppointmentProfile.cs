@@ -8,6 +8,7 @@ public class AppointmentProfile : Profile
 {
     public AppointmentProfile()
     {
+        CreateMap<AppointmentConfirmedNotificationRequest, AppointmentConfirmedPayload>();
         CreateMap<AppointmentCreatedNotificationRequest, AppointmentCreatedPayload>();
         CreateMap<AppointmentDeletedNotificationRequest, AppointmentDeletedPayload>();
         CreateMap<AppointmentUpdatedNotificationRequest, AppointmentUpdatedPayload>();

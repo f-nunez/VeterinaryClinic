@@ -6,10 +6,15 @@ namespace Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Services.N
 public class UsersExceptWhoTriggerTheEventSpecification
     : BaseSpecification<ApplicationUser>
 {
+    private const string SchedulingAppId = "00000001-0000-0000-0000-000000000000";
+
     public UsersExceptWhoTriggerTheEventSpecification(string? triggeredByUserId)
     {
         Query
             .AsNoTracking()
-            .Where(au => au.IsActive && au.Id != triggeredByUserId);
+            .Where(au =>
+                au.IsActive &&
+                au.Id != triggeredByUserId &&
+                au.Id != SchedulingAppId);
     }
 }

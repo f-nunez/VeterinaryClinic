@@ -55,25 +55,45 @@ public class DeleteAppointmentTypeCommandHandler
 
         appointmentTypeToDelete.SetCreatedBy(_currentUserService.UserId);
 
-        await _unitOfWork
-            .Repository<AppointmentType>()
-            .DeleteAsync(appointmentTypeToDelete, cancellationToken);
+        await DeleteAppointmentTypeAsync(
+            appointmentTypeToDelete, cancellationToken);
 
-        await _unitOfWork.CommitAsync(cancellationToken);
-
-        await SendIntegrationEventAsync(
-            appointmentTypeToDelete,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        await SendNotificationRequestAsync(
+        await SendContractsToServiceBusAsync(
             appointmentTypeToDelete,
             request.CorrelationId,
             cancellationToken
         );
 
         return response;
+    }
+
+    private async Task DeleteAppointmentTypeAsync(
+        AppointmentType appointmentType,
+        CancellationToken cancellationToken)
+    {
+        await _unitOfWork
+            .Repository<AppointmentType>()
+            .DeleteAsync(appointmentType, cancellationToken);
+
+        await _unitOfWork.CommitAsync(cancellationToken);
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        AppointmentType appointmentType,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        await SendIntegrationEventAsync(
+            appointmentType,
+            correlationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
+            appointmentType,
+            correlationId,
+            cancellationToken
+        );
     }
 
     private async Task SendIntegrationEventAsync(

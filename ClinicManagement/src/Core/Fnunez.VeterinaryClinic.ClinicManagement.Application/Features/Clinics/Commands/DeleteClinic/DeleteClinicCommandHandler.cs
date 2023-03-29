@@ -57,19 +57,31 @@ public class DeleteClinicCommandHandler
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        await SendIntegrationEventAsync(
-            clinicToDelete,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        await SendNotificationRequestAsync(
+        await SendContractsToServiceBusAsync(
             clinicToDelete,
             request.CorrelationId,
             cancellationToken
         );
 
         return response;
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        Clinic clinic,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        await SendIntegrationEventAsync(
+            clinic,
+            correlationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
+            clinic,
+            correlationId,
+            cancellationToken
+        );
     }
 
     private async Task SendIntegrationEventAsync(

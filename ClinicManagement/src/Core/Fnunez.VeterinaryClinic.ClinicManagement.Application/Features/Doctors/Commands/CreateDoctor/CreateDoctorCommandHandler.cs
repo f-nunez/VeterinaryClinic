@@ -53,19 +53,31 @@ public class CreateDoctorCommandHandler
         var doctorDto = _mapper.Map<DoctorDto>(newDoctor);
         response.Doctor = doctorDto;
 
-        await SendIntegrationEventAsync(
-            newDoctor,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        await SendNotificationRequestAsync(
+        await SendContractsToServiceBusAsync(
             newDoctor,
             request.CorrelationId,
             cancellationToken
         );
 
         return response;
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        Doctor doctor,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        await SendIntegrationEventAsync(
+            doctor,
+            correlationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
+            doctor,
+            correlationId,
+            cancellationToken
+        );
     }
 
     private async Task SendIntegrationEventAsync(

@@ -53,19 +53,31 @@ public class CreateRoomCommandHandler
         var roomDto = _mapper.Map<RoomDto>(newRoom);
         response.Room = roomDto;
 
-        await SendIntegrationEventAsync(
-            newRoom,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        await SendNotificationRequestAsync(
+        await SendContractsToServiceBusAsync(
             newRoom,
             request.CorrelationId,
             cancellationToken
         );
 
         return response;
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        Room room,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        await SendIntegrationEventAsync(
+            room,
+            correlationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
+            room,
+            correlationId,
+            cancellationToken
+        );
     }
 
     private async Task SendIntegrationEventAsync(

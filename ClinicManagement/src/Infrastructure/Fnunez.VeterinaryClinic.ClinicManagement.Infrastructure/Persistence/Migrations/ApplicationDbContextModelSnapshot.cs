@@ -96,6 +96,9 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Mi
                     b.Property<int?>("PreferredDoctorId")
                         .HasColumnType("int");
 
+                    b.Property<int>("PreferredLanguage")
+                        .HasColumnType("int");
+
                     b.Property<string>("PreferredName")
                         .IsRequired()
                         .HasMaxLength(200)

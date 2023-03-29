@@ -1,6 +1,8 @@
 using AutoMapper;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Interfaces;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Services.EmailRequest;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Services.EmailRequest.Factories;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Services.NotificationRequest;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment;
@@ -19,6 +21,7 @@ public class UpdateAppointmentCommandHandler
     : IRequestHandler<UpdateAppointmentCommand, UpdateAppointmentResponse>
 {
     private readonly ICurrentUserService _currentUserService;
+    private readonly IEmailRequestService _emailRequestService;
     private readonly ILogger<UpdateAppointmentCommandHandler> _logger;
     private readonly IMapper _mapper;
     private readonly INotificationRequestService _notificationRequestService;
@@ -26,12 +29,14 @@ public class UpdateAppointmentCommandHandler
 
     public UpdateAppointmentCommandHandler(
         ICurrentUserService currentUserService,
+        IEmailRequestService emailRequestService,
         ILogger<UpdateAppointmentCommandHandler> logger,
         IMapper mapper,
         INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
         _currentUserService = currentUserService;
+        _emailRequestService = emailRequestService;
         _logger = logger;
         _mapper = mapper;
         _notificationRequestService = notificationRequestService;
@@ -45,44 +50,15 @@ public class UpdateAppointmentCommandHandler
         UpdateAppointmentRequest request = command.UpdateAppointmentRequest;
         var response = new UpdateAppointmentResponse(request.CorrelationId);
 
-        var appointmentType = await GetAppointmentTypeAsync(
+        var updateResult = await UpdateAppointmentAsync(
             request, cancellationToken);
 
-        var appointmentToUpdate = await GetAppointmentAsync(
-            request, cancellationToken);
+        response.Appointment = _mapper
+            .Map<AppointmentDto>(updateResult.Appointment);
 
-        var specification = new ScheduledAppointmentSpecification(
-            request,
-            appointmentToUpdate.ClientId,
-            appointmentToUpdate.PatientId
-        );
-
-        var scheduledAppointment = await _unitOfWork
-            .Repository<Appointment>()
-            .FirstOrDefaultAsync(specification, cancellationToken);
-
-        if (scheduledAppointment != null)
-            throw new ArgumentException($"An appointment with id: {scheduledAppointment.Id} is already scheduled for patient: {scheduledAppointment.PatientId}");
-
-        MapAppointmentToUpdate(appointmentToUpdate, request);
-
-        AppointmentValidatorService.ValidateDuration(
-            appointmentToUpdate, appointmentType);
-
-        appointmentToUpdate.SetUpdatedBy(_currentUserService.UserId);
-
-        await _unitOfWork
-            .Repository<Appointment>()
-            .UpdateAsync(appointmentToUpdate, cancellationToken);
-
-        await _unitOfWork.CommitAsync(cancellationToken);
-
-        response.Appointment = _mapper.Map<AppointmentDto>(appointmentToUpdate);
-
-        _logger.LogInformation(response.Appointment.ToString());
-
-        await SendNotificationRequestAsync(
-            appointmentToUpdate,
+        await SendContractsToServiceBusAsync(
+            updateResult.Appointment,
+            updateResult.IsChangedStartOn,
             request.CorrelationId,
             cancellationToken
         );
@@ -90,13 +66,46 @@ public class UpdateAppointmentCommandHandler
         return response;
     }
 
+    private async Task<(Appointment Appointment, bool IsChangedStartOn)> UpdateAppointmentAsync(
+        UpdateAppointmentRequest request,
+        CancellationToken cancellationToken)
+    {
+        var appointmentType = await GetAppointmentTypeAsync(
+            request, cancellationToken);
+
+        var appointmentToUpdate = await GetAppointmentAsync(
+            request, cancellationToken);
+
+        await ValidateScheduledAppointmentAsync(
+            appointmentToUpdate, request, cancellationToken);
+
+        bool isChangedStartOn = appointmentToUpdate
+            .DateRange.StartOn != request.StartOn;
+
+        MapAppointmentToUpdate(appointmentToUpdate, request, isChangedStartOn);
+
+        AppointmentValidatorService.ValidateDuration(
+            appointmentToUpdate, appointmentType);
+
+        await _unitOfWork
+            .Repository<Appointment>()
+            .UpdateAsync(appointmentToUpdate, cancellationToken);
+
+        await _unitOfWork.CommitAsync(cancellationToken);
+
+        return (appointmentToUpdate, isChangedStartOn);
+    }
+
     private async Task<Appointment> GetAppointmentAsync(
         UpdateAppointmentRequest request,
         CancellationToken cancellationToken)
     {
+        var specification = new AppointmentSpecification(
+            request.AppointmentId);
+
         var appointment = await _unitOfWork
             .Repository<Appointment>()
-            .GetByIdAsync(request.AppointmentId, cancellationToken);
+            .FirstOrDefaultAsync(specification, cancellationToken);
 
         if (appointment is null)
             throw new NotFoundException(
@@ -126,16 +135,57 @@ public class UpdateAppointmentCommandHandler
 
     private void MapAppointmentToUpdate(
         Appointment appointment,
-        UpdateAppointmentRequest request)
+        UpdateAppointmentRequest request,
+        bool isChangedStartOn)
     {
-        var dateRange = new DateTimeOffsetRange(request.StartOn, request.EndOn);
+        var dateRange = new DateTimeOffsetRange(
+            request.StartOn, request.EndOn);
 
+        appointment.SetUpdatedBy(_currentUserService.UserId);
         appointment.UpdateAppointmentType(request.AppointmentTypeId);
         appointment.UpdateDateRange(dateRange);
         appointment.UpdateDescription(request.Description);
         appointment.UpdateDoctor(request.DoctorId);
         appointment.UpdateRoom(request.RoomId);
         appointment.UpdateTitle(request.Title);
+
+        if (isChangedStartOn)
+            appointment.ResetConfirmOn();
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        Appointment appointment,
+        bool isChangedStartOn,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        await SendNotificationRequestAsync(
+            appointment,
+            correlationId,
+            cancellationToken
+        );
+
+        if (isChangedStartOn)
+            await SendEmailRequestAsync(
+                appointment,
+                correlationId,
+                cancellationToken
+            );
+    }
+
+    private async Task SendEmailRequestAsync(
+        Appointment appointment,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        var factory = new AppointmentUpdatedEmailRequestFactory(
+            appointment,
+            correlationId,
+            _currentUserService.UserId
+        );
+
+        await _emailRequestService.CreateAndSendAsync(
+            factory, cancellationToken);
     }
 
     private async Task SendNotificationRequestAsync(
@@ -151,5 +201,24 @@ public class UpdateAppointmentCommandHandler
 
         await _notificationRequestService.CreateAndSendAsync(
             factory, cancellationToken);
+    }
+
+    private async Task ValidateScheduledAppointmentAsync(
+        Appointment appointmentToUpdate,
+        UpdateAppointmentRequest request,
+        CancellationToken cancellationToken)
+    {
+        var specification = new ScheduledAppointmentSpecification(
+            request,
+            appointmentToUpdate.ClientId,
+            appointmentToUpdate.PatientId
+        );
+
+        var scheduledAppointment = await _unitOfWork
+            .Repository<Appointment>()
+            .FirstOrDefaultAsync(specification, cancellationToken);
+
+        if (scheduledAppointment != null)
+            throw new ArgumentException($"An appointment with id: {scheduledAppointment.Id} is already scheduled for patient: {scheduledAppointment.PatientId}");
     }
 }

@@ -53,19 +53,31 @@ public class CreateClinicCommandHandler
 
         response.Clinic = _mapper.Map<ClinicDto>(newClinic);
 
-        await SendIntegrationEventAsync(
-            newClinic,
-            request.CorrelationId,
-            cancellationToken
-        );
-
-        await SendNotificationRequestAsync(
+        await SendContractsToServiceBusAsync(
             newClinic,
             request.CorrelationId,
             cancellationToken
         );
 
         return response;
+    }
+
+    private async Task SendContractsToServiceBusAsync(
+        Clinic clinic,
+        Guid correlationId,
+        CancellationToken cancellationToken)
+    {
+        await SendIntegrationEventAsync(
+            clinic,
+            correlationId,
+            cancellationToken
+        );
+
+        await SendNotificationRequestAsync(
+            clinic,
+            correlationId,
+            cancellationToken
+        );
     }
 
     private async Task SendIntegrationEventAsync(

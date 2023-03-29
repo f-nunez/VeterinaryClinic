@@ -153,6 +153,21 @@
   <data name="AddEditClient_PreferredDoctor_DropDown_PlaceHolder" xml:space="preserve">
     <value>Buscar doctor preferido...</value>
   </data>
+  <data name="AddEditClient_PreferredLanguage_DropDown_Label" xml:space="preserve">
+    <value>Lenguaje Preferido</value>
+  </data>
+  <data name="AddEditClient_PreferredLanguage_DropDown_PlaceHolder" xml:space="preserve">
+    <value>Buscar lenguaje preferido...</value>
+  </data>
+  <data name="AddEditClient_PreferredLanguage_DropDown_RequiredMessage" xml:space="preserve">
+    <value>Lenguaje preferido es requerido</value>
+  </data>
+  <data name="AddEditClient_PreferredLanguage_English" xml:space="preserve">
+    <value>Inglés</value>
+  </data>
+  <data name="AddEditClient_PreferredLanguage_Spanish" xml:space="preserve">
+    <value>Español</value>
+  </data>
   <data name="AddEditClient_PreferredName_TextBox_Label" xml:space="preserve">
     <value>Nombre Preferido</value>
   </data>
@@ -160,7 +175,7 @@
     <value>Introduzca nombre preferido aquí...</value>
   </data>
   <data name="AddEditClient_PreferredName_TextBox_RequiredMessage" xml:space="preserve">
-    <value>Nombre Preferido es requerido</value>
+    <value>Nombre preferido es requerido</value>
   </data>
   <data name="AddEditClient_Salutation_TextBox_Label" xml:space="preserve">
     <value>Saludo</value>

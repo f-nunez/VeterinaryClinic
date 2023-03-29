@@ -53,6 +53,29 @@
         </RadzenText>
     </div>
 
+    <div class="col-12">
+        <RadzenText
+            Class="rz-color-primary-light"
+            Text=@StringLocalizer["ClientDetail_Label_PreferredLanguage"]
+            TextStyle="TextStyle.Overline">
+        </RadzenText>
+
+        <RadzenText
+            TextStyle="TextStyle.Body1">
+            @switch (Model.PreferredLanguage)
+            {
+                case (int)Models.Clients.PreferredLanguage.English:
+                    <b>@StringLocalizer["ClientDetail_PreferredLanguage_English"]</b>
+                    break;
+                case (int)Models.Clients.PreferredLanguage.Spanish:
+                    <b>@StringLocalizer["ClientDetail_PreferredLanguage_Spanish"]</b>
+                    break;
+                default:
+                    throw new ArgumentException($"Not found {nameof(Model.PreferredLanguage)} with value {Model.PreferredLanguage}");
+            }
+        </RadzenText>
+    </div>
+
     @if(!string.IsNullOrEmpty(Model.PreferredDoctorFullName))
     {
         <div class="col-12">

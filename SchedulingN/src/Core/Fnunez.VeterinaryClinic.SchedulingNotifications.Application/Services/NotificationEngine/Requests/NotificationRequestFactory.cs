@@ -13,6 +13,9 @@ public class NotificationRequestFactory : INotificationRequestFactory
 
         switch (notificationEvent)
         {
+            case NotificationEvent.AppointmentConfirmed:
+                notificationRequest = JsonSerializer.Deserialize<AppointmentConfirmedNotificationRequest>(serializedNotificationRequest);
+                break;
             case NotificationEvent.AppointmentCreated:
                 notificationRequest = JsonSerializer.Deserialize<AppointmentCreatedNotificationRequest>(serializedNotificationRequest);
                 break;

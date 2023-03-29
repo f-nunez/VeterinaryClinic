@@ -10,7 +10,7 @@ public class Notification : BaseEntity<int>, IAggregateRoot
     public DateTimeOffset CreatedOn { get; private set; }
     public NotificationEvent NotificationEvent { get; private set; }
     public string? Payload { get; private set; }
-    public string? TriggeredByUserId { get; set; }
+    public string? TriggeredByUserId { get; private set; }
 
     #region Navigations
     public ApplicationUser TriggeredByUser { get; set; } = null!;
