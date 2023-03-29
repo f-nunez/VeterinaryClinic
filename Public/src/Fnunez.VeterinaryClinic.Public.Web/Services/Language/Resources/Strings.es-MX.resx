@@ -117,4 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Appointment_Confirm_Message_Cheers" xml:space="preserve">
+    <value>Gracias &#60;&#51;</value>
+  </data>
+  <data name="Appointment_Confirm_Message_KindRegards" xml:space="preserve">
+    <value>¡Estaremos encantados de verte pronto!</value>
+  </data>
+  <data name="Appointment_Confirm_Message_Success" xml:space="preserve">
+    <value>La consulta ha sido confirmada exitosamente</value>
+  </data>
+  <data name="Appointment_Confirm_Title" xml:space="preserve">
+    <value>Confirmar Consulta</value>
+  </data>
+  <data name="Appointment_ConfirmError_Message_Error" xml:space="preserve">
+    <value>Por favor llame a la Clínica para confirmar la consulta o vuelva a intentarlo</value>
+  </data>
+  <data name="Appointment_ConfirmError_Message_KindRegards" xml:space="preserve">
+    <value>Por favor disculpe las molestias</value>
+  </data>
+  <data name="Appointment_ConfirmError_Title" xml:space="preserve">
+    <value>Confirmar Consulta</value>
+  </data>
 </root>
