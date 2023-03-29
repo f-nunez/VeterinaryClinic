@@ -9,6 +9,8 @@ public interface IEmailSetting
     string Host { get; }
     string Password { get; }
     int Port { get; }
+    int RetryCount { get; }
+    int RetryTimeInSeconds { get; }
     SmtpDeliveryMethod SmtpDeliveryMethod { get; }
     string UserName { get; }
 }
