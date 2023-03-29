@@ -1,4 +1,8 @@
+using System.Reflection;
+using Fnunez.VeterinaryClinic.EmailService.Api.ServiceBus;
+using Fnunez.VeterinaryClinic.EmailService.Api.ServiceBus.Observers;
 using Fnunez.VeterinaryClinic.EmailService.Api.Settings;
+using MassTransit;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -18,6 +22,31 @@ public static class ConfigureServices
         services.AddSingleton<IRabbitMqSetting>(configuration
             .GetSection(typeof(RabbitMqSetting).Name)
             .Get<RabbitMqSetting>()!);
+
+        services.AddScoped<IServiceBus, MassTransitServiceBus>();
+
+        services.AddConsumeObserver<LoggingConsumeObserver>();
+
+        services.AddPublishObserver<LoggingPublishObserver>();
+
+        services.AddReceiveObserver<LoggingReceiveObserver>();
+
+        services.AddSendObserver<LoggingSendObserver>();
+
+        services.AddMassTransit(mt =>
+        {
+            mt.AddConsumers(Assembly.GetExecutingAssembly());
+
+            mt.UsingRabbitMq((context, cfg) =>
+            {
+                var rabbitMqSetting = context
+                    .GetRequiredService<IRabbitMqSetting>();
+
+                cfg.Host(rabbitMqSetting.HostAddress);
+
+                cfg.ConfigureEndpoints(context);
+            });
+        });
 
         services.AddSingleton<IEmailSetting>(configuration
             .GetSection(typeof(EmailSetting).Name)
