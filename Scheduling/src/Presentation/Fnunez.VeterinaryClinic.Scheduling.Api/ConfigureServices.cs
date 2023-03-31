@@ -4,6 +4,7 @@ using Fnunez.VeterinaryClinic.Scheduling.Api.Settings;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,9 @@ public static class ConfigureServices
         var corsPolicySetting = configuration
             .GetSection(typeof(CorsPolicySetting).Name)
             .Get<CorsPolicySetting>()!;
+
+        // ShowPII only for development stages
+        IdentityModelEventSource.ShowPII = true;
 
         services.AddHttpContextAccessor();
 
