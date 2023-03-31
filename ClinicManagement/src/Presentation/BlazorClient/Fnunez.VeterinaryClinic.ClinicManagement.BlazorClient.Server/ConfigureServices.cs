@@ -1,6 +1,7 @@
 using Duende.Bff.Yarp;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Server.Settings;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.IdentityModel.Logging;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,9 @@ public static class ConfigureServices
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        // ShowPII only for development stages
+        IdentityModelEventSource.ShowPII = true;
+
         services.AddControllersWithViews();
 
         services.AddRazorPages();
