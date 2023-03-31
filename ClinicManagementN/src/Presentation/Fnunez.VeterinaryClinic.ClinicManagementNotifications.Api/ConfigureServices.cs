@@ -7,6 +7,7 @@ using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Services
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -28,6 +29,9 @@ public static class ConfigureServices
         var corsPolicySetting = configuration
             .GetSection(typeof(CorsPolicySetting).Name)
             .Get<CorsPolicySetting>()!;
+
+        // ShowPII only for development stages
+        IdentityModelEventSource.ShowPII = true;
 
         services.AddHttpContextAccessor();
 
