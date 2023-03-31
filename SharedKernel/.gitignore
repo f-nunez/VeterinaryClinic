@@ -1,0 +1,2 @@
+# Exclude SharedKernel's nuget packages required on boundary contexts
+!/local_nugets/*
