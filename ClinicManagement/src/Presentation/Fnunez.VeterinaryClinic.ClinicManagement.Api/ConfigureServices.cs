@@ -3,6 +3,7 @@ using Fnunez.VeterinaryClinic.ClinicManagement.Api.Services;
 using Fnunez.VeterinaryClinic.ClinicManagement.Api.Settings;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.Persistence.Contexts;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -29,6 +30,13 @@ public static class ConfigureServices
 
         // ShowPII only for development stages
         IdentityModelEventSource.ShowPII = true;
+
+        // Needed when run behind a reverse proxy
+        services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor
+                | ForwardedHeaders.XForwardedProto;
+        });
 
         services.AddHttpContextAccessor();
 
