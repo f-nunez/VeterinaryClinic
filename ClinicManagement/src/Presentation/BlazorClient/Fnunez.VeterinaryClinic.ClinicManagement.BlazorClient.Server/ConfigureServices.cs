@@ -1,7 +1,9 @@
 using Duende.Bff.Yarp;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Server.Settings;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +15,13 @@ public static class ConfigureServices
     {
         // ShowPII only for development stages
         IdentityModelEventSource.ShowPII = true;
+
+        // Needed when run behind a reverse proxy
+        services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor
+                | ForwardedHeaders.XForwardedProto;
+        });
 
         services.AddControllersWithViews();
 
