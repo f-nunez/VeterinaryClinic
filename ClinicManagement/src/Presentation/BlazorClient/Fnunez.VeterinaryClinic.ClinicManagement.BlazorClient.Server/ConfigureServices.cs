@@ -64,6 +64,16 @@ public static class ConfigureServices
             options.ResponseType = openIdConnectSetting.ResponseType;
             options.ResponseMode = openIdConnectSetting.ResponseMode;
 
+            options.RequireHttpsMetadata = openIdConnectSetting.EnabledRequireHttpsMetadata;
+
+            if (string.IsNullOrEmpty(openIdConnectSetting.MetadataAddress))
+                options.MetadataAddress = openIdConnectSetting.MetadataAddress;
+
+            options.TokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateAudience = openIdConnectSetting.EnabledValidateAudience
+            };
+
             options.Scope.Clear();
 
             foreach (var scope in openIdConnectSetting.Scopes)
