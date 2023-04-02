@@ -6,6 +6,7 @@ using Fnunez.VeterinaryClinic.Public.Web.Services.Appointment;
 using Fnunez.VeterinaryClinic.Public.Web.Services.Language;
 using Fnunez.VeterinaryClinic.Public.Web.Settings;
 using MassTransit;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +16,13 @@ public static class ConfigureServices
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        // Needed when run behind a reverse proxy
+        services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor
+                | ForwardedHeaders.XForwardedProto;
+        });
+
         services.AddControllersWithViews();
 
         services.AddSingleton<IRabbitMqSetting>(configuration
