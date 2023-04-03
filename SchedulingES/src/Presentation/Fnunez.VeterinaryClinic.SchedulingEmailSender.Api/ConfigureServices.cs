@@ -56,16 +56,27 @@ public static class ConfigureServices
     public static WebApplication AddWebApplicationBuilder(this WebApplication app)
     {
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
+        switch (app.Environment.EnvironmentName)
         {
-            app.UseSwagger();
-
-            app.UseSwaggerUI();
-
-            Task.Run(() => SeedDataAsync(app));
+            case "DockerNginx":
+                app.UseForwardedHeaders();
+                app.UseSwagger();
+                app.UseSwaggerUI();
+                Task.Run(() => SeedDataAsync(app));
+                break;
+            case "DockerDevelopment":
+            case "Development":
+                app.UseSwagger();
+                app.UseSwaggerUI();
+                app.UseHsts();
+                app.UseHttpsRedirection();
+                Task.Run(() => SeedDataAsync(app));
+                break;
+            default:
+                app.UseHsts();
+                app.UseHttpsRedirection();
+                break;
         }
-
-        app.UseHttpsRedirection();
 
         app.UseRouting();
 
