@@ -119,20 +119,25 @@ public static class ConfigureServices
         this WebApplication app)
     {
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
+        switch (app.Environment.EnvironmentName)
         {
-            app.UseDeveloperExceptionPage();
-            app.UseWebAssemblyDebugging();
+            case "DockerNginx":
+                app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
+                app.UseForwardedHeaders();
+                break;
+            case "DockerDevelopment":
+            case "Development":
+                app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
+                app.UseHsts();
+                app.UseHttpsRedirection();
+                break;
+            default:
+                app.UseHsts();
+                app.UseHttpsRedirection();
+                break;
         }
-        else
-        {
-            app.UseExceptionHandler("/Error");
-            // The default HSTS value is 30 days.
-            // You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
-        }
-
-        app.UseHttpsRedirection();
 
         app.UseBlazorFrameworkFiles();
 
