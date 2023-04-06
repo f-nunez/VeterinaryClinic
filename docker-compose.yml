@@ -45,3 +45,11 @@ networks:
       config:
         - subnet: 77.0.0.0/16
           gateway: 77.0.0.254
+
+volumes:
+  samba-volume:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: //77.0.0.2/storage
+      o: "username=guest,password=guest,vers=3.0"
