@@ -17,6 +17,26 @@ services:
         ipv4_address: 77.0.0.1
     restart: on-failure
 
+  samba:
+    build:
+      context: .
+      dockerfile: ./_docker/samba/Dockerfile
+    image: samba
+    container_name: samba
+    expose:
+      - 139:139/tcp
+      - 445:445/tcp
+    ports:
+      - 1390:139/tcp
+      - 4450:445/tcp
+    networks:
+      vc-network:
+        ipv4_address: 77.0.0.2
+    volumes:
+      - ./_docker/samba/storage/:/storage
+    stdin_open: true
+    tty: true
+
 networks:
   vc-network:
     name: vc-network
