@@ -12,4 +12,16 @@ services:
     expose:
       - 5672:5672
       - 15672:15672
-    restart: always
+    networks:
+      vc-network:
+        ipv4_address: 77.0.0.1
+    restart: on-failure
+
+networks:
+  vc-network:
+    name: vc-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 77.0.0.0/16
+          gateway: 77.0.0.254
