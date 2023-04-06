@@ -1,12 +1,15 @@
-# docker run -p 15672:15672 -p 5672:5672 masstransit/rabbitmq
+version: "3.9"
 
-version: "3.8"
+name: veterinary-clinic
 
 services:
-
   rabbitmq:
-    image: masstransit/rabbitmq:latest
-    ports:
+    image: masstransit/rabbitmq:3.9.7
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    expose:
       - 5672:5672
       - 15672:15672
     restart: always
