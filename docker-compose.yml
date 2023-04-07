@@ -37,6 +37,34 @@ services:
     stdin_open: true
     tty: true
 
+  public-web:
+    build:
+      context: .
+      dockerfile: ./Public/src/Fnunez.VeterinaryClinic.Public.Web/Dockerfile
+    image: public-web
+    container_name: public-web
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerDevelopment
+      - ASPNETCORE_URLS=https://+:7138
+      - ASPNETCORE_HTTPS_PORT=7138
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=VeterinaryClinic123!
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/veterinaryclinic.pfx
+      - VIRTUAL_HOST=public-web.vc.local
+    expose:
+      - 7138:7138
+    ports:
+      - 7138:7138
+    networks:
+      vc-network:
+        ipv4_address: 77.0.0.3
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./_docker/certs/veterinaryclinic.pfx:/https/veterinaryclinic.pfx:ro
+      - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
+    entrypoint: /bin/sh -c "update-ca-certificates && dotnet Fnunez.VeterinaryClinic.Public.Web.dll"
+
 networks:
   vc-network:
     name: vc-network
