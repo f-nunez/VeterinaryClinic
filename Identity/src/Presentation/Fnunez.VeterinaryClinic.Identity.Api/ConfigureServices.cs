@@ -78,7 +78,8 @@ public static class ConfigureServices
 
             await configurationStoreDbSeeder.MigrateAsync();
 
-            await configurationStoreDbSeeder.SeedDataAsync();
+            await configurationStoreDbSeeder.SeedDataAsync(
+                app.Environment.EnvironmentName);
 
             var operationalStoreDbSeeder = scope.ServiceProvider
                 .GetRequiredService<OperationalStoreDbContextSeeder>();
