@@ -81,6 +81,34 @@ services:
         ipv4_address: 77.0.0.4
     restart: on-failure
 
+  identity-api:
+    build:
+      context: .
+      dockerfile: ./Identity/src/Presentation/Fnunez.VeterinaryClinic.Identity.Api/Dockerfile
+    image: identity-api
+    container_name: identity-api.vc.local
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerDevelopment
+      - ASPNETCORE_URLS=https://+:7066
+      - ASPNETCORE_HTTPS_PORT=7066
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=VeterinaryClinic123!
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/veterinaryclinic.pfx
+      - VIRTUAL_HOST=identity-api.vc.local
+    expose:
+      - 7066:7066
+    ports:
+      - 7066:7066
+    networks:
+      vc-network:
+        ipv4_address: 77.0.0.5
+    restart: on-failure
+    depends_on:
+      - identity-db
+    volumes:
+      - ./_docker/certs/veterinaryclinic.pfx:/https/veterinaryclinic.pfx:ro
+      - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
+    entrypoint: /bin/sh -c "update-ca-certificates && dotnet Fnunez.VeterinaryClinic.Identity.Api.dll"
+
 networks:
   vc-network:
     name: vc-network
