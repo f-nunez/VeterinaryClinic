@@ -153,6 +153,37 @@ services:
       - samba-volume:/storage
     entrypoint: /bin/sh -c "sleep 20 && update-ca-certificates && dotnet Fnunez.VeterinaryClinic.ClinicManagement.Api.dll"
 
+  clinicmanagement-blazor:
+    build:
+      context: .
+      dockerfile: ./ClinicManagement/src/Presentation/BlazorClient/Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Server/Dockerfile
+    image: clinicmanagement-blazor
+    container_name: clinicmanagement-blazor
+    environment:
+      # Forced to stay as Development environment coz Duende BFF license
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:7004
+      - ASPNETCORE_HTTPS_PORT=7004
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=VeterinaryClinic123!
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/veterinaryclinic.pfx
+      - VIRTUAL_HOST=clinicmanagement-blazor.vc.local
+    expose:
+      - 7004:7004
+    ports:
+      - 7004:7004
+    networks:
+      vc-network:
+        ipv4_address: 77.0.0.8
+    restart: on-failure
+    depends_on:
+      - clinicmanagement-api
+      - identity-api
+      - rabbitmq
+    volumes:
+      - ./_docker/certs/veterinaryclinic.pfx:/https/veterinaryclinic.pfx:ro
+      - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
+    entrypoint: /bin/sh -c "update-ca-certificates && dotnet Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Server.dll"
+
 networks:
   vc-network:
     name: vc-network
