@@ -200,6 +200,33 @@ services:
         ipv4_address: 77.0.0.9
     restart: on-failure
 
+  clinicmanagementnotifications-api:
+    build:
+      context: .
+      dockerfile: ./ClinicManagementN/src/Presentation/Fnunez.VeterinaryClinic.ClinicManagementNotifications.Api/Dockerfile
+    image: clinicmanagementnotifications-api
+    container_name: clinicmanagementnotifications-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerDevelopment
+      - ASPNETCORE_URLS=https://+:7082
+      - ASPNETCORE_HTTPS_PORT=7082
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=VeterinaryClinic123!
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/veterinaryclinic.pfx
+    expose:
+      - 7082:7082
+    networks:
+      vc-network:
+        ipv4_address: 77.0.0.10
+    restart: on-failure
+    depends_on:
+      - clinicmanagementnotifications-db
+      - identity-api
+      - rabbitmq
+    volumes:
+      - ./_docker/certs/veterinaryclinic.pfx:/https/veterinaryclinic.pfx:ro
+      - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
+    entrypoint: /bin/sh -c "update-ca-certificates && dotnet Fnunez.VeterinaryClinic.ClinicManagementNotifications.Api.dll"
+
 networks:
   vc-network:
     name: vc-network
