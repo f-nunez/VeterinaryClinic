@@ -125,6 +125,34 @@ services:
         ipv4_address: 77.0.0.6
     restart: on-failure
 
+  clinicmanagement-api:
+    build:
+      context: .
+      dockerfile: ./ClinicManagement/src/Presentation/Fnunez.VeterinaryClinic.ClinicManagement.Api/Dockerfile
+    image: clinicmanagement-api
+    container_name: clinicmanagement-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerDevelopment
+      - ASPNETCORE_URLS=https://+:7229
+      - ASPNETCORE_HTTPS_PORT=7229
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=VeterinaryClinic123!
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/veterinaryclinic.pfx
+    expose:
+      - 7229:7229
+    networks:
+      vc-network:
+        ipv4_address: 77.0.0.7
+    restart: on-failure
+    depends_on:
+      - clinicmanagement-db
+      - samba
+      - rabbitmq
+    volumes:
+      - ./_docker/certs/veterinaryclinic.pfx:/https/veterinaryclinic.pfx:ro
+      - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
+      - samba-volume:/storage
+    entrypoint: /bin/sh -c "sleep 20 && update-ca-certificates && dotnet Fnunez.VeterinaryClinic.ClinicManagement.Api.dll"
+
 networks:
   vc-network:
     name: vc-network
