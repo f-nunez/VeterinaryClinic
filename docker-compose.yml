@@ -161,7 +161,7 @@ services:
     image: clinicmanagement-blazor
     container_name: clinicmanagement-blazor
     environment:
-      # Forced to stay as Development environment coz Duende BFF license
+      # Per Duende's BFF license requirements, stay as Development environment
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:7004
       - ASPNETCORE_HTTPS_PORT=7004
@@ -282,7 +282,7 @@ services:
     image: scheduling-blazor
     container_name: scheduling-blazor
     environment:
-      # Required to stay as Development environment coz Duende BFF license
+      # Per Duende's BFF license requirements, stay as Development environment
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:7154
       - ASPNETCORE_HTTPS_PORT=7154
