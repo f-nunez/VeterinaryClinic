@@ -243,6 +243,35 @@ services:
         ipv4_address: 77.0.0.11
     restart: on-failure
 
+  scheduling-api:
+    build:
+      context: .
+      dockerfile: ./Scheduling/src/Presentation/Fnunez.VeterinaryClinic.Scheduling.Api/Dockerfile
+    image: scheduling-api
+    container_name: scheduling-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerDevelopment
+      - ASPNETCORE_URLS=https://+:7266
+      - ASPNETCORE_HTTPS_PORT=7266
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=VeterinaryClinic123!
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/veterinaryclinic.pfx
+    expose:
+      - 7266:7266
+    networks:
+      vc-network:
+        ipv4_address: 77.0.0.12
+    restart: on-failure
+    depends_on:
+      - clinicmanagement-api
+      - samba
+      - scheduling-db
+      - rabbitmq
+    volumes:
+      - ./_docker/certs/veterinaryclinic.pfx:/https/veterinaryclinic.pfx:ro
+      - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
+      - samba-volume:/storage
+    entrypoint: /bin/sh -c "update-ca-certificates && dotnet Fnunez.VeterinaryClinic.Scheduling.Api.dll"
+
 networks:
   vc-network:
     name: vc-network
