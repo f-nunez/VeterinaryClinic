@@ -272,6 +272,37 @@ services:
       - samba-volume:/storage
     entrypoint: /bin/sh -c "update-ca-certificates && dotnet Fnunez.VeterinaryClinic.Scheduling.Api.dll"
 
+  scheduling-blazor:
+    build:
+      context: .
+      dockerfile: ./Scheduling/src/Presentation/BlazorClient/Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Server/Dockerfile
+    image: scheduling-blazor
+    container_name: scheduling-blazor
+    environment:
+      # Required to stay as Development environment coz Duende BFF license
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:7154
+      - ASPNETCORE_HTTPS_PORT=7154
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=VeterinaryClinic123!
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/veterinaryclinic.pfx
+      - VIRTUAL_HOST=scheduling-blazor.vc.local
+    expose:
+      - 7154:7154
+    ports:
+      - 7154:7154
+    networks:
+      vc-network:
+        ipv4_address: 77.0.0.13
+    restart: on-failure
+    depends_on:
+      - scheduling-api
+      - identity-api
+      - rabbitmq
+    volumes:
+      - ./_docker/certs/veterinaryclinic.pfx:/https/veterinaryclinic.pfx:ro
+      - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
+    entrypoint: /bin/sh -c "update-ca-certificates && dotnet Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Server.dll"
+
 networks:
   vc-network:
     name: vc-network
