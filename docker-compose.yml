@@ -319,6 +319,33 @@ services:
         ipv4_address: 77.0.0.14
     restart: on-failure
 
+  schedulingnotifications-api:
+    build:
+      context: .
+      dockerfile: ./SchedulingN/src/Presentation/Fnunez.VeterinaryClinic.SchedulingNotifications.Api/Dockerfile
+    image: schedulingnotifications-api
+    container_name: schedulingnotifications-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerDevelopment
+      - ASPNETCORE_URLS=https://+:7183
+      - ASPNETCORE_HTTPS_PORT=7183
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=VeterinaryClinic123!
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/veterinaryclinic.pfx
+    expose:
+      - 7183:7183
+    networks:
+      vc-network:
+        ipv4_address: 77.0.0.15
+    restart: on-failure
+    depends_on:
+      - identity-api
+      - schedulingnotifications-db
+      - rabbitmq
+    volumes:
+      - ./_docker/certs/veterinaryclinic.pfx:/https/veterinaryclinic.pfx:ro
+      - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
+    entrypoint: /bin/sh -c "update-ca-certificates && dotnet Fnunez.VeterinaryClinic.SchedulingNotifications.Api.dll"
+
 networks:
   vc-network:
     name: vc-network
