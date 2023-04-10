@@ -303,6 +303,22 @@ services:
       - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
     entrypoint: /bin/sh -c "update-ca-certificates && dotnet Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Server.dll"
 
+  schedulingnotifications-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: schedulingnotifications-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: "VeterinaryClinic123!"
+    expose:
+      - 14334:1433
+    ports:
+      - 14334:1433
+    networks:
+      vc-network:
+        ipv4_address: 77.0.0.14
+    restart: on-failure
+
 networks:
   vc-network:
     name: vc-network
