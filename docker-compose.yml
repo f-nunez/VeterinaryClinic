@@ -362,6 +362,32 @@ services:
         ipv4_address: 77.0.0.16
     restart: on-failure
 
+  schedulingemailsender-api:
+    build:
+      context: .
+      dockerfile: ./SchedulingES/src/Presentation/Fnunez.VeterinaryClinic.SchedulingEmailSender.Api/Dockerfile
+    image: schedulingemailsender-api
+    container_name: schedulingemailsender-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerDevelopment
+      - ASPNETCORE_URLS=https://+:7195
+      - ASPNETCORE_HTTPS_PORT=7195
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=VeterinaryClinic123!
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/veterinaryclinic.pfx
+    expose:
+      - 7195:7195
+    networks:
+      vc-network:
+        ipv4_address: 77.0.0.17
+    restart: on-failure
+    depends_on:
+      - schedulingemailsender-db
+      - rabbitmq
+    volumes:
+      - ./_docker/certs/veterinaryclinic.pfx:/https/veterinaryclinic.pfx:ro
+      - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
+    entrypoint: /bin/sh -c "update-ca-certificates && dotnet Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.dll"
+
 networks:
   vc-network:
     name: vc-network
