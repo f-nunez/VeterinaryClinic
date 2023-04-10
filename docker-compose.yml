@@ -13,8 +13,7 @@ services:
       - 5672:5672
       - 15672:15672
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.1
+      - vc-rabbitmq-shared-network
     restart: on-failure
 
   samba:
@@ -30,8 +29,8 @@ services:
       - 1390:139/tcp
       - 4450:445/tcp
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.2
+      vc-samba-shared-network:
+        ipv4_address: 77.7.0.1
     volumes:
       - ./_docker/samba/storage/:/storage
     stdin_open: true
@@ -55,8 +54,8 @@ services:
     ports:
       - 7138:7138
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.3
+      - vc-rabbitmq-shared-network
+      - vc-web-network
     restart: on-failure
     depends_on:
       - rabbitmq
@@ -77,8 +76,7 @@ services:
     ports:
       - 14330:1433
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.4
+      - vc-identity-internal-network
     restart: on-failure
 
   identity-api:
@@ -99,8 +97,9 @@ services:
     ports:
       - 7066:7066
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.5
+      - vc-identity-internal-network
+      - vc-identity-shared-network
+      - vc-web-network
     restart: on-failure
     depends_on:
       - identity-db
@@ -121,8 +120,7 @@ services:
     ports:
       - 14331:1433
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.6
+      - vc-clinicmanagement-internal-network
     restart: on-failure
 
   clinicmanagement-api:
@@ -140,13 +138,16 @@ services:
     expose:
       - 7229:7229
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.7
+      - vc-clinicmanagement-internal-network
+      - vc-identity-shared-network
+      - vc-rabbitmq-shared-network
+      - vc-samba-shared-network
     restart: on-failure
     depends_on:
       - clinicmanagement-db
-      - samba
+      - identity-api
       - rabbitmq
+      - samba
     volumes:
       - ./_docker/certs/veterinaryclinic.pfx:/https/veterinaryclinic.pfx:ro
       - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
@@ -172,13 +173,13 @@ services:
     ports:
       - 7004:7004
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.8
+      - vc-clinicmanagement-internal-network
+      - vc-identity-shared-network
+      - vc-web-network
     restart: on-failure
     depends_on:
       - clinicmanagement-api
       - identity-api
-      - rabbitmq
     volumes:
       - ./_docker/certs/veterinaryclinic.pfx:/https/veterinaryclinic.pfx:ro
       - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
@@ -196,8 +197,7 @@ services:
     ports:
       - 14332:1433
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.9
+      - vc-clinicmanagement-internal-network
     restart: on-failure
 
   clinicmanagementnotifications-api:
@@ -215,8 +215,9 @@ services:
     expose:
       - 7082:7082
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.10
+      - vc-clinicmanagement-internal-network
+      - vc-identity-shared-network
+      - vc-rabbitmq-shared-network
     restart: on-failure
     depends_on:
       - clinicmanagementnotifications-db
@@ -239,8 +240,7 @@ services:
     ports:
       - 14333:1433
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.11
+      - vc-scheduling-internal-network
     restart: on-failure
 
   scheduling-api:
@@ -258,14 +258,17 @@ services:
     expose:
       - 7266:7266
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.12
+      - vc-identity-shared-network
+      - vc-rabbitmq-shared-network
+      - vc-samba-shared-network
+      - vc-scheduling-internal-network
     restart: on-failure
     depends_on:
+      - identity-api
       - clinicmanagement-api
+      - rabbitmq
       - samba
       - scheduling-db
-      - rabbitmq
     volumes:
       - ./_docker/certs/veterinaryclinic.pfx:/https/veterinaryclinic.pfx:ro
       - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
@@ -291,13 +294,13 @@ services:
     ports:
       - 7154:7154
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.13
+      - vc-identity-shared-network
+      - vc-scheduling-internal-network
+      - vc-web-network
     restart: on-failure
     depends_on:
-      - scheduling-api
       - identity-api
-      - rabbitmq
+      - scheduling-api
     volumes:
       - ./_docker/certs/veterinaryclinic.pfx:/https/veterinaryclinic.pfx:ro
       - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
@@ -315,8 +318,7 @@ services:
     ports:
       - 14334:1433
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.14
+      - vc-scheduling-internal-network
     restart: on-failure
 
   schedulingnotifications-api:
@@ -334,13 +336,14 @@ services:
     expose:
       - 7183:7183
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.15
+      - vc-identity-shared-network
+      - vc-rabbitmq-shared-network
+      - vc-scheduling-internal-network
     restart: on-failure
     depends_on:
       - identity-api
-      - schedulingnotifications-db
       - rabbitmq
+      - schedulingnotifications-db
     volumes:
       - ./_docker/certs/veterinaryclinic.pfx:/https/veterinaryclinic.pfx:ro
       - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
@@ -358,8 +361,7 @@ services:
     ports:
       - 14335:1433
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.16
+      - vc-scheduling-internal-network
     restart: on-failure
 
   schedulingemailsender-api:
@@ -377,12 +379,12 @@ services:
     expose:
       - 7195:7195
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.17
+      - vc-rabbitmq-shared-network
+      - vc-scheduling-internal-network
     restart: on-failure
     depends_on:
-      - schedulingemailsender-db
       - rabbitmq
+      - schedulingemailsender-db
     volumes:
       - ./_docker/certs/veterinaryclinic.pfx:/https/veterinaryclinic.pfx:ro
       - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
@@ -406,8 +408,8 @@ services:
     ports:
       - :587
     networks:
-      vc-network:
-        ipv4_address: 77.0.0.18
+      - vc-emailservice-shared-network
+      - vc-rabbitmq-shared-network
     restart: on-failure
     depends_on:
       - rabbitmq
@@ -417,18 +419,74 @@ services:
     entrypoint: /bin/sh -c "update-ca-certificates && dotnet Fnunez.VeterinaryClinic.EmailService.Api.dll"
 
 networks:
-  vc-network:
-    name: vc-network
+  vc-web-network:
+    name: vc-web-network
     driver: bridge
     ipam:
       config:
         - subnet: 77.0.0.0/16
           gateway: 77.0.0.254
 
+  vc-rabbitmq-shared-network:
+    name: vc-rabbitmq-shared-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 77.1.0.0/16
+          gateway: 77.1.0.254
+
+  vc-identity-internal-network:
+    name: vc-identity-internal-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 77.2.0.0/16
+          gateway: 77.2.0.254
+
+  vc-identity-shared-network:
+    name: vc-identity-shared-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 77.3.0.0/16
+          gateway: 77.3.0.254
+
+  vc-clinicmanagement-internal-network:
+    name: vc-clinicmanagement-internal-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 77.4.0.0/16
+          gateway: 77.4.0.254
+
+  vc-scheduling-internal-network:
+    name: vc-scheduling-internal-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 77.5.0.0/16
+          gateway: 77.5.0.254
+
+  vc-emailservice-shared-network:
+    name: vc-emailservice-shared-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 77.6.0.0/16
+          gateway: 77.6.0.254
+
+  vc-samba-shared-network:
+    name: vc-samba-shared-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 77.7.0.0/16
+          gateway: 77.7.0.254
+
 volumes:
   samba-volume:
     driver: local
     driver_opts:
       type: cifs
-      device: //77.0.0.2/storage
+      device: //77.7.0.1/storage
       o: "username=guest,password=guest,vers=3.0"
