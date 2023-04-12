@@ -1,5 +1,6 @@
 using Fnunez.VeterinaryClinic.Identity.Api.Settings;
 using Fnunez.VeterinaryClinic.Identity.Infrastructure.Persistence.Contexts;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;
 
@@ -23,6 +24,11 @@ public static class ConfigureServices
         {
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor
                 | ForwardedHeaders.XForwardedProto;
+        });
+
+        services.AddHttpLogging(options =>
+        {
+            options.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders;
         });
 
         services.Configure<CookiePolicyOptions>(options =>
@@ -60,6 +66,8 @@ public static class ConfigureServices
                 app.UseHttpsRedirection();
                 break;
         }
+
+        app.UseHttpLogging();
 
         app.UseStaticFiles();
 
