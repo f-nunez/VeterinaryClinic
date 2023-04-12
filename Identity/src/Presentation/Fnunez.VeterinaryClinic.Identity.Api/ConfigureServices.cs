@@ -1,6 +1,7 @@
 using Fnunez.VeterinaryClinic.Identity.Api.Settings;
 using Fnunez.VeterinaryClinic.Identity.Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.IdentityModel.Logging;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,9 @@ public static class ConfigureServices
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        // ShowPII only for development stages
+        IdentityModelEventSource.ShowPII = true;
+
         var cookiePolicySetting = configuration
             .GetSection(typeof(CookiePolicySetting).Name)
             .Get<CookiePolicySetting>()!;
