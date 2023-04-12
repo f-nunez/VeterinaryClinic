@@ -1,3 +1,4 @@
+using Fnunez.VeterinaryClinic.Identity.Api.Settings;
 using Fnunez.VeterinaryClinic.Identity.Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.HttpOverrides;
 
@@ -9,11 +10,20 @@ public static class ConfigureServices
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        var cookiePolicySetting = configuration
+            .GetSection(typeof(CookiePolicySetting).Name)
+            .Get<CookiePolicySetting>()!;
+
         // Needed when run behind a reverse proxy
         services.Configure<ForwardedHeadersOptions>(options =>
         {
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor
                 | ForwardedHeaders.XForwardedProto;
+        });
+
+        services.Configure<CookiePolicyOptions>(options =>
+        {
+            options.MinimumSameSitePolicy = cookiePolicySetting.MinimumSameSitePolicy;
         });
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -52,6 +62,8 @@ public static class ConfigureServices
         app.UseRouting();
 
         app.UseIdentityServer();
+
+        app.UseCookiePolicy();
 
         app.UseAuthorization();
 
