@@ -76,6 +76,8 @@ public static class ConfigureServices
 
                 options.Audience = authenticationSetting.Audience;
 
+                options.RequireHttpsMetadata = authenticationSetting.RequireHttpsMetadata;
+
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateAudience = authenticationSetting.ValidateAudience
