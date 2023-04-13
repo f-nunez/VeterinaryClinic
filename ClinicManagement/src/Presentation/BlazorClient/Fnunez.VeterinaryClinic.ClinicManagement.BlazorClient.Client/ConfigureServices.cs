@@ -18,7 +18,8 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddBlazorClientWebServices(
         this IServiceCollection services,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        string baseAddress)
     {
         // register Settings
         services.AddSingleton<IBackendForFrontendSetting>(
@@ -40,7 +41,7 @@ public static class ConfigureServices
 
         // register HttpClient and HttpService
         services.AddHttpClient("backendForFrontend", client =>
-            client.BaseAddress = new Uri(configuration["ApplicationUrl"]!))
+            client.BaseAddress = new Uri(baseAddress))
                 .AddHttpMessageHandler<AntiforgeryHandler>();
 
         services.AddTransient(sp =>
