@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -181,6 +182,37 @@ public static class ConfigureServices
             context.Request.Scheme = "https";
 
             await next(context);
+        });
+    }
+
+    private static void AddWellKnownHttRedirection(
+        this WebApplication app,
+        DeploymentSetting? deploymentSetting)
+    {
+        if (deploymentSetting is null ||
+            string.IsNullOrEmpty(deploymentSetting.WellKnownHttpHeaderToReplace) ||
+            string.IsNullOrEmpty(deploymentSetting.WellKnownHttpHeaderReplacement))
+            return;
+
+        app.Use(async (context, next) =>
+        {
+            await next(context);
+
+            if (context.Response.StatusCode == StatusCodes.Status302Found)
+            {
+                string? location = context.Response.Headers[HeaderNames.Location];
+
+                if (!string.IsNullOrEmpty(location) &&
+                    location.Contains(deploymentSetting.WellKnownHttpHeaderToReplace))
+                {
+                    location = location.Replace(
+                        deploymentSetting.WellKnownHttpHeaderToReplace,
+                        deploymentSetting.WellKnownHttpHeaderReplacement
+                    );
+
+                    context.Response.Headers[HeaderNames.Location] = location;
+                }
+            }
         });
     }
 }
