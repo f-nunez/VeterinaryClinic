@@ -126,25 +126,7 @@ public static class ConfigureServices
         this WebApplication app)
     {
         // Configure the HTTP request pipeline.
-        switch (app.Environment.EnvironmentName)
-        {
-            case "DockerNginx":
-                app.UseDeveloperExceptionPage();
-                app.UseWebAssemblyDebugging();
-                app.UseForwardedHeaders();
-                break;
-            case "DockerDevelopment":
-            case "Development":
-                app.UseDeveloperExceptionPage();
-                app.UseWebAssemblyDebugging();
-                app.UseHsts();
-                app.UseHttpsRedirection();
-                break;
-            default:
-                app.UseHsts();
-                app.UseHttpsRedirection();
-                break;
-        }
+        SetMiddlewaresAccordingToEnvironment(app);
 
         app.UseHttpLogging();
 
@@ -173,6 +155,43 @@ public static class ConfigureServices
         app.MapFallbackToFile("index.html");
 
         return app;
+    }
+
+    private static void SetMiddlewaresAccordingToEnvironment(WebApplication app)
+    {
+        string environmentName = string.Empty;
+
+        var deploymentSetting = app.Configuration
+            .GetSection(typeof(DeploymentSetting).Name)
+            .Get<DeploymentSetting>();
+
+        if (deploymentSetting is null ||
+            string.IsNullOrEmpty(deploymentSetting.EnvironmentName))
+            environmentName = app.Environment.EnvironmentName;
+        else
+            environmentName = deploymentSetting.EnvironmentName;
+
+        switch (environmentName)
+        {
+            case "DockerNginx":
+                app.AddHttpsRequestScheme();
+                app.UseForwardedHeaders();
+                app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
+                app.AddWellKnownHttRedirection(deploymentSetting);
+                break;
+            case "DockerDevelopment":
+            case "Development":
+                app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
+                app.UseHsts();
+                app.UseHttpsRedirection();
+                break;
+            default:
+                app.UseHsts();
+                app.UseHttpsRedirection();
+                break;
+        }
     }
 
     private static void AddHttpsRequestScheme(this WebApplication app)
