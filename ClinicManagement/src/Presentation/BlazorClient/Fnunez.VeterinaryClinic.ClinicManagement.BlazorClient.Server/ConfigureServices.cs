@@ -1,6 +1,7 @@
 using Duende.Bff.Yarp;
 using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Server.Settings;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -26,6 +27,11 @@ public static class ConfigureServices
         services.AddControllersWithViews();
 
         services.AddRazorPages();
+
+        services.AddHttpLogging(options =>
+        {
+            options.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders;
+        });
 
         services.AddReverseProxy()
             .LoadFromConfig(configuration.GetSection("ReverseProxyForNotificationHubSignalr"))
@@ -138,6 +144,8 @@ public static class ConfigureServices
                 app.UseHttpsRedirection();
                 break;
         }
+
+        app.UseHttpLogging();
 
         app.UseBlazorFrameworkFiles();
 
