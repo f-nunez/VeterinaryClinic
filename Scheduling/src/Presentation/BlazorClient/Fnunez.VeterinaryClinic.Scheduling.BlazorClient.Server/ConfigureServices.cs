@@ -173,4 +173,14 @@ public static class ConfigureServices
 
         return app;
     }
+
+    private static void AddHttpsRequestScheme(this WebApplication app)
+    {
+        app.Use(async (context, next) =>
+        {
+            context.Request.Scheme = "https";
+
+            await next(context);
+        });
+    }
 }
