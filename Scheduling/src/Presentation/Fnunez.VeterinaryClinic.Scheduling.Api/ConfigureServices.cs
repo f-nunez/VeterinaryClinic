@@ -57,10 +57,12 @@ public static class ConfigureServices
             });
         });
 
-        services.AddControllers(options => options.Filters.Add<ApiExceptionFilterAttribute>());
+        services.AddControllers(options =>
+            options.Filters.Add<ApiExceptionFilterAttribute>());
 
         // Customise default API behaviour
-        services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
+        services.Configure<ApiBehaviorOptions>(options =>
+            options.SuppressModelStateInvalidFilter = true);
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
@@ -73,6 +75,8 @@ public static class ConfigureServices
                 options.Authority = authenticationSetting.Authority;
 
                 options.Audience = authenticationSetting.Audience;
+
+                options.RequireHttpsMetadata = authenticationSetting.RequireHttpsMetadata;
 
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
