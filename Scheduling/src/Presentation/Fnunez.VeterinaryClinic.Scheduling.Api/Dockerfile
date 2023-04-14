@@ -23,5 +23,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-# RUN bash -c 'sleep 10'
-# ENTRYPOINT ["dotnet", "Fnunez.VeterinaryClinic.Scheduling.Api.dll"]
+ENTRYPOINT ["dotnet", "Fnunez.VeterinaryClinic.Scheduling.Api.dll"]
