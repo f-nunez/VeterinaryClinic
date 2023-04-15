@@ -168,6 +168,47 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Password=VeterinaryClinic123!
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/veterinaryclinic.pfx
       - VIRTUAL_HOST=clinicmanagement-blazor.vc.local
+      # Set appsettings environment
+      - AuthenticationSetting__DefaultChallengeScheme=oidc
+      - AuthenticationSetting__DefaultScheme=cookie
+      - AuthenticationSetting__DefaultSignOutScheme=oidc
+      - CookieSetting__AuthenticationScheme=cookie
+      - CookieSetting__EnabledSlidingExpiration=true
+      - CookieSetting__ExpireTimeInMinutes=15
+      - CookieSetting__Name=clinic-management-blazor
+      - CookieSetting__SameSiteMode=Strict
+      - CorsPolicySetting__ClinicManagementApiUrl=https://clinicmanagement-api:7229
+      - CorsPolicySetting__ClinicManagementNotificationsApiUrl=https://clinicmanagementnotifications-api:7082
+      - CorsPolicySetting__IdentityServerUrl=https://identity-api.vc.local:7066
+      - DeploymentSetting__EnvironmentName=DockerDevelopment
+      - OpenIdConnectSetting__AccessDeniedPath=/login
+      - OpenIdConnectSetting__AuthenticationScheme=oidc
+      - OpenIdConnectSetting__Authority=https://identity-api.vc.local:7066
+      - OpenIdConnectSetting__ClaimActionsToMap__0=preferred_username
+      - OpenIdConnectSetting__ClaimActionsToMap__1=role
+      - OpenIdConnectSetting__ClientId=6c4c5801-1089-4c3c-83c7-ddc0eb3707b3
+      - OpenIdConnectSetting__ClientSecret=secret
+      - OpenIdConnectSetting__EnabledGetClaimsFromUserInfoEndpoint=true
+      - OpenIdConnectSetting__EnabledMapInboundClaims=false
+      - OpenIdConnectSetting__EnabledRequireHttpsMetadata=true
+      - OpenIdConnectSetting__EnabledSaveTokens=true
+      - OpenIdConnectSetting__EnabledUsePkce=true
+      - OpenIdConnectSetting__EnabledValidateAudience=true
+      - OpenIdConnectSetting__MetadataAddress=https://identity-api.vc.local:7066/.well-known/openid-configuration
+      - OpenIdConnectSetting__ResponseMode=query
+      - OpenIdConnectSetting__ResponseType=code
+      - OpenIdConnectSetting__Scopes__0=clinic_management_api
+      - OpenIdConnectSetting__Scopes__1=clinic_management_notifications_api
+      - OpenIdConnectSetting__Scopes__2=email
+      - OpenIdConnectSetting__Scopes__3=offline_access
+      - OpenIdConnectSetting__Scopes__4=openid
+      - OpenIdConnectSetting__Scopes__5=preferred_username
+      - OpenIdConnectSetting__Scopes__6=profile
+      - OpenIdConnectSetting__Scopes__7=roles
+      - ReverseProxy__Clusters__ClinicManagementAccessTokenCluster__Destinations__ClinicManagementApiDestination__Address=https://clinicmanagement-blazor.vc.local:7004/api
+      - ReverseProxy__Clusters__ClinicManagementApiCluster__Destinations__ClinicManagementApiDestination__Address=https://clinicmanagement-api:7229/api
+      - ReverseProxy__Clusters__ClinicManagementNotificationsApiCluster__Destinations__ClinicManagementApiDestination__Address=https://clinicmanagementnotifications-api:7082/api
+      - ReverseProxyForNotificationHubSignalr__Clusters__ClinicManagementNotificationHubCluster__Destinations__ClinicManagementNotificationsApiDestination__Address=https://clinicmanagementnotifications-api:7082/notificationhub
     expose:
       - 7004:7004
     ports:
@@ -289,6 +330,47 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Password=VeterinaryClinic123!
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/veterinaryclinic.pfx
       - VIRTUAL_HOST=scheduling-blazor.vc.local
+      # Set appsettings environment
+      - AuthenticationSetting__DefaultChallengeScheme=oidc
+      - AuthenticationSetting__DefaultScheme=cookie
+      - AuthenticationSetting__DefaultSignOutScheme=oidc
+      - CookieSetting__AuthenticationScheme=cookie
+      - CookieSetting__EnabledSlidingExpiration=true
+      - CookieSetting__ExpireTimeInMinutes=15
+      - CookieSetting__Name=scheduling-blazor
+      - CookieSetting__SameSiteMode=Strict
+      - CorsPolicySetting__IdentityServerUrl=https://identity-api.vc.local:7066
+      - CorsPolicySetting__SchedulingApiUrll=https://scheduling-api:7266
+      - CorsPolicySetting__SchedulingNotificationsApiUrl=https://schedulingnotifications-api:7183
+      - DeploymentSetting__EnvironmentName=DockerDevelopment
+      - OpenIdConnectSetting__AccessDeniedPath=/login
+      - OpenIdConnectSetting__AuthenticationScheme=oidc
+      - OpenIdConnectSetting__Authority=https://identity-api.vc.local:7066
+      - OpenIdConnectSetting__ClaimActionsToMap__0=preferred_username
+      - OpenIdConnectSetting__ClaimActionsToMap__1=role
+      - OpenIdConnectSetting__ClientId=85064410-c9c8-4afa-9deb-cb4b8e5114df
+      - OpenIdConnectSetting__ClientSecret=secret
+      - OpenIdConnectSetting__EnabledGetClaimsFromUserInfoEndpoint=true
+      - OpenIdConnectSetting__EnabledMapInboundClaims=false
+      - OpenIdConnectSetting__EnabledRequireHttpsMetadata=false
+      - OpenIdConnectSetting__EnabledSaveTokens=true
+      - OpenIdConnectSetting__EnabledUsePkce=true
+      - OpenIdConnectSetting__EnabledValidateAudience=false
+      - OpenIdConnectSetting__MetadataAddress=https://identity-api.vc.local:7066/.well-known/openid-configuration
+      - OpenIdConnectSetting__ResponseMode=query
+      - OpenIdConnectSetting__ResponseType=code
+      - OpenIdConnectSetting__Scopes__0=email
+      - OpenIdConnectSetting__Scopes__1=offline_access
+      - OpenIdConnectSetting__Scopes__2=openid
+      - OpenIdConnectSetting__Scopes__3=preferred_username
+      - OpenIdConnectSetting__Scopes__4=profile
+      - OpenIdConnectSetting__Scopes__5=roles
+      - OpenIdConnectSetting__Scopes__6=scheduling_api
+      - OpenIdConnectSetting__Scopes__7=scheduling_notifications_api
+      - ReverseProxy__Clusters__SchedulingAccessTokenCluster__Destinations__SchedulingApiDestination__Address=https://scheduling-blazor.vc.local:7154/api
+      - ReverseProxy__Clusters__SchedulingApiCluster__Destinations__SchedulingApiDestination__Address=https://scheduling-api:7266/api
+      - ReverseProxy__Clusters__SchedulingNotificationsApiCluster__Destinations__SchedulingApiDestination__Address=https://schedulingnotifications-api:7183/api
+      - ReverseProxyForNotificationHubSignalr__Clusters__SchedulingNotificationHubCluster__Destinations__SchedulingNotificationsApiDestination__Address=https://schedulingnotifications-api:7183/notificationhub
     expose:
       - 7154:7154
     ports:
