@@ -241,6 +241,12 @@ public class ConfigurationStoreDbContextSeeder
                 backChannelLogoutUri = "https://clinicmanagement-blazor.vc.local:7004/bff/backchannel";
                 postLogoutRedirectUris = new List<string> { "https://clinicmanagement-blazor.vc.local:7004/signout-callback-oidc" };
                 break;
+            case "DockerNginx":
+                allowedCorsOrigins = new List<string> { "https://clinicmanagement-blazor.vc.local" };
+                redirectUris = new List<string> { "https://clinicmanagement-blazor.vc.local/signin-oidc" };
+                backChannelLogoutUri = "https://clinicmanagement-blazor.vc.local/bff/backchannel";
+                postLogoutRedirectUris = new List<string> { "https://clinicmanagement-blazor.vc.local/signout-callback-oidc" };
+                break;
             case "Development":
             default:
                 allowedCorsOrigins = new List<string> { "https://localhost:7004" };
@@ -292,6 +298,12 @@ public class ConfigurationStoreDbContextSeeder
                 redirectUris = new List<string> { "https://scheduling-blazor.vc.local:7154/signin-oidc" };
                 backChannelLogoutUri = "https://scheduling-blazor.vc.local:7154/bff/backchannel";
                 postLogoutRedirectUris = new List<string> { "https://scheduling-blazor.vc.local:7154/signout-callback-oidc" };
+                break;
+            case "DockerNginx":
+                allowedCorsOrigins = new List<string> { "https://scheduling-blazor.vc.local" };
+                redirectUris = new List<string> { "https://scheduling-blazor.vc.local/signin-oidc" };
+                backChannelLogoutUri = "https://scheduling-blazor.vc.local/bff/backchannel";
+                postLogoutRedirectUris = new List<string> { "https://scheduling-blazor.vc.local/signout-callback-oidc" };
                 break;
             case "Development":
             default:
