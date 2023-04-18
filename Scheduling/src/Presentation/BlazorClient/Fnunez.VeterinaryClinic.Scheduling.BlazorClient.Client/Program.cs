@@ -10,9 +10,8 @@ builder.RootComponents.Add<App>("#app");
 
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddBlazorClientWebServices(builder.Configuration);
+builder.Services.AddBlazorClientWebServices(builder.Configuration, builder.HostEnvironment.BaseAddress);
 
-// load saved language culture
 var host = builder.Build();
 
 var userSettingsService = host.Services.GetRequiredService<IUserSettingsService>();

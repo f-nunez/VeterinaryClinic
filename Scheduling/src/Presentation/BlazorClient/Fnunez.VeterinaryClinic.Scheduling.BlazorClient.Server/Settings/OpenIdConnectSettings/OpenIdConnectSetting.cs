@@ -10,8 +10,11 @@ public class OpenIdConnectSetting : IOpenIdConnectSetting
     public string ClientSecret { get; set; } = null!;
     public bool EnabledGetClaimsFromUserInfoEndpoint { get; set; }
     public bool EnabledMapInboundClaims { get; set; }
+    public bool EnabledRequireHttpsMetadata { get; set; }
     public bool EnabledSaveTokens { get; set; }
     public bool EnabledUsePkce { get; set; }
+    public bool EnabledValidateAudience { get; set; }
+    public string MetadataAddress { get; set; } = null!;
     public string ResponseMode { get; set; } = null!;
     public string ResponseType { get; set; } = null!;
     public string[] Scopes { get; set; } = null!;

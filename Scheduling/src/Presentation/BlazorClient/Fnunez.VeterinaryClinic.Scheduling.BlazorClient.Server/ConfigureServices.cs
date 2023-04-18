@@ -1,6 +1,11 @@
 using Duende.Bff.Yarp;
 using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Server.Settings;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -10,9 +15,24 @@ public static class ConfigureServices
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        // ShowPII only for development stages
+        IdentityModelEventSource.ShowPII = true;
+
+        // Needed when run behind a reverse proxy
+        services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor
+                | ForwardedHeaders.XForwardedProto;
+        });
+
         services.AddControllersWithViews();
 
         services.AddRazorPages();
+
+        services.AddHttpLogging(options =>
+        {
+            options.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders;
+        });
 
         services.AddReverseProxy()
             .LoadFromConfig(configuration.GetSection("ReverseProxyForNotificationHubSignalr"))
@@ -60,6 +80,16 @@ public static class ConfigureServices
             options.ResponseType = openIdConnectSetting.ResponseType;
             options.ResponseMode = openIdConnectSetting.ResponseMode;
 
+            options.RequireHttpsMetadata = openIdConnectSetting.EnabledRequireHttpsMetadata;
+
+            if (string.IsNullOrEmpty(openIdConnectSetting.MetadataAddress))
+                options.MetadataAddress = openIdConnectSetting.MetadataAddress;
+
+            options.TokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateAudience = openIdConnectSetting.EnabledValidateAudience
+            };
+
             options.Scope.Clear();
 
             foreach (var scope in openIdConnectSetting.Scopes)
@@ -96,20 +126,9 @@ public static class ConfigureServices
         this WebApplication app)
     {
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-            app.UseWebAssemblyDebugging();
-        }
-        else
-        {
-            app.UseExceptionHandler("/Error");
-            // The default HSTS value is 30 days.
-            // You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
-        }
+        SetMiddlewaresAccordingToEnvironment(app);
 
-        app.UseHttpsRedirection();
+        app.UseHttpLogging();
 
         app.UseBlazorFrameworkFiles();
 
@@ -136,5 +155,83 @@ public static class ConfigureServices
         app.MapFallbackToFile("index.html");
 
         return app;
+    }
+
+    private static void SetMiddlewaresAccordingToEnvironment(WebApplication app)
+    {
+        string environmentName = string.Empty;
+
+        var deploymentSetting = app.Configuration
+            .GetSection(typeof(DeploymentSetting).Name)
+            .Get<DeploymentSetting>();
+
+        if (deploymentSetting is null ||
+            string.IsNullOrEmpty(deploymentSetting.EnvironmentName))
+            environmentName = app.Environment.EnvironmentName;
+        else
+            environmentName = deploymentSetting.EnvironmentName;
+
+        switch (environmentName)
+        {
+            case "DockerNginx":
+                app.AddHttpsRequestScheme();
+                app.UseForwardedHeaders();
+                app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
+                app.AddWellKnownHttRedirection(deploymentSetting);
+                break;
+            case "DockerDevelopment":
+            case "Development":
+                app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
+                app.UseHsts();
+                app.UseHttpsRedirection();
+                break;
+            default:
+                app.UseHsts();
+                app.UseHttpsRedirection();
+                break;
+        }
+    }
+
+    private static void AddHttpsRequestScheme(this WebApplication app)
+    {
+        app.Use(async (context, next) =>
+        {
+            context.Request.Scheme = "https";
+
+            await next(context);
+        });
+    }
+
+    private static void AddWellKnownHttRedirection(
+        this WebApplication app,
+        DeploymentSetting? deploymentSetting)
+    {
+        if (deploymentSetting is null ||
+            string.IsNullOrEmpty(deploymentSetting.WellKnownHttpHeaderToReplace) ||
+            string.IsNullOrEmpty(deploymentSetting.WellKnownHttpHeaderReplacement))
+            return;
+
+        app.Use(async (context, next) =>
+        {
+            await next(context);
+
+            if (context.Response.StatusCode == StatusCodes.Status302Found)
+            {
+                string? location = context.Response.Headers[HeaderNames.Location];
+
+                if (!string.IsNullOrEmpty(location) &&
+                    location.Contains(deploymentSetting.WellKnownHttpHeaderToReplace))
+                {
+                    location = location.Replace(
+                        deploymentSetting.WellKnownHttpHeaderToReplace,
+                        deploymentSetting.WellKnownHttpHeaderReplacement
+                    );
+
+                    context.Response.Headers[HeaderNames.Location] = location;
+                }
+            }
+        });
     }
 }

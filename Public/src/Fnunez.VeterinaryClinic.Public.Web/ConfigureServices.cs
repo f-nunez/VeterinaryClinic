@@ -6,6 +6,7 @@ using Fnunez.VeterinaryClinic.Public.Web.Services.Appointment;
 using Fnunez.VeterinaryClinic.Public.Web.Services.Language;
 using Fnunez.VeterinaryClinic.Public.Web.Settings;
 using MassTransit;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +16,13 @@ public static class ConfigureServices
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        // Needed when run behind a reverse proxy
+        services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor
+                | ForwardedHeaders.XForwardedProto;
+        });
+
         services.AddControllersWithViews();
 
         services.AddSingleton<IRabbitMqSetting>(configuration
@@ -62,14 +70,23 @@ public static class ConfigureServices
     public static WebApplication AddWebApplicationBuilder(this WebApplication app)
     {
         // Configure the HTTP request pipeline.
-        if (!app.Environment.IsDevelopment())
+        switch (app.Environment.EnvironmentName)
         {
-            app.UseExceptionHandler("/Home/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
+            case "DockerNginx":
+                app.UseDeveloperExceptionPage();
+                app.UseForwardedHeaders();
+                break;
+            case "DockerDevelopment":
+            case "Development":
+                app.UseDeveloperExceptionPage();
+                app.UseHsts();
+                app.UseHttpsRedirection();
+                break;
+            default:
+                app.UseHsts();
+                app.UseHttpsRedirection();
+                break;
         }
-
-        app.UseHttpsRedirection();
 
         app.UseStaticFiles();
 

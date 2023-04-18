@@ -3,7 +3,9 @@ using Fnunez.VeterinaryClinic.Scheduling.Api.Services;
 using Fnunez.VeterinaryClinic.Scheduling.Api.Settings;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.Scheduling.Infrastructure.Persistence.Contexts;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -26,6 +28,16 @@ public static class ConfigureServices
             .GetSection(typeof(CorsPolicySetting).Name)
             .Get<CorsPolicySetting>()!;
 
+        // ShowPII only for development stages
+        IdentityModelEventSource.ShowPII = true;
+
+        // Needed when run behind a reverse proxy
+        services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor
+                | ForwardedHeaders.XForwardedProto;
+        });
+
         services.AddHttpContextAccessor();
 
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
@@ -45,10 +57,12 @@ public static class ConfigureServices
             });
         });
 
-        services.AddControllers(options => options.Filters.Add<ApiExceptionFilterAttribute>());
+        services.AddControllers(options =>
+            options.Filters.Add<ApiExceptionFilterAttribute>());
 
         // Customise default API behaviour
-        services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
+        services.Configure<ApiBehaviorOptions>(options =>
+            options.SuppressModelStateInvalidFilter = true);
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
@@ -61,6 +75,8 @@ public static class ConfigureServices
                 options.Authority = authenticationSetting.Authority;
 
                 options.Audience = authenticationSetting.Audience;
+
+                options.RequireHttpsMetadata = authenticationSetting.RequireHttpsMetadata;
 
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
@@ -93,16 +109,27 @@ public static class ConfigureServices
     public static WebApplication AddWebApplicationBuilder(this WebApplication app)
     {
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
+        switch (app.Environment.EnvironmentName)
         {
-            app.UseSwagger();
-
-            app.UseSwaggerUI();
-
-            Task.Run(() => SeedDataAsync(app));
+            case "DockerNginx":
+                app.UseForwardedHeaders();
+                app.UseSwagger();
+                app.UseSwaggerUI();
+                Task.Run(() => SeedDataAsync(app));
+                break;
+            case "DockerDevelopment":
+            case "Development":
+                app.UseSwagger();
+                app.UseSwaggerUI();
+                app.UseHsts();
+                app.UseHttpsRedirection();
+                Task.Run(() => SeedDataAsync(app));
+                break;
+            default:
+                app.UseHsts();
+                app.UseHttpsRedirection();
+                break;
         }
-
-        app.UseHttpsRedirection();
 
         app.UseRouting();
 

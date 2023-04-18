@@ -1,12 +1,26 @@
-# docker run -p 15672:15672 -p 5672:5672 masstransit/rabbitmq
+version: "3.9"
 
-version: "3.8"
+name: veterinary-clinic
 
 services:
-
   rabbitmq:
-    image: masstransit/rabbitmq:latest
+    image: masstransit/rabbitmq:3.9.7
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
     ports:
       - 5672:5672
       - 15672:15672
-    restart: always
+    restart: on-failure
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: "VeterinaryClinic123!"
+    ports:
+      - 14330:1433
+    restart: on-failure

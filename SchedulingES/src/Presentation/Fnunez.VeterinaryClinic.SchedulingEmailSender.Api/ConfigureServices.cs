@@ -6,6 +6,7 @@ using Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.Settings;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.Language;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.StringRazorRender;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure.Persistence.Contexts;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +16,13 @@ public static class ConfigureServices
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        // Needed when run behind a reverse proxy
+        services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor
+                | ForwardedHeaders.XForwardedProto;
+        });
+
         services.AddRazorPages();
 
         services.AddControllers();
@@ -48,16 +56,27 @@ public static class ConfigureServices
     public static WebApplication AddWebApplicationBuilder(this WebApplication app)
     {
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
+        switch (app.Environment.EnvironmentName)
         {
-            app.UseSwagger();
-
-            app.UseSwaggerUI();
-
-            Task.Run(() => SeedDataAsync(app));
+            case "DockerNginx":
+                app.UseForwardedHeaders();
+                app.UseSwagger();
+                app.UseSwaggerUI();
+                Task.Run(() => SeedDataAsync(app));
+                break;
+            case "DockerDevelopment":
+            case "Development":
+                app.UseSwagger();
+                app.UseSwaggerUI();
+                app.UseHsts();
+                app.UseHttpsRedirection();
+                Task.Run(() => SeedDataAsync(app));
+                break;
+            default:
+                app.UseHsts();
+                app.UseHttpsRedirection();
+                break;
         }
-
-        app.UseHttpsRedirection();
 
         app.UseRouting();
 

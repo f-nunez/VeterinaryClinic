@@ -1,5 +1,6 @@
 using Fnunez.VeterinaryClinic.Identity.Domain.Entities;
 using Fnunez.VeterinaryClinic.Identity.Infrastructure.Persistence.Contexts;
+using Fnunez.VeterinaryClinic.Identity.Infrastructure.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,10 @@ public static class ConfigureServices
     public static IServiceCollection AddInfrastructureServices(
         this IServiceCollection services, IConfiguration configuration)
     {
+        var identityServerSetting = configuration
+            .GetSection(typeof(IdentityServerSetting).Name)
+            .Get<IdentityServerSetting>()!;
+
         services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
@@ -32,13 +37,15 @@ public static class ConfigureServices
         if (configuration.GetValue<bool>("UseInMemoryDatabase"))
             services.AddIdentityServer(options =>
             {
-                options.Events.RaiseErrorEvents = true;
-                options.Events.RaiseInformationEvents = true;
-                options.Events.RaiseFailureEvents = true;
-                options.Events.RaiseSuccessEvents = true;
+                options.EmitStaticAudienceClaim = identityServerSetting.EmitStaticAudienceClaim;
 
-                // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
-                options.EmitStaticAudienceClaim = true;
+                options.Events.RaiseErrorEvents = identityServerSetting.RaiseErrorEvents;
+                options.Events.RaiseFailureEvents = identityServerSetting.RaiseFailureEvents;
+                options.Events.RaiseInformationEvents = identityServerSetting.RaiseInformationEvents;
+                options.Events.RaiseSuccessEvents = identityServerSetting.RaiseSuccessEvents;
+
+                if (!string.IsNullOrEmpty(identityServerSetting.IssuerUri))
+                    options.IssuerUri = identityServerSetting.IssuerUri;
             })
             .AddAspNetIdentity<ApplicationUser>()
             .AddConfigurationStore(configurationStoreOptions =>
@@ -54,13 +61,15 @@ public static class ConfigureServices
         else
             services.AddIdentityServer(options =>
             {
-                options.Events.RaiseErrorEvents = true;
-                options.Events.RaiseInformationEvents = true;
-                options.Events.RaiseFailureEvents = true;
-                options.Events.RaiseSuccessEvents = true;
+                options.EmitStaticAudienceClaim = identityServerSetting.EmitStaticAudienceClaim;
 
-                // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
-                options.EmitStaticAudienceClaim = true;
+                options.Events.RaiseErrorEvents = identityServerSetting.RaiseErrorEvents;
+                options.Events.RaiseFailureEvents = identityServerSetting.RaiseFailureEvents;
+                options.Events.RaiseInformationEvents = identityServerSetting.RaiseInformationEvents;
+                options.Events.RaiseSuccessEvents = identityServerSetting.RaiseSuccessEvents;
+
+                if (!string.IsNullOrEmpty(identityServerSetting.IssuerUri))
+                    options.IssuerUri = identityServerSetting.IssuerUri;
             })
             .AddAspNetIdentity<ApplicationUser>()
             .AddConfigurationStore(configurationStoreOptions =>

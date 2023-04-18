@@ -1,0 +1,524 @@
+version: "3.9"
+
+name: veterinary-clinic
+
+services:
+  nginx:
+    image: nginx:1.23.4
+    container_name: nginx
+    environment:
+      - VIRTUAL_HOST=vc.local
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - vc-web-network
+    restart: on-failure
+    volumes:
+      - ./_docker/nginx/proxy.conf:/etc/nginx/proxy.conf
+      - ./_docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./_docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./_docker/certs/veterinaryclinic.crt:/etc/nginx/certs/veterinaryclinic.crt:ro
+      - ./_docker/certs/veterinaryclinic.key:/etc/nginx/certs/veterinaryclinic.key:ro
+      - ./_docker/certs/passwords:/etc/nginx/certs/passwords:ro
+
+  rabbitmq:
+    image: masstransit/rabbitmq:3.9.7
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    expose:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - vc-rabbitmq-shared-network
+    restart: on-failure
+
+  samba:
+    build:
+      context: .
+      dockerfile: ./_docker/samba/Dockerfile
+    image: samba
+    container_name: samba
+    expose:
+      - 139:139/tcp
+      - 445:445/tcp
+    networks:
+      vc-samba-shared-network:
+        ipv4_address: 77.7.0.1
+    volumes:
+      - ./_docker/samba/storage/:/storage
+    stdin_open: true
+    tty: true
+
+  public-web:
+    build:
+      context: .
+      dockerfile: ./Public/src/Fnunez.VeterinaryClinic.Public.Web/Dockerfile
+    image: public-web
+    container_name: public-web
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerNginx
+      - ASPNETCORE_URLS=http://+:7138
+      - VIRTUAL_HOST=public-web.vc.local
+    expose:
+      - 7138:7138
+    networks:
+      - vc-rabbitmq-shared-network
+      - vc-web-network
+    restart: on-failure
+    depends_on:
+      - nginx
+      - rabbitmq
+
+  identity-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: identity-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: "VeterinaryClinic123!"
+    expose:
+      - 14330:1433
+    networks:
+      - vc-identity-internal-network
+    restart: on-failure
+
+  identity-api:
+    build:
+      context: .
+      dockerfile: ./Identity/src/Presentation/Fnunez.VeterinaryClinic.Identity.Api/Dockerfile
+    image: identity-api
+    container_name: identity-api.vc.local
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerNginx
+      - ASPNETCORE_URLS=http://+:7066
+      - VIRTUAL_HOST=identity-api.vc.local
+    expose:
+      - 7066:7066
+    networks:
+      - vc-identity-internal-network
+      - vc-identity-shared-network
+      - vc-web-network
+    restart: on-failure
+    depends_on:
+      - identity-db
+      - nginx
+
+  clinicmanagement-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: clinicmanagement-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: "VeterinaryClinic123!"
+    expose:
+      - 14331:1433
+    networks:
+      - vc-clinicmanagement-internal-network
+    restart: on-failure
+
+  clinicmanagement-api:
+    build:
+      context: .
+      dockerfile: ./ClinicManagement/src/Presentation/Fnunez.VeterinaryClinic.ClinicManagement.Api/Dockerfile
+    image: clinicmanagement-api
+    container_name: clinicmanagement-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerNginx
+      - ASPNETCORE_URLS=http://+:7229
+    expose:
+      - 7229:7229
+    networks:
+      - vc-clinicmanagement-internal-network
+      - vc-identity-shared-network
+      - vc-rabbitmq-shared-network
+      - vc-samba-shared-network
+    restart: on-failure
+    depends_on:
+      - clinicmanagement-db
+      - identity-api
+      - rabbitmq
+      - samba
+    volumes:
+      - samba-volume:/storage
+
+  clinicmanagement-blazor:
+    build:
+      context: .
+      dockerfile: ./ClinicManagement/src/Presentation/BlazorClient/Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Server/Dockerfile
+    image: clinicmanagement-blazor
+    container_name: clinicmanagement-blazor
+    environment:
+      # Per Duende's BFF license requirements, stay as Development environment
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:7004
+      - VIRTUAL_HOST=clinicmanagement-blazor.vc.local
+      # Set appsettings environment
+      - AuthenticationSetting__DefaultChallengeScheme=oidc
+      - AuthenticationSetting__DefaultScheme=cookie
+      - AuthenticationSetting__DefaultSignOutScheme=oidc
+      - CookieSetting__AuthenticationScheme=cookie
+      - CookieSetting__EnabledSlidingExpiration=true
+      - CookieSetting__ExpireTimeInMinutes=15
+      - CookieSetting__Name=clinic-management-blazor
+      - CookieSetting__SameSiteMode=Strict
+      - CorsPolicySetting__ClinicManagementApiUrl=http://clinicmanagement-api:7229
+      - CorsPolicySetting__ClinicManagementNotificationsApiUrl=http://clinicmanagementnotifications-api:7082
+      - CorsPolicySetting__IdentityServerUrl=http://identity-api.vc.local:7066
+      - DeploymentSetting__EnvironmentName=DockerNginx
+      - DeploymentSetting__WellKnownHttpHeaderReplacement=http://identity-api.vc.local
+      - DeploymentSetting__WellKnownHttpHeaderToReplace=http://identity-api.vc.local:7066
+      - OpenIdConnectSetting__AccessDeniedPath=/login
+      - OpenIdConnectSetting__AuthenticationScheme=oidc
+      - OpenIdConnectSetting__Authority=http://identity-api.vc.local:7066
+      - OpenIdConnectSetting__ClaimActionsToMap__0=preferred_username
+      - OpenIdConnectSetting__ClaimActionsToMap__1=role
+      - OpenIdConnectSetting__ClientId=6c4c5801-1089-4c3c-83c7-ddc0eb3707b3
+      - OpenIdConnectSetting__ClientSecret=secret
+      - OpenIdConnectSetting__EnabledGetClaimsFromUserInfoEndpoint=true
+      - OpenIdConnectSetting__EnabledMapInboundClaims=false
+      - OpenIdConnectSetting__EnabledRequireHttpsMetadata=false
+      - OpenIdConnectSetting__EnabledSaveTokens=true
+      - OpenIdConnectSetting__EnabledUsePkce=true
+      - OpenIdConnectSetting__EnabledValidateAudience=false
+      - OpenIdConnectSetting__MetadataAddress=http://identity-api.vc.local:7066/.well-known/openid-configuration
+      - OpenIdConnectSetting__ResponseMode=query
+      - OpenIdConnectSetting__ResponseType=code
+      - OpenIdConnectSetting__Scopes__0=clinic_management_api
+      - OpenIdConnectSetting__Scopes__1=clinic_management_notifications_api
+      - OpenIdConnectSetting__Scopes__2=email
+      - OpenIdConnectSetting__Scopes__3=offline_access
+      - OpenIdConnectSetting__Scopes__4=openid
+      - OpenIdConnectSetting__Scopes__5=preferred_username
+      - OpenIdConnectSetting__Scopes__6=profile
+      - OpenIdConnectSetting__Scopes__7=roles
+      - ReverseProxy__Clusters__ClinicManagementAccessTokenCluster__Destinations__ClinicManagementApiDestination__Address=http://clinicmanagement-blazor.vc.local:7004/api
+      - ReverseProxy__Clusters__ClinicManagementApiCluster__Destinations__ClinicManagementApiDestination__Address=http://clinicmanagement-api:7229/api
+      - ReverseProxy__Clusters__ClinicManagementNotificationsApiCluster__Destinations__ClinicManagementApiDestination__Address=http://clinicmanagementnotifications-api:7082/api
+      - ReverseProxyForNotificationHubSignalr__Clusters__ClinicManagementNotificationHubCluster__Destinations__ClinicManagementNotificationsApiDestination__Address=http://clinicmanagementnotifications-api:7082/notificationhub
+    expose:
+      - 7004:7004
+    networks:
+      - vc-clinicmanagement-internal-network
+      - vc-identity-shared-network
+      - vc-web-network
+    restart: on-failure
+    depends_on:
+      - clinicmanagement-api
+      - identity-api
+      - nginx
+
+  clinicmanagementnotifications-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: clinicmanagementnotifications-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: "VeterinaryClinic123!"
+    expose:
+      - 14332:1433
+    networks:
+      - vc-clinicmanagement-internal-network
+    restart: on-failure
+
+  clinicmanagementnotifications-api:
+    build:
+      context: .
+      dockerfile: ./ClinicManagementN/src/Presentation/Fnunez.VeterinaryClinic.ClinicManagementNotifications.Api/Dockerfile
+    image: clinicmanagementnotifications-api
+    container_name: clinicmanagementnotifications-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerNginx
+      - ASPNETCORE_URLS=http://+:7082
+    expose:
+      - 7082:7082
+    networks:
+      - vc-clinicmanagement-internal-network
+      - vc-identity-shared-network
+      - vc-rabbitmq-shared-network
+    restart: on-failure
+    depends_on:
+      - clinicmanagementnotifications-db
+      - identity-api
+      - rabbitmq
+
+  scheduling-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: scheduling-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: "VeterinaryClinic123!"
+    expose:
+      - 14333:1433
+    networks:
+      - vc-scheduling-internal-network
+    restart: on-failure
+
+  scheduling-api:
+    build:
+      context: .
+      dockerfile: ./Scheduling/src/Presentation/Fnunez.VeterinaryClinic.Scheduling.Api/Dockerfile
+    image: scheduling-api
+    container_name: scheduling-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerNginx
+      - ASPNETCORE_URLS=http://+:7266
+    expose:
+      - 7266:7266
+    networks:
+      - vc-identity-shared-network
+      - vc-rabbitmq-shared-network
+      - vc-samba-shared-network
+      - vc-scheduling-internal-network
+    restart: on-failure
+    depends_on:
+      - identity-api
+      - clinicmanagement-api
+      - rabbitmq
+      - samba
+      - scheduling-db
+    volumes:
+      - samba-volume:/storage
+
+  scheduling-blazor:
+    build:
+      context: .
+      dockerfile: ./Scheduling/src/Presentation/BlazorClient/Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Server/Dockerfile
+    image: scheduling-blazor
+    container_name: scheduling-blazor
+    environment:
+      # Per Duende's BFF license requirements, stay as Development environment
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:7154
+      - VIRTUAL_HOST=scheduling-blazor.vc.local
+      # Set appsettings environment
+      - AuthenticationSetting__DefaultChallengeScheme=oidc
+      - AuthenticationSetting__DefaultScheme=cookie
+      - AuthenticationSetting__DefaultSignOutScheme=oidc
+      - CookieSetting__AuthenticationScheme=cookie
+      - CookieSetting__EnabledSlidingExpiration=true
+      - CookieSetting__ExpireTimeInMinutes=15
+      - CookieSetting__Name=scheduling-blazor
+      - CookieSetting__SameSiteMode=Strict
+      - CorsPolicySetting__IdentityServerUrl=http://identity-api.vc.local:7066
+      - CorsPolicySetting__SchedulingApiUrll=http://scheduling-api:7266
+      - CorsPolicySetting__SchedulingNotificationsApiUrl=http://schedulingnotifications-api:7183
+      - DeploymentSetting__EnvironmentName=DockerNginx
+      - DeploymentSetting__WellKnownHttpHeaderReplacement=http://identity-api.vc.local
+      - DeploymentSetting__WellKnownHttpHeaderToReplace=http://identity-api.vc.local:7066
+      - OpenIdConnectSetting__AccessDeniedPath=/login
+      - OpenIdConnectSetting__AuthenticationScheme=oidc
+      - OpenIdConnectSetting__Authority=http://identity-api.vc.local:7066
+      - OpenIdConnectSetting__ClaimActionsToMap__0=preferred_username
+      - OpenIdConnectSetting__ClaimActionsToMap__1=role
+      - OpenIdConnectSetting__ClientId=85064410-c9c8-4afa-9deb-cb4b8e5114df
+      - OpenIdConnectSetting__ClientSecret=secret
+      - OpenIdConnectSetting__EnabledGetClaimsFromUserInfoEndpoint=true
+      - OpenIdConnectSetting__EnabledMapInboundClaims=false
+      - OpenIdConnectSetting__EnabledRequireHttpsMetadata=false
+      - OpenIdConnectSetting__EnabledSaveTokens=true
+      - OpenIdConnectSetting__EnabledUsePkce=true
+      - OpenIdConnectSetting__EnabledValidateAudience=false
+      - OpenIdConnectSetting__MetadataAddress=http://identity-api.vc.local:7066/.well-known/openid-configuration
+      - OpenIdConnectSetting__ResponseMode=query
+      - OpenIdConnectSetting__ResponseType=code
+      - OpenIdConnectSetting__Scopes__0=email
+      - OpenIdConnectSetting__Scopes__1=offline_access
+      - OpenIdConnectSetting__Scopes__2=openid
+      - OpenIdConnectSetting__Scopes__3=preferred_username
+      - OpenIdConnectSetting__Scopes__4=profile
+      - OpenIdConnectSetting__Scopes__5=roles
+      - OpenIdConnectSetting__Scopes__6=scheduling_api
+      - OpenIdConnectSetting__Scopes__7=scheduling_notifications_api
+      - ReverseProxy__Clusters__SchedulingAccessTokenCluster__Destinations__SchedulingApiDestination__Address=http://scheduling-blazor.vc.local:7154/api
+      - ReverseProxy__Clusters__SchedulingApiCluster__Destinations__SchedulingApiDestination__Address=http://scheduling-api:7266/api
+      - ReverseProxy__Clusters__SchedulingNotificationsApiCluster__Destinations__SchedulingApiDestination__Address=http://schedulingnotifications-api:7183/api
+      - ReverseProxyForNotificationHubSignalr__Clusters__SchedulingNotificationHubCluster__Destinations__SchedulingNotificationsApiDestination__Address=http://schedulingnotifications-api:7183/notificationhub
+    expose:
+      - 7154:7154
+    networks:
+      - vc-identity-shared-network
+      - vc-scheduling-internal-network
+      - vc-web-network
+    restart: on-failure
+    depends_on:
+      - identity-api
+      - nginx
+      - scheduling-api
+
+  schedulingnotifications-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: schedulingnotifications-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: "VeterinaryClinic123!"
+    expose:
+      - 14334:1433
+    networks:
+      - vc-scheduling-internal-network
+    restart: on-failure
+
+  schedulingnotifications-api:
+    build:
+      context: .
+      dockerfile: ./SchedulingN/src/Presentation/Fnunez.VeterinaryClinic.SchedulingNotifications.Api/Dockerfile
+    image: schedulingnotifications-api
+    container_name: schedulingnotifications-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerNginx
+      - ASPNETCORE_URLS=http://+:7183
+    expose:
+      - 7183:7183
+    networks:
+      - vc-identity-shared-network
+      - vc-rabbitmq-shared-network
+      - vc-scheduling-internal-network
+    restart: on-failure
+    depends_on:
+      - identity-api
+      - rabbitmq
+      - schedulingnotifications-db
+
+  schedulingemailsender-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: schedulingemailsender-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: "VeterinaryClinic123!"
+    expose:
+      - 14335:1433
+    networks:
+      - vc-scheduling-internal-network
+    restart: on-failure
+
+  schedulingemailsender-api:
+    build:
+      context: .
+      dockerfile: ./SchedulingES/src/Presentation/Fnunez.VeterinaryClinic.SchedulingEmailSender.Api/Dockerfile
+    image: schedulingemailsender-api
+    container_name: schedulingemailsender-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerNginx
+      - ASPNETCORE_URLS=https://+:7195
+      - ASPNETCORE_HTTPS_PORT=7195
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=VeterinaryClinic123!
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/veterinaryclinic.pfx
+    expose:
+      - 7195:7195
+    networks:
+      - vc-rabbitmq-shared-network
+      - vc-scheduling-internal-network
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+      - schedulingemailsender-db
+    volumes:
+      - ./_docker/certs/veterinaryclinic.pfx:/https/veterinaryclinic.pfx:ro
+      - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
+    entrypoint: /bin/sh -c "update-ca-certificates && dotnet Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.dll"
+
+  emailservice-api:
+    build:
+      context: .
+      dockerfile: ./EmailService/src/Fnunez.VeterinaryClinic.EmailService.Api/Dockerfile
+    image: emailservice-api
+    container_name: emailservice-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerNginx
+      - ASPNETCORE_URLS=https://+:7284
+      - ASPNETCORE_HTTPS_PORT=7284
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=VeterinaryClinic123!
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/veterinaryclinic.pfx
+    expose:
+      - 7284:7284
+      - 587:587
+    ports:
+      - :587
+    networks:
+      - vc-emailservice-shared-network
+      - vc-rabbitmq-shared-network
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./_docker/certs/veterinaryclinic.pfx:/https/veterinaryclinic.pfx:ro
+      - ./_docker/certs/veterinaryclinic.crt:/usr/local/share/ca-certificates/veterinaryclinic.crt:ro
+    entrypoint: /bin/sh -c "update-ca-certificates && dotnet Fnunez.VeterinaryClinic.EmailService.Api.dll"
+
+networks:
+  vc-web-network:
+    name: vc-web-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 77.0.0.0/16
+          gateway: 77.0.0.254
+
+  vc-rabbitmq-shared-network:
+    name: vc-rabbitmq-shared-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 77.1.0.0/16
+          gateway: 77.1.0.254
+
+  vc-identity-internal-network:
+    name: vc-identity-internal-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 77.2.0.0/16
+          gateway: 77.2.0.254
+
+  vc-identity-shared-network:
+    name: vc-identity-shared-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 77.3.0.0/16
+          gateway: 77.3.0.254
+
+  vc-clinicmanagement-internal-network:
+    name: vc-clinicmanagement-internal-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 77.4.0.0/16
+          gateway: 77.4.0.254
+
+  vc-scheduling-internal-network:
+    name: vc-scheduling-internal-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 77.5.0.0/16
+          gateway: 77.5.0.254
+
+  vc-emailservice-shared-network:
+    name: vc-emailservice-shared-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 77.6.0.0/16
+          gateway: 77.6.0.254
+
+  vc-samba-shared-network:
+    name: vc-samba-shared-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 77.7.0.0/16
+          gateway: 77.7.0.254
+
+volumes:
+  samba-volume:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: //77.7.0.1/storage
+      o: "username=guest,password=guest,vers=3.0"
