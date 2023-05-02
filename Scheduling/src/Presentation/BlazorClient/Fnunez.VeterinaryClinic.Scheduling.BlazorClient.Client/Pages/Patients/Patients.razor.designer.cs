@@ -20,6 +20,9 @@ public partial class PatientsComponent : ComponentBase
     private IPatientService _patientService { get; set; }
 
     [Inject]
+    private ISpinnerService _spinnerService { get; set; }
+
+    [Inject]
     private IStringLocalizer<PatientDetailComponent> _stringLocalizerForDetail { get; set; }
 
     protected IEnumerable<int> PageSizeOptions = new int[] { 3, 6, 9, 18 };
@@ -47,6 +50,8 @@ public partial class PatientsComponent : ComponentBase
 
     protected async Task OnClickDetail(PatientsVm patient)
     {
+        _spinnerService.Show();
+
         var request = new GetPatientDetailRequest
         {
             ClientId = patient.ClientId,
@@ -58,6 +63,8 @@ public partial class PatientsComponent : ComponentBase
 
         var patientDetail = PatientHelper
             .MapPatientDetailViewModel(currentPatientData.PatientDetail);
+
+        _spinnerService.Hide();
 
         await _dialogService.OpenAsync<PatientDetail>(
             _stringLocalizerForDetail["PatientDetail_Label_PatientDetail"],
@@ -71,6 +78,8 @@ public partial class PatientsComponent : ComponentBase
     #region Client filter methods
     protected async Task ClientFilterLoadData(LoadDataArgs args)
     {
+        _spinnerService.Show();
+
         var request = new GetPatientsFilterClientRequest
         {
             DataGridRequest = args.GetDataGridRequest()
@@ -81,6 +90,8 @@ public partial class PatientsComponent : ComponentBase
 
         ClientFilterValues = dataGridResponse.Items;
         ClientFilterCount = dataGridResponse.Count;
+
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
@@ -113,6 +124,8 @@ public partial class PatientsComponent : ComponentBase
 
     private async Task GetPatientsAsync()
     {
+        _spinnerService.Show();
+
         var request = new GetPatientsRequest
         {
             ClientId = ClientId.Value
@@ -121,5 +134,7 @@ public partial class PatientsComponent : ComponentBase
         var patientDtos = await _patientService.GetPatientsAsync(request);
 
         Patients = PatientHelper.MapPatientsViewModels(patientDtos);
+
+        _spinnerService.Hide();
     }
 }
