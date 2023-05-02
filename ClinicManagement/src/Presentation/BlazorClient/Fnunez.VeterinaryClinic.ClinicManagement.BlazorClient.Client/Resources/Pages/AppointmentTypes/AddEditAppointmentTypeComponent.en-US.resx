@@ -127,7 +127,7 @@
     <value>Code is required</value>
   </data>
   <data name="AddEditAppointmentType_Duration_TextBox_Label" xml:space="preserve">
-    <value>Duration</value>
+    <value>Duration (minutes)</value>
   </data>
   <data name="AddEditAppointmentType_Duration_TextBox_PlaceHolder" xml:space="preserve">
     <value>Enter duration here...</value>
