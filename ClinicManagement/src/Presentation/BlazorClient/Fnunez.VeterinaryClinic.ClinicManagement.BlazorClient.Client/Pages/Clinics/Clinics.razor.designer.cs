@@ -22,6 +22,9 @@ public partial class ClinicsComponent : ComponentBase
     private DialogService _dialogService { get; set; }
 
     [Inject]
+    private ISpinnerService _spinnerService { get; set; }
+
+    [Inject]
     private IStringLocalizer<AddEditClinicComponent> _stringLocalizerForAdd { get; set; }
 
     [Inject]
@@ -57,6 +60,7 @@ public partial class ClinicsComponent : ComponentBase
 
     protected async Task LoadData(LoadDataArgs args)
     {
+        _spinnerService.Show();
         IsLoading = true;
         var request = new GetClinicsRequest
         {
@@ -74,6 +78,7 @@ public partial class ClinicsComponent : ComponentBase
         Clinics = dataGridResponse.Items;
         Count = dataGridResponse.Count;
         IsLoading = false;
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
@@ -120,12 +125,16 @@ public partial class ClinicsComponent : ComponentBase
         if (!proceedToDelete.HasValue || !proceedToDelete.Value)
             return;
 
+        _spinnerService.Show();
+
         var request = new DeleteClinicRequest
         {
             Id = clinic.Id
         };
 
         await _clinicService.DeleteAsync(request);
+
+        _spinnerService.Hide();
 
         await ShowAlertAsync(
             string.Format(StringLocalizer["Clinics_DeletedClinic_Alert_Message"], clinic.Name),
@@ -137,6 +146,8 @@ public partial class ClinicsComponent : ComponentBase
 
     protected async Task OnClickDetail(ClinicDto clinic)
     {
+        _spinnerService.Show();
+
         var request = new GetClinicByIdRequest
         {
             Id = clinic.Id
@@ -145,6 +156,8 @@ public partial class ClinicsComponent : ComponentBase
         var currentClinic = await _clinicService.GetByIdAsync(request);
 
         var clinicForDetail = ClinicHelper.MapClinicViewModel(clinic);
+
+        _spinnerService.Hide();
 
         await _dialogService.OpenAsync<ClinicDetail>(
             _stringLocalizerForDetail["ClinicDetail_Label_ClinicDetail"],
@@ -157,6 +170,8 @@ public partial class ClinicsComponent : ComponentBase
 
     protected async Task OnClickEdit(ClinicDto clinic)
     {
+        _spinnerService.Show();
+
         var request = new GetClinicByIdRequest
         {
             Id = clinic.Id
@@ -165,6 +180,8 @@ public partial class ClinicsComponent : ComponentBase
         var currentClinic = await _clinicService.GetByIdAsync(request);
 
         var clinicToEdit = ClinicHelper.MapClinicViewModel(clinic);
+
+        _spinnerService.Hide();
 
         var response = await _dialogService.OpenAsync<AddEditClinic>(
             _stringLocalizerForAdd["AddEditClinic_Label_Edit"],
