@@ -1,5 +1,4 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Clinic.GetClinicsFilterAddress;
-using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClinicAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
@@ -25,18 +24,33 @@ public class GetClinicsFilterAddressQueryHandler
         var response = new GetClinicsFilterAddressResponse(
             request.CorrelationId);
 
-        var specification = new ClinicAddressesSpecification(
-            request.AddressFilterValue);
+        string sqlQueryToSearch = GetSqlQueryToSearch(request);
 
         var clinicAddresses = await _unitOfWork
-            .ReadRepository<Clinic>()
-            .ListAsync(specification, cancellationToken);
-
-        if (clinicAddresses is null)
-            return response;
+            .GetFromRawSqlAsync<string>(sqlQueryToSearch, cancellationToken);
 
         response.ClinicAddresses = clinicAddresses;
 
         return response;
+    }
+
+    private static string GetSqlQueryToSearch(
+        GetClinicsFilterAddressRequest request)
+    {
+        return @$"
+        DECLARE @top AS INTEGER = 10;
+        DECLARE @search as NVARCHAR(4000) = LOWER(N'{request.AddressFilterValue}');
+
+        SELECT
+            DISTINCT TOP(@top) [c].[Address]
+        FROM
+            [Clinics] AS [c]
+        WHERE
+            [c].[IsActive] = CAST(1 AS BIT) AND
+            (
+                (@search LIKE N'') OR
+                CHARINDEX(@search, LOWER(LTRIM(RTRIM([c].[Address])))) > 0
+            )
+        ORDER BY [c].[Address];";
     }
 }
