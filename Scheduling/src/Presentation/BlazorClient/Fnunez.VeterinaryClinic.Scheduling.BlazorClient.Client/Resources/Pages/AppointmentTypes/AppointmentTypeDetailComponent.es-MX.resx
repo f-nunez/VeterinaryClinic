@@ -127,7 +127,7 @@
     <value>Código</value>
   </data>
   <data name="AppointmentTypeDetail_Label_Duration" xml:space="preserve">
-    <value>Duración</value>
+    <value>Duración (minutos)</value>
   </data>
   <data name="AppointmentTypeDetail_Label_Name" xml:space="preserve">
     <value>Nombre</value>
