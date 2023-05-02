@@ -23,6 +23,9 @@ public partial class NotificationCenterComponent : ComponentBase
     [Inject]
     private DialogService _dialogService { get; set; }
 
+    [Inject]
+    private ISpinnerService _spinnerService { get; set; }
+
     protected bool EnabledDeleteAllButton { get; set; } = true;
 
     protected NotificationCenterFilterValue FilterValue { get; set; }
@@ -42,6 +45,7 @@ public partial class NotificationCenterComponent : ComponentBase
 
     protected async Task LoadData(LoadDataArgs args)
     {
+        _spinnerService.Show();
         IsLoading = true;
 
         var request = new GetAppNotificationsDataGridRequest
@@ -75,6 +79,8 @@ public partial class NotificationCenterComponent : ComponentBase
 
         IsLoading = false;
 
+        _spinnerService.Hide();
+
         EnabledDeleteAllButton = notifications.Any();
 
         await InvokeAsync(StateHasChanged);
@@ -101,12 +107,16 @@ public partial class NotificationCenterComponent : ComponentBase
         if (!proceedToDelete.HasValue || !proceedToDelete.Value)
             return;
 
+        _spinnerService.Show();
+
         var request = new DeleteAppNotificationRequest
         {
             AppNotificationId = item.Id
         };
 
         await _appNotificationService.DeleteAppNotificationAsync(request);
+
+        _spinnerService.Hide();
 
         await ShowAlertAsync(
             StringLocalizer["NotificationCenter_DeletedNotification_Alert_Message"],
@@ -131,6 +141,8 @@ public partial class NotificationCenterComponent : ComponentBase
         if (!proceedToDelete.HasValue || !proceedToDelete.Value)
             return;
 
+        _spinnerService.Show();
+
         var appNotificationIds = NotificationCenterDataGridItems
             .Select(x => x.Id)
             .ToList();
@@ -141,6 +153,8 @@ public partial class NotificationCenterComponent : ComponentBase
         };
 
         await _appNotificationService.DeleteAppNotificationsAsync(request);
+
+        _spinnerService.Hide();
 
         await ShowAlertAsync(
             StringLocalizer["NotificationCenter_DeletedAllNotification_Alert_Message"],
