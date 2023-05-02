@@ -1,5 +1,4 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Doctor.GetDoctorsFilterId;
-using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.DoctorAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
@@ -21,17 +20,34 @@ public class GetDoctorsFilterIdQueryHandler
     {
         GetDoctorsFilterIdRequest request = query.GetDoctorsFilterIdRequest;
         var response = new GetDoctorsFilterIdResponse(request.CorrelationId);
-        var specification = new DoctorIdsSpecification(request.IdFilterValue);
+        string sqlQueryToSearch = GetSqlQueryToSearch(request);
 
         var doctorIds = await _unitOfWork
-            .ReadRepository<Doctor>()
-            .ListAsync(specification, cancellationToken);
-
-        if (doctorIds is null)
-            return response;
+            .GetFromRawSqlAsync<string>(sqlQueryToSearch, cancellationToken);
 
         response.DoctorIds = doctorIds;
 
         return response;
+    }
+
+    private static string GetSqlQueryToSearch(
+        GetDoctorsFilterIdRequest request)
+    {
+        return @$"
+        DECLARE @top AS INTEGER = 10;
+        DECLARE @search as NVARCHAR(4000) = N'{request.IdFilterValue}';
+
+        SELECT
+            TOP(@top) [d].[Id]
+        FROM
+            [Doctors] AS [d]
+        WHERE
+            [d].[IsActive] = CAST(1 AS BIT) AND
+            (
+                (@search LIKE N'') OR
+                CHARINDEX(@search, CONVERT(VARCHAR(11), [d].[Id])) > 0
+            )
+        ORDER BY
+            [d].[Id];";
     }
 }
