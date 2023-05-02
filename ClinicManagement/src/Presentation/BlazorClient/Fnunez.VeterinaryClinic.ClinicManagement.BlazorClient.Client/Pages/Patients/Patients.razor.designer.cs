@@ -22,6 +22,9 @@ public partial class PatientsComponent : ComponentBase
     private IPatientService _patientService { get; set; }
 
     [Inject]
+    private ISpinnerService _spinnerService { get; set; }
+
+    [Inject]
     private IStringLocalizer<AddEditPatientComponent> _stringLocalizerForAdd { get; set; }
 
     [Inject]
@@ -95,6 +98,8 @@ public partial class PatientsComponent : ComponentBase
         if (!proceedToDelete.HasValue || !proceedToDelete.Value)
             return;
 
+        _spinnerService.Show();
+
         var request = new DeletePatientRequest
         {
             ClientId = patient.ClientId,
@@ -102,6 +107,8 @@ public partial class PatientsComponent : ComponentBase
         };
 
         await _patientService.DeleteAsync(request);
+
+        _spinnerService.Hide();
 
         await ShowAlertAsync(
             string.Format(StringLocalizer["Patients_DeletedPatient_Alert_Message"], patient.Name),
@@ -113,6 +120,8 @@ public partial class PatientsComponent : ComponentBase
 
     protected async Task OnClickDetail(PatientsVm patient)
     {
+        _spinnerService.Show();
+
         var request = new GetPatientDetailRequest
         {
             ClientId = patient.ClientId,
@@ -125,6 +134,8 @@ public partial class PatientsComponent : ComponentBase
         var patientDetail = PatientHelper
             .MapPatientDetailViewModel(currentPatientData.PatientDetail);
 
+        _spinnerService.Hide();
+
         await _dialogService.OpenAsync<PatientDetail>(
             _stringLocalizerForDetail["PatientDetail_Label_PatientDetail"],
             new Dictionary<string, object>
@@ -136,6 +147,8 @@ public partial class PatientsComponent : ComponentBase
 
     protected async Task OnClickEdit(PatientsVm patient)
     {
+        _spinnerService.Show();
+
         var request = new GetPatientEditRequest
         {
             ClientId = patient.ClientId,
@@ -147,6 +160,8 @@ public partial class PatientsComponent : ComponentBase
 
         var patientToEdit = PatientHelper
             .MapAddEditPatientViewModel(currentPatientData.Patient);
+
+        _spinnerService.Hide();
 
         var response = await _dialogService.OpenAsync<AddEditPatient>(
             _stringLocalizerForAdd["AddEditPatient_Label_Edit"],
@@ -177,6 +192,8 @@ public partial class PatientsComponent : ComponentBase
     #region Client filter methods
     protected async Task ClientFilterLoadData(LoadDataArgs args)
     {
+        _spinnerService.Show();
+
         var request = new GetPatientsFilterClientRequest
         {
             DataGridRequest = args.GetDataGridRequest()
@@ -187,6 +204,8 @@ public partial class PatientsComponent : ComponentBase
 
         ClientFilterValues = dataGridResponse.Items;
         ClientFilterCount = dataGridResponse.Count;
+
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
@@ -219,6 +238,8 @@ public partial class PatientsComponent : ComponentBase
 
     private async Task GetPatientsAsync()
     {
+        _spinnerService.Show();
+
         var request = new GetPatientsRequest
         {
             ClientId = ClientId.Value
@@ -227,6 +248,8 @@ public partial class PatientsComponent : ComponentBase
         var patientDtos = await _patientService.GetPatientsAsync(request);
 
         Patients = PatientHelper.MapPatientsViewModels(patientDtos);
+
+        _spinnerService.Hide();
     }
 
     private async Task<bool?> ShowAlertAsync(
