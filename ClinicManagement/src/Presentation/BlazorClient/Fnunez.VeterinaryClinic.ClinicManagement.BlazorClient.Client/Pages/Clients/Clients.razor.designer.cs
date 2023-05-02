@@ -23,6 +23,9 @@ public partial class ClientsComponent : ComponentBase
     private DialogService _dialogService { get; set; }
 
     [Inject]
+    private ISpinnerService _spinnerService { get; set; }
+
+    [Inject]
     private IStringLocalizer<AddEditClientComponent> _stringLocalizerForAdd { get; set; }
 
     [Inject]
@@ -60,6 +63,7 @@ public partial class ClientsComponent : ComponentBase
 
     protected async Task LoadData(LoadDataArgs args)
     {
+        _spinnerService.Show();
         IsLoading = true;
         var request = new GetClientsRequest
         {
@@ -78,6 +82,7 @@ public partial class ClientsComponent : ComponentBase
         Clients = dataGridResponse.Items;
         Count = dataGridResponse.Count;
         IsLoading = false;
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
@@ -124,12 +129,16 @@ public partial class ClientsComponent : ComponentBase
         if (!proceedToDelete.HasValue || !proceedToDelete.Value)
             return;
 
+        _spinnerService.Show();
+
         var request = new DeleteClientRequest
         {
             Id = client.ClientId
         };
 
         await _clientService.DeleteAsync(request);
+
+        _spinnerService.Hide();
 
         await ShowAlertAsync(
             string.Format(StringLocalizer["Clients_DeletedClient_Alert_Message"], client.FullName),
@@ -141,6 +150,8 @@ public partial class ClientsComponent : ComponentBase
 
     protected async Task OnClickDetail(ClientDto client)
     {
+        _spinnerService.Show();
+
         var request = new GetClientDetailRequest
         {
             ClientId = client.ClientId
@@ -151,6 +162,8 @@ public partial class ClientsComponent : ComponentBase
 
         var clientDetail = ClientHelper
             .MapClientDetailViewModel(currentClientData.ClientDetail);
+
+        _spinnerService.Hide();
 
         await _dialogService.OpenAsync<ClientDetail>(
             _stringLocalizerForDetail["ClientDetail_Label_ClientDetail"],
@@ -163,6 +176,8 @@ public partial class ClientsComponent : ComponentBase
 
     protected async Task OnClickEdit(ClientDto client)
     {
+        _spinnerService.Show();
+
         var request = new GetClientEditRequest
         {
             ClientId = client.ClientId
@@ -173,6 +188,8 @@ public partial class ClientsComponent : ComponentBase
 
         var clientToEdit = ClientHelper
             .MapAddEditClientViewModel(currentClientData.Client);
+
+        _spinnerService.Hide();
 
         var response = await _dialogService.OpenAsync<AddEditClient>(
             _stringLocalizerForAdd["AddEditClient_Label_Edit"],
