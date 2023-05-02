@@ -1,5 +1,4 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Room.GetRoomsFilterId;
-using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.RoomAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
@@ -22,17 +21,34 @@ public class GetRoomsFilterIdQueryHandler
         GetRoomsFilterIdRequest request = query.GetRoomsFilterIdRequest;
         var response = new GetRoomsFilterIdResponse(request.CorrelationId);
 
-        var specification = new RoomIdsSpecification(request.IdFilterValue);
+        string sqlQueryToSearch = GetSqlQueryToSearch(request);
 
         var roomIds = await _unitOfWork
-            .ReadRepository<Room>()
-            .ListAsync(specification, cancellationToken);
-
-        if (roomIds is null)
-            return response;
+            .GetFromRawSqlAsync<string>(sqlQueryToSearch, cancellationToken);
 
         response.RoomIds = roomIds;
 
         return response;
+    }
+
+    private static string GetSqlQueryToSearch(
+        GetRoomsFilterIdRequest request)
+    {
+        return @$"
+        DECLARE @top AS INTEGER = 10;
+        DECLARE @search as NVARCHAR(4000) = N'{request.IdFilterValue}';
+
+        SELECT
+            TOP(@top) [r].[Id]
+        FROM
+            [Rooms] AS [r]
+        WHERE
+            [r].[IsActive] = CAST(1 AS BIT) AND
+            (
+                (@search LIKE N'') OR
+                CHARINDEX(@search, CONVERT(VARCHAR(11), [r].[Id])) > 0
+            )
+        ORDER BY
+            [r].[Id];";
     }
 }
