@@ -1,5 +1,4 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterEmailAddress;
-using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
@@ -25,18 +24,33 @@ public class GetClientsFilterEmailAddressQueryHandler
         var response = new GetClientsFilterEmailAddressResponse(
             request.CorrelationId);
 
-        var specification = new ClientEmailAddressesSpecification(
-            request.EmailAddressFilterValue);
+        string sqlQueryToSearch = GetSqlQueryToSearch(request);
 
         var clientEmailAddresses = await _unitOfWork
-            .ReadRepository<Client>()
-            .ListAsync(specification, cancellationToken);
-
-        if (clientEmailAddresses is null)
-            return response;
+            .GetFromRawSqlAsync<string>(sqlQueryToSearch, cancellationToken);
 
         response.ClientEmailAddresses = clientEmailAddresses;
 
         return response;
+    }
+
+    private static string GetSqlQueryToSearch(
+        GetClientsFilterEmailAddressRequest request)
+    {
+        return @$"
+        DECLARE @top AS INTEGER = 10;
+        DECLARE @search as NVARCHAR(4000) = LOWER(N'{request.EmailAddressFilterValue}');
+
+        SELECT
+            DISTINCT TOP(@top) [c].[EmailAddress]
+        FROM
+            [Clients] AS [c]
+        WHERE
+            [c].[IsActive] = CAST(1 AS BIT) AND
+            (
+                (@search LIKE N'') OR
+                CHARINDEX(@search, LOWER(LTRIM(RTRIM([c].[EmailAddress])))) > 0
+            )
+        ORDER BY [c].[EmailAddress];";
     }
 }
