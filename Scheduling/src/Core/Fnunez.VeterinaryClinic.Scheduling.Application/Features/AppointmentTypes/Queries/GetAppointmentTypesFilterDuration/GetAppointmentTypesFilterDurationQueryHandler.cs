@@ -1,5 +1,4 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypesFilterDuration;
-using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.AppointmentTypeAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
@@ -25,18 +24,33 @@ public class GetAppointmentTypesFilterDurationQueryHandler
         var response = new GetAppointmentTypesFilterDurationResponse(
             request.CorrelationId);
 
-        var specification = new AppointmentTypeDurationsSpecification(
-            request.DurationFilterValue);
+        string sqlQueryToSearch = GetSqlQueryToSearch(request);
 
         var appointmentTypeDurations = await _unitOfWork
-            .ReadRepository<AppointmentType>()
-            .ListAsync(specification, cancellationToken);
-
-        if (appointmentTypeDurations is null)
-            return response;
+            .GetFromRawSqlAsync<string>(sqlQueryToSearch, cancellationToken);
 
         response.AppointmentTypeDurations = appointmentTypeDurations;
 
         return response;
+    }
+
+    private static string GetSqlQueryToSearch(
+        GetAppointmentTypesFilterDurationRequest request)
+    {
+        return @$"
+        DECLARE @top AS INTEGER = 10;
+        DECLARE @search as NVARCHAR(4000) = LOWER(N'{request.DurationFilterValue}');
+
+        SELECT
+            DISTINCT TOP(@top) [at].[Duration]
+        FROM
+            [AppointmentTypes] AS [at]
+        WHERE
+            [at].[IsActive] = CAST(1 AS BIT) AND
+            (
+                (@search LIKE N'') OR
+                CHARINDEX(@search, LOWER(LTRIM(RTRIM([at].[Duration])))) > 0
+            )
+        ORDER BY [at].[Duration];";
     }
 }
