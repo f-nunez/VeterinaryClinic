@@ -115,6 +115,7 @@
                     <RadzenDatePicker
                         @bind-Value="@Model.StartOn"
                         Class="w-100 d-block"
+                        Change="OnChangeEndOnFilter"
                         DateFormat="g"
                         Name="StartOn"
                         ShowSeconds="false"
@@ -146,6 +147,7 @@
                     <RadzenDatePicker
                         @bind-Value="@Model.EndOn"
                         Class="w-100 d-block"
+                        Change="OnChangeStartOnFilter"
                         DateFormat="g"
                         Name="EndOn"
                         ShowSeconds="false"
@@ -200,6 +202,13 @@
                                 TextAlign="TextAlign.Left"
                                 Title=@StringLocalizer["AddEditAppointment_AppointmentType_DropDown_ColumnHeader_Name"]>
                             </RadzenDropDownDataGridColumn>
+
+                            <RadzenDropDownDataGridColumn
+                                Property="Duration"
+                                Sortable="true"
+                                TextAlign="TextAlign.Left"
+                                Title=@StringLocalizer["AddEditAppointment_AppointmentType_DropDown_ColumnHeader_Duration"]>
+                            </RadzenDropDownDataGridColumn>
                         </Columns>
                     </RadzenDropDownDataGrid>
 
@@ -210,6 +219,11 @@
                         Text=@StringLocalizer["AddEditAppointment_AppointmentType_DropDown_RequiredMessage"]
                         Value="0">
                     </RadzenCompareValidator>
+
+                    <div class="rz-message rz-messages-error position-absolute"
+                        hidden=@(!ShowErrorForAppointmentTypeDuration)>
+                        @StringLocalizer["AddEditAppointment_AppointmentType_DropDown_DurationMessage"]
+                    </div>
                 </div>
 
                 <div class="col-6 mb-3">

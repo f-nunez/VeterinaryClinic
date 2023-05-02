@@ -3,6 +3,7 @@ namespace Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.ViewModels.Appo
 public class AddEditAppointmentVm
 {
     public Guid AppointmentId { get; set; }
+    public int AppointmentTypeDuration { get; set; }
     public int AppointmentTypeId { get; set; }
     public int ClientId { get; set; }
     public string ClientFullName { get; set; } = string.Empty;
