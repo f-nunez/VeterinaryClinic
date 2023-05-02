@@ -18,6 +18,9 @@ public partial class DoctorDetailNotificationComponent : ComponentBase
     [Inject]
     private NavigationManager _navigationManager { get; set; }
 
+    [Inject]
+    private ISpinnerService _spinnerService { get; set; }
+
     protected bool IsNotActive { get; set; }
 
     protected bool IsNotFound { get; set; }
@@ -32,6 +35,8 @@ public partial class DoctorDetailNotificationComponent : ComponentBase
 
     protected async override Task OnParametersSetAsync()
     {
+        _spinnerService.Show();
+
         var request = new GetDoctorByIdRequest
         {
             Id = DoctorId
@@ -52,6 +57,8 @@ public partial class DoctorDetailNotificationComponent : ComponentBase
             _logger.LogError(ex, ex.Message);
             IsNotFound = true;
         }
+
+        _spinnerService.Hide();
     }
 
     protected void OnClickBack()
