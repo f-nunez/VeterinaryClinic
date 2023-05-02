@@ -22,6 +22,9 @@ public partial class AppointmentTypesComponent : ComponentBase
     private DialogService _dialogService { get; set; }
 
     [Inject]
+    private ISpinnerService _spinnerService { get; set; }
+
+    [Inject]
     private IStringLocalizer<AddEditAppointmentTypeComponent> _stringLocalizerForAdd { get; set; }
 
     [Inject]
@@ -57,6 +60,7 @@ public partial class AppointmentTypesComponent : ComponentBase
 
     protected async Task LoadData(LoadDataArgs args)
     {
+        _spinnerService.Show();
         IsLoading = true;
         var request = new GetAppointmentTypesRequest
         {
@@ -74,6 +78,7 @@ public partial class AppointmentTypesComponent : ComponentBase
         AppointmentTypes = dataGridResponse.Items;
         Count = dataGridResponse.Count;
         IsLoading = false;
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
@@ -120,12 +125,16 @@ public partial class AppointmentTypesComponent : ComponentBase
         if (!proceedToDelete.HasValue || !proceedToDelete.Value)
             return;
 
+        _spinnerService.Show();
+
         var request = new DeleteAppointmentTypeRequest
         {
             Id = appointmentType.Id
         };
 
         await _appointmentTypeService.DeleteAsync(request);
+
+        _spinnerService.Hide();
 
         await ShowAlertAsync(
             string.Format(StringLocalizer["AppointmentTypes_DeletedAppointmentType_Alert_Message"], appointmentType.Name),
@@ -137,6 +146,8 @@ public partial class AppointmentTypesComponent : ComponentBase
 
     protected async Task OnClickDetail(AppointmentTypeDto appointmentType)
     {
+        _spinnerService.Show();
+
         var request = new GetAppointmentTypeByIdRequest
         {
             Id = appointmentType.Id
@@ -147,6 +158,8 @@ public partial class AppointmentTypesComponent : ComponentBase
 
         var appointmentTypeForDetail = AppointmentTypeHelper
             .MapAppointmentTypeViewModel(appointmentType);
+
+        _spinnerService.Hide();
 
         await _dialogService.OpenAsync<AppointmentTypeDetail>(
             _stringLocalizerForDetail["AppointmentTypeDetail_Label_AppointmentTypeDetail"],
@@ -159,6 +172,8 @@ public partial class AppointmentTypesComponent : ComponentBase
 
     protected async Task OnClickEdit(AppointmentTypeDto appointmentType)
     {
+        _spinnerService.Show();
+
         var request = new GetAppointmentTypeByIdRequest
         {
             Id = appointmentType.Id
@@ -169,6 +184,8 @@ public partial class AppointmentTypesComponent : ComponentBase
 
         var appointmentTypeToEdit = AppointmentTypeHelper
             .MapAppointmentTypeViewModel(appointmentType);
+
+        _spinnerService.Hide();
 
         var response = await _dialogService.OpenAsync<AddEditAppointmentType>(
             _stringLocalizerForAdd["AddEditAppointmentType_Label_Edit"],
