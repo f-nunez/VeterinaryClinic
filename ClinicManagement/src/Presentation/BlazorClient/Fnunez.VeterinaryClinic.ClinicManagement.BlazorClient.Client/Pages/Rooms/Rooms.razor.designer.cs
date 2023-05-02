@@ -22,6 +22,9 @@ public partial class RoomsComponent : ComponentBase
     private IRoomService _roomService { get; set; }
 
     [Inject]
+    private ISpinnerService _spinnerService { get; set; }
+
+    [Inject]
     private IStringLocalizer<AddEditRoomComponent> _stringLocalizerForAdd { get; set; }
 
     [Inject]
@@ -57,6 +60,7 @@ public partial class RoomsComponent : ComponentBase
 
     protected async Task LoadData(LoadDataArgs args)
     {
+        _spinnerService.Show();
         IsLoading = true;
         var request = new GetRoomsRequest
         {
@@ -72,6 +76,7 @@ public partial class RoomsComponent : ComponentBase
         Count = dataGridResponse.Count;
         Rooms = dataGridResponse.Items;
         IsLoading = false;
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
@@ -118,12 +123,16 @@ public partial class RoomsComponent : ComponentBase
         if (!proceedToDelete.HasValue || !proceedToDelete.Value)
             return;
 
+        _spinnerService.Show();
+
         var request = new DeleteRoomRequest
         {
             Id = room.Id
         };
 
         await _roomService.DeleteAsync(request);
+
+        _spinnerService.Hide();
 
         await ShowAlertAsync(
             string.Format(StringLocalizer["Rooms_DeletedRoom_Alert_Message"], room.Name),
@@ -135,6 +144,8 @@ public partial class RoomsComponent : ComponentBase
 
     protected async Task OnClickDetail(RoomDto room)
     {
+        _spinnerService.Show();
+
         var request = new GetRoomByIdRequest
         {
             Id = room.Id
@@ -143,6 +154,8 @@ public partial class RoomsComponent : ComponentBase
         var currentRoom = await _roomService.GetByIdAsync(request);
 
         var roomForDetail = RoomHelper.MapRoomViewModel(room);
+
+        _spinnerService.Hide();
 
         await _dialogService.OpenAsync<RoomDetail>(
             _stringLocalizerForDetail["RoomDetail_Label_RoomDetail"],
@@ -155,6 +168,8 @@ public partial class RoomsComponent : ComponentBase
 
     protected async Task OnClickEdit(RoomDto room)
     {
+        _spinnerService.Show();
+
         var request = new GetRoomByIdRequest
         {
             Id = room.Id
@@ -163,6 +178,8 @@ public partial class RoomsComponent : ComponentBase
         var currentRoom = await _roomService.GetByIdAsync(request);
 
         var roomToEdit = RoomHelper.MapRoomViewModel(room);
+
+        _spinnerService.Hide();
 
         var response = await _dialogService.OpenAsync<AddEditRoom>(
             _stringLocalizerForAdd["AddEditRoom_Label_Edit"],
