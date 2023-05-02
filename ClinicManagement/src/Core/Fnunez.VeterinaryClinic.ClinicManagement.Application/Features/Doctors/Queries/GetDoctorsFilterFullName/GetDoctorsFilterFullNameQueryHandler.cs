@@ -1,5 +1,4 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.GetDoctorsFilterFullName;
-using Fnunez.VeterinaryClinic.ClinicManagement.Domain.DoctorAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
@@ -25,18 +24,33 @@ public class GetDoctorsFilterFullNameQueryHandler
         var response = new GetDoctorsFilterFullNameResponse(
             request.CorrelationId);
 
-        var specification = new DoctorFullNamesSpecification(
-            request.FullNameFilterValue);
+        string sqlQueryToSearch = GetSqlQueryToSearch(request);
 
         var doctorFullNames = await _unitOfWork
-            .ReadRepository<Doctor>()
-            .ListAsync(specification, cancellationToken);
-
-        if (doctorFullNames is null)
-            return response;
+            .GetFromRawSqlAsync<string>(sqlQueryToSearch, cancellationToken);
 
         response.DoctorFullNames = doctorFullNames;
 
         return response;
+    }
+
+    private static string GetSqlQueryToSearch(
+        GetDoctorsFilterFullNameRequest request)
+    {
+        return @$"
+        DECLARE @top AS INTEGER = 10;
+        DECLARE @search as NVARCHAR(4000) = LOWER(N'{request.FullNameFilterValue}');
+
+        SELECT
+            DISTINCT TOP(@top) [d].[FullName]
+        FROM
+            [Doctors] AS [d]
+        WHERE
+            [d].[IsActive] = CAST(1 AS BIT) AND
+            (
+                (@search LIKE N'') OR
+                CHARINDEX(@search, LOWER(LTRIM(RTRIM([d].[FullName])))) > 0
+            )
+        ORDER BY [d].[FullName];";
     }
 }
