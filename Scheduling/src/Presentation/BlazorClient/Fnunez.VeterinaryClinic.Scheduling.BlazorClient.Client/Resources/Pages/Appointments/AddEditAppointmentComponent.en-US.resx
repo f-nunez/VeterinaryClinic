@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddEditAppointment_AppointmentType_DropDown_ColumnHeader_Duration" xml:space="preserve">
+    <value>Duration (minutes)</value>
+  </data>
   <data name="AddEditAppointment_AppointmentType_DropDown_ColumnHeader_Name" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="AddEditAppointment_AppointmentType_DropDown_DurationMessage" xml:space="preserve">
+    <value>Duration not guaranteed</value>
   </data>
   <data name="AddEditAppointment_AppointmentType_DropDown_Label" xml:space="preserve">
     <value>Appointment Type</value>
