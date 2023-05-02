@@ -19,6 +19,9 @@ public partial class AppointmentDetailNotificationComponent : ComponentBase
     private NavigationManager _navigationManager { get; set; }
 
     [Inject]
+    private ISpinnerService _spinnerService { get; set; }
+
+    [Inject]
     private IUserSettingsService _userSettingsService { get; set; }
 
     protected string DoctorPhotoBase64Encoded { get; set; }
@@ -44,6 +47,8 @@ public partial class AppointmentDetailNotificationComponent : ComponentBase
 
     protected override async Task OnParametersSetAsync()
     {
+        _spinnerService.Show();
+
         var request = new GetAppointmentDetailRequest
         {
             AppointmentId = AppointmentId
@@ -67,6 +72,8 @@ public partial class AppointmentDetailNotificationComponent : ComponentBase
             _logger.LogError(ex.Message, ex);
             IsNotFound = true;
         }
+
+        _spinnerService.Hide();
     }
 
     protected void OnClickBack()

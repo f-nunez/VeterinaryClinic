@@ -28,6 +28,9 @@ public partial class AppointmentsComponent : ComponentBase
     private DialogService _dialogService { get; set; }
 
     [Inject]
+    private ISpinnerService _spinnerService { get; set; }
+
+    [Inject]
     private IUserSettingsService _userSettingsService { get; set; }
 
     [Inject]
@@ -106,6 +109,8 @@ public partial class AppointmentsComponent : ComponentBase
     #region Client filter methods
     protected async Task ClientFilterLoadData(LoadDataArgs args)
     {
+        _spinnerService.Show();
+
         var request = new GetAppointmentsFilterClientRequest
         {
             DataGridRequest = args.GetDataGridRequest()
@@ -116,6 +121,8 @@ public partial class AppointmentsComponent : ComponentBase
 
         ClientFilterValues = dataGridResponse.Items;
         ClientFilterCount = dataGridResponse.Count;
+
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
@@ -147,6 +154,8 @@ public partial class AppointmentsComponent : ComponentBase
     #region Clinic filter methods
     protected async Task ClinicFilterLoadData(LoadDataArgs args)
     {
+        _spinnerService.Show();
+
         var request = new GetAppointmentsFilterClinicRequest
         {
             DataGridRequest = args.GetDataGridRequest()
@@ -157,6 +166,8 @@ public partial class AppointmentsComponent : ComponentBase
 
         ClinicFilterValues = dataGridResponse.Items;
         ClinicFilterCount = dataGridResponse.Count;
+
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
@@ -183,6 +194,8 @@ public partial class AppointmentsComponent : ComponentBase
     #region Patient filter methods
     protected async Task PatientFilterLoadData(int clientId)
     {
+        _spinnerService.Show();
+
         var request = new GetAppointmentsFilterPatientRequest
         {
             ClientId = clientId
@@ -192,6 +205,8 @@ public partial class AppointmentsComponent : ComponentBase
             .DataGridFilterPatientAsync(request);
 
         PatientFilterValues = dataGridResponse;
+
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
@@ -256,6 +271,8 @@ public partial class AppointmentsComponent : ComponentBase
     protected async Task OnAppointmentSelect(
         SchedulerAppointmentSelectEventArgs<AppointmentVm> args)
     {
+        _spinnerService.Show();
+
         var request = new GetAppointmentDetailRequest
         {
             AppointmentId = args.Data.Id
@@ -272,6 +289,8 @@ public partial class AppointmentsComponent : ComponentBase
 
         var appointmentDetail = AppointmentHelper.MapAppointmentDetailViewModel(
             response.Appointment, selectedTimezoneName, selectedTimezoneOffset);
+
+        _spinnerService.Hide();
 
         var appointmentDetailData = await ShowDialogForAppointmentDetailAsync(appointmentDetail);
 
@@ -313,6 +332,8 @@ public partial class AppointmentsComponent : ComponentBase
         var selectedTimezoneOffset = await _userSettingsService
             .GetUtcOffsetInMinutesAsync();
 
+        _spinnerService.Show();
+
         var request = new GetAppointmentAddRequest
         {
             ClientId = ClientId.Value,
@@ -328,6 +349,8 @@ public partial class AppointmentsComponent : ComponentBase
             args.Start,
             selectedTimezoneOffset
         );
+
+        _spinnerService.Hide();
 
         var data = await ShowDialogToAddAsync(
             newAppointment,
@@ -363,6 +386,8 @@ public partial class AppointmentsComponent : ComponentBase
             TimeSpan.FromMinutes(selectedTimezoneOffset)
         );
 
+        _spinnerService.Show();
+
         var request = new GetAppointmentsRequest
         {
             ClientIdFilterValue = $"{ClientId}",
@@ -373,6 +398,8 @@ public partial class AppointmentsComponent : ComponentBase
         };
 
         var response = await _appointmentService.DataGridAsync(request);
+
+        _spinnerService.Hide();
 
         return AppointmentHelper.MapAppointmentViewModels(
             response.Items, selectedTimezoneOffset);
@@ -392,12 +419,16 @@ public partial class AppointmentsComponent : ComponentBase
         Guid appointmentId,
         string appointmentTitle)
     {
+        _spinnerService.Show();
+
         var request = new DeleteAppointmentRequest
         {
             AppointmentId = appointmentId
         };
 
         await _appointmentService.DeleteAppointmentAsync(request);
+
+        _spinnerService.Hide();
 
         await ShowAlertAsync(
             string.Format(StringLocalizer["Appointments_DeletedAppointment_Alert_Message"], appointmentTitle),
@@ -410,6 +441,8 @@ public partial class AppointmentsComponent : ComponentBase
         string timezoneName,
         int timezoneOffset)
     {
+        _spinnerService.Show();
+
         var requestEdit = new GetAppointmentEditRequest
         {
             AppointmentId = appointmentId
@@ -420,6 +453,8 @@ public partial class AppointmentsComponent : ComponentBase
 
         var appointmentToEdit = AppointmentHelper.MapAddEditAppointmentViewModel(
             responseEdit.Appointment, timezoneOffset);
+
+        _spinnerService.Hide();
 
         var appointmentEditData = await ShowDialogToEditAsync(
             appointmentToEdit,

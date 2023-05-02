@@ -102,6 +102,8 @@ public partial class AddEditAppointmentComponent : ComponentBase
     #region AppointmentType filter methods
     protected async Task AppointmentTypeFilterLoadData(LoadDataArgs args)
     {
+        _spinnerService.Show();
+
         var request = new GetAppointmentsFilterAppointmentTypeRequest
         {
             DataGridRequest = args.GetDataGridRequest()
@@ -112,6 +114,8 @@ public partial class AddEditAppointmentComponent : ComponentBase
 
         AppointmentTypeFilterValues = dataGridResponse.Items;
         AppointmentTypeFilterCount = dataGridResponse.Count;
+
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
@@ -142,6 +146,8 @@ public partial class AddEditAppointmentComponent : ComponentBase
     #region Doctor filter methods
     protected async Task DoctorFilterLoadData(LoadDataArgs args)
     {
+        _spinnerService.Show();
+
         var request = new GetAppointmentsFilterDoctorRequest
         {
             DataGridRequest = args.GetDataGridRequest()
@@ -152,6 +158,8 @@ public partial class AddEditAppointmentComponent : ComponentBase
 
         DoctorFilterValues = dataGridResponse.Items;
         DoctorFilterCount = dataGridResponse.Count;
+
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
@@ -173,6 +181,8 @@ public partial class AddEditAppointmentComponent : ComponentBase
     #region Room filter methods
     protected async Task RoomFilterLoadData(LoadDataArgs args)
     {
+        _spinnerService.Show();
+
         var request = new GetAppointmentsFilterRoomRequest
         {
             DataGridRequest = args.GetDataGridRequest()
@@ -183,6 +193,8 @@ public partial class AddEditAppointmentComponent : ComponentBase
 
         RoomFilterValues = dataGridResponse.Items;
         RoomFilterCount = dataGridResponse.Count;
+
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
