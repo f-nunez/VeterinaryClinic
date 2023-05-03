@@ -37,8 +37,6 @@ public partial class DoctorsComponent : ComponentBase
     [Inject]
     protected IStringLocalizer<DoctorsComponent> StringLocalizer { get; set; }
 
-    protected bool IsLoading = false;
-
     protected IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 20, 30, 50, 100 };
 
     protected string FullNameFilterValue { get; set; }
@@ -50,7 +48,6 @@ public partial class DoctorsComponent : ComponentBase
     protected async Task LoadData(LoadDataArgs args)
     {
         _spinnerService.Show();
-        IsLoading = true;
         var request = new GetDoctorsRequest
         {
             DataGridRequest = args.GetDataGridRequest(),
@@ -64,7 +61,6 @@ public partial class DoctorsComponent : ComponentBase
 
         Count = dataGridResponse.Count;
         Doctors = dataGridResponse.Items;
-        IsLoading = false;
         _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);

@@ -39,15 +39,11 @@ public partial class NotificationCenterComponent : ComponentBase
     [Inject]
     protected IStringLocalizer<NotificationCenterComponent> StringLocalizer { get; set; }
 
-    protected bool IsLoading = false;
-
     protected IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 20, 30, 50, 100 };
 
     protected async Task LoadData(LoadDataArgs args)
     {
         _spinnerService.Show();
-
-        IsLoading = true;
 
         var request = new GetAppNotificationsDataGridRequest
         {
@@ -77,8 +73,6 @@ public partial class NotificationCenterComponent : ComponentBase
         Count = dataGridResponse.Count;
 
         NotificationCenterDataGridItems = notifications;
-
-        IsLoading = false;
 
         _spinnerService.Hide();
 

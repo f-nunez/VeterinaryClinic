@@ -37,8 +37,6 @@ public partial class ClinicsComponent : ComponentBase
     [Inject]
     protected IStringLocalizer<ClinicsComponent> StringLocalizer { get; set; }
 
-    protected bool IsLoading = false;
-
     protected IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 20, 30, 50, 100 };
 
     protected string AddressFilterValue { get; set; }
@@ -54,7 +52,6 @@ public partial class ClinicsComponent : ComponentBase
     protected async Task LoadData(LoadDataArgs args)
     {
         _spinnerService.Show();
-        IsLoading = true;
         var request = new GetClinicsRequest
         {
             DataGridRequest = args.GetDataGridRequest(),
@@ -70,7 +67,6 @@ public partial class ClinicsComponent : ComponentBase
 
         Clinics = dataGridResponse.Items;
         Count = dataGridResponse.Count;
-        IsLoading = false;
         _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);

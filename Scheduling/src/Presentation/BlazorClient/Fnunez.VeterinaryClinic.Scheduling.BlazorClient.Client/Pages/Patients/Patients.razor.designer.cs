@@ -33,8 +33,6 @@ public partial class PatientsComponent : ComponentBase
 
     protected int Count { get; set; }
 
-    protected bool IsLoading = false;
-
     protected bool IsEnabledAddButton => ClientId.HasValue;
 
     [Inject]
