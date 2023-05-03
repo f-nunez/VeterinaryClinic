@@ -44,8 +44,6 @@ public partial class AppointmentTypesComponent : ComponentBase
     [Inject]
     protected IStringLocalizer<AppointmentTypesComponent> StringLocalizer { get; set; }
 
-    protected bool IsLoading = false;
-
     protected IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 20, 30, 50, 100 };
 
     protected string CodeFilterValue { get; set; }
@@ -61,7 +59,6 @@ public partial class AppointmentTypesComponent : ComponentBase
     protected async Task LoadData(LoadDataArgs args)
     {
         _spinnerService.Show();
-        IsLoading = true;
         var request = new GetAppointmentTypesRequest
         {
             CodeFilterValue = CodeFilterValue,
@@ -77,7 +74,6 @@ public partial class AppointmentTypesComponent : ComponentBase
 
         AppointmentTypes = dataGridResponse.Items;
         Count = dataGridResponse.Count;
-        IsLoading = false;
         _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
