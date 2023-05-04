@@ -1,5 +1,4 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room.GetRoomsFilterName;
-using Fnunez.VeterinaryClinic.ClinicManagement.Domain.RoomAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
@@ -22,16 +21,33 @@ public class GetRoomsFilterNameQueryHandler
         GetRoomsFilterNameRequest request = query.GetRoomsFilterNameRequest;
         var response = new GetRoomsFilterNameResponse(request.CorrelationId);
 
-        var specification = new RoomNamesSpecification(request.NameFilterValue);
+        string sqlQueryToSearch = GetSqlQueryToSearch(request);
 
         var roomNames = await _unitOfWork
-            .ReadRepository<Room>()
-            .ListAsync(specification, cancellationToken);
-
-        if (roomNames is null)
-            return response;
+            .GetFromRawSqlAsync<string>(sqlQueryToSearch, cancellationToken);
 
         response.RoomNames = roomNames;
+
         return response;
+    }
+
+    private static string GetSqlQueryToSearch(
+        GetRoomsFilterNameRequest request)
+    {
+        return @$"
+        DECLARE @top AS INTEGER = 10;
+        DECLARE @search as NVARCHAR(4000) = LOWER(N'{request.NameFilterValue}');
+
+        SELECT
+            DISTINCT TOP(@top) [c].[Name]
+        FROM
+            [Rooms] AS [c]
+        WHERE
+            [c].[IsActive] = CAST(1 AS BIT) AND
+            (
+                (@search LIKE N'') OR
+                CHARINDEX(@search, LOWER(LTRIM(RTRIM([c].[Name])))) > 0
+            )
+        ORDER BY [c].[Name];";
     }
 }

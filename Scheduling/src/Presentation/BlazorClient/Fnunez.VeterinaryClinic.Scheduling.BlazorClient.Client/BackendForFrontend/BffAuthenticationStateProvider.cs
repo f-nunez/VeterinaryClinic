@@ -44,7 +44,7 @@ public class BffAuthenticationStateProvider : AuthenticationStateProvider
         // checks periodically for a session state change and fires event
         // this causes a round trip to the server
         // adjust the period accordingly if that feature is needed
-        if (user.Identity!.IsAuthenticated!)
+        if (user.Identity?.IsAuthenticated == true)
         {
             _securityService.SetApplicationUser(state);
             _logger.LogInformation("starting background check..");
@@ -54,7 +54,7 @@ public class BffAuthenticationStateProvider : AuthenticationStateProvider
             timer = new Timer(async _ =>
             {
                 var currentUser = await GetUser(false);
-                if (currentUser.Identity!.IsAuthenticated == false)
+                if (currentUser.Identity?.IsAuthenticated == false)
                 {
                     _logger.LogInformation("user logged out");
 
@@ -101,22 +101,8 @@ public class BffAuthenticationStateProvider : AuthenticationStateProvider
             _logger.LogInformation("Fetching user information.");
             var response = await _client.GetAsync("bff/user?slide=false");
 
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                var claims = await response.Content
-                    .ReadFromJsonAsync<List<ClaimRecord>>();
-
-                var identity = new ClaimsIdentity(
-                    nameof(BffAuthenticationStateProvider),
-                    "name",
-                    "role");
-
-                foreach (var claim in claims!)
-                    identity.AddClaim(
-                        new Claim(claim.Type, claim.Value.ToString()!));
-
-                return new ClaimsPrincipal(identity);
-            }
+            if (response?.StatusCode == HttpStatusCode.OK)
+                return await GetClaimsPrincipalAsync(response);
         }
         catch (Exception ex)
         {
@@ -124,5 +110,30 @@ public class BffAuthenticationStateProvider : AuthenticationStateProvider
         }
 
         return new ClaimsPrincipal(new ClaimsIdentity());
+    }
+
+    private async Task<ClaimsPrincipal> GetClaimsPrincipalAsync(
+        HttpResponseMessage response)
+    {
+        var claimRecords = await response.Content
+            .ReadFromJsonAsync<List<ClaimRecord>>();
+
+        var identity = new ClaimsIdentity(
+            nameof(BffAuthenticationStateProvider),
+            "name",
+            "role"
+        );
+
+        claimRecords?.ForEach(claimRecord =>
+        {
+            identity.AddClaim(
+                new Claim(
+                    claimRecord.Type,
+                    claimRecord.Value.ToString() ?? string.Empty
+                )
+            );
+        });
+
+        return new ClaimsPrincipal(identity);
     }
 }

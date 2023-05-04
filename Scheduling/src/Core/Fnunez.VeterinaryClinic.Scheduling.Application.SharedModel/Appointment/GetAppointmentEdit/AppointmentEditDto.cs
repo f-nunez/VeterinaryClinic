@@ -3,6 +3,7 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment
 public class AppointmentEditDto
 {
     public Guid AppointmentId { get; set; }
+    public int AppointmentTypeDuration { get; set; }
     public int AppointmentTypeId { get; set; }
     public int ClientId { get; set; }
     public string ClientFullName { get; set; } = string.Empty;

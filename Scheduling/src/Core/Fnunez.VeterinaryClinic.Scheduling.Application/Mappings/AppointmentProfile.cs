@@ -84,6 +84,9 @@ public class AppointmentProfile : Profile
 
         CreateMap<Appointment, AppointmentEditDto>()
             .ForMember(
+                dto => dto.AppointmentTypeDuration,
+                options => options.MapFrom(src => src.AppointmentType.Duration)
+            ).ForMember(
                 dto => dto.AppointmentId,
                 options => options.MapFrom(src => src.Id)
             ).ForMember(

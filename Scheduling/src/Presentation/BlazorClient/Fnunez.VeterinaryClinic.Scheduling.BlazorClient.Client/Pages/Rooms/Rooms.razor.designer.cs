@@ -20,6 +20,9 @@ public partial class RoomsComponent : ComponentBase
     private IRoomService _roomService { get; set; }
 
     [Inject]
+    private ISpinnerService _spinnerService { get; set; }
+
+    [Inject]
     private IStringLocalizer<RoomDetailComponent> _stringLocalizerForDetail { get; set; }
 
     [Inject]
@@ -33,8 +36,6 @@ public partial class RoomsComponent : ComponentBase
 
     [Inject]
     protected IStringLocalizer<RoomsComponent> StringLocalizer { get; set; }
-
-    protected bool IsLoading = false;
 
     protected IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 20, 30, 50, 100 };
 
@@ -50,7 +51,7 @@ public partial class RoomsComponent : ComponentBase
 
     protected async Task LoadData(LoadDataArgs args)
     {
-        IsLoading = true;
+        _spinnerService.Show();
         var request = new GetRoomsRequest
         {
             DataGridRequest = args.GetDataGridRequest(),
@@ -64,13 +65,15 @@ public partial class RoomsComponent : ComponentBase
 
         Count = dataGridResponse.Count;
         Rooms = dataGridResponse.Items;
-        IsLoading = false;
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
 
     protected async Task OnClickDetail(RoomDto room)
     {
+        _spinnerService.Show();
+
         var request = new GetRoomByIdRequest
         {
             Id = room.Id
@@ -79,6 +82,8 @@ public partial class RoomsComponent : ComponentBase
         var currentRoom = await _roomService.GetByIdAsync(request);
 
         var roomForDetail = RoomHelper.MapRoomViewModel(currentRoom);
+
+        _spinnerService.Hide();
 
         await _dialogService.OpenAsync<RoomDetail>(
             _stringLocalizerForDetail["RoomDetail_Label_RoomDetail"],

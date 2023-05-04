@@ -1,5 +1,4 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterPreferredName;
-using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
@@ -25,18 +24,33 @@ public class GetClientsFilterPreferredNameQueryHandler
         var response = new GetClientsFilterPreferredNameResponse(
             request.CorrelationId);
 
-        var specification = new ClientPreferredNamesSpecification(
-            request.PreferredNameFilterValue);
+        string sqlQueryToSearch = GetSqlQueryToSearch(request);
 
         var clientPreferredNames = await _unitOfWork
-            .ReadRepository<Client>()
-            .ListAsync(specification, cancellationToken);
-
-        if (clientPreferredNames is null)
-            return response;
+            .GetFromRawSqlAsync<string>(sqlQueryToSearch, cancellationToken);
 
         response.ClientPreferredNames = clientPreferredNames;
 
         return response;
+    }
+
+    private static string GetSqlQueryToSearch(
+        GetClientsFilterPreferredNameRequest request)
+    {
+        return @$"
+        DECLARE @top AS INTEGER = 10;
+        DECLARE @search as NVARCHAR(4000) = LOWER(N'{request.PreferredNameFilterValue}');
+
+        SELECT
+            DISTINCT TOP(@top) [c].[PreferredName]
+        FROM
+            [Clients] AS [c]
+        WHERE
+            [c].[IsActive] = CAST(1 AS BIT) AND
+            (
+                (@search LIKE N'') OR
+                CHARINDEX(@search, LOWER(LTRIM(RTRIM([c].[PreferredName])))) > 0
+            )
+        ORDER BY [c].[PreferredName];";
     }
 }

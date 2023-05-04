@@ -1,6 +1,5 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterPreferredDoctor;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Common;
-using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
 using Fnunez.VeterinaryClinic.ClinicManagement.Domain.DoctorAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;

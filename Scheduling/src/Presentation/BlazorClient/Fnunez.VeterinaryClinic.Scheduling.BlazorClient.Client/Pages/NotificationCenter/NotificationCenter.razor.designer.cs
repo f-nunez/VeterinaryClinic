@@ -23,6 +23,9 @@ public partial class NotificationCenterComponent : ComponentBase
     [Inject]
     private DialogService _dialogService { get; set; }
 
+    [Inject]
+    private ISpinnerService _spinnerService { get; set; }
+
     protected bool EnabledDeleteAllButton { get; set; } = true;
 
     protected NotificationCenterFilterValue FilterValue { get; set; }
@@ -36,13 +39,11 @@ public partial class NotificationCenterComponent : ComponentBase
     [Inject]
     protected IStringLocalizer<NotificationCenterComponent> StringLocalizer { get; set; }
 
-    protected bool IsLoading = false;
-
     protected IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 20, 30, 50, 100 };
 
     protected async Task LoadData(LoadDataArgs args)
     {
-        IsLoading = true;
+        _spinnerService.Show();
 
         var request = new GetAppNotificationsDataGridRequest
         {
@@ -73,7 +74,7 @@ public partial class NotificationCenterComponent : ComponentBase
 
         NotificationCenterDataGridItems = notifications;
 
-        IsLoading = false;
+        _spinnerService.Hide();
 
         EnabledDeleteAllButton = notifications.Any();
 
@@ -101,12 +102,16 @@ public partial class NotificationCenterComponent : ComponentBase
         if (!proceedToDelete.HasValue || !proceedToDelete.Value)
             return;
 
+        _spinnerService.Show();
+
         var request = new DeleteAppNotificationRequest
         {
             AppNotificationId = item.Id
         };
 
         await _appNotificationService.DeleteAppNotificationAsync(request);
+
+        _spinnerService.Hide();
 
         await ShowAlertAsync(
             StringLocalizer["NotificationCenter_DeletedNotification_Alert_Message"],
@@ -135,12 +140,16 @@ public partial class NotificationCenterComponent : ComponentBase
             .Select(x => x.Id)
             .ToList();
 
+        _spinnerService.Show();
+
         var request = new DeleteAppNotificationsRequest
         {
             AppNotificationIds = appNotificationIds
         };
 
         await _appNotificationService.DeleteAppNotificationsAsync(request);
+
+        _spinnerService.Hide();
 
         await ShowAlertAsync(
             StringLocalizer["NotificationCenter_DeletedAllNotification_Alert_Message"],

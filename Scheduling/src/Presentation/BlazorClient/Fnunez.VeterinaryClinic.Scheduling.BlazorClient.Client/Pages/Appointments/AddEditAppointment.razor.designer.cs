@@ -38,6 +38,8 @@ public partial class AddEditAppointmentComponent : ComponentBase
 
     [Parameter]
     public List<AppointmentTypeFilterValueDto> PreselectedAppointmentTypeFilterValues { get; set; }
+
+    protected bool ShowErrorForAppointmentTypeDuration { get; set; }
     #endregion
 
     #region Doctor filter properties
@@ -100,6 +102,8 @@ public partial class AddEditAppointmentComponent : ComponentBase
     #region AppointmentType filter methods
     protected async Task AppointmentTypeFilterLoadData(LoadDataArgs args)
     {
+        _spinnerService.Show();
+
         var request = new GetAppointmentsFilterAppointmentTypeRequest
         {
             DataGridRequest = args.GetDataGridRequest()
@@ -111,6 +115,8 @@ public partial class AddEditAppointmentComponent : ComponentBase
         AppointmentTypeFilterValues = dataGridResponse.Items;
         AppointmentTypeFilterCount = dataGridResponse.Count;
 
+        _spinnerService.Hide();
+
         await InvokeAsync(StateHasChanged);
     }
 
@@ -120,17 +126,28 @@ public partial class AddEditAppointmentComponent : ComponentBase
         if (convertedValue.HasValue && convertedValue.Value > 0)
         {
             Model.AppointmentTypeId = convertedValue.Value;
+
+            var selectedAppointmentTypeFilterValue = AppointmentTypeFilterValues
+                .FirstOrDefault(at => at.Id == convertedValue);
+
+            if (selectedAppointmentTypeFilterValue != null)
+                Model.AppointmentTypeDuration = selectedAppointmentTypeFilterValue.Duration;
         }
         else
         {
             Model.AppointmentTypeId = 0;
+            Model.AppointmentTypeDuration = 0;
         }
+
+        ValidateAppointmentType();
     }
     #endregion
 
     #region Doctor filter methods
     protected async Task DoctorFilterLoadData(LoadDataArgs args)
     {
+        _spinnerService.Show();
+
         var request = new GetAppointmentsFilterDoctorRequest
         {
             DataGridRequest = args.GetDataGridRequest()
@@ -141,6 +158,8 @@ public partial class AddEditAppointmentComponent : ComponentBase
 
         DoctorFilterValues = dataGridResponse.Items;
         DoctorFilterCount = dataGridResponse.Count;
+
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
@@ -162,6 +181,8 @@ public partial class AddEditAppointmentComponent : ComponentBase
     #region Room filter methods
     protected async Task RoomFilterLoadData(LoadDataArgs args)
     {
+        _spinnerService.Show();
+
         var request = new GetAppointmentsFilterRoomRequest
         {
             DataGridRequest = args.GetDataGridRequest()
@@ -172,6 +193,8 @@ public partial class AddEditAppointmentComponent : ComponentBase
 
         RoomFilterValues = dataGridResponse.Items;
         RoomFilterCount = dataGridResponse.Count;
+
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
@@ -186,60 +209,106 @@ public partial class AddEditAppointmentComponent : ComponentBase
     }
     #endregion
 
+    protected void OnChangeEndOnFilter(DateTime? endOn)
+    {
+        if (endOn != null)
+            ValidateAppointmentType();
+    }
+
+    protected void OnChangeStartOnFilter(DateTime? startOn)
+    {
+        if (startOn != null)
+            ValidateAppointmentType();
+    }
+
     protected async void OnSubmit()
     {
+        if (!ValidateAppointmentType())
+            return;
+
         if (!await ValidateIfSelectedDatesAreEarlierThanCurrentAsync())
             return;
 
         bool isValidAppointment = true;
 
-        _spinnerService.Show();
-
         try
         {
-            if (IsAppointmentToAdd)
-            {
-                var request = AppointmentHelper.MapCreateAppointmentRequest(
-                    Model, SelectedTimezoneOffset);
-
-                await _appointmentService.CreateAppointmentAsync(request);
-            }
-            else
-            {
-                var request = AppointmentHelper.MapUpdateAppointmentRequest(
-                    Model, SelectedTimezoneOffset);
-
-                await _appointmentService.UpdateAppointmentAsync(request);
-            }
+            _spinnerService.Show();
+            await CreateOrUpdateAppointmentAsync();
         }
         catch
         {
             isValidAppointment = false;
         }
+        finally
+        {
+            _spinnerService.Hide();
+        }
 
-        _spinnerService.Hide();
 
         if (!isValidAppointment)
-            if (IsAppointmentToAdd)
-            {
-                await ShowAlertAsync(
-                    StringLocalizer["AddEditAppointment_ConflictingAddAppointment_Alert_Message"],
-                    StringLocalizer["AddEditAppointment_ConflictingAddAppointment_Alert_Title"],
-                    StringLocalizer["AddEditAppointment_ConflictingAddAppointment_Alert_Button_Ok"]);
-
-                return;
-            }
-            else
-            {
-                await ShowAlertAsync(
-                    StringLocalizer["AddEditAppointment_ConflictingEditAppointment_Alert_Message"],
-                    StringLocalizer["AddEditAppointment_ConflictingEditAppointment_Alert_Title"],
-                    StringLocalizer["AddEditAppointment_ConflictingEditAppointment_Alert_Button_Ok"]);
-
-                return;
-            }
+            await ShowConflictingAlertAsync();
 
         _dialogService.Close(Model);
+    }
+
+    private async Task CreateOrUpdateAppointmentAsync()
+    {
+        if (IsAppointmentToAdd)
+        {
+            var request = AppointmentHelper.MapCreateAppointmentRequest(
+                Model, SelectedTimezoneOffset);
+
+            await _appointmentService.CreateAppointmentAsync(request);
+        }
+        else
+        {
+            var request = AppointmentHelper.MapUpdateAppointmentRequest(
+                Model, SelectedTimezoneOffset);
+
+            await _appointmentService.UpdateAppointmentAsync(request);
+        }
+    }
+
+    private async Task ShowConflictingAlertAsync()
+    {
+        if (IsAppointmentToAdd)
+        {
+            await ShowAlertAsync(
+                StringLocalizer["AddEditAppointment_ConflictingAddAppointment_Alert_Message"],
+                StringLocalizer["AddEditAppointment_ConflictingAddAppointment_Alert_Title"],
+                StringLocalizer["AddEditAppointment_ConflictingAddAppointment_Alert_Button_Ok"]);
+
+            return;
+        }
+        else
+        {
+            await ShowAlertAsync(
+                StringLocalizer["AddEditAppointment_ConflictingEditAppointment_Alert_Message"],
+                StringLocalizer["AddEditAppointment_ConflictingEditAppointment_Alert_Title"],
+                StringLocalizer["AddEditAppointment_ConflictingEditAppointment_Alert_Button_Ok"]);
+
+            return;
+        }
+    }
+
+    private bool ValidateAppointmentType()
+    {
+        if (Model.AppointmentTypeDuration > 0)
+        {
+            TimeSpan difference = Model.EndOn - Model.StartOn;
+
+            var totalMinutes = difference.TotalMinutes;
+
+            if (totalMinutes >= Model.AppointmentTypeDuration)
+                ShowErrorForAppointmentTypeDuration = false;
+            else
+                ShowErrorForAppointmentTypeDuration = true;
+        }
+        else
+            ShowErrorForAppointmentTypeDuration = false;
+
+        return !ShowErrorForAppointmentTypeDuration;
     }
 
     private async Task<bool> ValidateIfSelectedDatesAreEarlierThanCurrentAsync()
@@ -250,11 +319,11 @@ public partial class AddEditAppointmentComponent : ComponentBase
         if (Model.StartOn.ToUnspecifiedKind() >= userLocalTime)
             return true;
 
-        bool? isAcceptIt;
+        bool? isEarlyDateAccepted;
 
         if (IsAppointmentToAdd)
         {
-            isAcceptIt = await ShowConfirmationAlertAsync(
+            isEarlyDateAccepted = await ShowConfirmationAlertAsync(
                 StringLocalizer["AddEditAppointment_EarlyAddAppointment_Alert_Message"],
                 StringLocalizer["AddEditAppointment_EarlyAddAppointment_Alert_Title"],
                 StringLocalizer["AddEditAppointment_EarlyAddAppointment_Alert_Button_Ok"],
@@ -262,14 +331,14 @@ public partial class AddEditAppointmentComponent : ComponentBase
         }
         else
         {
-            isAcceptIt = await ShowConfirmationAlertAsync(
+            isEarlyDateAccepted = await ShowConfirmationAlertAsync(
                 StringLocalizer["AddEditAppointment_EarlyEditAppointment_Alert_Message"],
                 StringLocalizer["AddEditAppointment_EarlyEditAppointment_Alert_Title"],
                 StringLocalizer["AddEditAppointment_EarlyEditAppointment_Alert_Button_Ok"],
                 StringLocalizer["AddEditAppointment_EarlyEditAppointment_Alert_Button_Cancel"]);
         }
 
-        return isAcceptIt.HasValue ? isAcceptIt.Value : isAcceptIt.HasValue;
+        return isEarlyDateAccepted ?? isEarlyDateAccepted.HasValue;
     }
 
     private async Task<bool?> ShowAlertAsync(

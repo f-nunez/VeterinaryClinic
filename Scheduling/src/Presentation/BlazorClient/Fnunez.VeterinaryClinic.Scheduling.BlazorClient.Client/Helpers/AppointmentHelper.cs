@@ -29,6 +29,7 @@ public static class AppointmentHelper
         return new AddEditAppointmentVm
         {
             AppointmentId = default,
+            AppointmentTypeDuration = default,
             AppointmentTypeId = default,
             ClientId = appointmentAddDto.ClientId,
             ClientFullName = appointmentAddDto.ClientFullName,
@@ -62,6 +63,7 @@ public static class AppointmentHelper
         return new AddEditAppointmentVm
         {
             AppointmentId = appointmentEditDto.AppointmentId,
+            AppointmentTypeDuration = appointmentEditDto.AppointmentTypeDuration,
             AppointmentTypeId = appointmentEditDto.AppointmentTypeId,
             ClientId = appointmentEditDto.ClientId,
             ClientFullName = appointmentEditDto.ClientFullName,

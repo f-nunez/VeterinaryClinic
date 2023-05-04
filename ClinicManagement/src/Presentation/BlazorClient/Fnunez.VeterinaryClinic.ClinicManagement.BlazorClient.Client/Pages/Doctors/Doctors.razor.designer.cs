@@ -22,6 +22,9 @@ public partial class DoctorsComponent : ComponentBase
     private IDoctorService _doctorService { get; set; }
 
     [Inject]
+    private ISpinnerService _spinnerService { get; set; }
+
+    [Inject]
     private IStringLocalizer<AddEditDoctorComponent> _stringLocalizerForAdd { get; set; }
 
     [Inject]
@@ -41,8 +44,6 @@ public partial class DoctorsComponent : ComponentBase
     [Inject]
     protected IStringLocalizer<DoctorsComponent> StringLocalizer { get; set; }
 
-    protected bool IsLoading = false;
-
     protected IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 20, 30, 50, 100 };
 
     protected string FullNameFilterValue { get; set; }
@@ -53,7 +54,7 @@ public partial class DoctorsComponent : ComponentBase
 
     protected async Task LoadData(LoadDataArgs args)
     {
-        IsLoading = true;
+        _spinnerService.Show();
         var request = new GetDoctorsRequest
         {
             DataGridRequest = args.GetDataGridRequest(),
@@ -67,7 +68,7 @@ public partial class DoctorsComponent : ComponentBase
 
         Count = dataGridResponse.Count;
         Doctors = dataGridResponse.Items;
-        IsLoading = false;
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
@@ -114,12 +115,16 @@ public partial class DoctorsComponent : ComponentBase
         if (!proceedToDelete.HasValue || !proceedToDelete.Value)
             return;
 
+        _spinnerService.Show();
+
         var request = new DeleteDoctorRequest
         {
             Id = doctor.Id
         };
 
         await _doctorService.DeleteAsync(request);
+
+        _spinnerService.Hide();
 
         await ShowAlertAsync(
             string.Format(StringLocalizer["Doctors_DeletedDoctor_Alert_Message"], doctor.FullName),
@@ -131,6 +136,8 @@ public partial class DoctorsComponent : ComponentBase
 
     protected async Task OnClickDetail(DoctorDto doctor)
     {
+        _spinnerService.Show();
+
         var request = new GetDoctorByIdRequest
         {
             Id = doctor.Id
@@ -139,6 +146,8 @@ public partial class DoctorsComponent : ComponentBase
         var currentDoctor = await _doctorService.GetByIdAsync(request);
 
         var doctorForDetail = DoctorHelper.MapDoctorViewModel(doctor);
+
+        _spinnerService.Hide();
 
         await _dialogService.OpenAsync<DoctorDetail>(
             _stringLocalizerForDetail["DoctorDetail_Label_DoctorDetail"],
@@ -151,6 +160,8 @@ public partial class DoctorsComponent : ComponentBase
 
     protected async Task OnClickEdit(DoctorDto doctor)
     {
+        _spinnerService.Show();
+
         var request = new GetDoctorByIdRequest
         {
             Id = doctor.Id
@@ -159,6 +170,8 @@ public partial class DoctorsComponent : ComponentBase
         var currentDoctor = await _doctorService.GetByIdAsync(request);
 
         var doctorToEdit = DoctorHelper.MapDoctorViewModel(doctor);
+
+        _spinnerService.Hide();
 
         var response = await _dialogService.OpenAsync<AddEditDoctor>(
             _stringLocalizerForAdd["AddEditDoctor_Label_Edit"],

@@ -1,5 +1,4 @@
 using Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.AppointmentType.GetAppointmentTypesFilterCode;
-using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.AppointmentTypeAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
@@ -25,18 +24,33 @@ public class GetAppointmentTypesFilterCodeQueryHandler
         var response = new GetAppointmentTypesFilterCodeResponse(
             request.CorrelationId);
 
-        var specification = new AppointmentTypeCodesSpecification(
-            request.CodeFilterValue);
+        string sqlQueryToSearch = GetSqlQueryToSearch(request);
 
         var appointmentTypeCodes = await _unitOfWork
-            .ReadRepository<AppointmentType>()
-            .ListAsync(specification, cancellationToken);
-
-        if (appointmentTypeCodes is null)
-            return response;
+            .GetFromRawSqlAsync<string>(sqlQueryToSearch, cancellationToken);
 
         response.AppointemntTypeCodes = appointmentTypeCodes;
 
         return response;
+    }
+
+    private static string GetSqlQueryToSearch(
+        GetAppointmentTypesFilterCodeRequest request)
+    {
+        return @$"
+        DECLARE @top AS INTEGER = 10;
+        DECLARE @search as NVARCHAR(4000) = LOWER(N'{request.CodeFilterValue}');
+
+        SELECT
+            DISTINCT TOP(@top) [at].[Code]
+        FROM
+            [AppointmentTypes] AS [at]
+        WHERE
+            [at].[IsActive] = CAST(1 AS BIT) AND
+            (
+                (@search LIKE N'') OR
+                CHARINDEX(@search, LOWER(LTRIM(RTRIM([at].[Code])))) > 0
+            )
+        ORDER BY [at].[Code];";
     }
 }

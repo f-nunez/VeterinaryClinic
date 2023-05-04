@@ -20,6 +20,9 @@ public partial class AppointmentTypesComponent : ComponentBase
     private DialogService _dialogService { get; set; }
 
     [Inject]
+    private ISpinnerService _spinnerService { get; set; }
+
+    [Inject]
     private IStringLocalizer<AppointmentTypeDetailComponent> _stringLocalizerForDetail { get; set; }
 
     [Inject]
@@ -33,8 +36,6 @@ public partial class AppointmentTypesComponent : ComponentBase
 
     [Inject]
     protected IStringLocalizer<AppointmentTypesComponent> StringLocalizer { get; set; }
-
-    protected bool IsLoading = false;
 
     protected IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 20, 30, 50, 100 };
 
@@ -50,7 +51,7 @@ public partial class AppointmentTypesComponent : ComponentBase
 
     protected async Task LoadData(LoadDataArgs args)
     {
-        IsLoading = true;
+        _spinnerService.Show();
         var request = new GetAppointmentTypesRequest
         {
             CodeFilterValue = CodeFilterValue,
@@ -66,13 +67,15 @@ public partial class AppointmentTypesComponent : ComponentBase
 
         AppointmentTypes = dataGridResponse.Items;
         Count = dataGridResponse.Count;
-        IsLoading = false;
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
 
     protected async Task OnClickDetail(AppointmentTypeDto appointmentType)
     {
+        _spinnerService.Show();
+
         var request = new GetAppointmentTypeByIdRequest
         {
             Id = appointmentType.Id
@@ -83,6 +86,8 @@ public partial class AppointmentTypesComponent : ComponentBase
 
         var appointmentTypeForDetail = AppointmentTypeHelper
             .MapAppointmentTypeViewModel(currentAppointmentType);
+
+        _spinnerService.Hide();
 
         await _dialogService.OpenAsync<AppointmentTypeDetail>(
             _stringLocalizerForDetail["AppointmentTypeDetail_Label_AppointmentTypeDetail"],

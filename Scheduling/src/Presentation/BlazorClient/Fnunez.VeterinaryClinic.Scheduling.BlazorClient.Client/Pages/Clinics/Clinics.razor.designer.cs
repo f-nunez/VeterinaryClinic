@@ -20,6 +20,9 @@ public partial class ClinicsComponent : ComponentBase
     private DialogService _dialogService { get; set; }
 
     [Inject]
+    private ISpinnerService _spinnerService { get; set; }
+
+    [Inject]
     private IStringLocalizer<ClinicDetailComponent> _stringLocalizerForDetail { get; set; }
 
     [Inject]
@@ -33,8 +36,6 @@ public partial class ClinicsComponent : ComponentBase
 
     [Inject]
     protected IStringLocalizer<ClinicsComponent> StringLocalizer { get; set; }
-
-    protected bool IsLoading = false;
 
     protected IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 20, 30, 50, 100 };
 
@@ -50,7 +51,7 @@ public partial class ClinicsComponent : ComponentBase
 
     protected async Task LoadData(LoadDataArgs args)
     {
-        IsLoading = true;
+        _spinnerService.Show();
         var request = new GetClinicsRequest
         {
             DataGridRequest = args.GetDataGridRequest(),
@@ -66,13 +67,15 @@ public partial class ClinicsComponent : ComponentBase
 
         Clinics = dataGridResponse.Items;
         Count = dataGridResponse.Count;
-        IsLoading = false;
+        _spinnerService.Hide();
 
         await InvokeAsync(StateHasChanged);
     }
 
     protected async Task OnClickDetail(ClinicDto doctor)
     {
+        _spinnerService.Show();
+
         var request = new GetClinicByIdRequest
         {
             Id = doctor.Id
@@ -81,6 +84,8 @@ public partial class ClinicsComponent : ComponentBase
         var currentClinic = await _clinicService.GetByIdAsync(request);
 
         var clinicForDetail = ClinicHelper.MapClinicViewModel(currentClinic);
+
+        _spinnerService.Hide();
 
         await _dialogService.OpenAsync<ClinicDetail>(
             _stringLocalizerForDetail["ClinicDetail_Label_ClinicDetail"],

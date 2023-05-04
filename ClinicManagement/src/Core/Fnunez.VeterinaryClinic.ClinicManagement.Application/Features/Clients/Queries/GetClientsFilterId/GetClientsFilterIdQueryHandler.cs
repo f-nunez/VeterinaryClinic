@@ -1,5 +1,4 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterId;
-using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
@@ -21,17 +20,35 @@ public class GetClientsFilterIdQueryHandler
     {
         GetClientsFilterIdRequest request = query.GetClientsFilterIdRequest;
         var response = new GetClientsFilterIdResponse(request.CorrelationId);
-        var specification = new ClientIdsSpecification(request.IdFilterValue);
+
+        string sqlQueryToSearch = GetSqlQueryToSearch(request);
 
         var clientIds = await _unitOfWork
-            .ReadRepository<Client>()
-            .ListAsync(specification, cancellationToken);
-
-        if (clientIds is null)
-            return response;
+            .GetFromRawSqlAsync<string>(sqlQueryToSearch, cancellationToken);
 
         response.ClientIds = clientIds;
 
         return response;
+    }
+
+    private static string GetSqlQueryToSearch(
+        GetClientsFilterIdRequest request)
+    {
+        return @$"
+        DECLARE @top AS INTEGER = 10;
+        DECLARE @search as NVARCHAR(4000) = N'{request.IdFilterValue}';
+
+        SELECT
+            TOP(@top) [c].[Id]
+        FROM
+            [Clients] AS [c]
+        WHERE
+            [c].[IsActive] = CAST(1 AS BIT) AND
+            (
+                (@search LIKE N'') OR
+                CHARINDEX(@search, CONVERT(VARCHAR(11), [c].[Id])) > 0
+            )
+        ORDER BY
+            [c].[Id];";
     }
 }

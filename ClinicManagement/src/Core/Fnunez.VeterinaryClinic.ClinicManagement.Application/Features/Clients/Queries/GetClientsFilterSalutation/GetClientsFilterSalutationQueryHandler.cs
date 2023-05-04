@@ -1,5 +1,4 @@
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterSalutation;
-using Fnunez.VeterinaryClinic.ClinicManagement.Domain.ClientAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
 
@@ -25,18 +24,33 @@ public class GetClientsFilterSalutationQueryHandler
         var response = new GetClientsFilterSalutationResponse(
             request.CorrelationId);
 
-        var specification = new ClientSalutationsSpecification(
-            request.SalutationFilterValue);
+        string sqlQueryToSearch = GetSqlQueryToSearch(request);
 
         var clientSalutations = await _unitOfWork
-            .ReadRepository<Client>()
-            .ListAsync(specification, cancellationToken);
-
-        if (clientSalutations is null)
-            return response;
+            .GetFromRawSqlAsync<string>(sqlQueryToSearch, cancellationToken);
 
         response.ClientSalutations = clientSalutations;
 
         return response;
+    }
+
+    private static string GetSqlQueryToSearch(
+        GetClientsFilterSalutationRequest request)
+    {
+        return @$"
+        DECLARE @top AS INTEGER = 10;
+        DECLARE @search as NVARCHAR(4000) = LOWER(N'{request.SalutationFilterValue}');
+
+        SELECT
+            DISTINCT TOP(@top) [c].[Salutation]
+        FROM
+            [Clients] AS [c]
+        WHERE
+            [c].[IsActive] = CAST(1 AS BIT) AND
+            (
+                (@search LIKE N'') OR
+                CHARINDEX(@search, LOWER(LTRIM(RTRIM([c].[Salutation])))) > 0
+            )
+        ORDER BY [c].[Salutation];";
     }
 }

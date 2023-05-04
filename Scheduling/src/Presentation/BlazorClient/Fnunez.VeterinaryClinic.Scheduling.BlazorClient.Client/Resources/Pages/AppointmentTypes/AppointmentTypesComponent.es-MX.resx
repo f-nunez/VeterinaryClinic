@@ -121,7 +121,7 @@
     <value>Código</value>
   </data>
   <data name="AppointmentTypes_Grid_Column_Header_Duration" xml:space="preserve">
-    <value>Duración</value>
+    <value>Duración (minutos)</value>
   </data>
   <data name="AppointmentTypes_Grid_Column_Header_Id" xml:space="preserve">
     <value>Id</value>
