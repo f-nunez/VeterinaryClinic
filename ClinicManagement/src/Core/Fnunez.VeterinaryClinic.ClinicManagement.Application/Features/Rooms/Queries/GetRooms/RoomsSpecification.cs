@@ -19,9 +19,9 @@ public class RoomsSpecification : BaseSpecification<Room>
 
         ApplyFilterName(request);
 
-        ApplyFilterSearch(request);
-
         ApplyOrder(request);
+
+        ApplySearch(request);
 
         ApplySkipAndTake(request);
     }
@@ -48,16 +48,19 @@ public class RoomsSpecification : BaseSpecification<Room>
             .Where(r => r.Name.Trim().ToLower().Contains(nameFilterValue));
     }
 
-    private void ApplyFilterSearch(GetRoomsRequest request)
+    private void ApplySearch(GetRoomsRequest request)
     {
-        if (string.IsNullOrEmpty(request.SearchFilterValue))
+        if (string.IsNullOrEmpty(request.DataGridRequest.Search))
             return;
 
-        string searchFilterValue = request.SearchFilterValue.Trim().ToLower();
+        string search = request.DataGridRequest.Search.Trim().ToLower();
+
+        if (string.IsNullOrEmpty(search))
+            return;
 
         Query
-            .Search(r => r.Id.ToString(), $"%{searchFilterValue}%")
-            .Search(r => r.Name, $"%{searchFilterValue}%");
+            .Search(r => r.Id.ToString(), $"%{search}%")
+            .Search(r => r.Name, $"%{search}%");
     }
 
     private void ApplyOrder(GetRoomsRequest request)
