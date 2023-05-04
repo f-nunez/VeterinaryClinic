@@ -1,0 +1,107 @@
+@inherits Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Clients.ClientDetailComponent
+
+<div class="row">
+    <div class="col-12">
+        <RadzenText
+            Class="rz-color-primary-light"
+            Text=@StringLocalizer["ClientDetail_Label_FullName"]
+            TextStyle="TextStyle.Overline">
+        </RadzenText>
+
+        <RadzenText
+            TextStyle="TextStyle.Body1">
+            <b>@Model.FullName</b>
+        </RadzenText>
+    </div>
+
+    <div class="col-12">
+        <RadzenText
+            Class="rz-color-primary-light"
+            Text=@StringLocalizer["ClientDetail_Label_PreferredName"]
+            TextStyle="TextStyle.Overline">
+        </RadzenText>
+
+        <RadzenText
+            TextStyle="TextStyle.Body1">
+            <b>@Model.PreferredName</b>
+        </RadzenText>
+    </div>
+
+    <div class="col-12">
+        <RadzenText
+            Class="rz-color-primary-light"
+            Text=@StringLocalizer["ClientDetail_Label_Salutation"]
+            TextStyle="TextStyle.Overline">
+        </RadzenText>
+
+        <RadzenText
+            TextStyle="TextStyle.Body1">
+            <b>@Model.Salutation</b>
+        </RadzenText>
+    </div>
+
+    <div class="col-12">
+        <RadzenText
+            Class="rz-color-primary-light"
+            Text=@StringLocalizer["ClientDetail_Label_EmailAddress"]
+            TextStyle="TextStyle.Overline">
+        </RadzenText>
+
+        <RadzenText
+            TextStyle="TextStyle.Body1">
+            <b>@Model.EmailAddress</b>
+        </RadzenText>
+    </div>
+
+    <div class="col-12">
+        <RadzenText
+            Class="rz-color-primary-light"
+            Text=@StringLocalizer["ClientDetail_Label_PreferredLanguage"]
+            TextStyle="TextStyle.Overline">
+        </RadzenText>
+
+        <RadzenText
+            TextStyle="TextStyle.Body1">
+            @switch (Model.PreferredLanguage)
+            {
+                case (int)Models.Clients.PreferredLanguage.English:
+                    <b>@StringLocalizer["ClientDetail_PreferredLanguage_English"]</b>
+                    break;
+                case (int)Models.Clients.PreferredLanguage.Spanish:
+                    <b>@StringLocalizer["ClientDetail_PreferredLanguage_Spanish"]</b>
+                    break;
+                default:
+                    throw new ArgumentException($"Not found {nameof(Model.PreferredLanguage)} with value {Model.PreferredLanguage}");
+            }
+        </RadzenText>
+    </div>
+
+    @if(!string.IsNullOrEmpty(Model.PreferredDoctorFullName))
+    {
+        <div class="col-12">
+            <RadzenText
+                Class="rz-color-primary-light"
+                Text=@StringLocalizer["ClientDetail_Label_PreferredDoctor"]
+                TextStyle="TextStyle.Overline">
+            </RadzenText>
+
+            <RadzenText
+                TextStyle="TextStyle.Body1">
+                <b>@Model.PreferredDoctorFullName</b>
+            </RadzenText>
+        </div>
+    }
+</div>
+
+<div class="row mt-2">
+    <div class="col-12">
+        <RadzenButton
+            ButtonStyle="ButtonStyle.Primary"
+            ButtonType="ButtonType.Submit"
+            Class="w-100"
+            Click=@OnClickAccept
+            Variant="Variant.Text">
+            @StringLocalizer["ClientDetail_Button_Accept"]
+        </RadzenButton>
+    </div>
+</div>

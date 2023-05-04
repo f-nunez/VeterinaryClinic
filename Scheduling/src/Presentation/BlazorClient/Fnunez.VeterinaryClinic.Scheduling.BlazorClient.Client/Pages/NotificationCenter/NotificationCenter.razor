@@ -1,0 +1,140 @@
+@page "/notification-center"
+@layout Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.MainLayout
+@inherits Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.NotificationCenter.NotificationCenterComponent
+
+@using ViewModels.NotificationCenter
+@using Radzen
+@using Radzen.Blazor
+
+@attribute [Authorize("RequiredReaderPolicy")]
+
+<RadzenHeading
+    Size="H1"
+    Text=@StringLocalizer["NotificationCenter_Title"]>
+</RadzenHeading>
+
+<RadzenCard>
+    <div class="row mb-3">
+        <div class="col-12 col-sm-8 col-md-6 notificationcenter-filter">
+            <RadzenRadioButtonList
+                @bind-Value=@FilterValue
+                Change=@ResetGrid
+                TValue="NotificationCenterFilterValue">
+                <Items>
+                    <RadzenRadioButtonListItem
+                        Text=@StringLocalizer["NotificationCenter_Filter_RadioButton_All"]
+                        Value="NotificationCenterFilterValue.All">
+                    </RadzenRadioButtonListItem>
+
+                    <RadzenRadioButtonListItem
+                        Text=@StringLocalizer["NotificationCenter_Filter_RadioButton_Read"]
+                        Value="NotificationCenterFilterValue.OnlyRead">
+                    </RadzenRadioButtonListItem>
+
+                    <RadzenRadioButtonListItem
+                        Text=@StringLocalizer["NotificationCenter_Filter_RadioButton_Unread"]
+                        Value="NotificationCenterFilterValue.OnlyUnread">
+                    </RadzenRadioButtonListItem>
+                </Items>
+            </RadzenRadioButtonList>
+        </div>
+
+        <div class="col-12 col-sm-4 col-md-6">
+            <div class="datagrid-filter-menu">
+                <RadzenButton
+                    ButtonStyle="ButtonStyle.Secondary"
+                    Click="OnClickDeleteAll"
+                    Disabled="@(!EnabledDeleteAllButton)"
+                    Icon="delete"
+                    Text=@StringLocalizer["NotificationCenter_DeleteAll_Button_Text"]>
+                </RadzenButton>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <RadzenDataGrid @ref=@NotificationCenterDataGrid
+                AllowPaging="true"
+                AllowSorting="true"
+                Count=@Count
+                Data=@NotificationCenterDataGridItems
+                LoadData=@LoadData
+                PagerHorizontalAlign="HorizontalAlign.Center"
+                PageSize="10"
+                PageSizeOptions="@PageSizeOptions"
+                PageSizeText=@StringLocalizer["NotificationCenter_Grid_PageSizeText"]
+                PagingSummaryFormat=@StringLocalizer["NotificationCenter_Grid_PagingSummaryFormat"]
+                ShowPagingSummary="true"
+                TItem="NotificationCenterItemVm">
+                <Columns>
+                    <RadzenDataGridColumn
+                        Filterable="false"
+                        Property="Title"
+                        Sortable="false"
+                        TextAlign="TextAlign.Left"
+                        TItem="NotificationCenterItemVm"
+                        Title=@StringLocalizer["NotificationCenter_Grid_Column_Header_Title"]>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn
+                        Filterable="false"
+                        Property="Message"
+                        Sortable="false"
+                        TextAlign="TextAlign.Left"
+                        TItem="NotificationCenterItemVm"
+                        Title=@StringLocalizer["NotificationCenter_Grid_Column_Header_Message"]>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn
+                        Filterable="false"
+                        Sortable="false"
+                        TextAlign="TextAlign.Left"
+                        TItem="NotificationCenterItemVm"
+                        Title=@StringLocalizer["NotificationCenter_Grid_Column_Header_Status"]>
+                        <Template Context="item">
+                            @if (item.IsRead)
+                            {
+                                @StringLocalizer["NotificationCenter_Grid_Column_Body_Read"];
+                            }
+                            else
+                            {
+                                @StringLocalizer["NotificationCenter_Grid_Column_Body_Unread"];
+                            }
+                        </Template>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn
+                        Filterable="true"
+                        Property="CreatedOn"
+                        Sortable="true"
+                        SortOrder="SortOrder.Descending"
+                        TextAlign="TextAlign.Left"
+                        TItem="NotificationCenterItemVm"
+                        Title=@StringLocalizer["NotificationCenter_Grid_Column_Header_CreatedOn"]>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn
+                        Width="60px"
+                        Filterable="false"
+                        Sortable="false"
+                        TextAlign="TextAlign.Right"
+                        TItem="NotificationCenterItemVm">
+
+                        <Template Context="item">
+                            <RadzenButton
+                                ButtonStyle="ButtonStyle.Danger"
+                                Click="@((args) => OnClickDelete(item))"
+                                Icon="delete"
+                                Shade="Shade.Lighter"
+                                Size="ButtonSize.Medium"
+                                Variant="Variant.Flat">
+                            </RadzenButton>
+                        </Template>
+
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
+        </div>
+    </div>
+</RadzenCard>

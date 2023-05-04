@@ -1,0 +1,7 @@
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.DeleteAppointmentType;
+using MediatR;
+
+namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.Commands.DeleteAppointmentType;
+
+public record DeleteAppointmentTypeCommand(DeleteAppointmentTypeRequest DeleteAppointmentTypeRequest)
+    : IRequest<DeleteAppointmentTypeResponse>;

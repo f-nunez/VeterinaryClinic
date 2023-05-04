@@ -1,0 +1,15 @@
+<div class="appnotification-list-item">
+    <div class="appnotification-list-item-body @(AppNotification.IsRead ? string.Empty : "unread")" @onclick:stopPropagation="true" @onclick:preventDefault="true" @onclick="OnClickItem">
+        <i class="appnotification-list-item-delete rzi d-flex" @onclick:stopPropagation="true"@onclick:preventDefault="true" @onclick="OnClickDelete">clear</i>
+        <div class="d-flex align-items-center">
+            <div class="appnotification-list-item-module">
+                <i class="rzi d-flex">@AppNotification.ModuleIcon</i>
+            </div>
+            <div class="appnotification-list-item-information">
+                <div class="appnotification-list-item-information-title">@AppNotification.Title</div>
+                <small class="appnotification-list-item-information-message text-muted">@AppNotification.Message</small>
+                <div class="appnotification-list-item-information-date">@AppNotification.CreatedOn</div>
+            </div>
+        </div>
+    </div>
+</div>

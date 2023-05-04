@@ -1,0 +1,7 @@
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.GetClinicsFilterEmailAddress;
+using MediatR;
+
+namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.Queries.GetClinicsFilterEmailAddress;
+
+public record GetClinicsFilterEmailAddressQuery(GetClinicsFilterEmailAddressRequest GetClinicsFilterEmailAddressRequest)
+    : IRequest<GetClinicsFilterEmailAddressResponse>;

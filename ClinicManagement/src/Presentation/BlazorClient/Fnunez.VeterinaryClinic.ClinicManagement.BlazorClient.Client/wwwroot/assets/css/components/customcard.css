@@ -1,0 +1,41 @@
+.customcard {
+    display: flex;
+    justify-content: center;
+    padding: var(--rz-card-padding);
+    border-radius: var(--rz-card-border-radius);
+    box-shadow: var(--rz-card-shadow);
+    background-color: var(--rz-card-background-color);
+}
+
+.customcard i {
+    margin-right: 0.5rem;
+    font-family: var(--rz-icon-font-family);
+    font-weight: normal;
+    font-style: normal;
+    font-size: var(--rz-icon-size);
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'liga';
+}
+
+.customcard span {
+    color: var(--rz-text-color);
+}
+
+.customcard.warning {
+    background-color: var(--rz-warning-lighter);
+}
+
+.customcard.warning span {
+    color: var(--rz-warning-dark);
+}

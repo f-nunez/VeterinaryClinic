@@ -1,0 +1,6 @@
+using MediatR;
+
+namespace Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Commands.MarkAppNotificationAsRead;
+
+public record MarkAppNotificationAsReadCommand(MarkAppNotificationAsReadRequest MarkNotificationAsReadRequest)
+    : IRequest<MarkAppNotificationAsReadResponse>;

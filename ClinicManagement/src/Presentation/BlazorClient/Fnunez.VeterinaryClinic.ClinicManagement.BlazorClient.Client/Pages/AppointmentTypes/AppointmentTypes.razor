@@ -1,0 +1,152 @@
+@page "/appointment-types"
+@layout Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.MainLayout
+@inherits Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Pages.AppointmentTypes.AppointmentTypesComponent
+
+@using Application.SharedModel.AppointmentType
+@using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.RadzenTextBoxSearch
+@using Radzen
+@using Radzen.Blazor
+
+@attribute [Authorize("RequiredReaderPolicy")]
+
+<AuthorizeView Policy="RequiredWriterPolicy">
+    <Authorized>
+        @{
+            CanWrite = true;
+        }
+    </Authorized>
+</AuthorizeView>
+
+<RadzenHeading
+    Size="H1"
+    Text=@StringLocalizer["AppointmentTypes_Title"]>
+</RadzenHeading>
+
+<RadzenCard>
+    <div class="row mb-3">
+        <div class="col-12 col-sm-4 col-md-6 col-lg-7 col-xl-8">
+            <RadzenButton
+                Click=@OnClickAdd
+                Icon="add"
+                Text=@StringLocalizer["AppointmentTypes_Add_Button_Text"]
+                Visible=@CanWrite>
+            </RadzenButton>
+        </div>
+
+        <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+            <div class="datagrid-filter-menu">
+                <RadzenTextBoxSearchComponent
+                    @bind-Value=@SearchFilterValue
+                    @onkeyup=@OnKeyUpFilterSearch
+                    AutoComplete="false"
+                    Click=@OnClickFilterSearch
+                    Placeholder=@StringLocalizer["AppointmentTypes_Grid_Filter_PlaceHolder_Search"]>
+                </RadzenTextBoxSearchComponent>
+
+                <RadzenButton
+                    ButtonStyle="ButtonStyle.Secondary"
+                    Click=@OpenFilterMenu
+                    Icon="filter_list">
+                </RadzenButton>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <RadzenDataGrid @ref=@AppointmentTypesGrid
+                AllowPaging="true"
+                AllowSorting="true"
+                Count=@Count
+                Data=@AppointmentTypes
+                LoadData=@LoadData
+                PagerHorizontalAlign="HorizontalAlign.Center"
+                PageSize="10"
+                PageSizeOptions="@PageSizeOptions"
+                PageSizeText=@StringLocalizer["AppointmentTypes_Grid_PageSizeText"]
+                PagingSummaryFormat=@StringLocalizer["AppointmentTypes_Grid_PagingSummaryFormat"]
+                ShowPagingSummary="true"
+                TItem="AppointmentTypeDto">
+                <Columns>
+                    <RadzenDataGridColumn
+                        Filterable="true"
+                        Property="Id"
+                        Sortable="true"
+                        SortOrder="SortOrder.Ascending"
+                        TextAlign="TextAlign.Left"
+                        TItem="AppointmentTypeDto"
+                        Title=@StringLocalizer["AppointmentTypes_Grid_Column_Header_Id"]>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn
+                        Filterable="true"
+                        Property="Name"
+                        Sortable="true"
+                        TextAlign="TextAlign.Justify"
+                        TItem="AppointmentTypeDto"
+                        Title=@StringLocalizer["AppointmentTypes_Grid_Column_Header_Name"]>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn
+                        Filterable="true"
+                        Property="Code"
+                        Sortable="true"
+                        TextAlign="TextAlign.Left"
+                        TItem="AppointmentTypeDto"
+                        Title=@StringLocalizer["AppointmentTypes_Grid_Column_Header_Code"]>
+                    </RadzenDataGridColumn>
+                    
+                    <RadzenDataGridColumn
+                        Filterable="true"
+                        Property="Duration"
+                        Sortable="true"
+                        TextAlign="TextAlign.Left"
+                        TItem="AppointmentTypeDto"
+                        Title=@StringLocalizer["AppointmentTypes_Grid_Column_Header_Duration"]>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn
+                        Width="160px"
+                        Filterable="false"
+                        Sortable="false"
+                        TextAlign="TextAlign.Right"
+                        TItem="AppointmentTypeDto">
+
+                        <Template Context="appointmentType">
+
+                            <RadzenButton
+                                ButtonStyle="ButtonStyle.Light"
+                                Click="@((args) => OnClickDetail(appointmentType))"
+                                Icon="find_in_page"
+                                Size="ButtonSize.Medium"
+                                Variant="Variant.Flat">
+                            </RadzenButton>
+
+                            <RadzenButton
+                                ButtonStyle="ButtonStyle.Light"
+                                Class="mx-1"
+                                Click="@((args) => OnClickEdit(appointmentType))"
+                                Icon="edit"
+                                Size="ButtonSize.Medium"
+                                Variant="Variant.Flat"
+                                Visible="@CanWrite">
+                            </RadzenButton>
+
+                            <RadzenButton
+                                ButtonStyle="ButtonStyle.Danger"
+                                Click="@((args) => OnClickDelete(appointmentType))"
+                                Icon="delete"
+                                Shade="Shade.Lighter"
+                                Size="ButtonSize.Medium"
+                                Variant="Variant.Flat"
+                                Visible="@CanWrite">
+                            </RadzenButton>
+
+                        </Template>
+
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
+        </div>
+    </div>
+</RadzenCard>

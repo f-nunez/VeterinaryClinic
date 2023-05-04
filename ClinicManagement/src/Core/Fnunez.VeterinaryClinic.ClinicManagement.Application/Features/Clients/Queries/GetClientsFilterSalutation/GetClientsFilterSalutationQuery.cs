@@ -1,0 +1,7 @@
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.GetClientsFilterSalutation;
+using MediatR;
+
+namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.Queries.GetClientsFilterSalutation;
+
+public record GetClientsFilterSalutationQuery(GetClientsFilterSalutationRequest GetClientsFilterSalutationRequest)
+    : IRequest<GetClientsFilterSalutationResponse>;

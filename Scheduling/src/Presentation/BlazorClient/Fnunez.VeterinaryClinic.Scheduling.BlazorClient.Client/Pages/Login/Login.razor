@@ -1,0 +1,14 @@
+@page "/login"
+@inherits Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Login.LoginComponent
+
+<div class="login-container">
+    <div class="login-card">
+        <h2>Scheduling</h2>
+        <p>@StringLocalizer["Login_Body_Text"]</p>
+        <RadzenButton
+            ButtonStyle="ButtonStyle.Secondary"
+            Click="OnClickLogin"
+            Text=@StringLocalizer["Login_Button_Text"]>
+        </RadzenButton>
+    </div>
+</div>

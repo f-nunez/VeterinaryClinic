@@ -1,0 +1,17 @@
+@{
+    string message = string.Empty;
+    string showAlert = string.Empty;
+
+    if (ToastService is not null)
+    {
+        message = ToastService.Message;
+        showAlert = ToastService.IsShow ? "show" : string.Empty;
+    }
+}
+
+<div class="alert @AlertType alert-dismissible fade @showAlert" role="alert">
+    @message
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" @onclick="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>

@@ -1,0 +1,98 @@
+@page "/rooms"
+@layout Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.MainLayout
+@inherits Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Rooms.RoomsComponent
+
+@using Application.SharedModel.Room
+@using Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.Components.RadzenTextBoxSearch
+@using Radzen
+@using Radzen.Blazor
+
+@attribute [Authorize("RequiredReaderPolicy")]
+
+<RadzenHeading
+    Size="H1"
+    style="display: inline-block"
+    Text=@StringLocalizer["Rooms_Title"]>
+</RadzenHeading>
+
+<RadzenCard>
+    <div class="row mb-3">
+        <div class="col-12 col-sm-4 col-md-6 col-lg-7 col-xl-8"></div>
+
+        <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+            <div class="datagrid-filter-menu">
+                <RadzenTextBoxSearchComponent
+                    @bind-Value=@SearchFilterValue
+                    @onkeyup=@OnKeyUpFilterSearch
+                    AutoComplete="false"
+                    Click=@OnClickFilterSearch
+                    Placeholder=@StringLocalizer["Rooms_Grid_Filter_PlaceHolder_Search"]>
+                </RadzenTextBoxSearchComponent>
+
+                <RadzenButton
+                    ButtonStyle="ButtonStyle.Secondary"
+                    Click=@OpenFilterMenu
+                    Icon="filter_list">
+                </RadzenButton>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <RadzenDataGrid @ref=@RoomsGrid
+                AllowPaging="true"
+                AllowSorting="true"
+                Count=@Count
+                Data=@Rooms
+                LoadData=@LoadData
+                PagerHorizontalAlign="HorizontalAlign.Center"
+                PageSize="10"
+                PageSizeOptions="@PageSizeOptions"
+                PageSizeText=@StringLocalizer["Rooms_Grid_PageSizeText"]
+                PagingSummaryFormat=@StringLocalizer["Rooms_Grid_PagingSummaryFormat"]
+                ShowPagingSummary="true"
+                TItem="RoomDto">
+                <Columns>
+                    <RadzenDataGridColumn
+                        Filterable="true"
+                        Property="Id"
+                        Sortable="true"
+                        SortOrder="SortOrder.Ascending"
+                        TextAlign="TextAlign.Left"
+                        TItem="RoomDto"
+                        Title=@StringLocalizer["Rooms_Grid_Column_Header_Id"]>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn
+                        Filterable="true"
+                        Property="Name"
+                        Sortable="true"
+                        TextAlign="TextAlign.Justify"
+                        TItem="RoomDto"
+                        Title=@StringLocalizer["Rooms_Grid_Column_Header_Name"]>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn
+                        Width="70px"
+                        Filterable="false"
+                        Sortable="false"
+                        TextAlign="TextAlign.Right"
+                        TItem="RoomDto">
+
+                        <Template Context="room">
+                            <RadzenButton
+                                ButtonStyle="ButtonStyle.Light"
+                                Click="@((args) => OnClickDetail(room))"
+                                Icon="find_in_page"
+                                Size="ButtonSize.Medium"
+                                Variant="Variant.Flat">
+                            </RadzenButton>
+                        </Template>
+
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
+        </div>
+    </div>
+</RadzenCard>

@@ -1,0 +1,10 @@
+@if (IsVisible)
+{
+    <div class="@(Class)">
+        @if (!string.IsNullOrEmpty(Icon))
+        {
+            <i>@Icon</i>
+        }
+        <span>@Text</span>
+    </div>
+}

@@ -1,0 +1,4 @@
+# Exclude self-signed certificate files for development purposes
+!/certs/*.crt
+!/certs/*.key
+!/certs/*.pfx

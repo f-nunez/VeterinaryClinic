@@ -1,0 +1,6 @@
+using MediatR;
+
+namespace Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Features.Notifications.Queries.GetUnreadAppNotificationsCount;
+
+public record GetUnreadAppNotificationsCountQuery(GetUnreadAppNotificationsCountRequest GetUnreadAppNotificationsCountRequest)
+    : IRequest<GetUnreadAppNotificationsCountResponse>;

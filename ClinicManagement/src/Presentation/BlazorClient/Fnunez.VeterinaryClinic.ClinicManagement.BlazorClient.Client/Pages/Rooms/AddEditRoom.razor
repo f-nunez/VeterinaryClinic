@@ -1,0 +1,54 @@
+@inherits Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Pages.Rooms.AddEditRoomComponent
+
+@using Radzen.Blazor
+@using ViewModels.Rooms
+
+<RadzenTemplateForm
+    Data="@Model"
+    Submit=@OnSubmit
+    TItem="RoomVm">
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="row mb-3">
+                <div class="col-12">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditRoom_Name_TextBox_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenTextBox
+                        @bind-Value="@Model.Name"
+                        AutoComplete="false"
+                        Class="w-100 d-block"
+                        MaxLength="200"
+                        Name="Name"
+                        Placeholder=@StringLocalizer["AddEditRoom_Name_TextBox_PlaceHolder"]>
+                    </RadzenTextBox>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Name"
+                        Text=@StringLocalizer["AddEditRoom_Name_TextBox_RequiredMessage"]>
+                    </RadzenRequiredValidator>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <RadzenButton
+                BusyText=@StringLocalizer["AddEditRoom_Save_Button_BusyText"]
+                ButtonStyle="ButtonStyle.Success"
+                ButtonType="ButtonType.Submit"
+                Class="w-100"
+                Icon="save"
+                IsBusy=@IsSaving
+                Text=@StringLocalizer["AddEditRoom_Save_Button_Text"]>
+            </RadzenButton>
+        </div>
+    </div>
+
+</RadzenTemplateForm>

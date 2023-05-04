@@ -1,0 +1,16 @@
+@using Fnunez.VeterinaryClinic.Public.Web.Services.Language
+@using Fnunez.VeterinaryClinic.Public.Web.ViewModels.Appointment
+@inject ILanguageService languageService
+@model ConfirmVm
+
+@{
+    ViewData["Title"] = languageService.GetStringLocalizer("Appointment_Confirm_Title", Model.Language);
+}
+
+<div class="text-center">
+    <h2>@languageService.GetStringLocalizer("Appointment_Confirm_Message_Success", Model.Language)</h2>
+    <br>
+    <h4><b>@languageService.GetStringLocalizer("Appointment_Confirm_Message_Cheers", Model.Language)</b></h4>
+    <br>
+    <h4>@languageService.GetStringLocalizer("Appointment_Confirm_Message_KindRegards", Model.Language)</h4>
+</div>

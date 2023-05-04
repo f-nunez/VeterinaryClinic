@@ -1,0 +1,56 @@
+@page "/rooms/detail/{RoomId:int}"
+@layout Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.MainLayout
+@inherits Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Pages.Rooms.RoomDetailNotificationComponent
+
+@using Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Client.Shared.Components.CustomCard
+@using Radzen
+@using Radzen.Blazor
+
+@attribute [Authorize("RequiredReaderPolicy")]
+
+<RadzenHeading
+    Size="H1"
+    Text=@StringLocalizer["RoomDetailNotification_Title"]>
+</RadzenHeading>
+
+<CustomCardComponent
+    Icon="report"
+    IsVisible="@IsNotFound"
+    Text="@(StringLocalizer["RoomDetailNotification_RecordNotFound"])">
+</CustomCardComponent>
+
+@if (IsNotFound) { return; }
+
+<CustomCardComponent
+    Class="warning mb-3"
+    Icon="warning"
+    IsVisible="@IsNotActive"
+    Text="@(StringLocalizer["RoomDetailNotification_RecordNotActive"])">
+</CustomCardComponent>
+
+<RadzenCard>
+    <div class="row mb-3">
+        <div class="col-12 col-sm-4 col-md-6 col-lg-7 col-xl-8">
+            <RadzenButton
+                Click="OnClickBack"
+                Icon="arrow_back"
+                Text=@StringLocalizer["RoomDetailNotification_Back_Button_Text"]>
+            </RadzenButton>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <RadzenText
+                Class="rz-color-primary-light"
+                Text=@StringLocalizer["RoomDetailNotification_Label_Name"]
+                TextStyle="TextStyle.Overline">
+            </RadzenText>
+
+            <RadzenText
+                TextStyle="TextStyle.Body1">
+                <b>@Model.Name</b>
+            </RadzenText>
+        </div>
+    </div>
+</RadzenCard>

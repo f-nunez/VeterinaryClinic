@@ -1,0 +1,23 @@
+@page "/unauthorized"
+@layout MainLayout
+@inherits Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Unauthorized.UnauthorizedComponent
+
+@using Radzen
+@using Radzen.Blazor
+
+<RadzenContent Container="main">
+  <ChildContent>
+    <RadzenHeading
+      Size="H1"
+      Text=@StringLocalizer["Unauthorized_Title"]>
+    </RadzenHeading>
+    
+    <div class="row">
+      <div class="col-md-12">
+        <RadzenHtml>
+          @StringLocalizer["Unauthorized_Body_Text"]
+        </RadzenHtml>
+      </div>
+    </div>
+  </ChildContent>
+</RadzenContent>

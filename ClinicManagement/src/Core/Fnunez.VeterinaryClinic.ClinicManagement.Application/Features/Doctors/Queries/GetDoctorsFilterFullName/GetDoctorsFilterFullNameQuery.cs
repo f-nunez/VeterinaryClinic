@@ -1,0 +1,7 @@
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Doctor.GetDoctorsFilterFullName;
+using MediatR;
+
+namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Doctors.Queries.GetDoctorsFilterFullName;
+
+public record GetDoctorsFilterFullNameQuery(GetDoctorsFilterFullNameRequest GetDoctorsFilterFullNameRequest)
+    : IRequest<GetDoctorsFilterFullNameResponse>;

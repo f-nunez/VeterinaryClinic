@@ -1,0 +1,331 @@
+@inherits Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Appointments.AddEditAppointmentComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using ViewModels.Appointments
+
+<RadzenTemplateForm
+    Data="@Model"
+    Submit=@OnSubmit
+    TItem="AddEditAppointmentVm">
+    <div class="row">
+        <div class="col-12 text-center">
+            <RadzenLabel Text=@StringLocalizer["AddEditAppointment_Label_TimeZone"]></RadzenLabel>
+
+            <RadzenLabel Text="@SelectedTimezoneName"></RadzenLabel>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-sm-4">
+            <div class="row mb-3">
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditAppointment_Clinic_TextBox_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenTextBox
+                        Class="w-100 d-block"
+                        Disabled="true"
+                        Value=@Model.ClinicName>
+                    </RadzenTextBox>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditAppointment_Patient_TextBox_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenTextBox
+                        Class="w-100 d-block"
+                        Disabled="true"
+                        Value="@Model.PatientName">
+                    </RadzenTextBox>
+
+                    
+                    <div class="appointment-add-image-container mt-3">
+                        <RadzenImage Path=@($"data:image/png;base64,{PatientPhotoBase64Encoded}") />
+                    </div>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditAppointment_Doctor_DropDown_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenDropDownDataGrid
+                        @ref=@DoctorDropDownDataGrid
+                        @bind-Value="Model.DoctorId"
+                        AllowClear="true"
+                        AllowFiltering="true"
+                        AllowSorting="true"
+                        AllowVirtualization="true"
+                        Change="@(args => OnChangeDoctorFilter(args))"
+                        Class="w-100 d-block"
+                        Count=@DoctorFilterCount
+                        Data=@DoctorFilterValues
+                        FilterDelay="500"
+                        LoadData="@DoctorFilterLoadData"
+                        Name="Doctor"
+                        SearchText=@StringLocalizer["AddEditAppointment_Doctor_DropDown_PlaceHolder"]
+                        TextProperty="FullName"
+                        TValue="int"
+                        ValueProperty="Id">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn
+                                Property="FullName"
+                                Sortable="true"
+                                SortOrder="SortOrder.Ascending"
+                                TextAlign="TextAlign.Left"
+                                Title=@StringLocalizer["AddEditAppointment_Doctor_DropDown_ColumnHeader_FullName"]>
+                            </RadzenDropDownDataGridColumn>
+                        </Columns>
+                    </RadzenDropDownDataGrid>
+
+                    <RadzenCompareValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Doctor"
+                        Operator="CompareOperator.GreaterThan"
+                        Text=@StringLocalizer["AddEditAppointment_Doctor_DropDown_RequiredMessage"]
+                        Value="0">
+                    </RadzenCompareValidator>
+
+                    <div class="appointment-add-image-container mt-3">
+                        <RadzenImage Class="input-dialog-img" Path=@($"data:image/png;base64,{DoctorPhotoBase64Encoded}") />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-8">
+            <div class="row mb-3">
+                <div class="col-6 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditAppointment_Start_DatePicker_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenDatePicker
+                        @bind-Value="@Model.StartOn"
+                        Class="w-100 d-block"
+                        Change="OnChangeEndOnFilter"
+                        DateFormat="g"
+                        Name="StartOn"
+                        ShowSeconds="false"
+                        ShowTime="true">
+                    </RadzenDatePicker>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="StartOn"
+                        Text=@StringLocalizer["AddEditAppointment_Start_DatePicker_RequiredMessage"]>
+                    </RadzenRequiredValidator>
+
+                    <RadzenCompareValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="StartOn"
+                        Operator="CompareOperator.LessThan"
+                        Text=@StringLocalizer["AddEditAppointment_Start_DatePicker_RequiredValidDateMessage"]
+                        Value=@Model.EndOn>
+                    </RadzenCompareValidator>
+                </div>
+
+                <div class="col-6 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditAppointment_End_DatePicker_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenDatePicker
+                        @bind-Value="@Model.EndOn"
+                        Class="w-100 d-block"
+                        Change="OnChangeStartOnFilter"
+                        DateFormat="g"
+                        Name="EndOn"
+                        ShowSeconds="false"
+                        ShowTime="true">
+                    </RadzenDatePicker>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="EndOn"
+                        Text=@StringLocalizer["AddEditAppointment_End_DatePicker_RequiredMessage"]>
+                    </RadzenRequiredValidator>
+
+                    <RadzenCompareValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="EndOn"
+                        Operator="CompareOperator.GreaterThan"
+                        Text=@StringLocalizer["AddEditAppointment_End_DatePicker_RequiredValidDateMessage"]
+                        Value=@Model.StartOn>
+                    </RadzenCompareValidator>
+                </div>
+
+                <div class="col-6 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditAppointment_AppointmentType_DropDown_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenDropDownDataGrid
+                        @ref=@AppointmentTypeDropDownDataGrid
+                        @bind-Value="Model.AppointmentTypeId"
+                        AllowClear="true"
+                        AllowFiltering="true"
+                        AllowSorting="true"
+                        AllowVirtualization="true"
+                        Change="@(args => OnChangeAppointmentTypeFilter(args))"
+                        Class="w-100 d-block"
+                        Count=@AppointmentTypeFilterCount
+                        Data=@AppointmentTypeFilterValues
+                        FilterDelay="500"
+                        LoadData="@AppointmentTypeFilterLoadData"
+                        Name="AppointmentType"
+                        SearchText=@StringLocalizer["AddEditAppointment_AppointmentType_DropDown_PlaceHolder"]
+                        TextProperty="Name"
+                        TValue="int"
+                        ValueProperty="Id">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn
+                                Property="Name"
+                                Sortable="true"
+                                SortOrder="SortOrder.Ascending"
+                                TextAlign="TextAlign.Left"
+                                Title=@StringLocalizer["AddEditAppointment_AppointmentType_DropDown_ColumnHeader_Name"]>
+                            </RadzenDropDownDataGridColumn>
+
+                            <RadzenDropDownDataGridColumn
+                                Property="Duration"
+                                Sortable="true"
+                                TextAlign="TextAlign.Left"
+                                Title=@StringLocalizer["AddEditAppointment_AppointmentType_DropDown_ColumnHeader_Duration"]>
+                            </RadzenDropDownDataGridColumn>
+                        </Columns>
+                    </RadzenDropDownDataGrid>
+
+                    <RadzenCompareValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="AppointmentType"
+                        Operator="CompareOperator.GreaterThan"
+                        Text=@StringLocalizer["AddEditAppointment_AppointmentType_DropDown_RequiredMessage"]
+                        Value="0">
+                    </RadzenCompareValidator>
+
+                    <div class="rz-message rz-messages-error position-absolute"
+                        hidden=@(!ShowErrorForAppointmentTypeDuration)>
+                        @StringLocalizer["AddEditAppointment_AppointmentType_DropDown_DurationMessage"]
+                    </div>
+                </div>
+
+                <div class="col-6 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditAppointment_Room_DropDown_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenDropDownDataGrid
+                        @ref=@RoomDropDownDataGrid
+                        @bind-Value="Model.RoomId"
+                        AllowClear="true"
+                        AllowFiltering="true"
+                        AllowSorting="true"
+                        AllowVirtualization="true"
+                        Change="@(args => OnChangeRoomFilter(args))"
+                        Class="w-100 d-block"
+                        Count=@RoomFilterCount
+                        Data=@RoomFilterValues
+                        FilterDelay="500"
+                        LoadData="@RoomFilterLoadData"
+                        Name="Room"
+                        SearchText=@StringLocalizer["AddEditAppointment_Room_DropDown_PlaceHolder"]
+                        TextProperty="Name"
+                        TValue="int"
+                        ValueProperty="Id">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn
+                                Property="Name"
+                                Sortable="true"
+                                SortOrder="SortOrder.Ascending"
+                                TextAlign="TextAlign.Left"
+                                Title=@StringLocalizer["AddEditAppointment_Room_DropDown_ColumnHeader_Name"]>
+                            </RadzenDropDownDataGridColumn>
+                        </Columns>
+                    </RadzenDropDownDataGrid>
+
+                    <RadzenCompareValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Room"
+                        Operator="CompareOperator.GreaterThan"
+                        Text=@StringLocalizer["AddEditAppointment_Room_DropDown_RequiredMessage"]
+                        Value="0">
+                    </RadzenCompareValidator>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditAppointment_Title_TextBox_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenTextBox
+                        @bind-Value="@Model.Title"
+                        Class="w-100 d-block"
+                        MaxLength="200"
+                        Name="Title"
+                        Placeholder=@StringLocalizer["AddEditAppointment_Title_TextBox_PlaceHolder"]>
+                    </RadzenTextBox>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Title"
+                        Text=@StringLocalizer["AddEditAppointment_Title_TextBox_RequiredMessage"]>
+                    </RadzenRequiredValidator>
+                </div>
+
+                <div class="col-12">
+                    <RadzenText
+                        TagName="TagName.H3"
+                        Text=@StringLocalizer["AddEditAppointment_Description_TextBox_Label"]
+                        TextStyle="TextStyle.Subtitle2">
+                    </RadzenText>
+
+                    <RadzenTextArea
+                        @bind-Value="@Model.Description"
+                        Class="w-100 d-block"
+                        MaxLength="2000"
+                        Name="Description"
+                        Placeholder=@StringLocalizer["AddEditAppointment_Description_TextBox_PlaceHolder"]
+                        Rows="5">
+                    </RadzenTextArea>
+
+                    <RadzenRequiredValidator
+                        Class="rz-message rz-messages-error position-absolute"
+                        Component="Description"
+                        Text=@StringLocalizer["AddEditAppointment_Description_TextBox_RequiredMessage"]>
+                    </RadzenRequiredValidator>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <RadzenButton
+                ButtonType="ButtonType.Submit"
+                Class="w-100"
+                Text=@StringLocalizer["AddEditAppointment_Button_Save"]>
+            </RadzenButton>
+        </div>
+    </div>
+</RadzenTemplateForm>

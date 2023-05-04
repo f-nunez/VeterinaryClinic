@@ -1,0 +1,161 @@
+@page "/appointments"
+@layout Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Shared.MainLayout
+@inherits Fnunez.VeterinaryClinic.Scheduling.BlazorClient.Client.Pages.Appointments.AppointmentsComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using ViewModels.Appointments
+
+@attribute [Authorize("RequiredWriterPolicy")]
+
+<RadzenHeading
+    Size="H1"
+    Text=@StringLocalizer["Appointments_Title"]>
+</RadzenHeading>
+
+<RadzenCard>
+    <div class="row mb-3">
+        <div class="col-sm-6 col-md-4">
+            <RadzenText
+                TagName="TagName.H3"
+                Text=@StringLocalizer["Appointments_Client_DropDown_Label"]
+                TextStyle="TextStyle.Subtitle2">
+            </RadzenText>
+
+            <RadzenDropDownDataGrid
+                @bind-Value=@ClientId
+                AllowClear="true"
+                AllowSorting="true"
+                AllowVirtualization="true"
+                Change="@(args => OnChangeClientFilter(args))"
+                Class="w-100"
+                Count=@ClientFilterCount
+                Data=@ClientFilterValues
+                FilterDelay="500"
+                LoadData="@ClientFilterLoadData"
+                SearchText=@StringLocalizer["Appointments_Client_DropDown_PlaceHolder"]
+                TextProperty="FullName"
+                TValue="int?"
+                ValueProperty="Id">
+                <Columns>
+                    <RadzenDropDownDataGridColumn
+                        Property="FullName"
+                        Sortable="true"
+                        SortOrder="SortOrder.Ascending"
+                        TextAlign="TextAlign.Left"
+                        Title=@StringLocalizer["Appointments_Client_DropDown_HeadColumn_FullName"]>
+                    </RadzenDropDownDataGridColumn>
+
+                    <RadzenDropDownDataGridColumn
+                        Property="EmailAddress"
+                        Sortable="true"
+                        TextAlign="TextAlign.Left"
+                        Title=@StringLocalizer["Appointments_Client_DropDown_HeadColumn_EmailAddress"]>
+                    </RadzenDropDownDataGridColumn>
+                </Columns>
+            </RadzenDropDownDataGrid>
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+            <RadzenText
+                TagName="TagName.H3"
+                Text=@StringLocalizer["Appointments_Patient_DropDown_Label"]
+                TextStyle="TextStyle.Subtitle2">
+            </RadzenText>
+
+            <RadzenDropDownDataGrid
+                @bind-Value=@PatientId
+                AllowClear="true"
+                AllowFiltering="true"
+                AllowSorting="true"
+                Change="@(args => OnChangePatientFilter(args))"
+                Class="w-100"
+                Data=@PatientFilterValues
+                Disabled=@(!IsPatientDropDownEnabled)
+                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                SearchText=@StringLocalizer["Appointments_Patient_DropDown_PlaceHolder"]
+                TextProperty="Name"
+                TValue="int?"
+                ValueProperty="Id">
+                <Columns>
+                    <RadzenDropDownDataGridColumn
+                        Property="Name"
+                        SortOrder="SortOrder.Ascending"
+                        TextAlign="TextAlign.Left"
+                        Title=@StringLocalizer["Appointments_Patient_DropDown_HeadColumn_Name"]>
+                    </RadzenDropDownDataGridColumn>
+                </Columns>
+            </RadzenDropDownDataGrid>
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+            <RadzenText
+                TagName="TagName.H3"
+                Text=@StringLocalizer["Appointments_Clinic_DropDown_Label"]
+                TextStyle="TextStyle.Subtitle2">
+            </RadzenText>
+
+            <RadzenDropDownDataGrid
+                @bind-Value=@ClinicId
+                AllowClear="true"
+                AllowSorting="true"
+                AllowVirtualization="true"
+                Change="@(args => OnChangeClinicFilter(args))"
+                Class="w-100"
+                Count=@ClinicFilterCount
+                Data=@ClinicFilterValues
+                Disabled=@(!IsClinicDropDownEnabled)
+                FilterDelay="500"
+                LoadData="@ClinicFilterLoadData"
+                SearchText=@StringLocalizer["Appointments_Clinic_DropDown_PlaceHolder"]
+                TextProperty="Name"
+                TValue="int?"
+                ValueProperty="Id">
+                <Columns>
+                    <RadzenDropDownDataGridColumn
+                        Property="Name"
+                        Sortable="true"
+                        SortOrder="SortOrder.Ascending"
+                        TextAlign="TextAlign.Left"
+                        Title=@StringLocalizer["Appointments_Clinic_DropDown_HeadColumn_Name"]>
+                    </RadzenDropDownDataGridColumn>
+                </Columns>
+            </RadzenDropDownDataGrid>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <RadzenScheduler
+                @ref=@Scheduler
+                AppointmentRender=@OnAppointmentRender
+                AppointmentSelect=@OnAppointmentSelect
+                Data=@StoredAppointments
+                EndProperty="EndOn"
+                LoadData=@SchedulerLoadData
+                SelectedIndex="1"
+                SlotRender=@OnSlotRender
+                SlotSelect=@OnSlotSelect
+                StartProperty="StartOn"
+                TextProperty="Title"
+                TItem="AppointmentVm"
+                TodayText=@StringLocalizer["Appointments_Scheduler_Text_Today"]>
+
+                <RadzenDayView
+                    StartTime=@TimeSpan.FromMinutes(0)
+                    Text=@StringLocalizer["Appointments_Scheduler_Text_Day"]>
+                </RadzenDayView>
+
+                <RadzenWeekView
+                    StartTime=@TimeSpan.FromMinutes(0)
+                    Text=@StringLocalizer["Appointments_Scheduler_Text_Week"]>
+                </RadzenWeekView>
+
+                <RadzenMonthView
+                    Text=@StringLocalizer["Appointments_Scheduler_Text_Month"]>
+                </RadzenMonthView>
+                
+            </RadzenScheduler>
+        </div>
+    </div>
+</RadzenCard>
