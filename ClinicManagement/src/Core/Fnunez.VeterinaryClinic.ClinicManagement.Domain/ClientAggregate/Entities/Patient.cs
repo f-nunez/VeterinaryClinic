@@ -98,6 +98,7 @@ public class Patient : BaseAuditableEntity<int>
                 $"Required input {nameof(preferredDoctorId)} cannot be zero or negative.",
                 nameof(preferredDoctorId));
 
+        Id = id;
         ClientId = clientId;
         Name = name;
         AnimalSex = animalSex;
