@@ -8,6 +8,6 @@ public class GetClientsFilterPreferredDoctorQueryValidator
     public GetClientsFilterPreferredDoctorQueryValidator()
     {
         RuleFor(v => v.GetClientsFilterPreferredDoctorRequest.DataGridRequest.Search)
-            .MaximumLength(200).WithMessage("Search must be less or equals than 200 characters.");
+            .MaximumLength(200).WithMessage("Search must not exceed 200 characters.");
     }
 }
