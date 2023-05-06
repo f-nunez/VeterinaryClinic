@@ -65,9 +65,10 @@ public partial class ClinicsComponent : ComponentBase
             AddressFilterValue = AddressFilterValue,
             EmailAddressFilterValue = EmailAddressFilterValue,
             IdFilterValue = IdFilterValue,
-            NameFilterValue = NameFilterValue,
-            SearchFilterValue = SearchFilterValue
+            NameFilterValue = NameFilterValue
         };
+
+        request.DataGridRequest.Search = SearchFilterValue;
 
         var dataGridResponse = await _clinicService
             .DataGridAsync(request);
