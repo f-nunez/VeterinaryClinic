@@ -34,9 +34,9 @@ public static class LoadDataArgsExtension
         var dataGridRequest = new DataGridRequest
         {
             Search = loadDataArgs.Filter,
-            Skip = loadDataArgs.Skip,
+            Skip = loadDataArgs.Skip ?? default,
             Sorts = sorts,
-            Take = loadDataArgs.Top
+            Take = loadDataArgs.Top ?? default
         };
 
         return dataGridRequest;
