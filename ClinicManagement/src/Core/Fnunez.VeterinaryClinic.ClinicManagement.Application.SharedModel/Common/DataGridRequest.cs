@@ -3,9 +3,9 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Commo
 public class DataGridRequest
 {
     public string Search { get; set; } = string.Empty;
-    public int? Skip { get; set; }
+    public int Skip { get; set; }
     public List<DataGridRequestSort>? Sorts { get; set; }
-    public int? Take { get; set; }
+    public int Take { get; set; }
 
     public override string ToString()
     {
