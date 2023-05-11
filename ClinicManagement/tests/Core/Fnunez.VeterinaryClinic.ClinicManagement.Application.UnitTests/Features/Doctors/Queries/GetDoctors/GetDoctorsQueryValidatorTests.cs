@@ -63,12 +63,13 @@ public class GetDoctorsQueryValidatorTests
             x.GetDoctorsRequest.DataGridRequest.Skip);
     }
 
-    [Fact]
-    public void Validation_DataGridRequestTakeIsGreaterThanOnehundred_Fails()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void Validation_DataGridRequestTakeIsLessThanOrEqualToZero_Fails(
+        int take)
     {
         // Arrange
-        int take = 101;
-
         var dataGridRequest = new DataGridRequest { Take = take };
 
         var request = new GetDoctorsRequest
