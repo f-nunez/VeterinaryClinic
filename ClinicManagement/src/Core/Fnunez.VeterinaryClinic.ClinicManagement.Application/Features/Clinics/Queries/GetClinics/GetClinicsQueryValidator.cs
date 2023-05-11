@@ -16,7 +16,7 @@ public class GetClinicsQueryValidator : AbstractValidator<GetClinicsQuery>
             .GreaterThanOrEqualTo(0).WithMessage("Skip must be greater than or equal to 0.");
 
         RuleFor(v => v.GetClinicsRequest.DataGridRequest.Take)
-            .GreaterThanOrEqualTo(0).WithMessage("Take must be greater than or equal to 0.")
+            .GreaterThan(0).WithMessage("Take must be greater than 0.")
             .LessThanOrEqualTo(100).WithMessage("Take must be less than or equal to 100.");
 
         RuleFor(v => v.GetClinicsRequest.EmailAddressFilterValue)
