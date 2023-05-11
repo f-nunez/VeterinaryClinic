@@ -86,12 +86,13 @@ public class GetRoomsQueryValidatorTests
             x.GetRoomsRequest.DataGridRequest.Take);
     }
 
-    [Fact]
-    public void Validation_DataGridRequestTakeIsLessThanZero_Fails()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void Validation_DataGridRequestTakeIsLessThanOrEqualToZero_Fails(
+        int take)
     {
         // Arrange
-        int take = -1;
-
         var dataGridRequest = new DataGridRequest { Take = take };
 
         var request = new GetRoomsRequest
