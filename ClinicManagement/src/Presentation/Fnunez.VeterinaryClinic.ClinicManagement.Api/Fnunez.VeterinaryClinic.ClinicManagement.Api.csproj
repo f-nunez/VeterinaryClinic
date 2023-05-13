@@ -22,4 +22,8 @@
     <ProjectReference Include="..\..\Infrastructure\Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure\Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Fnunez.VeterinaryClinic.ClinicManagement.Application.IntegrationTests" />
+  </ItemGroup>
+
 </Project>
