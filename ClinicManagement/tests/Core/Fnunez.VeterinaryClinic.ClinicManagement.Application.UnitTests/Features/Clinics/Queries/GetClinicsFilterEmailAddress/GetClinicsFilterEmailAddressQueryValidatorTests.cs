@@ -2,7 +2,7 @@ using FluentValidation.TestHelper;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.Queries.GetClinicsFilterEmailAddress;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic.GetClinicsFilterEmailAddress;
 
-namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.UnitTests.Features.Clinics.Queries.GetclinicsFilterEmailAddress;
+namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.UnitTests.Features.Clinics.Queries.GetClinicsFilterEmailAddress;
 
 public class GetClinicsFilterEmailAddressQueryValidatorTests
 {
