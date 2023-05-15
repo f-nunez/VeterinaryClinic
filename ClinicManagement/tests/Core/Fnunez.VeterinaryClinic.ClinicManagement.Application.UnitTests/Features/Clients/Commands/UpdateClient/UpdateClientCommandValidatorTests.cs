@@ -158,6 +158,24 @@ public class UpdateClientCommandValidatorTests
     }
 
     [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void Validation_ClientIdIsLessThanOrEqualToZero_Fails(int clientId)
+    {
+        // Arrange
+        var request = new UpdateClientRequest { ClientId = clientId };
+
+        var command = new UpdateClientCommand(request);
+
+        // Act
+        var validationResult = _validator.TestValidate(command);
+
+        //Assert
+        validationResult.ShouldHaveValidationErrorFor(x =>
+            x.UpdateClientRequest.ClientId);
+    }
+
+    [Theory]
     [InlineData(1)]
     [InlineData(200)]
     public void Validation_PreferredNameHasCharactersBetweenOneAndTwoHundred_IsValid(
