@@ -158,6 +158,24 @@ public class UpdateClinicCommandValidatorTests
     }
 
     [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void Validation_IdIsLessThanOrEqualToZero_Fails(int id)
+    {
+        // Arrange
+        var request = new UpdateClinicRequest { Id = id };
+
+        var command = new UpdateClinicCommand(request);
+
+        // Act
+        var validationResult = _validator.TestValidate(command);
+
+        //Assert
+        validationResult.ShouldHaveValidationErrorFor(x =>
+            x.UpdateClinicRequest.Id);
+    }
+
+    [Theory]
     [InlineData(1)]
     [InlineData(200)]
     public void Validation_NameHasCharactersBetweenOneAndTwoHundred_IsValid(
