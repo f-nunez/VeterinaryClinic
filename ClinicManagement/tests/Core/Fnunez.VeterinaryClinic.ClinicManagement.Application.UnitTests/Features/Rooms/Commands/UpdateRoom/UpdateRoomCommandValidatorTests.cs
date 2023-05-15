@@ -32,6 +32,24 @@ public class UpdateRoomCommandValidatorTests
     }
 
     [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void Validation_IdIsLessThanOrEqualToZero_Fails(int id)
+    {
+        // Arrange
+        var request = new UpdateRoomRequest { Id = id };
+
+        var command = new UpdateRoomCommand(request);
+
+        // Act
+        var validationResult = _validator.TestValidate(command);
+
+        //Assert
+        validationResult.ShouldHaveValidationErrorFor(x =>
+            x.UpdateRoomRequest.Id);
+    }
+
+    [Theory]
     [InlineData(1)]
     [InlineData(200)]
     public void Validation_NameHasCharactersBetweenOneAndTwoHundred_IsValid(
