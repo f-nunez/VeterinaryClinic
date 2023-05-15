@@ -92,4 +92,21 @@ public class UpdateDoctorCommandValidatorTests
             x.UpdateDoctorRequest.Id);
     }
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void Validation_IdIsLessThanOrEqualToZero_Fails(int id)
+    {
+        // Arrange
+        var request = new UpdateDoctorRequest { Id = id };
+
+        var command = new UpdateDoctorCommand(request);
+
+        // Act
+        var validationResult = _validator.TestValidate(command);
+
+        //Assert
+        validationResult.ShouldHaveValidationErrorFor(x =>
+            x.UpdateDoctorRequest.Id);
+    }
 }
