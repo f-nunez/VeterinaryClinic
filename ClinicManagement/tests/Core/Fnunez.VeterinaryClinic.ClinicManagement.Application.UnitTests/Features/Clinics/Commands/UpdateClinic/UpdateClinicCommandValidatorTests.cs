@@ -139,6 +139,24 @@ public class UpdateClinicCommandValidatorTests
             x.UpdateClinicRequest.EmailAddress);
     }
 
+    [Fact]
+    public void Validation_IdIsGreaterThanZero_IsValid()
+    {
+        // Arrange
+        int id = 1;
+
+        var request = new UpdateClinicRequest { Id = id };
+
+        var command = new UpdateClinicCommand(request);
+
+        // Act
+        var validationResult = _validator.TestValidate(command);
+
+        //Assert
+        validationResult.ShouldNotHaveValidationErrorFor(x =>
+            x.UpdateClinicRequest.Id);
+    }
+
     [Theory]
     [InlineData(1)]
     [InlineData(200)]
