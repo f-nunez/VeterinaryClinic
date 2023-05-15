@@ -6,6 +6,9 @@ public class UpdateRoomCommandValidator : AbstractValidator<UpdateRoomCommand>
 {
     public UpdateRoomCommandValidator()
     {
+        RuleFor(v => v.UpdateRoomRequest.Id)
+            .GreaterThan(0).WithMessage("Id is required.");
+
         RuleFor(v => v.UpdateRoomRequest.Name)
             .NotNull().WithMessage("Name is required.")
             .NotEmpty().WithMessage("Name is required.")
