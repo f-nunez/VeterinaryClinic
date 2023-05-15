@@ -11,5 +11,8 @@ public class UpdateDoctorCommandValidator
             .NotNull().WithMessage("FullName is required.")
             .NotEmpty().WithMessage("FullName is required.")
             .MaximumLength(200).WithMessage("FullName must not exceed 200 characters.");
+
+        RuleFor(v => v.UpdateDoctorRequest.Id)
+            .GreaterThan(0).WithMessage("Id is required.");
     }
 }
