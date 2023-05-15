@@ -194,6 +194,24 @@ public class UpdatePatientCommandValidatorTests
     }
 
     [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void Validation_PatientIdIsLessThanOrEqualToZero_Fails(int patientId)
+    {
+        // Arrange
+        var request = new UpdatePatientRequest { PatientId = patientId };
+
+        var command = new UpdatePatientCommand(request);
+
+        // Act
+        var validationResult = _validator.TestValidate(command);
+
+        //Assert
+        validationResult.ShouldHaveValidationErrorFor(x =>
+            x.UpdatePatientRequest.PatientId);
+    }
+
+    [Theory]
     [InlineData(new byte[0])]
     [InlineData(null)]
     public void Validation_PhotoDataIsEmptyAndIsNewPhoto_Fails(byte[] photoData)
