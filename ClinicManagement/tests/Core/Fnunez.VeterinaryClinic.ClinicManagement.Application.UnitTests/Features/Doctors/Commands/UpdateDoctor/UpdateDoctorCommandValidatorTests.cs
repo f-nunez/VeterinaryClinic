@@ -73,4 +73,23 @@ public class UpdateDoctorCommandValidatorTests
         validationResult.ShouldHaveValidationErrorFor(x =>
             x.UpdateDoctorRequest.FullName);
     }
+
+    [Fact]
+    public void Validation_IdIsGreaterThanZero_IsValid()
+    {
+        // Arrange
+        int id = 1;
+
+        var request = new UpdateDoctorRequest { Id = id };
+
+        var command = new UpdateDoctorCommand(request);
+
+        // Act
+        var validationResult = _validator.TestValidate(command);
+
+        //Assert
+        validationResult.ShouldNotHaveValidationErrorFor(x =>
+            x.UpdateDoctorRequest.Id);
+    }
+
 }
