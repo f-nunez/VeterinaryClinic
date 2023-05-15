@@ -87,7 +87,7 @@ public class PatientTests
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public void Constructor_ClientIdIsLessOrEqualsThanZero_ThrowsArgumentException(
+    public void Constructor_ClientIdIsLessThanOrEqualToZero_ThrowsArgumentException(
         int clientId)
     {
         // Act
@@ -197,7 +197,7 @@ public class PatientTests
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public void Constructor_PreferredDoctorIdIsLessOrEqualsThanZero_ThrowsArgumentException(
+    public void Constructor_PreferredDoctorIdIsLessThanOrEqualToZero_ThrowsArgumentException(
         int preferredDoctorId)
     {
         // Act
@@ -347,7 +347,7 @@ public class PatientTests
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public void UpdatePreferredDoctorId_PreferredDoctorIdIsLessOrEqualsThanZero_ThrowsArgumentException(
+    public void UpdatePreferredDoctorId_PreferredDoctorIdIsLessThanOrEqualToZero_ThrowsArgumentException(
         int preferredDoctorId)
     {
         // Arrange

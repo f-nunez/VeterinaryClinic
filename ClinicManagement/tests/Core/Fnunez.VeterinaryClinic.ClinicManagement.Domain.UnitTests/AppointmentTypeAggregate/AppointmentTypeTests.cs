@@ -43,7 +43,7 @@ public class AppointmentTypeTests
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public void Constructor_DurationIsLessOrEqualsThanZero_ThrowsArgumentException(
+    public void Constructor_DurationIsLessThanOrEqualToZero_ThrowsArgumentException(
         int duration)
     {
         // Act
@@ -119,7 +119,7 @@ public class AppointmentTypeTests
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public void UpdateDuration_DurationIsLessOrEqualsThanZero_ThrowsArgumentException(
+    public void UpdateDuration_DurationIsLessThanOrEqualToZero_ThrowsArgumentException(
         int duration)
     {
         // Arrange

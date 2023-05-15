@@ -107,7 +107,7 @@ public class ClientTests
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public void Constructor_PreferredDoctorIdIsLessOrEqualsThanZero_ThrowsArgumentException(
+    public void Constructor_PreferredDoctorIdIsLessThanOrEqualToZero_ThrowsArgumentException(
         int preferredDoctorId)
     {
         // Act
@@ -376,7 +376,7 @@ public class ClientTests
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public void UpdatePreferredDoctorId_PreferredDoctorIdIsLessOrEqualsThanZero_ThrowsArgumentException(
+    public void UpdatePreferredDoctorId_PreferredDoctorIdIsLessThanOrEqualToZero_ThrowsArgumentException(
         int preferredDoctorId)
     {
         // Arrange
