@@ -98,7 +98,7 @@ public class CreateAppointmentTypeCommandValidatorTests
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public void Validation_DurationIsLessOrEqualsThanZero_Fails(int duration)
+    public void Validation_DurationIsLessThanOrEqualToZero_Fails(int duration)
     {
         // Arrange
         var request = new CreateAppointmentTypeRequest { Duration = duration };

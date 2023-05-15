@@ -34,7 +34,7 @@ public class GetPatientByIdQueryValidatorTests
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public void Validation_ClientIdIsLessOrEqualsThanZero_Fails(int clientId)
+    public void Validation_ClientIdIsLessThanOrEqualToZero_Fails(int clientId)
     {
         // Arrange=
         var request = new GetPatientByIdRequest { ClientId = clientId };
@@ -70,7 +70,7 @@ public class GetPatientByIdQueryValidatorTests
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public void Validation_PatientIdIsLessOrEqualsThanZero_Fails(int patientId)
+    public void Validation_PatientIdIsLessThanOrEqualToZero_Fails(int patientId)
     {
         // Arrange=
         var request = new GetPatientByIdRequest { PatientId = patientId };

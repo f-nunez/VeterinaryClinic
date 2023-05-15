@@ -34,7 +34,7 @@ public class GetClientEditQueryValidatorTests
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public void Validation_ClientIdIsLessOrEqualsThanZero_Fails(int clientId)
+    public void Validation_ClientIdIsLessThanOrEqualToZero_Fails(int clientId)
     {
         // Arrange
         var request = new GetClientEditRequest { ClientId = clientId };

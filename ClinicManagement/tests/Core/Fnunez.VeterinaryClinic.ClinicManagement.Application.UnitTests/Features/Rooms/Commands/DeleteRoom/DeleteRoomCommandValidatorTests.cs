@@ -34,7 +34,7 @@ public class DeleteRoomCommandValidatorTests
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public void Validation_IdIsLessOrEqualsThanZero_Fails(int id)
+    public void Validation_IdIsLessThanOrEqualToZero_Fails(int id)
     {
         // Arrange
         var request = new DeleteRoomRequest { Id = id };
