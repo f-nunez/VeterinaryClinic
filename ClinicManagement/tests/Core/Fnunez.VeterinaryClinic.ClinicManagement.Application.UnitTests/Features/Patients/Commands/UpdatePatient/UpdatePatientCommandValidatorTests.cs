@@ -175,6 +175,24 @@ public class UpdatePatientCommandValidatorTests
             x.UpdatePatientRequest.Name);
     }
 
+    [Fact]
+    public void Validation_PatientIdIsGreaterThanZero_IsValid()
+    {
+        // Arrange
+        int patientId = 1;
+
+        var request = new UpdatePatientRequest { PatientId = patientId };
+
+        var command = new UpdatePatientCommand(request);
+
+        // Act
+        var validationResult = _validator.TestValidate(command);
+
+        //Assert
+        validationResult.ShouldNotHaveValidationErrorFor(x =>
+            x.UpdatePatientRequest.PatientId);
+    }
+
     [Theory]
     [InlineData(new byte[0])]
     [InlineData(null)]
