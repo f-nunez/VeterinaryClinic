@@ -113,6 +113,24 @@ public class UpdateAppointmentTypeCommandValidatorTests
             x.UpdateAppointmentTypeRequest.Duration);
     }
 
+    [Fact]
+    public void Validation_IdIsGreaterThanZero_IsValid()
+    {
+        // Arrange
+        int id = 1;
+
+        var request = new UpdateAppointmentTypeRequest { Id = id };
+
+        var command = new UpdateAppointmentTypeCommand(request);
+
+        // Act
+        var validationResult = _validator.TestValidate(command);
+
+        //Assert
+        validationResult.ShouldNotHaveValidationErrorFor(x =>
+            x.UpdateAppointmentTypeRequest.Id);
+    }
+
     [Theory]
     [InlineData(1)]
     [InlineData(200)]
