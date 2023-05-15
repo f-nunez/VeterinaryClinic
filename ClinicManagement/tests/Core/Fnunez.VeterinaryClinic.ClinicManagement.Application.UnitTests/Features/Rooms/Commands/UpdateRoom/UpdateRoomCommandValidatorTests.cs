@@ -13,6 +13,24 @@ public class UpdateRoomCommandValidatorTests
         _validator = new();
     }
 
+    [Fact]
+    public void Validation_IdIsGreaterThanZero_IsValid()
+    {
+        // Arrange
+        int id = 1;
+
+        var request = new UpdateRoomRequest { Id = id };
+
+        var command = new UpdateRoomCommand(request);
+
+        // Act
+        var validationResult = _validator.TestValidate(command);
+
+        //Assert
+        validationResult.ShouldNotHaveValidationErrorFor(x =>
+            x.UpdateRoomRequest.Id);
+    }
+
     [Theory]
     [InlineData(1)]
     [InlineData(200)]
