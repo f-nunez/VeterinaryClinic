@@ -132,6 +132,24 @@ public class UpdateAppointmentTypeCommandValidatorTests
     }
 
     [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void Validation_IdIsLessThanOrEqualToZero_Fails(int id)
+    {
+        // Arrange
+        var request = new UpdateAppointmentTypeRequest { Id = id };
+
+        var command = new UpdateAppointmentTypeCommand(request);
+
+        // Act
+        var validationResult = _validator.TestValidate(command);
+
+        //Assert
+        validationResult.ShouldHaveValidationErrorFor(x =>
+            x.UpdateAppointmentTypeRequest.Id);
+    }
+
+    [Theory]
     [InlineData(1)]
     [InlineData(200)]
     public void Validation_NameHasBetweenOneAndTwoHundredCharacters_IsValid(
