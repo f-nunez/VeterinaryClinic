@@ -139,6 +139,24 @@ public class UpdateClientCommandValidatorTests
             x.UpdateClientRequest.FullName);
     }
 
+    [Fact]
+    public void Validation_ClientIdIsGreaterThanZero_IsValid()
+    {
+        // Arrange
+        int clientId = 1;
+
+        var request = new UpdateClientRequest { ClientId = clientId };
+
+        var command = new UpdateClientCommand(request);
+
+        // Act
+        var validationResult = _validator.TestValidate(command);
+
+        //Assert
+        validationResult.ShouldNotHaveValidationErrorFor(x =>
+            x.UpdateClientRequest.ClientId);
+    }
+
     [Theory]
     [InlineData(1)]
     [InlineData(200)]
