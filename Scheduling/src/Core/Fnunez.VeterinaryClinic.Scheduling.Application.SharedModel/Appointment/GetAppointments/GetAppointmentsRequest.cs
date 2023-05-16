@@ -9,4 +9,9 @@ public class GetAppointmentsRequest : BaseRequest
     public int PatientId { get; set; }
     public DateTimeOffset StartOn { get; set; }
     public DateTimeOffset EndOn { get; set; }
+
+    public override string ToString()
+    {
+        return $"ClientId: {ClientId}, ClinicId: {ClinicId}, PatientId: {PatientId}, StartOn: {StartOn.ToString()}, EndOn: {EndOn.ToString()}";
+    }
 }
