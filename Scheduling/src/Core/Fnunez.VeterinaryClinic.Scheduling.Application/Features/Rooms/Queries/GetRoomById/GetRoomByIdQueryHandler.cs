@@ -24,7 +24,7 @@ public class GetRoomByIdQueryHandler
         GetRoomByIdQuery query,
         CancellationToken cancellationToken)
     {
-        GetRoomByIdRequest request = query.GetByIdRoomRequest;
+        GetRoomByIdRequest request = query.GetRoomByIdRequest;
         var response = new GetRoomByIdResponse(request.CorrelationId);
 
         var room = await _unitOfWork.ReadRepository<Room>()
