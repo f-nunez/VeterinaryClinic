@@ -4,10 +4,9 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Application.SharedModel.Appointment
 
 public class GetAppointmentsRequest : BaseRequest
 {
-    public DataGridRequest DataGridRequest { get; set; } = new();
-    public string ClientIdFilterValue { get; set; } = string.Empty;
-    public string ClinicIdFilterValue { get; set; } = string.Empty;
-    public string PatientIdFilterValue { get; set; } = string.Empty;
+    public int ClientId { get; set; }
+    public int ClinicId { get; set; }
+    public int PatientId { get; set; }
     public DateTimeOffset StartOn { get; set; }
     public DateTimeOffset EndOn { get; set; }
 }
