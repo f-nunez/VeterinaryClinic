@@ -17,9 +17,9 @@ public class ClinicFilterValuesSpecification
             .AsNoTracking()
             .Where(c => c.IsActive);
 
-        ApplyFilterSearch(request);
-
         ApplyOrder(request);
+
+        ApplySearch(request);
 
         ApplySkipAndTake(request);
 
@@ -33,20 +33,6 @@ public class ClinicFilterValuesSpecification
         );
     }
 
-    private void ApplyFilterSearch(GetAppointmentsFilterClinicRequest request)
-    {
-        DataGridRequest dataGridRequest = request.DataGridRequest;
-
-        if (string.IsNullOrEmpty(dataGridRequest.Search))
-            return;
-
-        string searchFilterValue = dataGridRequest.Search.Trim().ToLower();
-
-        Query
-            .Search(d => d.Address, $"%{searchFilterValue}%")
-            .Search(d => d.Name, $"%{searchFilterValue}%");
-    }
-
     private void ApplyOrder(GetAppointmentsFilterClinicRequest request)
     {
         DataGridRequest dataGridRequest = request.DataGridRequest;
@@ -56,6 +42,21 @@ public class ClinicFilterValuesSpecification
 
         var orderedBy = SetOrderBy(dataGridRequest);
         SetThenBy(dataGridRequest, orderedBy);
+    }
+
+    private void ApplySearch(GetAppointmentsFilterClinicRequest request)
+    {
+        if (string.IsNullOrEmpty(request.DataGridRequest.Search))
+            return;
+
+        string search = request.DataGridRequest.Search.Trim().ToLower();
+
+        if (string.IsNullOrEmpty(search))
+            return;
+
+        Query
+            .Search(d => d.Address, $"%{search}%")
+            .Search(d => d.Name, $"%{search}%");
     }
 
     private void ApplySkipAndTake(GetAppointmentsFilterClinicRequest request)
