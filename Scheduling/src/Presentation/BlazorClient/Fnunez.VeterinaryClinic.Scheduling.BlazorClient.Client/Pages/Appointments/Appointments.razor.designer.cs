@@ -390,10 +390,10 @@ public partial class AppointmentsComponent : ComponentBase
 
         var request = new GetAppointmentsRequest
         {
-            ClientIdFilterValue = $"{ClientId}",
-            ClinicIdFilterValue = $"{ClinicId}",
+            ClientId = ClientId ?? default,
+            ClinicId = ClinicId ?? default,
             EndOn = endOnWithOffset,
-            PatientIdFilterValue = $"{PatientId}",
+            PatientId = PatientId ?? default,
             StartOn = startOnWithOffset
         };
 
