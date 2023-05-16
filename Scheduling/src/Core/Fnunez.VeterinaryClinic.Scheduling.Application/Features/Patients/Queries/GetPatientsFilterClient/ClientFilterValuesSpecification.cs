@@ -17,9 +17,9 @@ public class ClientFilterValuesSpecification
             .AsNoTracking()
             .Where(c => c.IsActive);
 
-        ApplyFilterSearch(request);
-
         ApplyOrder(request);
+
+        ApplySearch(request);
 
         ApplySkipAndTake(request);
 
@@ -33,20 +33,6 @@ public class ClientFilterValuesSpecification
         );
     }
 
-    private void ApplyFilterSearch(GetPatientsFilterClientRequest request)
-    {
-        DataGridRequest dataGridRequest = request.DataGridRequest;
-
-        if (string.IsNullOrEmpty(dataGridRequest.Search))
-            return;
-
-        string searchFilterValue = dataGridRequest.Search.Trim().ToLower();
-
-        Query
-            .Search(c => c.EmailAddress, $"%{searchFilterValue}%")
-            .Search(c => c.FullName, $"%{searchFilterValue}%");
-    }
-
     private void ApplyOrder(GetPatientsFilterClientRequest request)
     {
         DataGridRequest dataGridRequest = request.DataGridRequest;
@@ -56,6 +42,21 @@ public class ClientFilterValuesSpecification
 
         var orderedBy = SetOrderBy(dataGridRequest);
         SetThenBy(dataGridRequest, orderedBy);
+    }
+
+    private void ApplySearch(GetPatientsFilterClientRequest request)
+    {
+        if (string.IsNullOrEmpty(request.DataGridRequest.Search))
+            return;
+
+        string search = request.DataGridRequest.Search.Trim().ToLower();
+
+        if (string.IsNullOrEmpty(search))
+            return;
+
+        Query
+            .Search(c => c.EmailAddress, $"%{search}%")
+            .Search(c => c.FullName, $"%{search}%");
     }
 
     private void ApplySkipAndTake(GetPatientsFilterClientRequest request)
