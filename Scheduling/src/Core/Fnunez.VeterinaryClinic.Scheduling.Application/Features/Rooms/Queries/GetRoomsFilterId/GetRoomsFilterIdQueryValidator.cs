@@ -9,6 +9,7 @@ public class GetRoomsFilterIdQueryValidator
     {
         RuleFor(v => v.GetRoomsFilterIdRequest.IdFilterValue)
             .NotNull().WithMessage("IdFilterValue is required.")
-            .NotEmpty().WithMessage("IdFilterValue is required.");
+            .NotEmpty().WithMessage("IdFilterValue is required.")
+            .MaximumLength(200).WithMessage("IdFilterValue must not exceed 200 characters.");
     }
 }
