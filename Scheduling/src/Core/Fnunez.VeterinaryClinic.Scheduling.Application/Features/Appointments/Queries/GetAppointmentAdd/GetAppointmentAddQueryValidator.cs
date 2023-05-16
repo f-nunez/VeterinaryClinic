@@ -14,6 +14,6 @@ public class GetAppointmentAddQueryValidator
             .GreaterThan(0).WithMessage("ClinicId is required.");
 
         RuleFor(v => v.GetAppointmentAddRequest.PatientId)
-            .GreaterThan(0).WithMessage("PatientId  is required.");
+            .GreaterThan(0).WithMessage("PatientId is required.");
     }
 }
