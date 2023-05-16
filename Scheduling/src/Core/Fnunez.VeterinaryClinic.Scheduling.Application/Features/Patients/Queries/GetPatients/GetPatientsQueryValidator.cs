@@ -1,7 +1,6 @@
 using FluentValidation;
-using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Patients.Queries.GetPatients;
 
-namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clients.Queries.GetClients;
+namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Patients.Queries.GetPatients;
 
 public class GetPatientsQueryValidator
     : AbstractValidator<GetPatientsQuery>
