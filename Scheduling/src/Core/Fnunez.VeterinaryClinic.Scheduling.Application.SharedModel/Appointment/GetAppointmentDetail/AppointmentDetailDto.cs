@@ -12,7 +12,7 @@ public class AppointmentDetailDto
     public bool IsActive { get; set; }
     public bool IsConfirmed { get; set; }
     public string PatientName { get; set; } = string.Empty;
-    public byte[] PatientPhotoData { get; set; } = null!;
+    public byte[]? PatientPhotoData { get; set; }
     public string RoomName { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public DateTimeOffset StartOn { get; set; }
