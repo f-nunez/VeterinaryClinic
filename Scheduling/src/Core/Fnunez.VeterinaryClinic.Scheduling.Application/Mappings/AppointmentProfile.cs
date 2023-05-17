@@ -18,41 +18,26 @@ public class AppointmentProfile : Profile
                 d => d.AppointmentTypeId,
                 m => m.MapFrom(s => s.AppointmentTypeId)
             ).ForMember(
-                d => d.ClientFullName,
-                m => m.MapFrom(s => s.Client.FullName)
-            ).ForMember(
                 d => d.ClientId,
-                m => m.MapFrom(s => s.Client.Id)
+                m => m.MapFrom(s => s.ClientId)
             ).ForMember(
                 d => d.ClinicId,
-                m => m.MapFrom(s => s.Clinic.Id)
-            ).ForMember(
-                d => d.ClinicName,
-                m => m.MapFrom(s => s.Clinic.Name)
+                m => m.MapFrom(s => s.ClinicId)
             ).ForMember(
                 d => d.Description,
                 m => m.MapFrom(s => s.Description)
             ).ForMember(
-                d => d.DoctorFullName,
-                m => m.MapFrom(s => s.Doctor.FullName)
-            ).ForMember(
                 d => d.DoctorId,
-                m => m.MapFrom(s => s.Doctor.Id)
+                m => m.MapFrom(s => s.DoctorId)
             ).ForMember(
                 d => d.IsConfirmed,
                 m => m.MapFrom(s => s.ConfirmOn.HasValue)
             ).ForMember(
                 d => d.PatientId,
-                m => m.MapFrom(s => s.Patient.Id)
-            ).ForMember(
-                d => d.PatientName,
-                m => m.MapFrom(s => s.Patient.Name)
+                m => m.MapFrom(s => s.PatientId)
             ).ForMember(
                 d => d.RoomId,
                 m => m.MapFrom(s => s.RoomId)
-            ).ForMember(
-                d => d.RoomName,
-                m => m.MapFrom(s => s.Room.Name)
             ).ForMember(
                 d => d.StartOn,
                 m => m.MapFrom(s => s.DateRange.StartOn)
