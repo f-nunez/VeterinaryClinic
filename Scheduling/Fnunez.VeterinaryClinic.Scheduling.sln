@@ -45,6 +45,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Scheduling.Api.UnitTests", "tests\Presentation\Fnunez.VeterinaryClinic.Scheduling.Api.UnitTests\Fnunez.VeterinaryClinic.Scheduling.Api.UnitTests.csproj", "{9567BB29-60D3-4C69-B9D2-4A4E1A9D97ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Scheduling.Application.IntegrationTests", "tests\Core\Fnunez.VeterinaryClinic.Scheduling.Application.IntegrationTests\Fnunez.VeterinaryClinic.Scheduling.Application.IntegrationTests.csproj", "{9B2800FA-DE52-4DB6-B808-119152308158}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +104,10 @@ Global
 		{9567BB29-60D3-4C69-B9D2-4A4E1A9D97ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9567BB29-60D3-4C69-B9D2-4A4E1A9D97ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9567BB29-60D3-4C69-B9D2-4A4E1A9D97ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B2800FA-DE52-4DB6-B808-119152308158}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B2800FA-DE52-4DB6-B808-119152308158}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B2800FA-DE52-4DB6-B808-119152308158}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B2800FA-DE52-4DB6-B808-119152308158}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0FC789BA-D387-4A30-B900-9DFA2534DD78} = {09140932-924E-4A1B-9EDF-ECBAF93310AB}
@@ -123,5 +129,6 @@ Global
 		{BC4D38A0-CA13-4836-8361-02B3AA2D8E8C} = {C3787AD7-4E4D-4056-9EAE-8CD0E736D8DE}
 		{044F2C28-3282-4D41-83FD-DD877A19C99A} = {4F074583-6898-4EB3-8C09-84CE7D444DEF}
 		{9567BB29-60D3-4C69-B9D2-4A4E1A9D97ED} = {044F2C28-3282-4D41-83FD-DD877A19C99A}
+		{9B2800FA-DE52-4DB6-B808-119152308158} = {446DC5DD-23E7-44A5-BDA2-C75C63FE301F}
 	EndGlobalSection
 EndGlobal
