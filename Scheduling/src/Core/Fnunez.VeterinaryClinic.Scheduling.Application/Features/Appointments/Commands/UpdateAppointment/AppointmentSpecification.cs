@@ -8,7 +8,6 @@ public class AppointmentSpecification : BaseSpecification<Appointment>
     public AppointmentSpecification(Guid appointmentId)
     {
         Query
-            .AsNoTracking()
             .Include(a => a.Client)
             .Include(a => a.Clinic)
             .Include(a => a.Doctor)
