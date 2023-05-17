@@ -32,6 +32,8 @@ public partial class AppointmentDetailNotificationComponent : ComponentBase
 
     protected AppointmentDetailVm Model { get; set; } = new();
 
+    protected string PatientPhotoBase64Encoded { get; set; }
+
     [Inject]
     protected IStringLocalizer<AppointmentDetailNotificationComponent> StringLocalizer { get; set; }
 
@@ -42,7 +44,7 @@ public partial class AppointmentDetailNotificationComponent : ComponentBase
     {
         DoctorPhotoBase64Encoded = DoctorHelper.GetDoctorThumbnail();
 
-        Model.PatientPhotoBase64Encoded = PatientHelper.GetPatientThumbnail();
+        PatientPhotoBase64Encoded = PatientHelper.GetPatientThumbnail();
     }
 
     protected override async Task OnParametersSetAsync()
@@ -64,6 +66,10 @@ public partial class AppointmentDetailNotificationComponent : ComponentBase
                 await _userSettingsService.GetTimeZoneNameAsync(),
                 await _userSettingsService.GetUtcOffsetInMinutesAsync()
             );
+
+            PatientPhotoBase64Encoded = Model.PatientPhotoData is null
+                ? PatientHelper.GetPatientThumbnail()
+                : Convert.ToBase64String(Model.PatientPhotoData);
 
             IsNotActive = !Model.IsActive;
         }
