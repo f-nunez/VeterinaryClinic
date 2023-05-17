@@ -107,7 +107,7 @@ public static class AppointmentHelper
             IsActive = appointmentDto.IsActive,
             IsConfirmed = appointmentDto.IsConfirmed,
             PatientName = appointmentDto.PatientName,
-            PatientPhotoBase64Encoded = Convert.ToBase64String(appointmentDto.PatientPhotoData),
+            PatientPhotoData = appointmentDto.PatientPhotoData,
             RoomName = appointmentDto.RoomName,
             StartOn = startOn,
             TimezoneName = timezoneName,
