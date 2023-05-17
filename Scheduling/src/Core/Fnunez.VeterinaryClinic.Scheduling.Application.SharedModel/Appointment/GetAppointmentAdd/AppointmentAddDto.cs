@@ -8,5 +8,5 @@ public class AppointmentAddDto
     public string ClinicName { get; set; } = string.Empty;
     public int PatientId { get; set; }
     public string PatientName { get; set; } = string.Empty;
-    public byte[] PatientPhotoData { get; set; } = null!;
+    public byte[]? PatientPhotoData { get; set; }
 }
