@@ -36,7 +36,8 @@ public class NotificationEngineService : INotificationEngineService
         CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(notificationEventString))
-            throw new ArgumentNullException(nameof(notificationEventString));
+            throw new ArgumentException(
+                $"{nameof(notificationEventString)} is empty.");
 
         if (string.IsNullOrEmpty(serializedNotificationRequest))
             throw new ArgumentNullException(
