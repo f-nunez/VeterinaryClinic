@@ -40,8 +40,8 @@ public class NotificationEngineService : INotificationEngineService
                 $"{nameof(notificationEventString)} is empty.");
 
         if (string.IsNullOrEmpty(serializedNotificationRequest))
-            throw new ArgumentNullException(
-                nameof(serializedNotificationRequest));
+            throw new ArgumentException(
+                $"{nameof(serializedNotificationRequest)} is empty.");
 
         NotificationEvent notificationEvent = GetNotificationEvent(
             notificationEventString);
