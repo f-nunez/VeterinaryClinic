@@ -42,7 +42,8 @@ public class EmailEngineService : IEmailEngineService
         CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(emailEventString))
-            throw new ArgumentNullException(nameof(emailEventString));
+            throw new ArgumentException(
+                $"{nameof(emailEventString)} is empty.");
 
         if (string.IsNullOrEmpty(serializedEmailRequest))
             throw new ArgumentNullException(
