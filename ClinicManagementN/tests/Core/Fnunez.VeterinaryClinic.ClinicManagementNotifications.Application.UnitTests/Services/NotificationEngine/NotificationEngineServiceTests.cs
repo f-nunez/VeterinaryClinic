@@ -3,7 +3,6 @@ using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Services
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Services.NotificationEngine.Requests;
 using Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.Services.NotificationHub;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
-using Moq;
 
 namespace Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.UnitTests.Services.NotificationEngine;
 
