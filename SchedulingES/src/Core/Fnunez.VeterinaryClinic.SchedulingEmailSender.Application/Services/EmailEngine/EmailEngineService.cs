@@ -46,8 +46,8 @@ public class EmailEngineService : IEmailEngineService
                 $"{nameof(emailEventString)} is empty.");
 
         if (string.IsNullOrEmpty(serializedEmailRequest))
-            throw new ArgumentNullException(
-                nameof(serializedEmailRequest));
+            throw new ArgumentException(
+                $"{nameof(serializedEmailRequest)} is empty.");
 
         EmailEvent emailEvent = GetEmailEvent(emailEventString);
 
