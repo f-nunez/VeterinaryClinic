@@ -53,7 +53,7 @@ public class PayloadFactoryTests
         var notificationRequest = new AppointmentConfirmedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new AppointmentProfile())));
+            cfg.AddProfile(new AppointmentProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -73,7 +73,7 @@ public class PayloadFactoryTests
         var notificationRequest = new AppointmentCreatedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new AppointmentProfile())));
+            cfg.AddProfile(new AppointmentProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -93,7 +93,7 @@ public class PayloadFactoryTests
         var notificationRequest = new AppointmentDeletedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new AppointmentProfile())));
+            cfg.AddProfile(new AppointmentProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -113,7 +113,7 @@ public class PayloadFactoryTests
         var notificationRequest = new AppointmentUpdatedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new AppointmentProfile())));
+            cfg.AddProfile(new AppointmentProfile())));
 
         var factory = new PayloadFactory(mapper);
 
