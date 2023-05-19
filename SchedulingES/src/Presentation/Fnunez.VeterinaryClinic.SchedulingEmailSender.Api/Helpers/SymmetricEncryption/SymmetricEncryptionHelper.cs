@@ -39,6 +39,9 @@ public class SymmetricEncryptionHelper : ISymmetricEncryptionHelper
 
     public async Task<string> EncryptToBase64Async(string stringToEncrypt)
     {
+        if (string.IsNullOrEmpty(stringToEncrypt))
+            throw new ArgumentException($"{nameof(stringToEncrypt)} is empty.");
+
         using var aes = Aes.Create();
 
         aes.IV = GetIV();
