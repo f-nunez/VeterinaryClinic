@@ -30,6 +30,9 @@ public class StringRazorRenderService : IStringRazorRenderService
         object? model,
         bool isMainPage = true)
     {
+        if (string.IsNullOrEmpty(viewName))
+            throw new ArgumentException($"{viewName} is empty.");
+
         var actionContext = GetActionContext();
 
         var view = FindView(actionContext, viewName, isMainPage);
