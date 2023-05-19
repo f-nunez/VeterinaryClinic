@@ -15,6 +15,9 @@ public class SymmetricEncryptionHelper : ISymmetricEncryptionHelper
 
     public async Task<string> DecryptFromBase64Async(string stringToDecrypt)
     {
+        if (string.IsNullOrEmpty(stringToDecrypt))
+            throw new ArgumentException($"{nameof(stringToDecrypt)} is empty.");
+
         using var aes = Aes.Create();
 
         aes.Key = GetKey();
