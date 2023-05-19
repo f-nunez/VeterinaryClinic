@@ -53,7 +53,7 @@ public class PayloadFactoryTests
         var notificationRequest = new AppointmentTypeCreatedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new AppointmentTypeProfile())));
+            cfg.AddProfile(new AppointmentTypeProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -73,7 +73,7 @@ public class PayloadFactoryTests
         var notificationRequest = new AppointmentTypeDeletedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new AppointmentTypeProfile())));
+            cfg.AddProfile(new AppointmentTypeProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -93,7 +93,7 @@ public class PayloadFactoryTests
         var notificationRequest = new AppointmentTypeUpdatedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new AppointmentTypeProfile())));
+            cfg.AddProfile(new AppointmentTypeProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -113,7 +113,7 @@ public class PayloadFactoryTests
         var notificationRequest = new ClientCreatedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new ClientProfile())));
+            cfg.AddProfile(new ClientProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -133,7 +133,7 @@ public class PayloadFactoryTests
         var notificationRequest = new ClientDeletedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new ClientProfile())));
+            cfg.AddProfile(new ClientProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -153,7 +153,7 @@ public class PayloadFactoryTests
         var notificationRequest = new ClientUpdatedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new ClientProfile())));
+            cfg.AddProfile(new ClientProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -173,7 +173,7 @@ public class PayloadFactoryTests
         var notificationRequest = new ClinicCreatedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new ClinicProfile())));
+            cfg.AddProfile(new ClinicProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -193,7 +193,7 @@ public class PayloadFactoryTests
         var notificationRequest = new ClinicDeletedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new ClinicProfile())));
+            cfg.AddProfile(new ClinicProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -213,7 +213,7 @@ public class PayloadFactoryTests
         var notificationRequest = new ClinicUpdatedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new ClinicProfile())));
+            cfg.AddProfile(new ClinicProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -233,7 +233,7 @@ public class PayloadFactoryTests
         var notificationRequest = new DoctorCreatedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new DoctorProfile())));
+            cfg.AddProfile(new DoctorProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -253,7 +253,7 @@ public class PayloadFactoryTests
         var notificationRequest = new DoctorDeletedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new DoctorProfile())));
+            cfg.AddProfile(new DoctorProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -273,7 +273,7 @@ public class PayloadFactoryTests
         var notificationRequest = new DoctorUpdatedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new DoctorProfile())));
+            cfg.AddProfile(new DoctorProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -293,7 +293,7 @@ public class PayloadFactoryTests
         var notificationRequest = new PatientCreatedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new PatientProfile())));
+            cfg.AddProfile(new PatientProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -313,7 +313,7 @@ public class PayloadFactoryTests
         var notificationRequest = new PatientDeletedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new PatientProfile())));
+            cfg.AddProfile(new PatientProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -333,7 +333,7 @@ public class PayloadFactoryTests
         var notificationRequest = new PatientUpdatedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new PatientProfile())));
+            cfg.AddProfile(new PatientProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -353,7 +353,7 @@ public class PayloadFactoryTests
         var notificationRequest = new RoomCreatedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new RoomProfile())));
+            cfg.AddProfile(new RoomProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -373,7 +373,7 @@ public class PayloadFactoryTests
         var notificationRequest = new RoomDeletedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new RoomProfile())));
+            cfg.AddProfile(new RoomProfile())));
 
         var factory = new PayloadFactory(mapper);
 
@@ -393,7 +393,7 @@ public class PayloadFactoryTests
         var notificationRequest = new RoomUpdatedNotificationRequest();
 
         var mapper = new Mapper(new MapperConfiguration(cfg =>
-                cfg.AddProfile(new RoomProfile())));
+            cfg.AddProfile(new RoomProfile())));
 
         var factory = new PayloadFactory(mapper);
 
