@@ -7,6 +7,7 @@ using Fnunez.VeterinaryClinic.Scheduling.Domain.AppointmentAggregate;
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClientAggregate.Entities;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointmentDetail;
 
@@ -15,17 +16,20 @@ public class GetAppointmentDetailQueryHandler
 {
     private readonly IClientStorageSetting _clientStorageSetting;
     private readonly IFileSystemReaderService _fileSystemReaderService;
+    private readonly ILogger<GetAppointmentDetailQueryHandler> _logger;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
     public GetAppointmentDetailQueryHandler(
         IClientStorageSetting clientStorageSetting,
         IFileSystemReaderService fileSystemReaderService,
+        ILogger<GetAppointmentDetailQueryHandler> logger,
         IMapper mapper,
         IUnitOfWork unitOfWork)
     {
         _clientStorageSetting = clientStorageSetting;
         _fileSystemReaderService = fileSystemReaderService;
+        _logger = logger;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
     }
@@ -63,7 +67,7 @@ public class GetAppointmentDetailQueryHandler
         return response;
     }
 
-    private async Task<byte[]> GetPatientPhotoDataAsync(Patient patient)
+    private async Task<byte[]?> GetPatientPhotoDataAsync(Patient patient)
     {
         string relativePhotoPath = Path.Combine(
             patient.ClientId.ToString(), patient.Photo.StoredName);
@@ -71,6 +75,17 @@ public class GetAppointmentDetailQueryHandler
         string photoPath = Path.Combine(
             _clientStorageSetting.BasePath, relativePhotoPath);
 
-        return await _fileSystemReaderService.ReadAsync(photoPath);
+        byte[]? photoData = null;
+
+        try
+        {
+            photoData = await _fileSystemReaderService.ReadAsync(photoPath);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
+
+        return photoData;
     }
 }

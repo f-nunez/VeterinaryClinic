@@ -9,6 +9,7 @@ public class GetClinicsFilterAddressQueryValidator
     {
         RuleFor(v => v.GetClinicsFilterAddressRequest.AddressFilterValue)
             .NotNull().WithMessage("AddressFilterValue is required.")
-            .NotEmpty().WithMessage("AddressFilterValue is required.");
+            .NotEmpty().WithMessage("AddressFilterValue is required.")
+            .MaximumLength(200).WithMessage("AddressFilterValue must not exceed 200 characters.");
     }
 }

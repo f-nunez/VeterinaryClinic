@@ -17,23 +17,14 @@ public class AppointmentsSpecification : BaseSpecification<Appointment>
             .Include(a => a.Doctor)
             .Include(a => a.Patient);
 
-        int clientId = 0;
-        int.TryParse(request.ClientIdFilterValue, out clientId);
+        if (request.ClientId > 0)
+            Query.Where(a => a.ClientId == request.ClientId);
 
-        if (clientId > 0)
-            Query.Where(a => a.ClientId == clientId);
+        if (request.ClinicId > 0)
+            Query.Where(a => a.ClinicId == request.ClinicId);
 
-        int clinicId = 0;
-        int.TryParse(request.ClinicIdFilterValue, out clinicId);
-
-        if (clinicId > 0)
-            Query.Where(a => a.ClinicId == clinicId);
-
-        int patientId = 0;
-        int.TryParse(request.PatientIdFilterValue, out patientId);
-
-        if (patientId > 0)
-            Query.Where(a => a.PatientId == patientId);
+        if (request.PatientId > 0)
+            Query.Where(a => a.PatientId == request.PatientId);
 
         Query
             .Where(a =>

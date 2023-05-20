@@ -10,23 +10,68 @@ public class PatientProfile : Profile
     {
         CreateMap<Patient, PatientDto>()
             .ForMember(
-                dto => dto.PatientId,
-                options => options.MapFrom(src => src.Id)
+                d => d.ClientId,
+                m => m.MapFrom(s => s.ClientId)
             ).ForMember(
-                dto => dto.PatientName,
-                options => options.MapFrom(src => src.Name)
+                d => d.ClientName,
+                m => m.Ignore()
             ).ForMember(
-                dto => dto.ClientName,
-                options => options.MapFrom(src => string.Empty)
+                d => d.ImageData,
+                m => m.Ignore()
+            ).ForMember(
+                d => d.IsActive,
+                m => m.MapFrom(s => s.IsActive)
+            ).ForMember(
+                d => d.PatientId,
+                m => m.MapFrom(s => s.Id)
+            ).ForMember(
+                d => d.PatientName,
+                m => m.MapFrom(s => s.Name)
+            ).ForMember(
+                d => d.PreferredDoctorId,
+                m => m.MapFrom(s => s.PreferredDoctorId)
             );
 
         CreateMap<PatientDto, Patient>()
             .ForMember(
-                dto => dto.Id,
-                options => options.MapFrom(src => src.PatientId)
+                d => d.AnimalSex,
+                m => m.Ignore()
             ).ForMember(
-                dto => dto.Name,
-                options => options.MapFrom(src => src.PatientName)
+                d => d.AnimalType,
+                m => m.Ignore()
+            ).ForMember(
+                d => d.ClientId,
+                m => m.MapFrom(s => s.ClientId)
+            ).ForMember(
+                d => d.CreatedBy,
+                m => m.Ignore()
+            ).ForMember(
+                d => d.CreatedOn,
+                m => m.Ignore()
+            ).ForMember(
+                d => d.DomainEvents,
+                m => m.Ignore()
+            ).ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.PatientId)
+            ).ForMember(
+                d => d.IsActive,
+                m => m.MapFrom(s => s.IsActive)
+            ).ForMember(
+                d => d.Name,
+                m => m.MapFrom(s => s.PatientName)
+            ).ForMember(
+                d => d.Photo,
+                m => m.Ignore()
+            ).ForMember(
+                d => d.PreferredDoctorId,
+                m => m.MapFrom(s => s.PreferredDoctorId)
+            ).ForMember(
+                d => d.UpdatedBy,
+                m => m.Ignore()
+            ).ForMember(
+                d => d.UpdatedOn,
+                m => m.Ignore()
             );
     }
 }

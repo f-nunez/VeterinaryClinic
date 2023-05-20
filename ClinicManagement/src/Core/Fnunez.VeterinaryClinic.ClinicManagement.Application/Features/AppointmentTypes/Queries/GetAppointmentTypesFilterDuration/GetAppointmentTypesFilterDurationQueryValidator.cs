@@ -9,6 +9,7 @@ public class GetAppointmentTypesFilterDurationQueryValidator
     {
         RuleFor(v => v.GetAppointmentTypesFilterDurationRequest.DurationFilterValue)
             .NotNull().WithMessage("DurationFilterValue is required.")
-            .NotEmpty().WithMessage("DurationFilterValue is required.");
+            .NotEmpty().WithMessage("DurationFilterValue is required.")
+            .MaximumLength(200).WithMessage("DurationFilterValue must not exceed 200 characters.");
     }
 }

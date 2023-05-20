@@ -25,9 +25,9 @@ public class ClientsSpecification : BaseSpecification<Client>
 
         ApplyFilterSalutation(request);
 
-        ApplyFilterSearch(request);
-
         ApplyOrder(request);
+
+        ApplySearch(request);
 
         ApplySkipAndTake(request);
     }
@@ -93,21 +93,6 @@ public class ClientsSpecification : BaseSpecification<Client>
                 salutationFilterValue));
     }
 
-    private void ApplyFilterSearch(GetClientsRequest request)
-    {
-        if (string.IsNullOrEmpty(request.SearchFilterValue))
-            return;
-
-        string searchFilterValue = request.SearchFilterValue.Trim().ToLower();
-
-        Query
-            .Search(c => c.EmailAddress, $"%{searchFilterValue}%")
-            .Search(c => c.FullName, $"%{searchFilterValue}%")
-            .Search(c => c.Id.ToString(), $"%{searchFilterValue}%")
-            .Search(c => c.PreferredName, $"%{searchFilterValue}%")
-            .Search(c => c.Salutation, $"%{searchFilterValue}%");
-    }
-
     private void ApplyOrder(GetClientsRequest request)
     {
         DataGridRequest dataGridRequest = request.DataGridRequest;
@@ -117,6 +102,24 @@ public class ClientsSpecification : BaseSpecification<Client>
 
         var orderedBy = SetOrderBy(dataGridRequest);
         SetThenBy(dataGridRequest, orderedBy);
+    }
+
+    private void ApplySearch(GetClientsRequest request)
+    {
+        if (string.IsNullOrEmpty(request.DataGridRequest.Search))
+            return;
+
+        string search = request.DataGridRequest.Search.Trim().ToLower();
+
+        if (string.IsNullOrEmpty(search))
+            return;
+
+        Query
+            .Search(c => c.EmailAddress, $"%{search}%")
+            .Search(c => c.FullName, $"%{search}%")
+            .Search(c => c.Id.ToString(), $"%{search}%")
+            .Search(c => c.PreferredName, $"%{search}%")
+            .Search(c => c.Salutation, $"%{search}%");
     }
 
     private void ApplySkipAndTake(GetClientsRequest request)

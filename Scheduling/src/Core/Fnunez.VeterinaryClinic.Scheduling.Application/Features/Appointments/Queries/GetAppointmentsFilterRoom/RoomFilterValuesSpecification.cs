@@ -17,9 +17,9 @@ public class RoomFilterValuesSpecification
             .AsNoTracking()
             .Where(r => r.IsActive);
 
-        ApplyFilterSearch(request);
-
         ApplyOrder(request);
+
+        ApplySearch(request);
 
         ApplySkipAndTake(request);
 
@@ -32,18 +32,6 @@ public class RoomFilterValuesSpecification
         );
     }
 
-    private void ApplyFilterSearch(GetAppointmentsFilterRoomRequest request)
-    {
-        DataGridRequest dataGridRequest = request.DataGridRequest;
-
-        if (string.IsNullOrEmpty(dataGridRequest.Search))
-            return;
-
-        string searchFilterValue = dataGridRequest.Search.Trim().ToLower();
-
-        Query.Search(r => r.Name, $"%{searchFilterValue}%");
-    }
-
     private void ApplyOrder(GetAppointmentsFilterRoomRequest request)
     {
         DataGridRequest dataGridRequest = request.DataGridRequest;
@@ -53,6 +41,19 @@ public class RoomFilterValuesSpecification
 
         var orderedBy = SetOrderBy(dataGridRequest);
         SetThenBy(dataGridRequest, orderedBy);
+    }
+
+    private void ApplySearch(GetAppointmentsFilterRoomRequest request)
+    {
+        if (string.IsNullOrEmpty(request.DataGridRequest.Search))
+            return;
+
+        string search = request.DataGridRequest.Search.Trim().ToLower();
+
+        if (string.IsNullOrEmpty(search))
+            return;
+
+        Query.Search(r => r.Name, $"%{search}%");
     }
 
     private void ApplySkipAndTake(GetAppointmentsFilterRoomRequest request)

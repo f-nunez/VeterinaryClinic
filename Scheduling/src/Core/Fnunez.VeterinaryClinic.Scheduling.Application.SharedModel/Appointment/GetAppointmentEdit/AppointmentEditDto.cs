@@ -16,7 +16,7 @@ public class AppointmentEditDto
     public bool IsConfirmed { get; set; }
     public int PatientId { get; set; }
     public string PatientName { get; set; } = string.Empty;
-    public byte[] PatientPhotoData { get; set; } = null!;
+    public byte[]? PatientPhotoData { get; set; }
     public int RoomId { get; set; }
     public string RoomName { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;

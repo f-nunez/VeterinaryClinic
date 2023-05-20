@@ -108,6 +108,7 @@ public class Client : BaseAuditableEntity<int>, IAggregateRoot
                 $"Required input {nameof(preferredDoctorId)} cannot be zero or negative.",
                 nameof(preferredDoctorId));
 
+        Id = id;
         FullName = fullName;
         PreferredName = preferredName;
         Salutation = salutation;

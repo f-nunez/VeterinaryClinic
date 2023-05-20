@@ -8,8 +8,31 @@ public class AppointmentTypeProfile : Profile
 {
     public AppointmentTypeProfile()
     {
-        CreateMap<AppointmentTypeCreatedNotificationRequest, AppointmentTypeCreatedPayload>();
-        CreateMap<AppointmentTypeDeletedNotificationRequest, AppointmentTypeDeletedPayload>();
-        CreateMap<AppointmentTypeUpdatedNotificationRequest, AppointmentTypeUpdatedPayload>();
+        CreateMap<AppointmentTypeCreatedNotificationRequest, AppointmentTypeCreatedPayload>()
+            .ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.Id)
+            ).ForMember(
+                d => d.Name,
+                m => m.MapFrom(s => s.Name)
+            );
+
+        CreateMap<AppointmentTypeDeletedNotificationRequest, AppointmentTypeDeletedPayload>()
+            .ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.Id)
+            ).ForMember(
+                d => d.Name,
+                m => m.MapFrom(s => s.Name)
+            );
+
+        CreateMap<AppointmentTypeUpdatedNotificationRequest, AppointmentTypeUpdatedPayload>()
+            .ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.Id)
+            ).ForMember(
+                d => d.Name,
+                m => m.MapFrom(s => s.Name)
+            );
     }
 }

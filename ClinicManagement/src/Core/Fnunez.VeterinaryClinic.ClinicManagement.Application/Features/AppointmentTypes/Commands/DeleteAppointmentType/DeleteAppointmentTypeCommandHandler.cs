@@ -1,4 +1,3 @@
-using AutoMapper;
 using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
@@ -16,20 +15,17 @@ public class DeleteAppointmentTypeCommandHandler
     : IRequestHandler<DeleteAppointmentTypeCommand, DeleteAppointmentTypeResponse>
 {
     private readonly ICurrentUserService _currentUserService;
-    private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
 
     public DeleteAppointmentTypeCommandHandler(
         ICurrentUserService currentUserService,
-        IMapper mapper,
         IMediator mediator,
         INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
         _currentUserService = currentUserService;
-        _mapper = mapper;
         _mediator = mediator;
         _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;

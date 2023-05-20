@@ -19,6 +19,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.SchedulingEmailSender.Api", "src\Presentation\Fnunez.VeterinaryClinic.SchedulingEmailSender.Api\Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.csproj", "{29924416-8F6B-4D66-A6BB-2B8C5143778F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{44D6F709-FD95-45DE-8B03-EF96A93ABDC6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{ABFFEF3C-2787-4DD1-8F08-E29E5452572E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.SchedulingEmailSender.Domain.UnitTests", "tests\Core\Fnunez.VeterinaryClinic.SchedulingEmailSender.Domain.UnitTests\Fnunez.VeterinaryClinic.SchedulingEmailSender.Domain.UnitTests.csproj", "{EBE162ED-D368-41F7-9816-EA99722C8C54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.UnitTests", "tests\Core\Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.UnitTests\Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.UnitTests.csproj", "{1A45328E-F909-44F6-A6EA-8CAD5C7061C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{2C9312C3-CD3F-42A7-A244-D051FFF42DDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure.UnitTests", "tests\Infrastructure\Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure.UnitTests\Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure.UnitTests.csproj", "{2895DDDF-7129-491F-A3D8-4F17502C20D4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{B4FFD865-191D-42CA-A5FA-09774395DFF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.UnitTests", "tests\Presentation\Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.UnitTests\Fnunez.VeterinaryClinic.SchedulingEmailSender.Api.UnitTests.csproj", "{0D5FB2A3-1CF3-4E75-9D27-B1DBBC3A11E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +60,22 @@ Global
 		{29924416-8F6B-4D66-A6BB-2B8C5143778F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29924416-8F6B-4D66-A6BB-2B8C5143778F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29924416-8F6B-4D66-A6BB-2B8C5143778F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBE162ED-D368-41F7-9816-EA99722C8C54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBE162ED-D368-41F7-9816-EA99722C8C54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBE162ED-D368-41F7-9816-EA99722C8C54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBE162ED-D368-41F7-9816-EA99722C8C54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A45328E-F909-44F6-A6EA-8CAD5C7061C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A45328E-F909-44F6-A6EA-8CAD5C7061C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A45328E-F909-44F6-A6EA-8CAD5C7061C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A45328E-F909-44F6-A6EA-8CAD5C7061C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2895DDDF-7129-491F-A3D8-4F17502C20D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2895DDDF-7129-491F-A3D8-4F17502C20D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2895DDDF-7129-491F-A3D8-4F17502C20D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2895DDDF-7129-491F-A3D8-4F17502C20D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D5FB2A3-1CF3-4E75-9D27-B1DBBC3A11E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D5FB2A3-1CF3-4E75-9D27-B1DBBC3A11E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D5FB2A3-1CF3-4E75-9D27-B1DBBC3A11E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D5FB2A3-1CF3-4E75-9D27-B1DBBC3A11E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0BF8B459-3FA5-4EA2-B9A1-1453FE62E064} = {65555678-3C93-481D-893A-2BEAED3A0B76}
@@ -53,5 +85,12 @@ Global
 		{CFEB7A24-607C-4EE6-9C97-16506D1CAF02} = {961DE947-0719-4D71-A6B6-B1CC5AF34099}
 		{15F67479-7142-40B0-803F-F21A4D5E5AD6} = {65555678-3C93-481D-893A-2BEAED3A0B76}
 		{29924416-8F6B-4D66-A6BB-2B8C5143778F} = {15F67479-7142-40B0-803F-F21A4D5E5AD6}
+		{ABFFEF3C-2787-4DD1-8F08-E29E5452572E} = {44D6F709-FD95-45DE-8B03-EF96A93ABDC6}
+		{EBE162ED-D368-41F7-9816-EA99722C8C54} = {ABFFEF3C-2787-4DD1-8F08-E29E5452572E}
+		{1A45328E-F909-44F6-A6EA-8CAD5C7061C2} = {ABFFEF3C-2787-4DD1-8F08-E29E5452572E}
+		{2C9312C3-CD3F-42A7-A244-D051FFF42DDA} = {44D6F709-FD95-45DE-8B03-EF96A93ABDC6}
+		{2895DDDF-7129-491F-A3D8-4F17502C20D4} = {2C9312C3-CD3F-42A7-A244-D051FFF42DDA}
+		{B4FFD865-191D-42CA-A5FA-09774395DFF4} = {44D6F709-FD95-45DE-8B03-EF96A93ABDC6}
+		{0D5FB2A3-1CF3-4E75-9D27-B1DBBC3A11E8} = {B4FFD865-191D-42CA-A5FA-09774395DFF4}
 	EndGlobalSection
 EndGlobal

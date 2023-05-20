@@ -23,9 +23,9 @@ public class AppointmentTypesSpecification : BaseSpecification<AppointmentType>
 
         ApplyFilterName(request);
 
-        ApplyFilterSearch(request);
-
         ApplyOrder(request);
+
+        ApplySearch(request);
 
         ApplySkipAndTake(request);
     }
@@ -75,20 +75,6 @@ public class AppointmentTypesSpecification : BaseSpecification<AppointmentType>
             .Where(at => at.Name.Trim().ToLower().Contains(nameFilterValue));
     }
 
-    private void ApplyFilterSearch(GetAppointmentTypesRequest request)
-    {
-        if (string.IsNullOrEmpty(request.SearchFilterValue))
-            return;
-
-        string searchFilterValue = request.SearchFilterValue.Trim().ToLower();
-
-        Query
-            .Search(at => at.Code, $"%{searchFilterValue}%")
-            .Search(at => at.Duration.ToString(), $"%{searchFilterValue}%")
-            .Search(at => at.Id.ToString(), $"%{searchFilterValue}%")
-            .Search(at => at.Name, $"%{searchFilterValue}%");
-    }
-
     private void ApplyOrder(GetAppointmentTypesRequest request)
     {
         DataGridRequest dataGridRequest = request.DataGridRequest;
@@ -98,6 +84,23 @@ public class AppointmentTypesSpecification : BaseSpecification<AppointmentType>
 
         var orderedBy = SetOrderBy(dataGridRequest);
         SetThenBy(dataGridRequest, orderedBy);
+    }
+
+    private void ApplySearch(GetAppointmentTypesRequest request)
+    {
+        if (string.IsNullOrEmpty(request.DataGridRequest.Search))
+            return;
+
+        string search = request.DataGridRequest.Search.Trim().ToLower();
+
+        if (string.IsNullOrEmpty(search))
+            return;
+
+        Query
+            .Search(at => at.Code, $"%{search}%")
+            .Search(at => at.Duration.ToString(), $"%{search}%")
+            .Search(at => at.Id.ToString(), $"%{search}%")
+            .Search(at => at.Name, $"%{search}%");
     }
 
     private void ApplySkipAndTake(GetAppointmentTypesRequest request)

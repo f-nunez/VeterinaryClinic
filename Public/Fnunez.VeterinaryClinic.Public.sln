@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{27830CE3-1C3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Public.Web", "src\Fnunez.VeterinaryClinic.Public.Web\Fnunez.VeterinaryClinic.Public.Web.csproj", "{66A0E037-08F2-41B1-AAF5-6F7916A9821F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9CDFE1DA-8897-46D1-893B-9D294F312FFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Public.Web.UnitTests", "tests\Fnunez.VeterinaryClinic.Public.Web.UnitTests\Fnunez.VeterinaryClinic.Public.Web.UnitTests.csproj", "{CB8CF612-8FA5-4606-A9B2-369831D4023D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,8 +24,13 @@ Global
 		{66A0E037-08F2-41B1-AAF5-6F7916A9821F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66A0E037-08F2-41B1-AAF5-6F7916A9821F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66A0E037-08F2-41B1-AAF5-6F7916A9821F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB8CF612-8FA5-4606-A9B2-369831D4023D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB8CF612-8FA5-4606-A9B2-369831D4023D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB8CF612-8FA5-4606-A9B2-369831D4023D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB8CF612-8FA5-4606-A9B2-369831D4023D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{66A0E037-08F2-41B1-AAF5-6F7916A9821F} = {27830CE3-1C33-4981-B7A2-8817B6B61824}
+		{CB8CF612-8FA5-4606-A9B2-369831D4023D} = {9CDFE1DA-8897-46D1-893B-9D294F312FFC}
 	EndGlobalSection
 EndGlobal

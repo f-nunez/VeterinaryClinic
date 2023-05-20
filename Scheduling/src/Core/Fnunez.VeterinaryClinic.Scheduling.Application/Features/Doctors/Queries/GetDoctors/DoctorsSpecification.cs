@@ -19,9 +19,9 @@ public class DoctorsSpecification : BaseSpecification<Doctor>
 
         ApplyFilterId(request);
 
-        ApplyFilterSearch(request);
-
         ApplyOrder(request);
+
+        ApplySearch(request);
 
         ApplySkipAndTake(request);
     }
@@ -50,18 +50,6 @@ public class DoctorsSpecification : BaseSpecification<Doctor>
             .Where(d => d.Id.ToString().Contains(idFilterValue));
     }
 
-    private void ApplyFilterSearch(GetDoctorsRequest request)
-    {
-        if (string.IsNullOrEmpty(request.SearchFilterValue))
-            return;
-
-        string searchFilterValue = request.SearchFilterValue.Trim().ToLower();
-
-        Query
-            .Search(d => d.Id.ToString(), $"%{searchFilterValue}%")
-            .Search(d => d.FullName, $"%{searchFilterValue}%");
-    }
-
     private void ApplyOrder(GetDoctorsRequest request)
     {
         DataGridRequest dataGridRequest = request.DataGridRequest;
@@ -71,6 +59,21 @@ public class DoctorsSpecification : BaseSpecification<Doctor>
 
         var orderedBy = SetOrderBy(dataGridRequest);
         SetThenBy(dataGridRequest, orderedBy);
+    }
+
+    private void ApplySearch(GetDoctorsRequest request)
+    {
+        if (string.IsNullOrEmpty(request.DataGridRequest.Search))
+            return;
+
+        string search = request.DataGridRequest.Search.Trim().ToLower();
+
+        if (string.IsNullOrEmpty(search))
+            return;
+
+        Query
+            .Search(d => d.Id.ToString(), $"%{search}%")
+            .Search(d => d.FullName, $"%{search}%");
     }
 
     private void ApplySkipAndTake(GetDoctorsRequest request)

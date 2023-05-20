@@ -14,7 +14,7 @@ public class AddEditAppointmentVm
     public bool IsConfirmed { get; set; }
     public int PatientId { get; set; }
     public string PatientName { get; set; } = string.Empty;
-    public byte[] PatientPhotoData { get; set; } = null!;
+    public byte[]? PatientPhotoData { get; set; }
     public int RoomId { get; set; }
     public string Title { get; set; } = string.Empty;
     public DateTime StartOn { get; set; }

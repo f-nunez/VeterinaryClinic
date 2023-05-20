@@ -8,8 +8,40 @@ public class PatientProfile : Profile
 {
     public PatientProfile()
     {
-        CreateMap<PatientCreatedNotificationRequest, PatientCreatedPayload>();
-        CreateMap<PatientDeletedNotificationRequest, PatientDeletedPayload>();
-        CreateMap<PatientUpdatedNotificationRequest, PatientUpdatedPayload>();
+        CreateMap<PatientCreatedNotificationRequest, PatientCreatedPayload>()
+            .ForMember(
+                d => d.ClientId,
+                m => m.MapFrom(s => s.ClientId)
+            ).ForMember(
+                d => d.Name,
+                m => m.MapFrom(s => s.Name)
+            ).ForMember(
+                d => d.PatientId,
+                m => m.MapFrom(s => s.PatientId)
+            );
+
+        CreateMap<PatientDeletedNotificationRequest, PatientDeletedPayload>()
+            .ForMember(
+                d => d.ClientId,
+                m => m.MapFrom(s => s.ClientId)
+            ).ForMember(
+                d => d.Name,
+                m => m.MapFrom(s => s.Name)
+            ).ForMember(
+                d => d.PatientId,
+                m => m.MapFrom(s => s.PatientId)
+            );
+
+        CreateMap<PatientUpdatedNotificationRequest, PatientUpdatedPayload>()
+            .ForMember(
+                d => d.ClientId,
+                m => m.MapFrom(s => s.ClientId)
+            ).ForMember(
+                d => d.Name,
+                m => m.MapFrom(s => s.Name)
+            ).ForMember(
+                d => d.PatientId,
+                m => m.MapFrom(s => s.PatientId)
+            );
     }
 }

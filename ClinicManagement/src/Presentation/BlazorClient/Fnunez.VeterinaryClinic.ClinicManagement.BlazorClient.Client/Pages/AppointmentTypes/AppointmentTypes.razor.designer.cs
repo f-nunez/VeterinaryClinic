@@ -65,9 +65,10 @@ public partial class AppointmentTypesComponent : ComponentBase
             DataGridRequest = args.GetDataGridRequest(),
             DurationFilterValue = DurationFilterValue,
             IdFilterValue = IdFilterValue,
-            NameFilterValue = NameFilterValue,
-            SearchFilterValue = SearchFilterValue
+            NameFilterValue = NameFilterValue
         };
+
+        request.DataGridRequest.Search = SearchFilterValue;
 
         var dataGridResponse = await _appointmentTypeService
             .DataGridAsync(request);

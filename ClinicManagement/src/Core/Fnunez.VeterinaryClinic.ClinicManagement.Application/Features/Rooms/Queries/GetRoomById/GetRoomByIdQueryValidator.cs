@@ -6,7 +6,7 @@ public class GetRoomByIdQueryValidator : AbstractValidator<GetRoomByIdQuery>
 {
     public GetRoomByIdQueryValidator()
     {
-        RuleFor(v => v.GetByIdRoomRequest.Id)
+        RuleFor(v => v.GetRoomByIdRequest.Id)
             .GreaterThan(0).WithMessage("Id is required.");
     }
 }

@@ -1,4 +1,3 @@
-using AutoMapper;
 using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
@@ -33,7 +32,6 @@ public class UpdatePatientCommandHandler
         ICurrentUserService currentUserService,
         IFileSystemDeleterService fileSystemDeleterService,
         IFileSystemWriterService fileSystemWriterService,
-        IMapper mapper,
         IMediator mediator,
         INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)

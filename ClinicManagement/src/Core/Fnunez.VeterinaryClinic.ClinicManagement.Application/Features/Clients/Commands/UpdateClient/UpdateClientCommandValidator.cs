@@ -17,6 +17,9 @@ public class UpdateClientCommandValidator
             .NotEmpty().WithMessage("FullName is required.")
             .MaximumLength(200).WithMessage("FullName must not exceed 200 characters.");
 
+        RuleFor(v => v.UpdateClientRequest.ClientId)
+            .GreaterThan(0).WithMessage("ClientId is required.");
+
         RuleFor(v => v.UpdateClientRequest.PreferredName)
             .NotNull().WithMessage("PreferredName is required.")
             .NotEmpty().WithMessage("PreferredName is required.")

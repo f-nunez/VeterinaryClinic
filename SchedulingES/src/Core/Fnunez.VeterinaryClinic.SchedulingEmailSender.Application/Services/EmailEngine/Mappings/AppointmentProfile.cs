@@ -8,9 +8,136 @@ public class AppointmentProfile : Profile
 {
     public AppointmentProfile()
     {
-        CreateMap<AppointmentConfirmedEmailRequest, AppointmentConfirmedPayload>();
-        CreateMap<AppointmentCreatedEmailRequest, AppointmentCreatedPayload>();
-        CreateMap<AppointmentDeletedEmailRequest, AppointmentDeletedPayload>();
-        CreateMap<AppointmentUpdatedEmailRequest, AppointmentUpdatedPayload>();
+        CreateMap<AppointmentConfirmedEmailRequest, AppointmentConfirmedPayload>()
+            .ForMember(
+                d => d.AppointmentEndOn,
+                m => m.MapFrom(s => s.AppointmentEndOn)
+            ).ForMember(
+                d => d.AppointmentId,
+                m => m.MapFrom(s => s.AppointmentId)
+            ).ForMember(
+                d => d.AppointmentStartOn,
+                m => m.MapFrom(s => s.AppointmentStartOn)
+            ).ForMember(
+                d => d.ClientFullName,
+                m => m.MapFrom(s => s.ClientFullName)
+            ).ForMember(
+                d => d.ClinicAddress,
+                m => m.MapFrom(s => s.ClinicAddress)
+            ).ForMember(
+                d => d.ClinicName,
+                m => m.MapFrom(s => s.ClinicName)
+            ).ForMember(
+                d => d.DoctorFullName,
+                m => m.MapFrom(s => s.DoctorFullName)
+            ).ForMember(
+                d => d.Language,
+                m => m.MapFrom(s => s.Language)
+            ).ForMember(
+                d => d.PatientName,
+                m => m.MapFrom(s => s.PatientName)
+            ).ForMember(
+                d => d.SendTo,
+                m => m.MapFrom(s => s.SendTo)
+            );
+
+        CreateMap<AppointmentCreatedEmailRequest, AppointmentCreatedPayload>()
+            .ForMember(
+                d => d.AppointmentEndOn,
+                m => m.MapFrom(s => s.AppointmentEndOn)
+            ).ForMember(
+                d => d.AppointmentId,
+                m => m.MapFrom(s => s.AppointmentId)
+            ).ForMember(
+                d => d.AppointmentStartOn,
+                m => m.MapFrom(s => s.AppointmentStartOn)
+            ).ForMember(
+                d => d.ClientFullName,
+                m => m.MapFrom(s => s.ClientFullName)
+            ).ForMember(
+                d => d.ClinicAddress,
+                m => m.MapFrom(s => s.ClinicAddress)
+            ).ForMember(
+                d => d.ClinicName,
+                m => m.MapFrom(s => s.ClinicName)
+            ).ForMember(
+                d => d.DoctorFullName,
+                m => m.MapFrom(s => s.DoctorFullName)
+            ).ForMember(
+                d => d.Language,
+                m => m.MapFrom(s => s.Language)
+            ).ForMember(
+                d => d.PatientName,
+                m => m.MapFrom(s => s.PatientName)
+            ).ForMember(
+                d => d.SendTo,
+                m => m.MapFrom(s => s.SendTo)
+            );
+
+        CreateMap<AppointmentDeletedEmailRequest, AppointmentDeletedPayload>()
+            .ForMember(
+                d => d.AppointmentEndOn,
+                m => m.MapFrom(s => s.AppointmentEndOn)
+            ).ForMember(
+                d => d.AppointmentId,
+                m => m.MapFrom(s => s.AppointmentId)
+            ).ForMember(
+                d => d.AppointmentStartOn,
+                m => m.MapFrom(s => s.AppointmentStartOn)
+            ).ForMember(
+                d => d.ClientFullName,
+                m => m.MapFrom(s => s.ClientFullName)
+            ).ForMember(
+                d => d.ClinicAddress,
+                m => m.MapFrom(s => s.ClinicAddress)
+            ).ForMember(
+                d => d.ClinicName,
+                m => m.MapFrom(s => s.ClinicName)
+            ).ForMember(
+                d => d.DoctorFullName,
+                m => m.MapFrom(s => s.DoctorFullName)
+            ).ForMember(
+                d => d.Language,
+                m => m.MapFrom(s => s.Language)
+            ).ForMember(
+                d => d.PatientName,
+                m => m.MapFrom(s => s.PatientName)
+            ).ForMember(
+                d => d.SendTo,
+                m => m.MapFrom(s => s.SendTo)
+            );
+
+        CreateMap<AppointmentUpdatedEmailRequest, AppointmentUpdatedPayload>()
+            .ForMember(
+                d => d.AppointmentEndOn,
+                m => m.MapFrom(s => s.AppointmentEndOn)
+            ).ForMember(
+                d => d.AppointmentId,
+                m => m.MapFrom(s => s.AppointmentId)
+            ).ForMember(
+                d => d.AppointmentStartOn,
+                m => m.MapFrom(s => s.AppointmentStartOn)
+            ).ForMember(
+                d => d.ClientFullName,
+                m => m.MapFrom(s => s.ClientFullName)
+            ).ForMember(
+                d => d.ClinicAddress,
+                m => m.MapFrom(s => s.ClinicAddress)
+            ).ForMember(
+                d => d.ClinicName,
+                m => m.MapFrom(s => s.ClinicName)
+            ).ForMember(
+                d => d.DoctorFullName,
+                m => m.MapFrom(s => s.DoctorFullName)
+            ).ForMember(
+                d => d.Language,
+                m => m.MapFrom(s => s.Language)
+            ).ForMember(
+                d => d.PatientName,
+                m => m.MapFrom(s => s.PatientName)
+            ).ForMember(
+                d => d.SendTo,
+                m => m.MapFrom(s => s.SendTo)
+            );
     }
 }

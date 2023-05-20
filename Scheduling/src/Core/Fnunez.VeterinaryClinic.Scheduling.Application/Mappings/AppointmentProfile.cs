@@ -12,116 +12,146 @@ public class AppointmentProfile : Profile
     {
         CreateMap<Appointment, AppointmentDto>()
             .ForMember(
-                dto => dto.AppointmentId,
-                options => options.MapFrom(src => src.Id)
+                d => d.AppointmentId,
+                m => m.MapFrom(s => s.Id)
             ).ForMember(
-                dto => dto.ClientFullName,
-                options => options.MapFrom(src => src.Client.FullName)
+                d => d.AppointmentTypeId,
+                m => m.MapFrom(s => s.AppointmentTypeId)
             ).ForMember(
-                dto => dto.ClientId,
-                options => options.MapFrom(src => src.Client.Id)
+                d => d.ClientId,
+                m => m.MapFrom(s => s.ClientId)
             ).ForMember(
-                dto => dto.ClinicId,
-                options => options.MapFrom(src => src.Clinic.Id)
+                d => d.ClinicId,
+                m => m.MapFrom(s => s.ClinicId)
             ).ForMember(
-                dto => dto.ClinicName,
-                options => options.MapFrom(src => src.Clinic.Name)
+                d => d.Description,
+                m => m.MapFrom(s => s.Description)
             ).ForMember(
-                dto => dto.DoctorFullName,
-                options => options.MapFrom(src => src.Doctor.FullName)
+                d => d.DoctorId,
+                m => m.MapFrom(s => s.DoctorId)
             ).ForMember(
-                dto => dto.DoctorId,
-                options => options.MapFrom(src => src.Doctor.Id)
+                d => d.IsConfirmed,
+                m => m.MapFrom(s => s.ConfirmOn.HasValue)
             ).ForMember(
-                dto => dto.IsConfirmed,
-                options => options.MapFrom(src => src.ConfirmOn.HasValue)
+                d => d.PatientId,
+                m => m.MapFrom(s => s.PatientId)
             ).ForMember(
-                dto => dto.PatientId,
-                options => options.MapFrom(src => src.Patient.Id)
+                d => d.RoomId,
+                m => m.MapFrom(s => s.RoomId)
             ).ForMember(
-                dto => dto.PatientName,
-                options => options.MapFrom(src => src.Patient.Name)
+                d => d.StartOn,
+                m => m.MapFrom(s => s.DateRange.StartOn)
             ).ForMember(
-                dto => dto.StartOn,
-                options => options.MapFrom(src => src.DateRange.StartOn)
+                d => d.EndOn,
+                m => m.MapFrom(s => s.DateRange.EndOn)
             ).ForMember(
-                dto => dto.EndOn,
-                options => options.MapFrom(src => src.DateRange.EndOn)
+                d => d.Title,
+                m => m.MapFrom(s => s.Title)
             );
 
         CreateMap<Appointment, AppointmentDetailDto>()
             .ForMember(
-                dto => dto.AppointmentId,
-                option => option.MapFrom(src => src.Id)
+                d => d.AppointmentId,
+                option => option.MapFrom(s => s.Id)
             ).ForMember(
-                dto => dto.AppointmentTypeName,
-                option => option.MapFrom(src => src.AppointmentType.Name)
+                d => d.AppointmentTypeName,
+                option => option.MapFrom(s => s.AppointmentType.Name)
             ).ForMember(
-                dto => dto.ClientFullName,
-                option => option.MapFrom(src => src.Client.FullName)
+                d => d.ClientFullName,
+                option => option.MapFrom(s => s.Client.FullName)
             ).ForMember(
-                dto => dto.ClinicName,
-                option => option.MapFrom(src => src.Clinic.Name)
+                d => d.ClinicName,
+                option => option.MapFrom(s => s.Clinic.Name)
             ).ForMember(
-                dto => dto.DoctorFullName,
-                option => option.MapFrom(src => src.Doctor.FullName)
+                d => d.Description,
+                option => option.MapFrom(s => s.Description)
             ).ForMember(
-                dto => dto.IsConfirmed,
-                option => option.MapFrom(src => src.ConfirmOn.HasValue)
+                d => d.DoctorFullName,
+                option => option.MapFrom(s => s.Doctor.FullName)
             ).ForMember(
-                dto => dto.PatientName,
-                option => option.MapFrom(src => src.Patient.Name)
+                d => d.IsActive,
+                option => option.MapFrom(s => s.IsActive)
             ).ForMember(
-                dto => dto.RoomName,
-                option => option.MapFrom(src => src.Room.Name)
+                d => d.IsConfirmed,
+                option => option.MapFrom(s => s.ConfirmOn.HasValue)
             ).ForMember(
-                dto => dto.StartOn,
-                option => option.MapFrom(src => src.DateRange.StartOn)
+                d => d.PatientName,
+                option => option.MapFrom(s => s.Patient.Name)
             ).ForMember(
-                dto => dto.EndOn,
-                option => option.MapFrom(src => src.DateRange.EndOn)
+                d => d.PatientPhotoData,
+                option => option.Ignore()
+            ).ForMember(
+                d => d.RoomName,
+                option => option.MapFrom(s => s.Room.Name)
+            ).ForMember(
+                d => d.StartOn,
+                option => option.MapFrom(s => s.DateRange.StartOn)
+            ).ForMember(
+                d => d.EndOn,
+                option => option.MapFrom(s => s.DateRange.EndOn)
+            ).ForMember(
+                d => d.Title,
+                option => option.MapFrom(s => s.Title)
             );
 
         CreateMap<Appointment, AppointmentEditDto>()
             .ForMember(
-                dto => dto.AppointmentTypeDuration,
-                options => options.MapFrom(src => src.AppointmentType.Duration)
+                d => d.AppointmentId,
+                m => m.MapFrom(s => s.Id)
             ).ForMember(
-                dto => dto.AppointmentId,
-                options => options.MapFrom(src => src.Id)
+                d => d.AppointmentTypeDuration,
+                m => m.MapFrom(s => s.AppointmentType.Duration)
             ).ForMember(
-                dto => dto.ClientFullName,
-                options => options.MapFrom(src => src.Client.FullName)
+                d => d.AppointmentTypeId,
+                m => m.MapFrom(s => s.AppointmentTypeId)
             ).ForMember(
-                dto => dto.ClientId,
-                options => options.MapFrom(src => src.Client.Id)
+                d => d.ClientFullName,
+                m => m.MapFrom(s => s.Client.FullName)
             ).ForMember(
-                dto => dto.ClinicId,
-                options => options.MapFrom(src => src.Clinic.Id)
+                d => d.ClientId,
+                m => m.MapFrom(s => s.Client.Id)
             ).ForMember(
-                dto => dto.ClinicName,
-                options => options.MapFrom(src => src.Clinic.Name)
+                d => d.ClinicId,
+                m => m.MapFrom(s => s.Clinic.Id)
             ).ForMember(
-                dto => dto.DoctorFullName,
-                options => options.MapFrom(src => src.Doctor.FullName)
+                d => d.ClinicName,
+                m => m.MapFrom(s => s.Clinic.Name)
             ).ForMember(
-                dto => dto.DoctorId,
-                options => options.MapFrom(src => src.Doctor.Id)
+                d => d.Description,
+                m => m.MapFrom(s => s.Description)
             ).ForMember(
-                dto => dto.IsConfirmed,
-                options => options.MapFrom(src => src.ConfirmOn.HasValue)
+                d => d.DoctorFullName,
+                m => m.MapFrom(s => s.Doctor.FullName)
             ).ForMember(
-                dto => dto.PatientId,
-                options => options.MapFrom(src => src.Patient.Id)
+                d => d.DoctorId,
+                m => m.MapFrom(s => s.Doctor.Id)
             ).ForMember(
-                dto => dto.PatientName,
-                options => options.MapFrom(src => src.Patient.Name)
+                d => d.IsConfirmed,
+                m => m.MapFrom(s => s.ConfirmOn.HasValue)
             ).ForMember(
-                dto => dto.StartOn,
-                options => options.MapFrom(src => src.DateRange.StartOn)
+                d => d.PatientId,
+                m => m.MapFrom(s => s.Patient.Id)
             ).ForMember(
-                dto => dto.EndOn,
-                options => options.MapFrom(src => src.DateRange.EndOn)
+                d => d.PatientName,
+                m => m.MapFrom(s => s.Patient.Name)
+            ).ForMember(
+                d => d.PatientPhotoData,
+                m => m.Ignore()
+            ).ForMember(
+                d => d.RoomId,
+                m => m.MapFrom(s => s.RoomId)
+            ).ForMember(
+                d => d.RoomName,
+                m => m.MapFrom(s => s.Room.Name)
+            ).ForMember(
+                d => d.StartOn,
+                m => m.MapFrom(s => s.DateRange.StartOn)
+            ).ForMember(
+                d => d.EndOn,
+                m => m.MapFrom(s => s.DateRange.EndOn)
+            ).ForMember(
+                d => d.Title,
+                m => m.MapFrom(s => s.Title)
             );
     }
 }

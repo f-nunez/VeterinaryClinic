@@ -8,9 +8,40 @@ public class AppointmentProfile : Profile
 {
     public AppointmentProfile()
     {
-        CreateMap<AppointmentConfirmedNotificationRequest, AppointmentConfirmedPayload>();
-        CreateMap<AppointmentCreatedNotificationRequest, AppointmentCreatedPayload>();
-        CreateMap<AppointmentDeletedNotificationRequest, AppointmentDeletedPayload>();
-        CreateMap<AppointmentUpdatedNotificationRequest, AppointmentUpdatedPayload>();
+        CreateMap<AppointmentConfirmedNotificationRequest, AppointmentConfirmedPayload>()
+            .ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.Id)
+            ).ForMember(
+                d => d.Title,
+                m => m.MapFrom(s => s.Title)
+            );
+
+        CreateMap<AppointmentCreatedNotificationRequest, AppointmentCreatedPayload>()
+            .ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.Id)
+            ).ForMember(
+                d => d.Title,
+                m => m.MapFrom(s => s.Title)
+            );
+
+        CreateMap<AppointmentDeletedNotificationRequest, AppointmentDeletedPayload>()
+            .ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.Id)
+            ).ForMember(
+                d => d.Title,
+                m => m.MapFrom(s => s.Title)
+            );
+
+        CreateMap<AppointmentUpdatedNotificationRequest, AppointmentUpdatedPayload>()
+            .ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.Id)
+            ).ForMember(
+                d => d.Title,
+                m => m.MapFrom(s => s.Title)
+            );
     }
 }

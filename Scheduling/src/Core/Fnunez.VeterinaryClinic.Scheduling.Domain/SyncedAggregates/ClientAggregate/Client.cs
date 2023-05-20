@@ -44,6 +44,13 @@ public class Client : BaseEntity<int>, IAggregateRoot
         PreferredLanguage = preferredLanguage;
     }
 
+    #region Testing purpose
+    public void AddPatient(Patient patient)
+    {
+        _patients.Add(patient);
+    }
+    #endregion
+
     public override string ToString()
     {
         return FullName.ToString();
