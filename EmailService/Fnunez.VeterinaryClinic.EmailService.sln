@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{42BA0ED0-596
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.EmailService.Api", "src\Fnunez.VeterinaryClinic.EmailService.Api\Fnunez.VeterinaryClinic.EmailService.Api.csproj", "{FA7D660B-77D0-4260-B1DE-4C5A3F39EEF0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{3B6B5C6B-419F-4B27-BF93-70D10F6F73E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.EmailService.Api.UnitTests", "tests\Fnunez.VeterinaryClinic.EmailService.Api.UnitTests\Fnunez.VeterinaryClinic.EmailService.Api.UnitTests.csproj", "{5254D092-EA14-49AD-8665-815F33742918}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,8 +24,13 @@ Global
 		{FA7D660B-77D0-4260-B1DE-4C5A3F39EEF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA7D660B-77D0-4260-B1DE-4C5A3F39EEF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA7D660B-77D0-4260-B1DE-4C5A3F39EEF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5254D092-EA14-49AD-8665-815F33742918}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5254D092-EA14-49AD-8665-815F33742918}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5254D092-EA14-49AD-8665-815F33742918}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5254D092-EA14-49AD-8665-815F33742918}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FA7D660B-77D0-4260-B1DE-4C5A3F39EEF0} = {42BA0ED0-5967-4A1B-994B-D35580582596}
+		{5254D092-EA14-49AD-8665-815F33742918} = {3B6B5C6B-419F-4B27-BF93-70D10F6F73E9}
 	EndGlobalSection
 EndGlobal
