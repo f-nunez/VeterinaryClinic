@@ -5,7 +5,7 @@ using MassTransit;
 namespace Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.ServiceBus.Consumers;
 
 public class NotificationRequestSchedulingConsumer
-    : IConsumer<NotificationRequestContract>
+    : IConsumer<NotificationRequestSchedulingContract>
 {
     private readonly INotificationEngineService _notificationEngineService;
 
@@ -16,7 +16,7 @@ public class NotificationRequestSchedulingConsumer
     }
 
     public async Task Consume(
-        ConsumeContext<NotificationRequestContract> context)
+        ConsumeContext<NotificationRequestSchedulingContract> context)
     {
         await _notificationEngineService.CreateAndNotifyAsync(
             context.Message.NotificationEvent,
