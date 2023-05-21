@@ -1,4 +1,4 @@
-using ClinicManagementContracts;
+using Contracts.ClinicManagement;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
@@ -40,7 +40,7 @@ public class NotificationRequestServiceTests
 
         mockIServiceBus.Setup(x =>
             x.PublishAsync(
-                It.IsAny<NotificationRequestContract>(),
+                It.IsAny<NotificationRequestClinicManagementContract>(),
                 CancellationToken.None
             )
         );
@@ -55,7 +55,7 @@ public class NotificationRequestServiceTests
         // Assert
         mockIServiceBus.Verify(x =>
             x.PublishAsync(
-                It.IsAny<NotificationRequestContract>(),
+                It.IsAny<NotificationRequestClinicManagementContract>(),
                 CancellationToken.None
             ),
             Times.Once()
