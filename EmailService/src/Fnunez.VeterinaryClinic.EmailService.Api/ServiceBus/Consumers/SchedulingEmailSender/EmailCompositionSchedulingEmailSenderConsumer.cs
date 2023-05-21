@@ -1,14 +1,16 @@
 using System.Text.Json;
+using Contracts.SchedulingEmailSender;
 using Fnunez.VeterinaryClinic.EmailService.Api.Services.Email;
 using MassTransit;
-using SchedulingEmailSenderContracts;
 
 namespace Fnunez.VeterinaryClinic.EmailService.Api.ServiceBus.Consumers;
-public class EmailCompositionConsumer : IConsumer<EmailCompositionContract>
+public class EmailCompositionSchedulingemailSenderConsumer
+    : IConsumer<EmailCompositionContract>
 {
     private readonly IEmailService _emailService;
 
-    public EmailCompositionConsumer(IEmailService emailService)
+    public EmailCompositionSchedulingemailSenderConsumer(
+        IEmailService emailService)
     {
         _emailService = emailService;
     }
