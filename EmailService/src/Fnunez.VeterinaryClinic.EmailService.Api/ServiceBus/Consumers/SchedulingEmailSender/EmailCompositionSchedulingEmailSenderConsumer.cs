@@ -5,7 +5,7 @@ using MassTransit;
 
 namespace Fnunez.VeterinaryClinic.EmailService.Api.ServiceBus.Consumers;
 public class EmailCompositionSchedulingemailSenderConsumer
-    : IConsumer<EmailCompositionContract>
+    : IConsumer<EmailCompositionSchedulingEmailSenderContract>
 {
     private readonly IEmailService _emailService;
 
@@ -15,7 +15,8 @@ public class EmailCompositionSchedulingemailSenderConsumer
         _emailService = emailService;
     }
 
-    public async Task Consume(ConsumeContext<EmailCompositionContract> context)
+    public async Task Consume(
+        ConsumeContext<EmailCompositionSchedulingEmailSenderContract> context)
     {
         var contract = context.Message;
 
