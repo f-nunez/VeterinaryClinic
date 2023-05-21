@@ -1,6 +1,6 @@
 namespace Contracts.Scheduling;
 
-public class EmailRequestContract
+public class EmailRequestSchedulingContract
 {
     public Guid CausationId { get; set; } = Guid.NewGuid();
     public Guid CorrelationId { get; set; } = Guid.NewGuid();
