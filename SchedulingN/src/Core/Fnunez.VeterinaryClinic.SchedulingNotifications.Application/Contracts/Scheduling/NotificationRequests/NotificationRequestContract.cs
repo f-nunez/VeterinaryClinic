@@ -1,4 +1,4 @@
-namespace SchedulingContracts;
+namespace Contracts.Scheduling;
 
 public class NotificationRequestContract
 {
