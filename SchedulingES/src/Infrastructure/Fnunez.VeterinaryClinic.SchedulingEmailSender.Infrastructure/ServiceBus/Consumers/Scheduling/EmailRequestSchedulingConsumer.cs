@@ -4,7 +4,8 @@ using MassTransit;
 
 namespace Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure.ServiceBus.Consumers;
 
-public class EmailRequestSchedulingConsumer : IConsumer<EmailRequestContract>
+public class EmailRequestSchedulingConsumer
+    : IConsumer<EmailRequestSchedulingContract>
 {
     private readonly IEmailEngineService _emailEngineService;
 
@@ -14,7 +15,8 @@ public class EmailRequestSchedulingConsumer : IConsumer<EmailRequestContract>
         _emailEngineService = emailEngineService;
     }
 
-    public async Task Consume(ConsumeContext<EmailRequestContract> context)
+    public async Task Consume(
+        ConsumeContext<EmailRequestSchedulingContract> context)
     {
         await _emailEngineService.CreateAndSendAsync(
             context.Message.EmailEvent,
