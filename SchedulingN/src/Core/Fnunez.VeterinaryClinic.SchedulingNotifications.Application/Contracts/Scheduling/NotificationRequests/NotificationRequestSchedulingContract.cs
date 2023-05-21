@@ -1,6 +1,6 @@
 namespace Contracts.Scheduling;
 
-public class NotificationRequestContract
+public class NotificationRequestSchedulingContract
 {
     public Guid CausationId { get; set; } = Guid.NewGuid();
     public Guid CorrelationId { get; set; } = Guid.NewGuid();
