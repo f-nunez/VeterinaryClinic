@@ -1,4 +1,4 @@
-namespace PublicContracts;
+namespace Contracts.Public;
 
 public class AppointmentConfirmedIntegrationEventContract
 {
