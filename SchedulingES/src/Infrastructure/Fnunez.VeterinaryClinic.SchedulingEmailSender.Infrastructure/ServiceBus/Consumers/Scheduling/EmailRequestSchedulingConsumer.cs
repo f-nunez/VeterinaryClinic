@@ -1,14 +1,15 @@
+using Contracts.Scheduling;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.EmailEngine;
 using MassTransit;
-using SchedulingContracts;
 
 namespace Fnunez.VeterinaryClinic.SchedulingEmailSender.Infrastructure.ServiceBus.Consumers;
 
-public class EmailRequestConsumer : IConsumer<EmailRequestContract>
+public class EmailRequestSchedulingConsumer : IConsumer<EmailRequestContract>
 {
     private readonly IEmailEngineService _emailEngineService;
 
-    public EmailRequestConsumer(IEmailEngineService emailEngineService)
+    public EmailRequestSchedulingConsumer(
+        IEmailEngineService emailEngineService)
     {
         _emailEngineService = emailEngineService;
     }
