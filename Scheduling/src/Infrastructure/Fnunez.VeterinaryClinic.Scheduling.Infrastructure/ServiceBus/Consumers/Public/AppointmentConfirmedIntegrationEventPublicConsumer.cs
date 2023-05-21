@@ -6,7 +6,7 @@ using MediatR;
 namespace Fnunez.VeterinaryClinic.Scheduling.Infrastructure.ServiceBus.Consumers;
 
 public class AppointmentConfirmedIntegrationEventPublicConsumer
-    : IConsumer<AppointmentConfirmedIntegrationEventContract>
+    : IConsumer<AppointmentConfirmedIntegrationEventPublicContract>
 {
     private readonly IMediator _mediator;
 
@@ -17,7 +17,7 @@ public class AppointmentConfirmedIntegrationEventPublicConsumer
     }
 
     public async Task Consume(
-        ConsumeContext<AppointmentConfirmedIntegrationEventContract> context)
+        ConsumeContext<AppointmentConfirmedIntegrationEventPublicContract> context)
     {
         var integrationEvent = new AppointmentConfirmedReceiveIntegrationEvent(
             context.Message);
