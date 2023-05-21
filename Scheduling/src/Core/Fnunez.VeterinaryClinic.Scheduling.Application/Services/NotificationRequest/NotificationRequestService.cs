@@ -1,5 +1,5 @@
 using System.Text.Json;
-using SchedulingContracts;
+using Contracts.Scheduling;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Services.NotificationRequest.Factories;
 
@@ -20,7 +20,7 @@ public class NotificationRequestService : INotificationRequestService
     {
         var notificationRequest = factory.CreateNotificationRequest();
 
-        var message = new NotificationRequestContract
+        var message = new NotificationRequestSchedulingContract
         {
             CausationId = notificationRequest.CorrelationId,
             CorrelationId = notificationRequest.CorrelationId,
