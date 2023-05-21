@@ -1,4 +1,4 @@
-namespace SchedulingEmailSenderContracts;
+namespace Contracts.SchedulingEmailSender;
 
 public class EmailCompositionContract
 {
