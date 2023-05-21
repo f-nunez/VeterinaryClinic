@@ -1,4 +1,4 @@
-namespace ClinicManagementContracts;
+namespace Contracts.ClinicManagement;
 
 public class NotificationRequestContract
 {
