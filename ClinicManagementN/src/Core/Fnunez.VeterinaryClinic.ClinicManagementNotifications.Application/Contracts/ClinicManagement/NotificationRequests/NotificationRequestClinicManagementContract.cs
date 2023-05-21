@@ -1,6 +1,6 @@
 namespace Contracts.ClinicManagement;
 
-public class NotificationRequestContract
+public class NotificationRequestClinicManagementContract
 {
     public Guid CausationId { get; set; } = Guid.NewGuid();
     public Guid CorrelationId { get; set; } = Guid.NewGuid();
