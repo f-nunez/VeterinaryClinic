@@ -1,6 +1,6 @@
+using Contracts.Public;
 using Fnunez.VeterinaryClinic.Public.Web.Helpers.SymmetricEncryption;
 using Fnunez.VeterinaryClinic.Public.Web.ServiceBus;
-using PublicContracts;
 
 namespace Fnunez.VeterinaryClinic.Public.Web.Services.Appointment;
 
@@ -40,7 +40,7 @@ public class AppointmentService : IAppointmentService
     {
         var correlationId = Guid.NewGuid();
 
-        var contract = new AppointmentConfirmedIntegrationEventContract
+        var contract = new AppointmentConfirmedIntegrationEventPublicContract
         {
             AppointmentId = appointmentId,
             CausationId = correlationId,
