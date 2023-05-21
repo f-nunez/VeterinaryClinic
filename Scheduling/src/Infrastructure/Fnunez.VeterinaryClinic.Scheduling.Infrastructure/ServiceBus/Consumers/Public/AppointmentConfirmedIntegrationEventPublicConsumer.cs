@@ -1,16 +1,17 @@
+using Contracts.Public;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.ReceiveIntegrationEvents.AppointmentConfirmed;
 using MassTransit;
 using MediatR;
-using PublicContracts;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Infrastructure.ServiceBus.Consumers;
 
-public class AppointmentConfirmedIntegrationEventConsumer
+public class AppointmentConfirmedIntegrationEventPublicConsumer
     : IConsumer<AppointmentConfirmedIntegrationEventContract>
 {
     private readonly IMediator _mediator;
 
-    public AppointmentConfirmedIntegrationEventConsumer(IMediator mediator)
+    public AppointmentConfirmedIntegrationEventPublicConsumer(
+        IMediator mediator)
     {
         _mediator = mediator;
     }
