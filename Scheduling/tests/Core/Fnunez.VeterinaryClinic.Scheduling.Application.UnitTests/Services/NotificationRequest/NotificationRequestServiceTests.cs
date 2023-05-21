@@ -1,4 +1,4 @@
-using SchedulingContracts;
+using Contracts.Scheduling;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Services.NotificationRequest;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Services.NotificationRequest.Factories;
@@ -58,7 +58,7 @@ public class NotificationRequestServiceTests
 
         mockIServiceBus.Setup(x =>
             x.PublishAsync(
-                It.IsAny<NotificationRequestContract>(),
+                It.IsAny<NotificationRequestSchedulingContract>(),
                 CancellationToken.None
             )
         );
@@ -73,7 +73,7 @@ public class NotificationRequestServiceTests
         // Assert
         mockIServiceBus.Verify(x =>
             x.PublishAsync(
-                It.IsAny<NotificationRequestContract>(),
+                It.IsAny<NotificationRequestSchedulingContract>(),
                 CancellationToken.None
             ),
             Times.Once()
