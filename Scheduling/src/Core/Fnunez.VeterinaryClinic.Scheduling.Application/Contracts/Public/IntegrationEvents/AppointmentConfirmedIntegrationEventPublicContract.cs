@@ -1,6 +1,6 @@
 namespace Contracts.Public;
 
-public class AppointmentConfirmedIntegrationEventContract
+public class AppointmentConfirmedIntegrationEventPublicContract
 {
     public Guid CausationId { get; set; } = Guid.NewGuid();
     public Guid CorrelationId { get; set; } = Guid.NewGuid();
