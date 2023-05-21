@@ -32,7 +32,7 @@ public class AAppointmentConfirmedReceiveIntegrationEventHandler
         CancellationToken cancellationToken)
     {
         var contract = integrationEvent
-            .AppointmentConfirmedIntegrationEventContract;
+            .AppointmentConfirmedIntegrationEventPublicContract;
 
         var specification = new AppointmentSpecification(
             contract.AppointmentId);
