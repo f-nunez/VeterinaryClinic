@@ -1,15 +1,15 @@
+using Contracts.Scheduling;
 using Fnunez.VeterinaryClinic.SchedulingNotifications.Application.Services;
 using MassTransit;
-using SchedulingContracts;
 
 namespace Fnunez.VeterinaryClinic.SchedulingNotifications.Infrastructure.ServiceBus.Consumers;
 
-public class NotificationRequestConsumer
+public class NotificationRequestSchedulingConsumer
     : IConsumer<NotificationRequestContract>
 {
     private readonly INotificationEngineService _notificationEngineService;
 
-    public NotificationRequestConsumer(
+    public NotificationRequestSchedulingConsumer(
         INotificationEngineService notificationEngineService)
     {
         _notificationEngineService = notificationEngineService;
