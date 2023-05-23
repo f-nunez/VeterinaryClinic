@@ -15,11 +15,11 @@ public class AppointmentTypeCreatedReceiveIntegrationEventHandler
     }
 
     public async Task Handle(
-        AppointmentTypeCreatedReceiveIntegrationEvent integrationEvent,
+        AppointmentTypeCreatedReceiveIntegrationEvent receiveIntegrationEvent,
         CancellationToken cancellationToken)
     {
-        var contract = integrationEvent
-            .AppointmentTypeCreatedIntegrationEventContract;
+        var integrationEvent = receiveIntegrationEvent
+            .AppointmentTypeCreatedIntegrationEvent;
 
         string sql = @$"
         SET IDENTITY_INSERT [dbo].[AppointmentTypes] ON;
@@ -32,10 +32,10 @@ public class AppointmentTypeCreatedReceiveIntegrationEventHandler
             [Duration]
         ) VALUES (
             1,
-            {contract.AppointmentTypeId},
-            N'{contract.AppointmentTypeName}',
-            N'{contract.AppointmentTypeCode}',
-            {contract.AppointmentTypeDuration}
+            {integrationEvent.AppointmentTypeId},
+            N'{integrationEvent.AppointmentTypeName}',
+            N'{integrationEvent.AppointmentTypeCode}',
+            {integrationEvent.AppointmentTypeDuration}
         );
         
         SET IDENTITY_INSERT [dbo].[AppointmentTypes] OFF;";
