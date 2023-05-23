@@ -18,14 +18,16 @@ public class NotificationRequestServiceTests
 
     public NotificationRequestServiceTests()
     {
-        var appointmentType = new AppointmentType(
+        var appointmentType = new AppointmentType
+        (
             _appointmentTypeId,
             _appointmentTypeName,
             _appointmentTypeCode,
             _appointmentTypeDuration
         );
 
-        _factory = new AppointmentTypeCreatedNotificationRequestFactory(
+        _factory = new AppointmentTypeCreatedNotificationRequestFactory
+        (
             appointmentType,
             _correlationId,
             _userId
@@ -33,7 +35,7 @@ public class NotificationRequestServiceTests
     }
 
     [Fact]
-    public async void CreateAndSendAsync_CallsPublishAsyncMethodOnceFromServiceBus()
+    public async void SendAsync_CallsPublishAsyncMethodOnceFromServiceBus()
     {
         // Arrange
         var mockIServiceBus = new Mock<IServiceBus>();
@@ -45,11 +47,11 @@ public class NotificationRequestServiceTests
             )
         );
 
-        var mockNotificationRequestService = new Mock<NotificationRequestService>(
+        var notificationRequestService = new NotificationRequestService(
             mockIServiceBus.Object);
 
         // Act
-        await mockNotificationRequestService.Object.CreateAndSendAsync(
+        await notificationRequestService.SendAsync(
             _factory, CancellationToken.None);
 
         // Assert
