@@ -15,4 +15,44 @@ public class RoomTests
         // Assert
         Assert.Equal(_name, room.Name);
     }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    public void Constructor_NameIsEmpty_ThrowsArgumentException(string name)
+    {
+        // Act
+        Action actual = () => new Room(name);
+
+        // Assert
+        Assert.Throws<ArgumentException>(actual);
+    }
+
+    [Fact]
+    public void UpdateName_Name_UpdatesNameProperty()
+    {
+        // Arrange
+        var room = new Room();
+
+        // Act
+        room.UpdateName(_name);
+
+        // Assert
+        Assert.Equal(_name, room.Name);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    public void UpdateName_NameIsEmpty_ThrowsArgumentException(string name)
+    {
+        // Arrange
+        var room = new Room();
+
+        // Act
+        Action actual = () => room.UpdateName(name);
+
+        // Assert
+        Assert.Throws<ArgumentException>(actual);
+    }
 }
