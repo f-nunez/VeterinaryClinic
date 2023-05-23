@@ -1,5 +1,5 @@
 using System.Text.Json;
-using ClinicManagementContracts;
+using Contracts.ClinicManagement;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 
@@ -14,13 +14,13 @@ public class NotificationRequestService : INotificationRequestService
         _serviceBus = serviceBus;
     }
 
-    public async Task CreateAndSendAsync(
+    public async Task SendAsync(
         INotificationRequestFactory factory,
         CancellationToken cancellationToken)
     {
         var notificationRequest = factory.CreateNotificationRequest();
 
-        var message = new NotificationRequestContract
+        var message = new NotificationRequestClinicManagementContract
         {
             CausationId = notificationRequest.CorrelationId,
             CorrelationId = notificationRequest.CorrelationId,

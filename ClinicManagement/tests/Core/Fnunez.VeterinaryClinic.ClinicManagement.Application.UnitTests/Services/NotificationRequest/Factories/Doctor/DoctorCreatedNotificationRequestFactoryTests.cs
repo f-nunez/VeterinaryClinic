@@ -17,7 +17,8 @@ public class DoctorCreatedNotificationRequestFactoryTests
     {
         var doctor = new Doctor(_doctorId, _doctorFullName);
 
-        _factory = new DoctorCreatedNotificationRequestFactory(
+        _factory = new DoctorCreatedNotificationRequestFactory
+        (
             doctor,
             _correlationId,
             _userId
@@ -25,21 +26,27 @@ public class DoctorCreatedNotificationRequestFactoryTests
     }
 
     [Fact]
-    public void CreateNotificationRequest_WithoutEntries_ReturnsNotificationRequest()
+    public void CreateNotificationRequest_ReturnsDoctorCreatedNotificationRequest()
     {
         // Act
-        var notificationRequest = _factory.CreateNotificationRequest()
-            as DoctorCreatedNotificationRequest;
+        var actual = _factory.CreateNotificationRequest();
 
         // Assert
+        Assert.IsType<DoctorCreatedNotificationRequest>(actual);
+
+        var notificationRequest = actual as DoctorCreatedNotificationRequest;
+
         Assert.Equal(_correlationId, notificationRequest?.CorrelationId);
+
         Assert.Equal(_doctorFullName, notificationRequest?.FullName);
+
         Assert.Equal(_doctorId, notificationRequest?.Id);
+
         Assert.Equal(_userId, notificationRequest?.TriggeredByUserId);
     }
 
     [Fact]
-    public void GetNotificationEvent_WithoutEntries_ReturnsNotificationEvent()
+    public void GetNotificationEvent_ReturnsNotificationEvent()
     {
         // Act
         var notificationEvent = _factory.GetNotificationEvent();

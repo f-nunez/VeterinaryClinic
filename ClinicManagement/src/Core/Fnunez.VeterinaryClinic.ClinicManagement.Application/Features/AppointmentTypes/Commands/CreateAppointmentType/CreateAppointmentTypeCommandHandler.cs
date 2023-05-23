@@ -1,7 +1,7 @@
 using AutoMapper;
-using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.SendIntegrationEvents.AppointmentTypeCreated;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.IntegrationEventSender;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.IntegrationEventSender.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType;
@@ -16,6 +16,7 @@ public class CreateAppointmentTypeCommandHandler
     : IRequestHandler<CreateAppointmentTypeCommand, CreateAppointmentTypeResponse>
 {
     private readonly ICurrentUserService _currentUserService;
+    private readonly IIntegrationEventSenderService _integrationEventSenderService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     private readonly INotificationRequestService _notificationRequestService;
@@ -23,12 +24,14 @@ public class CreateAppointmentTypeCommandHandler
 
     public CreateAppointmentTypeCommandHandler(
         ICurrentUserService currentUserService,
+        IIntegrationEventSenderService integrationEventSenderService,
         IMapper mapper,
         IMediator mediator,
         INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
         _currentUserService = currentUserService;
+        _integrationEventSenderService = integrationEventSenderService;
         _mapper = mapper;
         _mediator = mediator;
         _notificationRequestService = notificationRequestService;
@@ -90,22 +93,13 @@ public class CreateAppointmentTypeCommandHandler
         Guid correlationId,
         CancellationToken cancellationToken)
     {
-        var message = new AppointmentTypeCreatedIntegrationEventContract
-        {
-            CausationId = correlationId,
-            CorrelationId = correlationId,
-            Id = Guid.NewGuid(),
-            OccurredOn = DateTimeOffset.UtcNow,
-            AppointmentTypeCode = appointmentType.Code,
-            AppointmentTypeDuration = appointmentType.Duration,
-            AppointmentTypeId = appointmentType.Id,
-            AppointmentTypeName = appointmentType.Name
-        };
-
-        await _mediator.Publish(
-            new AppointmentTypeCreatedSendIntegrationEvent(message),
-            cancellationToken
+        var factory = new AppointmentTypeCreatedIntegrationEventFactory
+        (
+            appointmentType
         );
+
+        await _integrationEventSenderService.SendAsync(
+            factory, correlationId, cancellationToken);
     }
 
     private async Task SendNotificationRequestAsync(
@@ -113,13 +107,14 @@ public class CreateAppointmentTypeCommandHandler
         Guid correlationId,
         CancellationToken cancellationToken)
     {
-        var factory = new AppointmentTypeCreatedNotificationRequestFactory(
+        var factory = new AppointmentTypeCreatedNotificationRequestFactory
+        (
             appointmentType,
             correlationId,
             _currentUserService.UserId
         );
 
-        await _notificationRequestService.CreateAndSendAsync(
+        await _notificationRequestService.SendAsync(
             factory, cancellationToken);
     }
 }

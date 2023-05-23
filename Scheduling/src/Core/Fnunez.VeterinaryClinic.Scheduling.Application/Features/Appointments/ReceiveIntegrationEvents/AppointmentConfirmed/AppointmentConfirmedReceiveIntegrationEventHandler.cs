@@ -32,7 +32,7 @@ public class AAppointmentConfirmedReceiveIntegrationEventHandler
         CancellationToken cancellationToken)
     {
         var contract = integrationEvent
-            .AppointmentConfirmedIntegrationEventContract;
+            .AppointmentConfirmedIntegrationEventPublicContract;
 
         var specification = new AppointmentSpecification(
             contract.AppointmentId);
@@ -104,7 +104,7 @@ public class AAppointmentConfirmedReceiveIntegrationEventHandler
             SchedulingAppId
         );
 
-        await _notificationRequestService.CreateAndSendAsync(
+        await _notificationRequestService.SendAsync(
             factory, cancellationToken);
     }
 }

@@ -1,4 +1,4 @@
-using SchedulingContracts;
+using Contracts.Scheduling;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Services.NotificationRequest;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Services.NotificationRequest.Factories;
@@ -43,7 +43,8 @@ public class NotificationRequestServiceTests
             _confirmOn
         );
 
-        _factory = new AppointmentCreatedNotificationRequestFactory(
+        _factory = new AppointmentCreatedNotificationRequestFactory
+        (
             appointment,
             _correlationId,
             _userId
@@ -51,29 +52,29 @@ public class NotificationRequestServiceTests
     }
 
     [Fact]
-    public async void CreateAndSendAsync_CallsPublishAsyncMethodOnceFromServiceBus()
+    public async void SendAsync_CallsPublishAsyncMethodOnceFromServiceBus()
     {
         // Arrange
         var mockIServiceBus = new Mock<IServiceBus>();
 
         mockIServiceBus.Setup(x =>
             x.PublishAsync(
-                It.IsAny<NotificationRequestContract>(),
+                It.IsAny<NotificationRequestSchedulingContract>(),
                 CancellationToken.None
             )
         );
 
-        var mockNotificationRequestService = new Mock<NotificationRequestService>(
+        var notificationRequestService = new NotificationRequestService(
             mockIServiceBus.Object);
 
         // Act
-        await mockNotificationRequestService.Object.CreateAndSendAsync(
+        await notificationRequestService.SendAsync(
             _factory, CancellationToken.None);
 
         // Assert
         mockIServiceBus.Verify(x =>
             x.PublishAsync(
-                It.IsAny<NotificationRequestContract>(),
+                It.IsAny<NotificationRequestSchedulingContract>(),
                 CancellationToken.None
             ),
             Times.Once()

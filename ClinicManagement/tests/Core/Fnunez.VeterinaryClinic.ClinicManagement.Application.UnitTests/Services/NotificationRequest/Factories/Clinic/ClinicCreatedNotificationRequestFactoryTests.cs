@@ -17,14 +17,16 @@ public class ClinicCreatedNotificationRequestFactoryTests
 
     public ClinicCreatedNotificationRequestFactoryTests()
     {
-        var clinic = new Clinic(
+        var clinic = new Clinic
+        (
             _clinicId,
             _clinicAddress,
             _clinicEmailAddress,
             _clinicName
         );
 
-        _factory = new ClinicCreatedNotificationRequestFactory(
+        _factory = new ClinicCreatedNotificationRequestFactory
+        (
             clinic,
             _correlationId,
             _userId
@@ -32,21 +34,27 @@ public class ClinicCreatedNotificationRequestFactoryTests
     }
 
     [Fact]
-    public void CreateNotificationRequest_WithoutEntries_ReturnsNotificationRequest()
+    public void CreateNotificationRequest_ReturnsClinicCreatedNotificationRequest()
     {
         // Act
-        var notificationRequest = _factory.CreateNotificationRequest()
-            as ClinicCreatedNotificationRequest;
+        var actual = _factory.CreateNotificationRequest();
 
         // Assert
+        Assert.IsType<ClinicCreatedNotificationRequest>(actual);
+
+        var notificationRequest = actual as ClinicCreatedNotificationRequest;
+
         Assert.Equal(_correlationId, notificationRequest?.CorrelationId);
+
         Assert.Equal(_clinicId, notificationRequest?.Id);
+
         Assert.Equal(_clinicName, notificationRequest?.Name);
+
         Assert.Equal(_userId, notificationRequest?.TriggeredByUserId);
     }
 
     [Fact]
-    public void GetNotificationEvent_WithoutEntries_ReturnsNotificationEvent()
+    public void GetNotificationEvent_ReturnsNotificationEvent()
     {
         // Act
         var notificationEvent = _factory.GetNotificationEvent();

@@ -15,11 +15,11 @@ public class RoomCreatedReceiveIntegrationEventHandler
     }
 
     public async Task Handle(
-        RoomCreatedReceiveIntegrationEvent integrationEvent,
+        RoomCreatedReceiveIntegrationEvent receiveIntegrationEvent,
         CancellationToken cancellationToken)
     {
-        var contract = integrationEvent
-            .RoomCreatedIntegrationEventContract;
+        var integrationEvent = receiveIntegrationEvent
+            .RoomCreatedIntegrationEvent;
 
         string sql = @$"
         SET IDENTITY_INSERT [dbo].[Rooms] ON;
@@ -30,8 +30,8 @@ public class RoomCreatedReceiveIntegrationEventHandler
             [Name]
         ) VALUES (
             1,
-            {contract.RoomId},
-            N'{contract.RoomName}'
+            {integrationEvent.RoomId},
+            N'{integrationEvent.RoomName}'
         );
         
         SET IDENTITY_INSERT [dbo].[Rooms] OFF;";

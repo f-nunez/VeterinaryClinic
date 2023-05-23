@@ -15,25 +15,25 @@ public class ClientUpdatedReceiveIntegrationEventHandler
     }
 
     public async Task Handle(
-        ClientUpdatedReceiveIntegrationEvent integrationEvent,
+        ClientUpdatedReceiveIntegrationEvent receiveIntegrationEvent,
         CancellationToken cancellationToken)
     {
-        var contract = integrationEvent
-            .ClientUpdatedIntegrationEventContract;
+        var integrationEvent = receiveIntegrationEvent
+            .ClientUpdatedIntegrationEvent;
 
-        string preferredDoctorId = contract.ClientPreferredDoctorId.HasValue
-            ? $"{contract.ClientPreferredDoctorId}"
+        string preferredDoctorId = integrationEvent.ClientPreferredDoctorId.HasValue
+            ? $"{integrationEvent.ClientPreferredDoctorId}"
             : "NULL";
 
         string sql = @$"
         UPDATE [dbo].[Clients]
-        SET [FullName] = N'{contract.ClientFullName}'
-            ,[PreferredName] = N'{contract.ClientPreferredName}'
-            ,[Salutation] = N'{contract.ClientSalutation}'
-            ,[EmailAddress] = N'{contract.ClientEmailAddress}'
+        SET [FullName] = N'{integrationEvent.ClientFullName}'
+            ,[PreferredName] = N'{integrationEvent.ClientPreferredName}'
+            ,[Salutation] = N'{integrationEvent.ClientSalutation}'
+            ,[EmailAddress] = N'{integrationEvent.ClientEmailAddress}'
             ,[PreferredDoctorId] = {preferredDoctorId}
-            ,[PreferredLanguage] = {contract.ClientPreferredLanguage}
-        WHERE Id = {contract.ClientId}";
+            ,[PreferredLanguage] = {integrationEvent.ClientPreferredLanguage}
+        WHERE Id = {integrationEvent.ClientId}";
 
         var result = await _unitOfWork
             .ExecuteSqlCommandAsync(sql, cancellationToken);

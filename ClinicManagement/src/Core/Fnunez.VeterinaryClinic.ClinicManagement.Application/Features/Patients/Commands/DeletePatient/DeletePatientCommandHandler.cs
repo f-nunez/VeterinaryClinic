@@ -1,9 +1,8 @@
-using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.Commands.CreatePatient;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.SendIntegrationEvents.PatientDeleted;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.IntegrationEventSender;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.IntegrationEventSender.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Settings;
@@ -21,6 +20,7 @@ public class DeletePatientCommandHandler
     private readonly IClientStorageSetting _clientStorageSetting;
     private readonly ICurrentUserService _currentUserService;
     private readonly IFileSystemDeleterService _fileSystemDeleterService;
+    private readonly IIntegrationEventSenderService _integrationEventSenderService;
     private readonly IMediator _mediator;
     private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
@@ -29,6 +29,7 @@ public class DeletePatientCommandHandler
         IClientStorageSetting clientStorageSetting,
         ICurrentUserService currentUserService,
         IFileSystemDeleterService fileSystemDeleterService,
+        IIntegrationEventSenderService integrationEventSenderService,
         IMediator mediator,
         INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
@@ -36,6 +37,7 @@ public class DeletePatientCommandHandler
         _clientStorageSetting = clientStorageSetting;
         _currentUserService = currentUserService;
         _fileSystemDeleterService = fileSystemDeleterService;
+        _integrationEventSenderService = integrationEventSenderService;
         _mediator = mediator;
         _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
@@ -88,7 +90,7 @@ public class DeletePatientCommandHandler
 
         await _unitOfWork
             .Repository<Client>()
-            .UpdateAsync(client);
+            .UpdateAsync(client, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
@@ -129,19 +131,10 @@ public class DeletePatientCommandHandler
         Guid correlationId,
         CancellationToken cancellationToken)
     {
-        var message = new PatientDeletedIntegrationEventContract
-        {
-            CausationId = correlationId,
-            CorrelationId = correlationId,
-            Id = Guid.NewGuid(),
-            OccurredOn = DateTimeOffset.UtcNow,
-            PatientId = patient.Id
-        };
+        var factory = new PatientDeletedIntegrationEventFactory(patient);
 
-        await _mediator.Publish(
-            new PatientDeletedSendIntegrationEvent(message),
-            cancellationToken
-        );
+        await _integrationEventSenderService.SendAsync(
+            factory, correlationId, cancellationToken);
     }
 
     private async Task SendNotificationRequestAsync(
@@ -149,13 +142,14 @@ public class DeletePatientCommandHandler
         Guid correlationId,
         CancellationToken cancellationToken)
     {
-        var factory = new PatientDeletedNotificationRequestFactory(
+        var factory = new PatientDeletedNotificationRequestFactory
+        (
             patient,
             correlationId,
             _currentUserService.UserId
         );
 
-        await _notificationRequestService.CreateAndSendAsync(
+        await _notificationRequestService.SendAsync(
             factory, cancellationToken);
     }
 }

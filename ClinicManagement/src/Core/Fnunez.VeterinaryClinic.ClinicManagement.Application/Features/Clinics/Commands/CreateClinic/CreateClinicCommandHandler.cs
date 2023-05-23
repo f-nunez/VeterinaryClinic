@@ -1,7 +1,7 @@
 using AutoMapper;
-using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clinics.SendIntegrationEvents.ClinicCreated;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.IntegrationEventSender;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.IntegrationEventSender.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Clinic;
@@ -16,6 +16,7 @@ public class CreateClinicCommandHandler
     : IRequestHandler<CreateClinicCommand, CreateClinicResponse>
 {
     private readonly ICurrentUserService _currentUserService;
+    private readonly IIntegrationEventSenderService _integrationEventSenderService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     private readonly INotificationRequestService _notificationRequestService;
@@ -23,12 +24,14 @@ public class CreateClinicCommandHandler
 
     public CreateClinicCommandHandler(
         ICurrentUserService currentUserService,
+        IIntegrationEventSenderService integrationEventSenderService,
         IMapper mapper,
         IMediator mediator,
         INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
         _currentUserService = currentUserService;
+        _integrationEventSenderService = integrationEventSenderService;
         _mapper = mapper;
         _mediator = mediator;
         _notificationRequestService = notificationRequestService;
@@ -85,22 +88,10 @@ public class CreateClinicCommandHandler
         Guid correlationId,
         CancellationToken cancellationToken)
     {
-        var message = new ClinicCreatedIntegrationEventContract
-        {
-            CausationId = correlationId,
-            CorrelationId = correlationId,
-            Id = Guid.NewGuid(),
-            OccurredOn = DateTimeOffset.UtcNow,
-            ClinicAddress = clinic.Address,
-            ClinicEmailAddress = clinic.EmailAddress,
-            ClinicId = clinic.Id,
-            ClinicName = clinic.Name
-        };
+        var factory = new ClinicCreatedIntegrationEventFactory(clinic);
 
-        await _mediator.Publish(
-            new ClinicCreatedSendIntegrationEvent(message),
-            cancellationToken
-        );
+        await _integrationEventSenderService.SendAsync(
+            factory, correlationId, cancellationToken);
     }
 
     private async Task SendNotificationRequestAsync(
@@ -108,13 +99,14 @@ public class CreateClinicCommandHandler
         Guid correlationId,
         CancellationToken cancellationToken)
     {
-        var factory = new ClinicCreatedNotificationRequestFactory(
+        var factory = new ClinicCreatedNotificationRequestFactory
+        (
             clinic,
             correlationId,
             _currentUserService.UserId
         );
 
-        await _notificationRequestService.CreateAndSendAsync(
+        await _notificationRequestService.SendAsync(
             factory, cancellationToken);
     }
 }

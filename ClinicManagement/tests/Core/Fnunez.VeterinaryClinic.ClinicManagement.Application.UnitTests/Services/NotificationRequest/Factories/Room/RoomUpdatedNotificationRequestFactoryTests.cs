@@ -17,24 +17,30 @@ public class RoomUpdatedNotificationRequestFactoryTests
     {
         var room = new Room(_roomId, _roomName);
 
-        _factory = new RoomUpdatedNotificationRequestFactory(
+        _factory = new RoomUpdatedNotificationRequestFactory
+        (
             room,
             _correlationId,
             _userId
         );
     }
 
-    [Fact]
-    public void CreateNotificationRequest_WithoutEntries_ReturnsNotificationRequest()
+    public void CreateNotificationRequest_ReturnsRoomUpdatedNotificationRequest()
     {
         // Act
-        var notificationRequest = _factory.CreateNotificationRequest()
-            as RoomUpdatedNotificationRequest;
+        var actual = _factory.CreateNotificationRequest();
 
         // Assert
+        Assert.IsType<RoomUpdatedNotificationRequest>(actual);
+
+        var notificationRequest = actual as RoomUpdatedNotificationRequest;
+
         Assert.Equal(_correlationId, notificationRequest?.CorrelationId);
+
         Assert.Equal(_roomId, notificationRequest?.Id);
+
         Assert.Equal(_roomName, notificationRequest?.Name);
+
         Assert.Equal(_userId, notificationRequest?.TriggeredByUserId);
     }
 

@@ -15,16 +15,16 @@ public class ClinicDeletedReceiveIntegrationEventHandler
     }
 
     public async Task Handle(
-        ClinicDeletedReceiveIntegrationEvent integrationEvent,
+        ClinicDeletedReceiveIntegrationEvent receiveIntegrationEvent,
         CancellationToken cancellationToken)
     {
-        var contract = integrationEvent
-            .ClinicDeletedIntegrationEventContract;
+        var integrationEvent = receiveIntegrationEvent
+            .ClinicDeletedIntegrationEvent;
 
         string sql = @$"
         UPDATE [dbo].[Clinics]
         SET [IsActive] = 0
-        WHERE Id = {contract.ClinicId}";
+        WHERE Id = {integrationEvent.ClinicId}";
 
         var result = await _unitOfWork
             .ExecuteSqlCommandAsync(sql, cancellationToken);

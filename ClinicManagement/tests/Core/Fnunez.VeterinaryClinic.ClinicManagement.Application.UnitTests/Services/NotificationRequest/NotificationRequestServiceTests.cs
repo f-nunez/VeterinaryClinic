@@ -1,4 +1,4 @@
-using ClinicManagementContracts;
+using Contracts.ClinicManagement;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
@@ -18,14 +18,16 @@ public class NotificationRequestServiceTests
 
     public NotificationRequestServiceTests()
     {
-        var appointmentType = new AppointmentType(
+        var appointmentType = new AppointmentType
+        (
             _appointmentTypeId,
             _appointmentTypeName,
             _appointmentTypeCode,
             _appointmentTypeDuration
         );
 
-        _factory = new AppointmentTypeCreatedNotificationRequestFactory(
+        _factory = new AppointmentTypeCreatedNotificationRequestFactory
+        (
             appointmentType,
             _correlationId,
             _userId
@@ -33,29 +35,29 @@ public class NotificationRequestServiceTests
     }
 
     [Fact]
-    public async void CreateAndSendAsync_CallsPublishAsyncMethodOnceFromServiceBus()
+    public async void SendAsync_CallsPublishAsyncMethodOnceFromServiceBus()
     {
         // Arrange
         var mockIServiceBus = new Mock<IServiceBus>();
 
         mockIServiceBus.Setup(x =>
             x.PublishAsync(
-                It.IsAny<NotificationRequestContract>(),
+                It.IsAny<NotificationRequestClinicManagementContract>(),
                 CancellationToken.None
             )
         );
 
-        var mockNotificationRequestService = new Mock<NotificationRequestService>(
+        var notificationRequestService = new NotificationRequestService(
             mockIServiceBus.Object);
 
         // Act
-        await mockNotificationRequestService.Object.CreateAndSendAsync(
+        await notificationRequestService.SendAsync(
             _factory, CancellationToken.None);
 
         // Assert
         mockIServiceBus.Verify(x =>
             x.PublishAsync(
-                It.IsAny<NotificationRequestContract>(),
+                It.IsAny<NotificationRequestClinicManagementContract>(),
                 CancellationToken.None
             ),
             Times.Once()

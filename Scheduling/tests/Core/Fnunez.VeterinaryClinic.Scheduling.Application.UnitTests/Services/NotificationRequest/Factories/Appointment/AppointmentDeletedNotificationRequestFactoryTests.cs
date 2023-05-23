@@ -42,7 +42,8 @@ public class AppointmentDeletedNotificationRequestFactoryTests
             _confirmOn
         );
 
-        _factory = new AppointmentDeletedNotificationRequestFactory(
+        _factory = new AppointmentDeletedNotificationRequestFactory
+        (
             appointment,
             _correlationId,
             _userId
@@ -50,21 +51,28 @@ public class AppointmentDeletedNotificationRequestFactoryTests
     }
 
     [Fact]
-    public void GetNotificationEvent_WithoutEntries_ReturnsNotificationEvent()
+    public void CreateNotificationRequest_ReturnsAppointmentDeletedNotificationRequest()
     {
         // Act
-        var notificationRequest = _factory.CreateNotificationRequest()
+        var actual = _factory.CreateNotificationRequest()
             as AppointmentDeletedNotificationRequest;
 
         // Assert
+        Assert.IsType<AppointmentDeletedNotificationRequest>(actual);
+
+        var notificationRequest = actual as AppointmentDeletedNotificationRequest;
+
         Assert.Equal(_correlationId, notificationRequest?.CorrelationId);
+
         Assert.Equal(_id, notificationRequest?.Id);
+
         Assert.Equal(_title, notificationRequest?.Title);
+
         Assert.Equal(_userId, notificationRequest?.TriggeredByUserId);
     }
 
     [Fact]
-    public void GetNotificationEvent_WithoutEntries_ReturnsAppointmentDeleted()
+    public void GetNotificationEvent_ReturnsAppointmentDeleted()
     {
         // Act
         var notificationEvent = _factory.GetNotificationEvent();

@@ -17,22 +17,24 @@ public class PatientDeletedNotificationRequestFactoryTests
     private readonly int _patientId = 1;
     private readonly string _patientName = "a";
     private readonly Photo _patientPhoto = new Photo("a", "a");
-    private readonly int? _patientPreferredPatientId = 1;
+    private readonly int? _patientPreferredDoctorId = 1;
     private readonly string _userId = Guid.NewGuid().ToString();
 
     public PatientDeletedNotificationRequestFactoryTests()
     {
-        var patient = new Patient(
+        var patient = new Patient
+        (
             _patientId,
             _patientClientId,
             _patientName,
             _patientAnimalSex,
             _patientAnimalType,
             _patientPhoto,
-            _patientPreferredPatientId
+            _patientPreferredDoctorId
         );
 
-        _factory = new PatientDeletedNotificationRequestFactory(
+        _factory = new PatientDeletedNotificationRequestFactory
+        (
             patient,
             _correlationId,
             _userId
@@ -40,22 +42,29 @@ public class PatientDeletedNotificationRequestFactoryTests
     }
 
     [Fact]
-    public void CreateNotificationRequest_WithoutEntries_ReturnsNotificationRequest()
+    public void CreateNotificationRequest_ReturnsPatientDeletedNotificationRequest()
     {
         // Act
-        var notificationRequest = _factory.CreateNotificationRequest()
-            as PatientDeletedNotificationRequest;
+        var actual = _factory.CreateNotificationRequest();
 
         // Assert
+        Assert.IsType<PatientDeletedNotificationRequest>(actual);
+
+        var notificationRequest = actual as PatientDeletedNotificationRequest;
+
         Assert.Equal(_patientClientId, notificationRequest?.ClientId);
+
         Assert.Equal(_correlationId, notificationRequest?.CorrelationId);
+
         Assert.Equal(_patientName, notificationRequest?.Name);
+
         Assert.Equal(_patientId, notificationRequest?.PatientId);
+
         Assert.Equal(_userId, notificationRequest?.TriggeredByUserId);
     }
 
     [Fact]
-    public void GetNotificationEvent_WithoutEntries_ReturnsNotificationEvent()
+    public void GetNotificationEvent_ReturnsNotificationEvent()
     {
         // Act
         var notificationEvent = _factory.GetNotificationEvent();
