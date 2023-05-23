@@ -1,6 +1,7 @@
 using System.Reflection;
 using FluentValidation;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Behaviors;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.IntegrationEventSender;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
 using MediatR;
 
@@ -22,6 +23,8 @@ public static class ConfigureServices
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehavior<,>));
 
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+        services.AddScoped<IIntegrationEventSenderService, IntegrationEventSenderService>();
 
         services.AddScoped<INotificationRequestService, NotificationRequestService>();
 
