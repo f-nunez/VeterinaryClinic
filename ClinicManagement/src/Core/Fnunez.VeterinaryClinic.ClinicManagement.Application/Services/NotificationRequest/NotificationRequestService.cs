@@ -14,7 +14,7 @@ public class NotificationRequestService : INotificationRequestService
         _serviceBus = serviceBus;
     }
 
-    public async Task CreateAndSendAsync(
+    public async Task SendAsync(
         INotificationRequestFactory factory,
         CancellationToken cancellationToken)
     {
