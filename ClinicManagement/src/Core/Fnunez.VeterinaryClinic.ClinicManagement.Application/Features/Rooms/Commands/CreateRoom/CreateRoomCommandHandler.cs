@@ -1,7 +1,7 @@
 using AutoMapper;
-using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Rooms.SendIntegrationEvents.RoomCreated;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.IntegrationEventSender;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.IntegrationEventSender.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Room;
@@ -16,6 +16,7 @@ public class CreateRoomCommandHandler
     : IRequestHandler<CreateRoomCommand, CreateRoomResponse>
 {
     private readonly ICurrentUserService _currentUserService;
+    private readonly IIntegrationEventSenderService _integrationEventSenderService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     private readonly INotificationRequestService _notificationRequestService;
@@ -23,12 +24,14 @@ public class CreateRoomCommandHandler
 
     public CreateRoomCommandHandler(
         ICurrentUserService currentUserService,
+        IIntegrationEventSenderService integrationEventSenderService,
         IMapper mapper,
         IMediator mediator,
         INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
         _currentUserService = currentUserService;
+        _integrationEventSenderService = integrationEventSenderService;
         _mapper = mapper;
         _mediator = mediator;
         _notificationRequestService = notificationRequestService;
@@ -85,20 +88,10 @@ public class CreateRoomCommandHandler
         Guid correlationId,
         CancellationToken cancellationToken)
     {
-        var message = new RoomCreatedIntegrationEventContract
-        {
-            CausationId = correlationId,
-            CorrelationId = correlationId,
-            Id = Guid.NewGuid(),
-            OccurredOn = DateTimeOffset.UtcNow,
-            RoomId = room.Id,
-            RoomName = room.Name
-        };
+        var factory = new RoomCreatedIntegrationEventFactory(room);
 
-        await _mediator.Publish(
-            new RoomCreatedSendIntegrationEvent(message),
-            cancellationToken
-        );
+        await _integrationEventSenderService.SendAsync(
+            factory, correlationId, cancellationToken);
     }
 
     private async Task SendNotificationRequestAsync(
@@ -106,13 +99,14 @@ public class CreateRoomCommandHandler
         Guid correlationId,
         CancellationToken cancellationToken)
     {
-        var factory = new RoomCreatedNotificationRequestFactory(
+        var factory = new RoomCreatedNotificationRequestFactory
+        (
             room,
             correlationId,
             _currentUserService.UserId
         );
 
-        await _notificationRequestService.CreateAndSendAsync(
+        await _notificationRequestService.SendAsync(
             factory, cancellationToken);
     }
 }
