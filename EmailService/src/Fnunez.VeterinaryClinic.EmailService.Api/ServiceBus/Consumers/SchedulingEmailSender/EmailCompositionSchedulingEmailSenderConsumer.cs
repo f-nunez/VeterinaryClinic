@@ -4,12 +4,12 @@ using Fnunez.VeterinaryClinic.EmailService.Api.Services.Email;
 using MassTransit;
 
 namespace Fnunez.VeterinaryClinic.EmailService.Api.ServiceBus.Consumers;
-public class EmailCompositionSchedulingemailSenderConsumer
+public class EmailCompositionSchedulingEmailSenderConsumer
     : IConsumer<EmailCompositionSchedulingEmailSenderContract>
 {
     private readonly IEmailService _emailService;
 
-    public EmailCompositionSchedulingemailSenderConsumer(
+    public EmailCompositionSchedulingEmailSenderConsumer(
         IEmailService emailService)
     {
         _emailService = emailService;
