@@ -17,29 +17,35 @@ public class RoomDeletedNotificationRequestFactoryTests
     {
         var room = new Room(_roomId, _roomName);
 
-        _factory = new RoomDeletedNotificationRequestFactory(
+        _factory = new RoomDeletedNotificationRequestFactory
+        (
             room,
             _correlationId,
             _userId
         );
     }
 
-    [Fact]
-    public void CreateNotificationRequest_WithoutEntries_ReturnsNotificationRequest()
+    public void CreateNotificationRequest_ReturnsRoomDeletedNotificationRequest()
     {
         // Act
-        var notificationRequest = _factory.CreateNotificationRequest()
-            as RoomDeletedNotificationRequest;
+        var actual = _factory.CreateNotificationRequest();
 
         // Assert
+        Assert.IsType<RoomDeletedNotificationRequest>(actual);
+
+        var notificationRequest = actual as RoomDeletedNotificationRequest;
+
         Assert.Equal(_correlationId, notificationRequest?.CorrelationId);
+
         Assert.Equal(_roomId, notificationRequest?.Id);
+
         Assert.Equal(_roomName, notificationRequest?.Name);
+
         Assert.Equal(_userId, notificationRequest?.TriggeredByUserId);
     }
 
     [Fact]
-    public void GetNotificationEvent_WithoutEntries_ReturnsNotificationEvent()
+    public void GetNotificationEvent_ReturnsNotificationEvent()
     {
         // Act
         var notificationEvent = _factory.GetNotificationEvent();
