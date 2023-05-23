@@ -1,8 +1,8 @@
-using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Patients.SendIntegrationEvents.PatientUpdated;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.IntegrationEventSender;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.IntegrationEventSender.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Settings;
@@ -23,6 +23,7 @@ public class UpdatePatientCommandHandler
     private readonly ICurrentUserService _currentUserService;
     private readonly IFileSystemDeleterService _fileSystemDeleterService;
     private readonly IFileSystemWriterService _fileSystemWriterService;
+    private readonly IIntegrationEventSenderService _integrationEventSenderService;
     private readonly IMediator _mediator;
     private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
@@ -32,6 +33,7 @@ public class UpdatePatientCommandHandler
         ICurrentUserService currentUserService,
         IFileSystemDeleterService fileSystemDeleterService,
         IFileSystemWriterService fileSystemWriterService,
+        IIntegrationEventSenderService integrationEventSenderService,
         IMediator mediator,
         INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
@@ -40,6 +42,7 @@ public class UpdatePatientCommandHandler
         _currentUserService = currentUserService;
         _fileSystemDeleterService = fileSystemDeleterService;
         _fileSystemWriterService = fileSystemWriterService;
+        _integrationEventSenderService = integrationEventSenderService;
         _mediator = mediator;
         _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
@@ -172,27 +175,10 @@ public class UpdatePatientCommandHandler
         Guid correlationId,
         CancellationToken cancellationToken)
     {
-        var message = new PatientUpdatedIntegrationEventContract
-        {
-            CausationId = correlationId,
-            CorrelationId = correlationId,
-            Id = Guid.NewGuid(),
-            OccurredOn = DateTimeOffset.UtcNow,
-            PatientBreed = patient.AnimalType.Breed,
-            PatientClientId = patient.ClientId,
-            PatientId = patient.Id,
-            PatientName = patient.Name,
-            PatientPhotoName = patient.Photo.Name,
-            PatientPhotoStoredName = patient.Photo.StoredName,
-            PatientPreferredDoctorId = patient.PreferredDoctorId,
-            PatientSex = (int)patient.AnimalSex,
-            PatientSpecies = patient.AnimalType.Species
-        };
+        var factory = new PatientUpdatedIntegrationEventFactory(patient);
 
-        await _mediator.Publish(
-            new PatientUpdatedSendIntegrationEvent(message),
-            cancellationToken
-        );
+        await _integrationEventSenderService.SendAsync(
+            factory, correlationId, cancellationToken);
     }
 
     private async Task SendNotificationRequestAsync(
@@ -206,7 +192,7 @@ public class UpdatePatientCommandHandler
             _currentUserService.UserId
         );
 
-        await _notificationRequestService.CreateAndSendAsync(
+        await _notificationRequestService.SendAsync(
             factory, cancellationToken);
     }
 }
