@@ -21,7 +21,8 @@ public class ClientUpdatedNotificationRequestFactoryTests
 
     public ClientUpdatedNotificationRequestFactoryTests()
     {
-        var client = new Client(
+        var client = new Client
+        (
             _clientId,
             _clientFullName,
             _clientPreferredName,
@@ -31,7 +32,8 @@ public class ClientUpdatedNotificationRequestFactoryTests
             _clientPreferredDoctorId
         );
 
-        _factory = new ClientUpdatedNotificationRequestFactory(
+        _factory = new ClientUpdatedNotificationRequestFactory
+        (
             client,
             _correlationId,
             _userId
@@ -39,21 +41,27 @@ public class ClientUpdatedNotificationRequestFactoryTests
     }
 
     [Fact]
-    public void CreateNotificationRequest_WithoutEntries_ReturnsNotificationRequest()
+    public void CreateNotificationRequest_ReturnsClientUpdatedNotificationRequest()
     {
         // Act
-        var notificationRequest = _factory.CreateNotificationRequest()
-            as ClientUpdatedNotificationRequest;
+        var actual = _factory.CreateNotificationRequest();
 
         // Assert
+        Assert.IsType<ClientUpdatedNotificationRequest>(actual);
+
+        var notificationRequest = actual as ClientUpdatedNotificationRequest;
+
         Assert.Equal(_correlationId, notificationRequest?.CorrelationId);
+
         Assert.Equal(_clientFullName, notificationRequest?.FullName);
+
         Assert.Equal(_clientId, notificationRequest?.Id);
+
         Assert.Equal(_userId, notificationRequest?.TriggeredByUserId);
     }
 
     [Fact]
-    public void GetNotificationEvent_WithoutEntries_ReturnsNotificationEvent()
+    public void GetNotificationEvent_ReturnsNotificationEvent()
     {
         // Act
         var notificationEvent = _factory.GetNotificationEvent();
