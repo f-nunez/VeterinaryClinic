@@ -23,7 +23,8 @@ public class NotificationEngineServiceTests
 
         var mockIUnitOfWork = new Mock<IUnitOfWork>();
 
-        var notificationEngineService = new NotificationEngineService(
+        var notificationEngineService = new NotificationEngineService
+        (
             mockINotificationHubService.Object,
             mockINotificationRequestFactory.Object,
             mockIPayloadFactory.Object,
@@ -66,7 +67,8 @@ public class NotificationEngineServiceTests
 
         var mockIUnitOfWork = new Mock<IUnitOfWork>();
 
-        var notificationEngineService = new NotificationEngineService(
+        var notificationEngineService = new NotificationEngineService
+        (
             mockINotificationHubService.Object,
             mockINotificationRequestFactory.Object,
             mockIPayloadFactory.Object,
