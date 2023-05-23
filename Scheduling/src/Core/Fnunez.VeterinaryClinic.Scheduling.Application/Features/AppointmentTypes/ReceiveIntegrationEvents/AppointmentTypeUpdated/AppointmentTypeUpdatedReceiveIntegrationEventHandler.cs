@@ -15,18 +15,18 @@ public class AppointmentTypeUpdatedReceiveIntegrationEventHandler
     }
 
     public async Task Handle(
-        AppointmentTypeUpdatedReceiveIntegrationEvent integrationEvent,
+        AppointmentTypeUpdatedReceiveIntegrationEvent receiveIntegrationEvent,
         CancellationToken cancellationToken)
     {
-        var contract = integrationEvent
-            .AppointmentTypeUpdatedIntegrationEventContract;
+        var integrationEvent = receiveIntegrationEvent
+            .AppointmentTypeUpdatedIntegrationEvent;
 
         string sql = @$"
         UPDATE [dbo].[AppointmentTypes]
-        SET [Name] = N'{contract.AppointmentTypeName}'
-            ,[Code] = N'{contract.AppointmentTypeCode}'
-            ,[Duration] = {contract.AppointmentTypeDuration}
-        WHERE Id = {contract.AppointmentTypeId};";
+        SET [Name] = N'{integrationEvent.AppointmentTypeName}'
+            ,[Code] = N'{integrationEvent.AppointmentTypeCode}'
+            ,[Duration] = {integrationEvent.AppointmentTypeDuration}
+        WHERE Id = {integrationEvent.AppointmentTypeId};";
 
         var result = await _unitOfWork
             .ExecuteSqlCommandAsync(sql, cancellationToken);
