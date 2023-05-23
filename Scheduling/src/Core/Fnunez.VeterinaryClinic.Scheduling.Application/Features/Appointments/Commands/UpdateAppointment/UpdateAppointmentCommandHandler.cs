@@ -199,7 +199,7 @@ public class UpdateAppointmentCommandHandler
             _currentUserService.UserId
         );
 
-        await _notificationRequestService.CreateAndSendAsync(
+        await _notificationRequestService.SendAsync(
             factory, cancellationToken);
     }
 
