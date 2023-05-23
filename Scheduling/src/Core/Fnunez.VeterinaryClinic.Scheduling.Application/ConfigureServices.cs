@@ -2,6 +2,7 @@ using System.Reflection;
 using FluentValidation;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Behaviors;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Services.EmailRequest;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Services.IntegrationEventReceiver;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Services.IntegrationEventReceiver.Factories;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Services.NotificationRequest;
 using MediatR;
@@ -28,6 +29,8 @@ public static class ConfigureServices
         services.AddScoped<IEmailRequestService, EmailRequestService>();
 
         services.AddScoped<IIntegrationEventFactory, IntegrationEventFactory>();
+
+        services.AddScoped<IIntegrationEventReceiverService, IntegrationEventReceiverService>();
 
         services.AddScoped<INotificationRequestService, NotificationRequestService>();
 
