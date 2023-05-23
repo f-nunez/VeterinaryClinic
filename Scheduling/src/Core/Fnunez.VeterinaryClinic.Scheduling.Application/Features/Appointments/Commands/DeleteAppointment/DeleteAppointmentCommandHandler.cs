@@ -107,7 +107,7 @@ public class DeleteAppointmentCommandHandler
             _currentUserService.UserId
         );
 
-        await _notificationRequestService.CreateAndSendAsync(
+        await _notificationRequestService.SendAsync(
             factory, cancellationToken);
     }
 }
