@@ -15,14 +15,14 @@ public class PatientCreatedReceiveIntegrationEventHandler
     }
 
     public async Task Handle(
-        PatientCreatedReceiveIntegrationEvent integrationEvent,
+        PatientCreatedReceiveIntegrationEvent receiveIntegrationEvent,
         CancellationToken cancellationToken)
     {
-        var contract = integrationEvent
-            .PatientCreatedIntegrationEventContract;
+        var integrationEvent = receiveIntegrationEvent
+            .PatientCreatedIntegrationEvent;
 
-        var preferredDoctorId = contract.PatientPreferredDoctorId.HasValue
-            ? $"{contract.PatientPreferredDoctorId}"
+        var preferredDoctorId = integrationEvent.PatientPreferredDoctorId.HasValue
+            ? $"{integrationEvent.PatientPreferredDoctorId}"
             : "NULL";
 
         string sql = @$"
@@ -41,14 +41,14 @@ public class PatientCreatedReceiveIntegrationEventHandler
             [PreferredDoctorId]
         ) VALUES (
             1,
-            {contract.PatientId},
-            {contract.PatientClientId},
-            N'{contract.PatientName}',
-            {contract.PatientSex},
-            N'{contract.PatientBreed}',
-            N'{contract.PatientSpecies}',
-            N'{contract.PatientPhotoName}',
-            N'{contract.PatientPhotoStoredName}',
+            {integrationEvent.PatientId},
+            {integrationEvent.PatientClientId},
+            N'{integrationEvent.PatientName}',
+            {integrationEvent.PatientSex},
+            N'{integrationEvent.PatientBreed}',
+            N'{integrationEvent.PatientSpecies}',
+            N'{integrationEvent.PatientPhotoName}',
+            N'{integrationEvent.PatientPhotoStoredName}',
             {preferredDoctorId}
         );
         
