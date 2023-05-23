@@ -104,7 +104,7 @@ public class AAppointmentConfirmedReceiveIntegrationEventHandler
             SchedulingAppId
         );
 
-        await _notificationRequestService.CreateAndSendAsync(
+        await _notificationRequestService.SendAsync(
             factory, cancellationToken);
     }
 }
