@@ -25,6 +25,7 @@ public class RoomDeletedNotificationRequestFactoryTests
         );
     }
 
+    [Fact]
     public void CreateNotificationRequest_ReturnsRoomDeletedNotificationRequest()
     {
         // Act

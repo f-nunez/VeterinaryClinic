@@ -30,7 +30,7 @@ public class Consent : PageModel
     public ViewModel? View { get; set; }
         
     [BindProperty]
-    public InputModel Input { get; set; } = null!;
+    public InputModel Input { get; set; } = new InputModel();
 
     public async Task<IActionResult> OnGet(string id)
     {
@@ -51,7 +51,7 @@ public class Consent : PageModel
     public async Task<IActionResult> OnPost()
     {
         // validate return url is still valid
-        var request = await _interaction.GetLoginRequestByInternalIdAsync(Input.Id);
+        var request = await _interaction.GetLoginRequestByInternalIdAsync(Input.Id ?? string.Empty);
         if (request == null || request.Subject.GetSubjectId() != User.GetSubjectId())
         {
             _logger.LogError("Invalid id {id}", Input.Id);
@@ -63,7 +63,7 @@ public class Consent : PageModel
         // user clicked 'no' - send back the standard 'access_denied' response
         if (Input?.Button == "no")
         {
-            result = new CompleteBackchannelLoginRequest(Input.Id);
+            result = new CompleteBackchannelLoginRequest(Input.Id ?? string.Empty);
 
             // emit event
             await _events.RaiseAsync(new ConsentDeniedEvent(User.GetSubjectId(), request.Client.ClientId, request.ValidatedResources.RawScopeValues));
@@ -80,7 +80,7 @@ public class Consent : PageModel
                     scopes = scopes.Where(x => x != Duende.IdentityServer.IdentityServerConstants.StandardScopes.OfflineAccess);
                 }
 
-                result = new CompleteBackchannelLoginRequest(Input.Id)
+                result = new CompleteBackchannelLoginRequest(Input.Id ?? string.Empty)
                 {
                     ScopesValuesConsented = scopes.ToArray(),
                     Description = Input.Description
@@ -108,7 +108,7 @@ public class Consent : PageModel
         }
 
         // we need to redisplay the consent UI
-        View = await BuildViewModelAsync(Input!.Id, Input);
+        View = await BuildViewModelAsync(Input?.Id ?? string.Empty, Input);
         return Page();
     }
 

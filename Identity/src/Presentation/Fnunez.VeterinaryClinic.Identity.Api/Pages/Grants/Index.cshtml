@@ -9,7 +9,7 @@
         <p>Below is the list of applications you have given permission to and the resources they have access to.</p>
     </div>
 
-    @if (Model!.View!.Grants.Any() == false)
+    @if (Model is null || Model.View is null || Model.View.Grants is null || Model.View.Grants.Any() == false)
     {
         <div class="row">
             <div class="col-sm-8">
@@ -59,7 +59,7 @@
                             <label>Expires:</label> @grant.Expires.Value.ToString("yyyy-MM-dd")
                         </li>
                     }
-                    @if (grant.IdentityGrantNames.Any())
+                    @if (grant.IdentityGrantNames != null && grant.IdentityGrantNames.Any())
                     {
                         <li class="list-group-item">
                             <label>Identity Grants</label>
@@ -71,7 +71,7 @@
                             </ul>
                         </li>
                     }
-                    @if (grant.ApiGrantNames.Any())
+                    @if (grant.ApiGrantNames != null && grant.ApiGrantNames.Any())
                     {
                         <li class="list-group-item">
                             <label>API Grants</label>

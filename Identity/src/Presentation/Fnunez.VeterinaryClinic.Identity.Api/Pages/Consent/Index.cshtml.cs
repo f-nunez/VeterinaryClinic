@@ -31,7 +31,7 @@ public class Index : PageModel
     public ViewModel? View { get; set; }
         
     [BindProperty]
-    public InputModel Input { get; set; } = null!;
+    public InputModel Input { get; set; } = new InputModel();
 
     public async Task<IActionResult> OnGet(string returnUrl)
     {
@@ -107,14 +107,15 @@ public class Index : PageModel
             {
                 // The client is native, so this change in how to
                 // return the response is for better UX for the end user.
-                return this.LoadingPage(Input!.ReturnUrl);
+                return this.LoadingPage(Input?.ReturnUrl ?? string.Empty);
             }
 
-            return Redirect(Input!.ReturnUrl);
+            return Redirect(Input?.ReturnUrl ?? string.Empty);
+
         }
 
         // we need to redisplay the consent UI
-        View = await BuildViewModelAsync(Input!.ReturnUrl, Input);
+        View = await BuildViewModelAsync(Input?.ReturnUrl ?? string.Empty, Input);
         return Page();
     }
 

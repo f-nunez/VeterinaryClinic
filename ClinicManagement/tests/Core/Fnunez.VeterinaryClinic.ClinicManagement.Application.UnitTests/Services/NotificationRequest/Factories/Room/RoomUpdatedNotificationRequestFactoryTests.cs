@@ -25,6 +25,7 @@ public class RoomUpdatedNotificationRequestFactoryTests
         );
     }
 
+    [Fact]
     public void CreateNotificationRequest_ReturnsRoomUpdatedNotificationRequest()
     {
         // Act

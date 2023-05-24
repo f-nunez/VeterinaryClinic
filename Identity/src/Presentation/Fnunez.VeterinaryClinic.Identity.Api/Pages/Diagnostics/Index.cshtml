@@ -14,10 +14,13 @@
                 </div>
                 <div class="card-body">
                     <dl>
-                        @foreach (var claim in Model.View.AuthenticateResult!.Principal!.Claims!)
+                        @if (Model?.View?.AuthenticateResult?.Principal?.Claims != null)
                         {
-                            <dt>@claim.Type</dt>
-                            <dd>@claim.Value</dd>
+                            foreach (var claim in Model.View.AuthenticateResult.Principal.Claims)
+                            {
+                                <dt>@claim.Type</dt>
+                                <dd>@claim.Value</dd>
+                            }
                         }
                     </dl>
                 </div>
@@ -31,27 +34,30 @@
                 </div>
                 <div class="card-body">
                     <dl>
-                        @foreach (var prop in Model.View.AuthenticateResult!.Properties!.Items)
+                        @if (Model?.View?.AuthenticateResult?.Properties?.Items != null)
                         {
-                            <dt>@prop.Key</dt>
-                            <dd>@prop.Value</dd>
-                        }
-                        @if (Model.View.Clients.Any())
-                        {
-                            <dt>Clients</dt>
-                            <dd>
-                                @{
-                                    var clients = Model.View.Clients.ToArray();
-                                    for(var i = 0; i < clients.Length; i++)
-                                    {
-                                        <text>@clients[i]</text>
-                                        if (i < clients.Length - 1)
+                            @foreach (var prop in Model.View.AuthenticateResult.Properties.Items)
+                            {
+                                <dt>@prop.Key</dt>
+                                <dd>@prop.Value</dd>
+                            }
+                            @if (Model.View.Clients.Any())
+                            {
+                                <dt>Clients</dt>
+                                <dd>
+                                    @{
+                                        var clients = Model.View.Clients.ToArray();
+                                        for(var i = 0; i < clients.Length; i++)
                                         {
-                                            <text>, </text>
+                                            <text>@clients[i]</text>
+                                            if (i < clients.Length - 1)
+                                            {
+                                                <text>, </text>
+                                            }
                                         }
                                     }
-                                }
-                            </dd>
+                                </dd>
+                            }
                         }
                     </dl>
                 </div>
