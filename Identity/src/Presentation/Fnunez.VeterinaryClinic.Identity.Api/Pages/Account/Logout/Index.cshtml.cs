@@ -20,7 +20,7 @@ public class Index : PageModel
     private readonly IEventService _events;
 
     [BindProperty] 
-    public string LogoutId { get; set; } = string.Empty;
+    public string? LogoutId { get; set; }
 
     public Index(SignInManager<ApplicationUser> signInManager, IIdentityServerInteractionService interaction, IEventService events)
     {
@@ -87,7 +87,7 @@ public class Index : PageModel
                     // build a return URL so the upstream provider will redirect back
                     // to us after the user has logged out. this allows us to then
                     // complete our single sign-out processing.
-                    string url = Url.Page("/Account/Logout/Loggedout", new { logoutId = LogoutId })!;
+                    string url = Url.Page("/Account/Logout/Loggedout", new { logoutId = LogoutId }) ?? string.Empty;
 
                     // this triggers a redirect to the external provider for sign-out
                     return SignOut(new AuthenticationProperties { RedirectUri = url }, idp);
