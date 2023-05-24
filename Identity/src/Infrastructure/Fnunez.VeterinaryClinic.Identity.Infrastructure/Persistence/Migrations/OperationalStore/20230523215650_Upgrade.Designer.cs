@@ -4,6 +4,7 @@ using Fnunez.VeterinaryClinic.Identity.Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fnunez.VeterinaryClinic.Identity.Infrastructure.Persistence.Migrations.OperationalStore
 {
     [DbContext(typeof(OperationalStoreDbContext))]
-    partial class OperationalStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230523215650_Upgrade")]
+    partial class Upgrade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
