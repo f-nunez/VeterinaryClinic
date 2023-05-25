@@ -1,5 +1,5 @@
 using System.Text.Json;
-using SchedulingContracts;
+using Contracts.Scheduling;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Services.NotificationRequest.Factories;
 
@@ -14,13 +14,13 @@ public class NotificationRequestService : INotificationRequestService
         _serviceBus = serviceBus;
     }
 
-    public async Task CreateAndSendAsync(
+    public async Task SendAsync(
         INotificationRequestFactory factory,
         CancellationToken cancellationToken)
     {
         var notificationRequest = factory.CreateNotificationRequest();
 
-        var message = new NotificationRequestContract
+        var message = new NotificationRequestSchedulingContract
         {
             CausationId = notificationRequest.CorrelationId,
             CorrelationId = notificationRequest.CorrelationId,

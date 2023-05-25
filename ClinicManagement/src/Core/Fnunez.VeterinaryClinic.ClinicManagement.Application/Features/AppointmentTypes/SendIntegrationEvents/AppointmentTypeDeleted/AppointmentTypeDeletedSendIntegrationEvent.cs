@@ -1,7 +1,0 @@
-using Contracts;
-using MediatR;
-
-namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.SendIntegrationEvents.AppointmentTypeDeleted;
-
-public record AppointmentTypeDeletedSendIntegrationEvent(AppointmentTypeDeletedIntegrationEventContract AppointmentTypeDeletedIntegrationEventContract)
-    : INotification;

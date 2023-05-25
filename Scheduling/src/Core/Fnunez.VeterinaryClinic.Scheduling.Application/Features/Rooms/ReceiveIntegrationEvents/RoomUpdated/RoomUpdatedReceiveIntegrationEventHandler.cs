@@ -15,16 +15,16 @@ public class RoomUpdatedReceiveIntegrationEventHandler
     }
 
     public async Task Handle(
-        RoomUpdatedReceiveIntegrationEvent integrationEvent,
+        RoomUpdatedReceiveIntegrationEvent receiveIntegrationEvent,
         CancellationToken cancellationToken)
     {
-        var contract = integrationEvent
-            .RoomUpdatedIntegrationEventContract;
+        var integrationEvent = receiveIntegrationEvent
+            .RoomUpdatedIntegrationEvent;
 
         string sql = @$"
         UPDATE [dbo].[Rooms]
-        SET [Name] = N'{contract.RoomName}'
-        WHERE Id = {contract.RoomId}";
+        SET [Name] = N'{integrationEvent.RoomName}'
+        WHERE Id = {integrationEvent.RoomId}";
 
         var result = await _unitOfWork
             .ExecuteSqlCommandAsync(sql, cancellationToken);

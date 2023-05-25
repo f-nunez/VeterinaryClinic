@@ -5,8 +5,8 @@ namespace IdentityServerHost.Pages.Ciba;
 
 public class InputModel
 {
-    public string Button { get; set; } = null!;
-    public IEnumerable<string> ScopesConsented { get; set; } = null!;
-    public string Id { get; set; } = null!;
-    public string Description { get; set; } = null!;
+    public string? Button { get; set; }
+    public IEnumerable<string> ScopesConsented { get; set; } = Enumerable.Empty<string>();
+    public string? Id { get; set; }
+    public string? Description { get; set; }
 }

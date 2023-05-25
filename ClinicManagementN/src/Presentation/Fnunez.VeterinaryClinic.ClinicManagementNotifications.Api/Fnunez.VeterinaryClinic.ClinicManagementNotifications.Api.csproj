@@ -7,19 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.3">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="7.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="7.0.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application\Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Fnunez.VeterinaryClinic.ClinicManagementNotifications.Infrastructure\Fnunez.VeterinaryClinic.ClinicManagementNotifications.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Fnunez.VeterinaryClinic.ClinicManagementNotifications.Application.IntegrationTests" />
   </ItemGroup>
 
 </Project>

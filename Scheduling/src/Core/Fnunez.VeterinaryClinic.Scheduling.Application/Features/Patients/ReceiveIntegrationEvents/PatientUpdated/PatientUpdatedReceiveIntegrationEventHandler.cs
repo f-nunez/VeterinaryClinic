@@ -15,27 +15,27 @@ public class PatientUpdatedReceiveIntegrationEventHandler
     }
 
     public async Task Handle(
-        PatientUpdatedReceiveIntegrationEvent integrationEvent,
+        PatientUpdatedReceiveIntegrationEvent receiveIntegrationEvent,
         CancellationToken cancellationToken)
     {
-        var contract = integrationEvent
-            .PatientUpdatedIntegrationEventContract;
-        
-        var preferredDoctorId = contract.PatientPreferredDoctorId.HasValue
-            ? $"{contract.PatientPreferredDoctorId}"
+        var integrationEvent = receiveIntegrationEvent
+            .PatientUpdatedIntegrationEvent;
+
+        var preferredDoctorId = integrationEvent.PatientPreferredDoctorId.HasValue
+            ? $"{integrationEvent.PatientPreferredDoctorId}"
             : "NULL";
 
         string sql = @$"
         UPDATE [dbo].[Patients]
-        SET [ClientId] = {contract.PatientClientId}
-            ,[Name] = N'{contract.PatientName}'
-            ,[AnimalSex] = {contract.PatientSex}
-            ,[AnimalType_Breed] = N'{contract.PatientBreed}'
-            ,[AnimalType_Species] = N'{contract.PatientSpecies}'
-            ,[Photo_Name] = N'{contract.PatientPhotoName}'
-            ,[Photo_StoredName] = N'{contract.PatientPhotoStoredName}'
+        SET [ClientId] = {integrationEvent.PatientClientId}
+            ,[Name] = N'{integrationEvent.PatientName}'
+            ,[AnimalSex] = {integrationEvent.PatientSex}
+            ,[AnimalType_Breed] = N'{integrationEvent.PatientBreed}'
+            ,[AnimalType_Species] = N'{integrationEvent.PatientSpecies}'
+            ,[Photo_Name] = N'{integrationEvent.PatientPhotoName}'
+            ,[Photo_StoredName] = N'{integrationEvent.PatientPhotoStoredName}'
             ,[PreferredDoctorId] = {preferredDoctorId}
-        WHERE Id = {contract.PatientId}";
+        WHERE Id = {integrationEvent.PatientId}";
 
         var result = await _unitOfWork
             .ExecuteSqlCommandAsync(sql, cancellationToken);

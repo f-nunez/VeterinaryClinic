@@ -12,11 +12,11 @@ public class ViewModel
     public IEnumerable<ViewModel.ExternalProvider> VisibleExternalProviders => ExternalProviders.Where(x => !String.IsNullOrWhiteSpace(x.DisplayName));
 
     public bool IsExternalLoginOnly => EnableLocalLogin == false && ExternalProviders?.Count() == 1;
-    public string ExternalLoginScheme => IsExternalLoginOnly ? ExternalProviders?.SingleOrDefault()?.AuthenticationScheme! : string.Empty;
+    public string? ExternalLoginScheme => IsExternalLoginOnly ? ExternalProviders?.SingleOrDefault()?.AuthenticationScheme : null;
         
     public class ExternalProvider
     {
-        public string DisplayName { get; set; } = null!;
-        public string AuthenticationScheme { get; set; } = null!;
+        public string? DisplayName { get; set; }
+        public string? AuthenticationScheme { get; set; }
     }
 }

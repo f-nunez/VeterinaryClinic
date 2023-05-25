@@ -68,7 +68,7 @@ public class Index : PageModel
 
     [BindProperty]
     [Required]
-    public string ClientId { get; set; } = null!;
+    public string ClientId { get; set; } = string.Empty;
 
     public async Task<IActionResult> OnPost()
     {

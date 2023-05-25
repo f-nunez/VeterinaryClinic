@@ -8,8 +8,31 @@ public class ClientProfile : Profile
 {
     public ClientProfile()
     {
-        CreateMap<ClientCreatedNotificationRequest, ClientCreatedPayload>();
-        CreateMap<ClientDeletedNotificationRequest, ClientDeletedPayload>();
-        CreateMap<ClientUpdatedNotificationRequest, ClientUpdatedPayload>();
+        CreateMap<ClientCreatedNotificationRequest, ClientCreatedPayload>()
+            .ForMember(
+                d => d.FullName,
+                m => m.MapFrom(s => s.FullName)
+            ).ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.Id)
+            );
+
+        CreateMap<ClientDeletedNotificationRequest, ClientDeletedPayload>()
+            .ForMember(
+                d => d.FullName,
+                m => m.MapFrom(s => s.FullName)
+            ).ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.Id)
+            );
+
+        CreateMap<ClientUpdatedNotificationRequest, ClientUpdatedPayload>()
+            .ForMember(
+                d => d.FullName,
+                m => m.MapFrom(s => s.FullName)
+            ).ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.Id)
+            );
     }
 }

@@ -36,7 +36,7 @@ public class Index : PageModel
     public ViewModel? View { get; set; }
 
     [BindProperty]
-    public InputModel Input { get; set; } = null!;
+    public InputModel Input { get; set; } = new InputModel();
 
     public async Task<IActionResult> OnGet(string userCode)
     {
@@ -65,7 +65,7 @@ public class Index : PageModel
 
     public async Task<IActionResult> OnPost()
     {
-        var request = await _interaction.GetAuthorizationContextAsync(Input.UserCode);
+        var request = await _interaction.GetAuthorizationContextAsync(Input.UserCode ?? string.Empty);
         if (request == null) return RedirectToPage("/Home/Error/Index");
 
         ConsentResponse? grantedConsent = null;
@@ -116,14 +116,14 @@ public class Index : PageModel
         if (grantedConsent != null)
         {
             // communicate outcome of consent back to identityserver
-            await _interaction.HandleRequestAsync(Input.UserCode, grantedConsent);
+            await _interaction.HandleRequestAsync(Input.UserCode ?? string.Empty, grantedConsent);
 
             // indicate that's it ok to redirect back to authorization endpoint
             return RedirectToPage("/Device/Success");
         }
 
         // we need to redisplay the consent UI
-        View = await BuildViewModelAsync(Input.UserCode, Input);
+        View = await BuildViewModelAsync(Input.UserCode ?? string.Empty, Input);
         return Page();
     }
 

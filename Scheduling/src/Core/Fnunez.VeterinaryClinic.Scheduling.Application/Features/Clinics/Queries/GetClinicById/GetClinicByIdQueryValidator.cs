@@ -1,5 +1,4 @@
 using FluentValidation;
-using Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clinics.Queries.GetClinicById;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Clinics.Queries.GetClinicById;
 

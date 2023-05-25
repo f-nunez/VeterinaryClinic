@@ -49,7 +49,7 @@ public class AppointmentService : IAppointmentService
     public async Task<DataGridResponse<AppointmentDto>> DataGridAsync(
         GetAppointmentsRequest request)
     {
-        _logger.LogInformation($"DataGrid: {request.DataGridRequest.ToString()}");
+        _logger.LogInformation($"DataGrid: {request.ToString()}");
 
         var response = await _httpService
             .HttpPostAsync<GetAppointmentsResponse>(

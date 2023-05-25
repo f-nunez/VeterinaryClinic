@@ -61,9 +61,10 @@ public partial class ClientsComponent : ComponentBase
             FullNameFilterValue = FullNameFilterValue,
             IdFilterValue = IdFilterValue,
             PreferredNameFilterValue = PreferredNameFilterValue,
-            SalutationFilterValue = SalutationFilterValue,
-            SearchFilterValue = SearchFilterValue
+            SalutationFilterValue = SalutationFilterValue
         };
+
+        request.DataGridRequest.Search = SearchFilterValue;
 
         var dataGridResponse = await _clientService
             .DataGridAsync(request);

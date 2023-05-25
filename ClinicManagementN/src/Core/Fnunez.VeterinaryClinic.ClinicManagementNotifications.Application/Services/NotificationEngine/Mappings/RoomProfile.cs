@@ -8,8 +8,31 @@ public class RoomProfile : Profile
 {
     public RoomProfile()
     {
-        CreateMap<RoomCreatedNotificationRequest, RoomCreatedPayload>();
-        CreateMap<RoomDeletedNotificationRequest, RoomDeletedPayload>();
-        CreateMap<RoomUpdatedNotificationRequest, RoomUpdatedPayload>();
+        CreateMap<RoomCreatedNotificationRequest, RoomCreatedPayload>()
+            .ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.Id)
+            ).ForMember(
+                d => d.Name,
+                m => m.MapFrom(s => s.Name)
+            );
+
+        CreateMap<RoomDeletedNotificationRequest, RoomDeletedPayload>()
+            .ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.Id)
+            ).ForMember(
+                d => d.Name,
+                m => m.MapFrom(s => s.Name)
+            );
+
+        CreateMap<RoomUpdatedNotificationRequest, RoomUpdatedPayload>()
+            .ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.Id)
+            ).ForMember(
+                d => d.Name,
+                m => m.MapFrom(s => s.Name)
+            );
     }
 }

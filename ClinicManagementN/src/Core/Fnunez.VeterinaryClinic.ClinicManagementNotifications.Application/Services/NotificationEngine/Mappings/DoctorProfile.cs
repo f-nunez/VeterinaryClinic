@@ -8,8 +8,31 @@ public class DoctorProfile : Profile
 {
     public DoctorProfile()
     {
-        CreateMap<DoctorCreatedNotificationRequest, DoctorCreatedPayload>();
-        CreateMap<DoctorDeletedNotificationRequest, DoctorDeletedPayload>();
-        CreateMap<DoctorUpdatedNotificationRequest, DoctorUpdatedPayload>();
+        CreateMap<DoctorCreatedNotificationRequest, DoctorCreatedPayload>()
+            .ForMember(
+                d => d.FullName,
+                m => m.MapFrom(s => s.FullName)
+            ).ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.Id)
+            );
+
+        CreateMap<DoctorDeletedNotificationRequest, DoctorDeletedPayload>()
+            .ForMember(
+                d => d.FullName,
+                m => m.MapFrom(s => s.FullName)
+            ).ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.Id)
+            );
+
+        CreateMap<DoctorUpdatedNotificationRequest, DoctorUpdatedPayload>()
+            .ForMember(
+                d => d.FullName,
+                m => m.MapFrom(s => s.FullName)
+            ).ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.Id)
+            );
     }
 }

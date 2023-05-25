@@ -15,14 +15,14 @@ public class ClientCreatedReceiveIntegrationEventHandler
     }
 
     public async Task Handle(
-        ClientCreatedReceiveIntegrationEvent integrationEvent,
+        ClientCreatedReceiveIntegrationEvent receiveIntegrationEvent,
         CancellationToken cancellationToken)
     {
-        var contract = integrationEvent
-            .ClientCreatedIntegrationEventContract;
+        var integrationEvent = receiveIntegrationEvent
+            .ClientCreatedIntegrationEvent;
 
-        string preferredDoctorId = contract.ClientPreferredDoctorId.HasValue
-            ? $"{contract.ClientPreferredDoctorId}"
+        string preferredDoctorId = integrationEvent.ClientPreferredDoctorId.HasValue
+            ? $"{integrationEvent.ClientPreferredDoctorId}"
             : "NULL";
 
         string sql = @$"
@@ -39,13 +39,13 @@ public class ClientCreatedReceiveIntegrationEventHandler
             [PreferredLanguage]
         ) VALUES (
             1,
-            {contract.ClientId},
-            N'{contract.ClientFullName}',
-            N'{contract.ClientPreferredName}',
-            N'{contract.ClientSalutation}',
-            N'{contract.ClientEmailAddress}',
+            {integrationEvent.ClientId},
+            N'{integrationEvent.ClientFullName}',
+            N'{integrationEvent.ClientPreferredName}',
+            N'{integrationEvent.ClientSalutation}',
+            N'{integrationEvent.ClientEmailAddress}',
             {preferredDoctorId},
-            {contract.ClientPreferredLanguage}
+            {integrationEvent.ClientPreferredLanguage}
         );
         
         SET IDENTITY_INSERT [dbo].[Clients] OFF;";

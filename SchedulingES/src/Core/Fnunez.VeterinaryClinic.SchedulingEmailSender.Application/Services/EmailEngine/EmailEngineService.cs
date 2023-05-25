@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Contracts.SchedulingEmailSender;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.EmailEngine.EmailCompositions;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.EmailEngine.Payloads;
@@ -7,7 +8,6 @@ using Fnunez.VeterinaryClinic.SchedulingEmailSender.Domain.EmailAggregate;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Domain.EmailAggregate.Enums;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using Microsoft.Extensions.Logging;
-using SchedulingEmailSenderContracts;
 
 namespace Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.EmailEngine;
 
@@ -42,11 +42,12 @@ public class EmailEngineService : IEmailEngineService
         CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(emailEventString))
-            throw new ArgumentNullException(nameof(emailEventString));
+            throw new ArgumentException(
+                $"{nameof(emailEventString)} is empty.");
 
         if (string.IsNullOrEmpty(serializedEmailRequest))
-            throw new ArgumentNullException(
-                nameof(serializedEmailRequest));
+            throw new ArgumentException(
+                $"{nameof(serializedEmailRequest)} is empty.");
 
         EmailEvent emailEvent = GetEmailEvent(emailEventString);
 
@@ -66,7 +67,7 @@ public class EmailEngineService : IEmailEngineService
         {
             var correlationId = Guid.NewGuid();
 
-            var emailContract = new EmailCompositionContract
+            var emailContract = new EmailCompositionSchedulingEmailSenderContract
             {
                 CausationId = correlationId,
                 CorrelationId = correlationId,

@@ -9,5 +9,4 @@ public class GetClinicsRequest : BaseRequest
     public string EmailAddressFilterValue { get; set; } = string.Empty;
     public string IdFilterValue { get; set; } = string.Empty;
     public string NameFilterValue { get; set; } = string.Empty;
-    public string SearchFilterValue { get; set; } = string.Empty;
 }

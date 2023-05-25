@@ -59,9 +59,10 @@ public partial class DoctorsComponent : ComponentBase
         {
             DataGridRequest = args.GetDataGridRequest(),
             FullNameFilterValue = FullNameFilterValue,
-            IdFilterValue = IdFilterValue,
-            SearchFilterValue = SearchFilterValue
+            IdFilterValue = IdFilterValue
         };
+
+        request.DataGridRequest.Search = SearchFilterValue;
 
         var dataGridResponse = await _doctorService
             .DataGridAsync(request);

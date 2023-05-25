@@ -1,8 +1,7 @@
-using AutoMapper;
-using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Clients.SendIntegrationEvents.ClientDeleted;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.IntegrationEventSender;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.IntegrationEventSender.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.Client.DeleteClient;
@@ -16,20 +15,20 @@ public class DeleteClientCommandHandler
     : IRequestHandler<DeleteClientCommand, DeleteClientResponse>
 {
     private readonly ICurrentUserService _currentUserService;
-    private readonly IMapper _mapper;
+    private readonly IIntegrationEventSenderService _integrationEventSenderService;
     private readonly IMediator _mediator;
     private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
 
     public DeleteClientCommandHandler(
         ICurrentUserService currentUserService,
-        IMapper mapper,
+        IIntegrationEventSenderService integrationEventSenderService,
         IMediator mediator,
         INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
         _currentUserService = currentUserService;
-        _mapper = mapper;
+        _integrationEventSenderService = integrationEventSenderService;
         _mediator = mediator;
         _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
@@ -89,19 +88,10 @@ public class DeleteClientCommandHandler
         Guid correlationId,
         CancellationToken cancellationToken)
     {
-        var message = new ClientDeletedIntegrationEventContract
-        {
-            CausationId = correlationId,
-            CorrelationId = correlationId,
-            Id = Guid.NewGuid(),
-            OccurredOn = DateTimeOffset.UtcNow,
-            ClientId = client.Id
-        };
+        var factory = new ClientDeletedIntegrationEventFactory(client);
 
-        await _mediator.Publish(
-            new ClientDeletedSendIntegrationEvent(message),
-            cancellationToken
-        );
+        await _integrationEventSenderService.SendAsync(
+            factory, correlationId, cancellationToken);
     }
 
     private async Task SendNotificationRequestAsync(
@@ -115,7 +105,7 @@ public class DeleteClientCommandHandler
             _currentUserService.UserId
         );
 
-        await _notificationRequestService.CreateAndSendAsync(
+        await _notificationRequestService.SendAsync(
             factory, cancellationToken);
     }
 }

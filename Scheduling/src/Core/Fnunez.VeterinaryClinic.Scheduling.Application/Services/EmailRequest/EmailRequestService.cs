@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Services.EmailRequest.Factories;
-using SchedulingContracts;
+using Contracts.Scheduling;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Services.EmailRequest;
 
@@ -20,7 +20,7 @@ public class EmailRequestService : IEmailRequestService
     {
         var emailRequest = factory.CreateEmailRequest();
 
-        var message = new EmailRequestContract
+        var message = new EmailRequestSchedulingContract
         {
             CausationId = emailRequest.CorrelationId,
             CorrelationId = emailRequest.CorrelationId,

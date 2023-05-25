@@ -3,7 +3,6 @@ using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.EmailEn
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.EmailEngine.EmailCompositions;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.EmailEngine.Payloads;
 using Fnunez.VeterinaryClinic.SchedulingEmailSender.Application.Services.EmailEngine.Requests;
-using MediatR;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -14,7 +13,10 @@ public static class ConfigureServices
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-        services.AddMediatR(Assembly.GetExecutingAssembly());
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
+        });
 
         services.AddScoped<IEmailCompositionFactory, EmailCompositionFactory>();
 

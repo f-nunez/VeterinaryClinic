@@ -10,5 +10,4 @@ public class GetClientsRequest : BaseRequest
     public string IdFilterValue { get; set; } = string.Empty;
     public string PreferredNameFilterValue { get; set; } = string.Empty;
     public string SalutationFilterValue { get; set; } = string.Empty;
-    public string SearchFilterValue { get; set; } = string.Empty;
 }

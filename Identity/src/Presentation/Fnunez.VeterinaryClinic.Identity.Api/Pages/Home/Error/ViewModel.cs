@@ -16,5 +16,5 @@ public class ViewModel
         Error = new ErrorMessage { Error = error };
     }
 
-    public ErrorMessage Error { get; set; } = null!;
+    public ErrorMessage? Error { get; set; }
 }

@@ -4,5 +4,5 @@ namespace Fnunez.VeterinaryClinic.Scheduling.Application.Services.NotificationRe
 
 public interface INotificationRequestService
 {
-    Task CreateAndSendAsync(INotificationRequestFactory factory, CancellationToken cancellationToken);
+    Task SendAsync(INotificationRequestFactory factory, CancellationToken cancellationToken);
 }

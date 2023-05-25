@@ -1,8 +1,8 @@
 using AutoMapper;
-using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.SendIntegrationEvents.AppointmentTypeUpdated;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.IntegrationEventSender;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.IntegrationEventSender.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType;
@@ -16,6 +16,7 @@ namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.Appointm
 public class UpdateAppointmentTypeCommandHandler : IRequestHandler<UpdateAppointmentTypeCommand, UpdateAppointmentTypeResponse>
 {
     private readonly ICurrentUserService _currentUserService;
+    private readonly IIntegrationEventSenderService _integrationEventSenderService;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     private readonly INotificationRequestService _notificationRequestService;
@@ -23,12 +24,14 @@ public class UpdateAppointmentTypeCommandHandler : IRequestHandler<UpdateAppoint
 
     public UpdateAppointmentTypeCommandHandler(
         ICurrentUserService currentUserService,
+        IIntegrationEventSenderService integrationEventSenderService,
         IMapper mapper,
         IMediator mediator,
         INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
         _currentUserService = currentUserService;
+        _integrationEventSenderService = integrationEventSenderService;
         _mapper = mapper;
         _mediator = mediator;
         _notificationRequestService = notificationRequestService;
@@ -108,22 +111,13 @@ public class UpdateAppointmentTypeCommandHandler : IRequestHandler<UpdateAppoint
         Guid correlationId,
         CancellationToken cancellationToken)
     {
-        var message = new AppointmentTypeUpdatedIntegrationEventContract
-        {
-            CausationId = correlationId,
-            CorrelationId = correlationId,
-            Id = Guid.NewGuid(),
-            OccurredOn = DateTimeOffset.UtcNow,
-            AppointmentTypeCode = appointmentType.Code,
-            AppointmentTypeDuration = appointmentType.Duration,
-            AppointmentTypeId = appointmentType.Id,
-            AppointmentTypeName = appointmentType.Name
-        };
-
-        await _mediator.Publish(
-            new AppointmentTypeUpdatedSendIntegrationEvent(message),
-            cancellationToken
+        var factory = new AppointmentTypeUpdatedIntegrationEventFactory
+        (
+            appointmentType
         );
+
+        await _integrationEventSenderService.SendAsync(
+            factory, correlationId, cancellationToken);
     }
 
     private async Task SendNotificationRequestAsync(
@@ -131,13 +125,14 @@ public class UpdateAppointmentTypeCommandHandler : IRequestHandler<UpdateAppoint
         Guid correlationId,
         CancellationToken cancellationToken)
     {
-        var factory = new AppointmentTypeUpdatedNotificationRequestFactory(
+        var factory = new AppointmentTypeUpdatedNotificationRequestFactory
+        (
             appointmentType,
             correlationId,
             _currentUserService.UserId
         );
 
-        await _notificationRequestService.CreateAndSendAsync(
+        await _notificationRequestService.SendAsync(
             factory, cancellationToken);
     }
 }

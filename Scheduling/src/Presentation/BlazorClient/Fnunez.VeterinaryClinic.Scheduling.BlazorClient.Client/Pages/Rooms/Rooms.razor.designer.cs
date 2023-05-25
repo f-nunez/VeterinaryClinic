@@ -56,9 +56,10 @@ public partial class RoomsComponent : ComponentBase
         {
             DataGridRequest = args.GetDataGridRequest(),
             IdFilterValue = IdFilterValue,
-            NameFilterValue = NameFilterValue,
-            SearchFilterValue = SearchFilterValue
+            NameFilterValue = NameFilterValue
         };
+
+        request.DataGridRequest.Search = SearchFilterValue;
 
         var dataGridResponse = await _roomService
             .DataGridAsync(request);

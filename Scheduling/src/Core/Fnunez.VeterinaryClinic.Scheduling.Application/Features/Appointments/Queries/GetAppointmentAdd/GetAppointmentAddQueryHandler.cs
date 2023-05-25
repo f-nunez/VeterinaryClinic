@@ -8,6 +8,7 @@ using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClientAggregate
 using Fnunez.VeterinaryClinic.Scheduling.Domain.SyncedAggregates.ClinicAggregate;
 using Fnunez.VeterinaryClinic.SharedKernel.Application.Repositories;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Appointments.Queries.GetAppointmentAdd;
 
@@ -16,17 +17,20 @@ public class GetAppointmentAddQueryHandler
 {
     private readonly IClientStorageSetting _clientStorageSetting;
     private readonly IFileSystemReaderService _fileSystemReaderService;
+    private readonly ILogger<GetAppointmentAddQueryHandler> _logger;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
     public GetAppointmentAddQueryHandler(
         IClientStorageSetting clientStorageSetting,
         IFileSystemReaderService fileSystemReaderService,
+        ILogger<GetAppointmentAddQueryHandler> logger,
         IMapper mapper,
         IUnitOfWork unitOfWork)
     {
         _clientStorageSetting = clientStorageSetting;
         _fileSystemReaderService = fileSystemReaderService;
+        _logger = logger;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
     }
@@ -82,7 +86,7 @@ public class GetAppointmentAddQueryHandler
         };
     }
 
-    private async Task<byte[]> GetPatientPhotoDataAsync(Patient patient)
+    private async Task<byte[]?> GetPatientPhotoDataAsync(Patient patient)
     {
         string relativePhotoPath = Path.Combine(
             patient.ClientId.ToString(), patient.Photo.StoredName);
@@ -90,6 +94,17 @@ public class GetAppointmentAddQueryHandler
         string photoPath = Path.Combine(
             _clientStorageSetting.BasePath, relativePhotoPath);
 
-        return await _fileSystemReaderService.ReadAsync(photoPath);
+        byte[]? photoData = null;
+
+        try
+        {
+            photoData = await _fileSystemReaderService.ReadAsync(photoPath);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
+
+        return photoData;
     }
 }

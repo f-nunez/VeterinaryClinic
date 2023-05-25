@@ -1,7 +1,7 @@
-using Contracts;
+using Fnunez.VeterinaryClinic.Scheduling.Application.Services.IntegrationEventReceiver.IntegrationEvents;
 using MediatR;
 
 namespace Fnunez.VeterinaryClinic.Scheduling.Application.Features.Patients.ReceiveIntegrationEvents.PatientCreated;
 
-public record PatientCreatedReceiveIntegrationEvent(PatientCreatedIntegrationEventContract PatientCreatedIntegrationEventContract)
+public record PatientCreatedReceiveIntegrationEvent(PatientCreatedIntegrationEvent PatientCreatedIntegrationEvent)
     : INotification;

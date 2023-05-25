@@ -15,11 +15,11 @@ public class ClinicCreatedReceiveIntegrationEventHandler
     }
 
     public async Task Handle(
-        ClinicCreatedReceiveIntegrationEvent integrationEvent,
+        ClinicCreatedReceiveIntegrationEvent receiveIntegrationEvent,
         CancellationToken cancellationToken)
     {
-        var contract = integrationEvent
-            .ClinicCreatedIntegrationEventContract;
+        var integrationEvent = receiveIntegrationEvent
+            .ClinicCreatedIntegrationEvent;
 
         string sql = @$"
         SET IDENTITY_INSERT [dbo].[Clinics] ON;
@@ -32,10 +32,10 @@ public class ClinicCreatedReceiveIntegrationEventHandler
             [Name])
         VALUES (
             1,
-            {contract.ClinicId},
-            N'{contract.ClinicAddress}',
-            N'{contract.ClinicEmailAddress}',
-            N'{contract.ClinicName}'
+            {integrationEvent.ClinicId},
+            N'{integrationEvent.ClinicAddress}',
+            N'{integrationEvent.ClinicEmailAddress}',
+            N'{integrationEvent.ClinicName}'
         );
         
         SET IDENTITY_INSERT [dbo].[Clinics] OFF;";

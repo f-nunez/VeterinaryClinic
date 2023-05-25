@@ -7,10 +7,12 @@ namespace IdentityServerHost.Pages.Home;
 [AllowAnonymous]
 public class Index : PageModel
 {
-    public string Version = null!;
-        
+    public string? Version { get; set; }
+
     public void OnGet()
     {
-        Version = typeof(Duende.IdentityServer.Hosting.IdentityServerMiddleware).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion!.Split('+').First()!;
+        Version = typeof(Duende.IdentityServer.Hosting.IdentityServerMiddleware)
+            .Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+            ?.InformationalVersion.Split('+').First();
     }
 }

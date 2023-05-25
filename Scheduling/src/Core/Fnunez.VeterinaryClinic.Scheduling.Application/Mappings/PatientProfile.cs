@@ -11,16 +11,32 @@ public class PatientProfile : Profile
     {
         CreateMap<Patient, PatientDto>()
             .ForMember(
-                dto => dto.PatientId,
-                options => options.MapFrom(src => src.Id)
+                d => d.ClientId,
+                m => m.MapFrom(s => s.ClientId)
             ).ForMember(
-                dto => dto.PatientName,
-                options => options.MapFrom(src => src.Name)
+                d => d.ClientName,
+                m => m.Ignore()
             ).ForMember(
-                dto => dto.ClientName,
-                options => options.MapFrom(src => string.Empty)
+                d => d.ImageData,
+                m => m.Ignore()
+            ).ForMember(
+                d => d.PatientId,
+                m => m.MapFrom(s => s.Id)
+            ).ForMember(
+                d => d.PatientName,
+                m => m.MapFrom(s => s.Name)
+            ).ForMember(
+                d => d.PreferredDoctorId,
+                m => m.MapFrom(s => s.PreferredDoctorId)
             );
-        
-        CreateMap<Patient, PatientFilterValueDto>();
+
+        CreateMap<Patient, PatientFilterValueDto>()
+            .ForMember(
+                d => d.Id,
+                m => m.MapFrom(s => s.Id)
+            ).ForMember(
+                d => d.Name,
+                m => m.MapFrom(s => s.Name)
+            );
     }
 }

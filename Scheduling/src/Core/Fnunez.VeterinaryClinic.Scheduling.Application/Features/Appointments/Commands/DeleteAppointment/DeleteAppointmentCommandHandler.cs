@@ -1,4 +1,3 @@
-using AutoMapper;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Common.Interfaces;
 using Fnunez.VeterinaryClinic.Scheduling.Application.Services.EmailRequest;
@@ -17,20 +16,17 @@ public class DeleteAppointmentCommandHandler
 {
     private readonly ICurrentUserService _currentUserService;
     private readonly IEmailRequestService _emailRequestService;
-    private readonly IMapper _mapper;
     private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
 
     public DeleteAppointmentCommandHandler(
         ICurrentUserService currentUserService,
         IEmailRequestService emailRequestService,
-        IMapper mapper,
         INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
         _currentUserService = currentUserService;
         _emailRequestService = emailRequestService;
-        _mapper = mapper;
         _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
     }
@@ -111,7 +107,7 @@ public class DeleteAppointmentCommandHandler
             _currentUserService.UserId
         );
 
-        await _notificationRequestService.CreateAndSendAsync(
+        await _notificationRequestService.SendAsync(
             factory, cancellationToken);
     }
 }

@@ -16,12 +16,18 @@ public partial class AppointmentDetailComponent : ComponentBase
 
     protected string DoctorPhotoBase64Encoded { get; set; }
 
+    protected string PatientPhotoBase64Encoded { get; set; }
+
     [Parameter]
     public AppointmentDetailVm Model { get; set; }
 
     protected override void OnInitialized()
     {
         DoctorPhotoBase64Encoded = DoctorHelper.GetDoctorThumbnail();
+
+        PatientPhotoBase64Encoded = Model.PatientPhotoData is null
+            ? PatientHelper.GetPatientThumbnail()
+            : Convert.ToBase64String(Model.PatientPhotoData);
     }
 
     protected async void Delete()

@@ -1,8 +1,7 @@
-using AutoMapper;
-using Contracts;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Exceptions;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Common.Interfaces;
-using Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.SendIntegrationEvents.AppointmentTypeDeleted;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.IntegrationEventSender;
+using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.IntegrationEventSender.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.Services.NotificationRequest.Factories;
 using Fnunez.VeterinaryClinic.ClinicManagement.Application.SharedModel.AppointmentType.DeleteAppointmentType;
@@ -16,20 +15,20 @@ public class DeleteAppointmentTypeCommandHandler
     : IRequestHandler<DeleteAppointmentTypeCommand, DeleteAppointmentTypeResponse>
 {
     private readonly ICurrentUserService _currentUserService;
-    private readonly IMapper _mapper;
+    private readonly IIntegrationEventSenderService _integrationEventSenderService;
     private readonly IMediator _mediator;
     private readonly INotificationRequestService _notificationRequestService;
     private readonly IUnitOfWork _unitOfWork;
 
     public DeleteAppointmentTypeCommandHandler(
         ICurrentUserService currentUserService,
-        IMapper mapper,
+        IIntegrationEventSenderService integrationEventSenderService,
         IMediator mediator,
         INotificationRequestService notificationRequestService,
         IUnitOfWork unitOfWork)
     {
         _currentUserService = currentUserService;
-        _mapper = mapper;
+        _integrationEventSenderService = integrationEventSenderService;
         _mediator = mediator;
         _notificationRequestService = notificationRequestService;
         _unitOfWork = unitOfWork;
@@ -101,19 +100,13 @@ public class DeleteAppointmentTypeCommandHandler
         Guid correlationId,
         CancellationToken cancellationToken)
     {
-        var message = new AppointmentTypeDeletedIntegrationEventContract
-        {
-            CausationId = correlationId,
-            CorrelationId = correlationId,
-            Id = Guid.NewGuid(),
-            OccurredOn = DateTimeOffset.UtcNow,
-            AppointmentTypeId = appointmentType.Id
-        };
-
-        await _mediator.Publish(
-            new AppointmentTypeDeletedSendIntegrationEvent(message),
-            cancellationToken
+        var factory = new AppointmentTypeDeletedIntegrationEventFactory
+        (
+            appointmentType
         );
+
+        await _integrationEventSenderService.SendAsync(
+            factory, correlationId, cancellationToken);
     }
 
     private async Task SendNotificationRequestAsync(
@@ -121,13 +114,14 @@ public class DeleteAppointmentTypeCommandHandler
         Guid correlationId,
         CancellationToken cancellationToken)
     {
-        var factory = new AppointmentTypeDeletedNotificationRequestFactory(
+        var factory = new AppointmentTypeDeletedNotificationRequestFactory
+        (
             appointmentType,
             correlationId,
             _currentUserService.UserId
         );
 
-        await _notificationRequestService.CreateAndSendAsync(
+        await _notificationRequestService.SendAsync(
             factory, cancellationToken);
     }
 }

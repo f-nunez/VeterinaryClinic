@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Net;
 using System.Net.Mail;
 using Fnunez.VeterinaryClinic.EmailService.Api.Settings;

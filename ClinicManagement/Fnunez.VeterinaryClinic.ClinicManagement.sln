@@ -29,6 +29,24 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.Cli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared", "src\Presentation\BlazorClient\Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared\Fnunez.VeterinaryClinic.ClinicManagement.BlazorClient.Shared.csproj", "{43D665A4-332D-4864-AC7F-7A1AA2446B43}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5052970C-9290-4DF9-A488-B210C23B03D8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A9A42EEC-2466-4DF3-9F01-67C8EBF69E51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.ClinicManagement.Domain.UnitTests", "tests\Core\Fnunez.VeterinaryClinic.ClinicManagement.Domain.UnitTests\Fnunez.VeterinaryClinic.ClinicManagement.Domain.UnitTests.csproj", "{45A37C3A-6823-4D3C-ADF8-10F3D31A4E7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.ClinicManagement.Application.UnitTests", "tests\Core\Fnunez.VeterinaryClinic.ClinicManagement.Application.UnitTests\Fnunez.VeterinaryClinic.ClinicManagement.Application.UnitTests.csproj", "{22CE4440-82DA-4FE2-965C-3184EF4B93FD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{C206D7A2-4AEF-4625-A7B2-68F0D12ED0D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.UnitTests", "tests\Infrastructure\Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.UnitTests\Fnunez.VeterinaryClinic.ClinicManagement.Infrastructure.UnitTests.csproj", "{7B87B34E-884D-4E8E-97AB-44FE497A80F0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{D23B5E1E-8436-48F2-987F-D259286A20D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.ClinicManagement.Api.UnitTests", "tests\Presentation\Fnunez.VeterinaryClinic.ClinicManagement.Api.UnitTests\Fnunez.VeterinaryClinic.ClinicManagement.Api.UnitTests.csproj", "{FDAF1F08-5B8A-4E57-85B9-B498EC5FB023}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fnunez.VeterinaryClinic.ClinicManagement.Application.IntegrationTests", "tests\Core\Fnunez.VeterinaryClinic.ClinicManagement.Application.IntegrationTests\Fnunez.VeterinaryClinic.ClinicManagement.Application.IntegrationTests.csproj", "{690CD763-2B60-4A44-A3AF-3A63DB8724B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +88,26 @@ Global
 		{43D665A4-332D-4864-AC7F-7A1AA2446B43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43D665A4-332D-4864-AC7F-7A1AA2446B43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43D665A4-332D-4864-AC7F-7A1AA2446B43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45A37C3A-6823-4D3C-ADF8-10F3D31A4E7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45A37C3A-6823-4D3C-ADF8-10F3D31A4E7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45A37C3A-6823-4D3C-ADF8-10F3D31A4E7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45A37C3A-6823-4D3C-ADF8-10F3D31A4E7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22CE4440-82DA-4FE2-965C-3184EF4B93FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22CE4440-82DA-4FE2-965C-3184EF4B93FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22CE4440-82DA-4FE2-965C-3184EF4B93FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22CE4440-82DA-4FE2-965C-3184EF4B93FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B87B34E-884D-4E8E-97AB-44FE497A80F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B87B34E-884D-4E8E-97AB-44FE497A80F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B87B34E-884D-4E8E-97AB-44FE497A80F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B87B34E-884D-4E8E-97AB-44FE497A80F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDAF1F08-5B8A-4E57-85B9-B498EC5FB023}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDAF1F08-5B8A-4E57-85B9-B498EC5FB023}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDAF1F08-5B8A-4E57-85B9-B498EC5FB023}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDAF1F08-5B8A-4E57-85B9-B498EC5FB023}.Release|Any CPU.Build.0 = Release|Any CPU
+		{690CD763-2B60-4A44-A3AF-3A63DB8724B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{690CD763-2B60-4A44-A3AF-3A63DB8724B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{690CD763-2B60-4A44-A3AF-3A63DB8724B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{690CD763-2B60-4A44-A3AF-3A63DB8724B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2FC7D5DC-B55B-45A1-822B-E757A049857A} = {784CABF2-3B5E-46BA-8DA8-FAEC06941B0B}
@@ -84,5 +122,13 @@ Global
 		{2BDE17DC-946B-4A82-985F-C2A19026B6CC} = {4FAC7AEA-5B2A-424C-BAE7-3C04F9FC4693}
 		{FE35841C-F5DD-4B77-B279-7D9CAE78A9FB} = {4FAC7AEA-5B2A-424C-BAE7-3C04F9FC4693}
 		{43D665A4-332D-4864-AC7F-7A1AA2446B43} = {4FAC7AEA-5B2A-424C-BAE7-3C04F9FC4693}
+		{A9A42EEC-2466-4DF3-9F01-67C8EBF69E51} = {5052970C-9290-4DF9-A488-B210C23B03D8}
+		{45A37C3A-6823-4D3C-ADF8-10F3D31A4E7C} = {A9A42EEC-2466-4DF3-9F01-67C8EBF69E51}
+		{22CE4440-82DA-4FE2-965C-3184EF4B93FD} = {A9A42EEC-2466-4DF3-9F01-67C8EBF69E51}
+		{C206D7A2-4AEF-4625-A7B2-68F0D12ED0D0} = {5052970C-9290-4DF9-A488-B210C23B03D8}
+		{7B87B34E-884D-4E8E-97AB-44FE497A80F0} = {C206D7A2-4AEF-4625-A7B2-68F0D12ED0D0}
+		{D23B5E1E-8436-48F2-987F-D259286A20D0} = {5052970C-9290-4DF9-A488-B210C23B03D8}
+		{FDAF1F08-5B8A-4E57-85B9-B498EC5FB023} = {D23B5E1E-8436-48F2-987F-D259286A20D0}
+		{690CD763-2B60-4A44-A3AF-3A63DB8724B8} = {A9A42EEC-2466-4DF3-9F01-67C8EBF69E51}
 	EndGlobalSection
 EndGlobal

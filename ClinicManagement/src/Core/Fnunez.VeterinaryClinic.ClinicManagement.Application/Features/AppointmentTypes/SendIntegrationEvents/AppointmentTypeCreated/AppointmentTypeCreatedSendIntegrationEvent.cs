@@ -1,7 +1,0 @@
-using Contracts;
-using MediatR;
-
-namespace Fnunez.VeterinaryClinic.ClinicManagement.Application.Features.AppointmentTypes.SendIntegrationEvents.AppointmentTypeCreated;
-
-public record AppointmentTypeCreatedSendIntegrationEvent(AppointmentTypeCreatedIntegrationEventContract AppointmentTypeCreatedIntegrationEventContract)
-    : INotification;
