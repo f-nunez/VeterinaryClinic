@@ -4,7 +4,17 @@ Open sourced solution for Blazor Web Assembly ASP.NET Core hosted model and buil
 
 ## About
 
-A veterinary clinic system under development...
+Hobby project related to a Veterinary Clinic System. Which is designed on a modular monolithic architecture consisting of the following applications:
+
+* Clinic Management, caring on Staffing (clients, clinics, patients, and doctors).
+
+* Scheduling, caring on Patient's appointments.
+
+* Public, handling appointment confirmations requested from Client's emails.
+
+* Identity, caring on authentication/authorization.
+
+![Demo](https://github.com/f-nunez/VeterinaryClinic/assets/47401766/cce951e0-abd9-487f-99b1-3e095b264278)
 
 ## Technologies
 
@@ -30,14 +40,19 @@ A veterinary clinic system under development...
 #### Deployment
 
 * [Docker](https://www.docker.com)
+* [Docker Compose](https://docs.docker.com/compose)
 * [Nginx](https://www.nginx.com)
 * [OpenSSL](https://www.openssl.org)
+
+#### Testing
+
+* [xUnit](https://github.com/xunit/xunit)
 
 ## Getting Started
 
 Pre-requisites before having the solution deployed:
 
-* Docker on your machine.
+* Docker and Compose on your machine.
 * Self Signed Certificate to run over HTTPS.
 * Configure Hosts file to provide a local DNS service.
 * Flush DNS Resolver Cache.
@@ -47,7 +62,7 @@ Pre-requisites before having the solution deployed:
 For local development/testing purposes we need a certificate installed on each device where we'll have a secure communication between client and server.
 For this example, we're going to register public and internal services in the same certificate. Currently, there are two options to get achieve this:
 
-#### 1. Import existing Self Signed Certificate (recommended)
+#### 1. Import existing Self Signed Certificate
 
 Currently, at _docker/certs folder you will find a demo certificate ready to get it installed.
 
@@ -108,7 +123,7 @@ Hosts file path in Windows:
 C:\Windows\System32\drivers\etc\hosts
 ```
 
-Add the following lines into your host file at the end of the document:
+Add the following lines into your hosts file at the end of the document:
 
 ```shell
 127.0.0.1 vc.local
@@ -138,13 +153,13 @@ ipconfig /flushdns
 
 You will find Docker Compose files at the repository root folder which will represent profiles (options) to deploy and run the entire solution.
 
-Those deployment profiles (deployment options) are:
+Those deployment profiles (Deployment options) are:
 
 * Default (docker-compose.yml).
 * DockerDevelopment (docker-compose.DockerDevelopment.yml).
 * DockerNginx (docker-compose.DockerNginx.yml).
 
-Just choose your poison, where the first one is the most toxic (my preferred) and the other two options are the less painful deployments.
+Just choose your poison, where the first one is the most toxic and the other two options are the less painful deployments.
 
 ### 1. Default deployment (Manual deployment)
 
@@ -153,12 +168,12 @@ The docker-compose.yml file which only deploys a basic infrastructure (RabbitMQ 
 Open your terminal and set yourself at repository root folder to build the images:
 
 ```shell
-docker-compose build --no-cache
+docker compose build --no-cache
 ```
 
 After the images were build proceed to create and start containers:
 ```shell
-docker-compose up -d
+docker compose up -d
 ```
 
 Then you will have RabbitMQ and SQL Server containers ready to use them.
@@ -226,7 +241,7 @@ Then you will have RabbitMQ and SQL Server containers ready to use them.
 Stop and remove the containers:
 
 ```shell
-docker-compose stop
+docker compose down
 ```
 
 ### 2. DockerDevelopment deployment (Automatic deployment)
@@ -236,12 +251,13 @@ The docker-compose.DockerDevelopment.yml file provides full deploy and gets read
 Open your terminal and set yourself at repository root folder to build the images:
 
 ```shell
-docker-compose -f docker-compose.DockerDevelopment.yml build --no-cache
+docker compose -f docker-compose.DockerDevelopment.yml build --no-cache
 ```
 
 After the images were build proceed to create and start containers:
+
 ```shell
-docker-compose -f docker-compose.DockerDevelopment.yml up -d
+docker compose -f docker-compose.DockerDevelopment.yml up -d
 ```
 
 Once containers are created and started, test the access of the following links:
@@ -257,7 +273,7 @@ Once containers are created and started, test the access of the following links:
 Stop and remove the containers:
 
 ```shell
-docker-compose -f docker-compose.DockerDevelopment.yml stop
+docker compose -f docker-compose.DockerDevelopment.yml down
 ```
 
 ### 3. DockerNginx deployment (Automatic deployment)
@@ -267,12 +283,12 @@ The docker-compose.DockerNginx.yml has the same deployment infrastructure as the
 Open your terminal and set yourself at repository root folder to build the images:
 
 ```shell
-docker-compose -f docker-compose.DockerNginx.yml build --no-cache
+docker compose -f docker-compose.DockerNginx.yml build --no-cache
 ```
 
 After the images were build proceed to create and start containers:
 ```shell
-docker-compose -f docker-compose.DockerNginx.yml up -d
+docker compose -f docker-compose.DockerNginx.yml up -d
 ```
 
 Once containers are created and started, test the access of the following links:
@@ -288,12 +304,36 @@ Once containers are created and started, test the access of the following links:
 Stop and remove the containers:
 
 ```shell
-docker-compose -f docker-compose.DockerNginx.yml stop
+docker compose -f docker-compose.DockerNginx.yml down
+```
+
+## Testing
+
+In every solution folder you can run the test cases. As an example:
+
+```text
+...\VeterinaryClinic\ClinicManagement> dotnet test
+```
+
+#### Unit Tests
+
+Run specified tests for unit.
+
+```shell
+dotnet test --filter FullyQualifiedName~UnitTests
+```
+
+#### Integration Tests
+
+Run specified tests for integration. Keep in mind these tests are longests because perform operations against database.
+
+```shell
+dotnet test --filter FullyQualifiedName~IntegrationTests
 ```
 
 ## Give a Star! :star:
 
-If you liked this project, please give it a star. Thanks!
+If you liked this project, please give it a star. Thanks! (n_n)/ :star:
 
 ## Credits
 
